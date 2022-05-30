@@ -4,7 +4,9 @@
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-
+	
+		
+		
 	xmlns:xmla="urn:schemas-microsoft-com:xml-analysis"
 	xmlns:ext="http://schemas.microsoft.com/analysisservices/2003/ext"
 	xmlns:msxmla="http://schemas.microsoft.com/analysisservices/2003/xmla"
