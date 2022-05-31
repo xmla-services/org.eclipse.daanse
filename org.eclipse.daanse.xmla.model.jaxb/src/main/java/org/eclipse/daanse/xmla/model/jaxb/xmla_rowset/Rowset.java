@@ -80,6 +80,8 @@ public class Rowset
         }
         return this.row;
     }
+    
+
 
     public boolean isSetRow() {
         return ((this.row!= null)&&(!this.row.isEmpty()));

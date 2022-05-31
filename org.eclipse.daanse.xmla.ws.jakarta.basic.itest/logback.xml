@@ -10,7 +10,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.osgi.test" level="DEBUG"/>
+	<logger name="org.eclipse.daanse.xmla.ws.jakarta.basic.itest" level="DEBUG"/>
 
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />

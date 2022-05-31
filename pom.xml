@@ -365,7 +365,7 @@
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>${mockito.version}</version>
-				<scope>test</scope>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
@@ -373,13 +373,7 @@
 				<version>4.13.2_1</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.osgi</groupId>
-				<artifactId>org.osgi.test.bom</artifactId>
-				<version>${osgi-test.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+
 			<dependency>
 				<groupId>org.eclipse.platform</groupId>
 				<artifactId>org.eclipse.osgi</artifactId>
@@ -390,19 +384,24 @@
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.scr</artifactId>
 				<version>2.2.0</version>
-				<scope>test</scope>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
 				<version>1.2.11</version>
-				<scope>test</scope>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.logback</artifactId>
 				<version>1.0.6</version>
-				<scope>test</scope>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>biz.aQute.bndlib</artifactId>
+				<version>${bnd.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.ws</groupId>
@@ -466,8 +465,7 @@
 
 			<dependencyManagement>
 
-				<dependencies>
-				</dependencies>
+				<dependencies></dependencies>
 			</dependencyManagement>
 			<build>
 				<pluginManagement>
@@ -532,6 +530,26 @@
 				<plugins>
 					<plugin>
 						<groupId>biz.aQute.bnd</groupId>
+						<artifactId>bnd-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<executions>
+							<execution>
+								<id>jar</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<bnd>
+										<![CDATA[
+								Test-Cases: ${classes;HIERARCHY_INDIRECTLY_ANNOTATED;org.junit.platform.commons.annotation.Testable;CONCRETE}
+								]]>
+									</bnd>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>biz.aQute.bnd</groupId>
 						<artifactId>bnd-resolver-maven-plugin</artifactId>
 					</plugin>
 					<plugin>
@@ -541,6 +559,68 @@
 				</plugins>
 
 			</build>
+
+			<dependencies>
+
+				<!-- OSGI-Tests-->
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.common</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.assertj.framework</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.assertj.log</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.assertj.promise</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.junit5</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.junit5.cm</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.test.junit5.listeners.log.osgi</artifactId>
+					<version>${osgi-test.version}</version>
+					<scope>compile</scope>
+				</dependency>
+
+				<!-- general test dependencies. -->
+				<dependency>
+					<groupId>org.assertj</groupId>
+					<artifactId>assertj-core</artifactId>
+					<version>${assertj.version}</version>
+					<scope>compile</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.mockito</groupId>
+					<artifactId>mockito-core</artifactId>
+					<version>${mockito.version}</version>
+					<scope>compile</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
 			<id>java-release</id>
@@ -588,6 +668,5 @@
 		<module>org.eclipse.daanse.xmla.model.jaxb</module>
 		<module>org.eclipse.daanse.xmla.ws.jakarta.basic</module>
 		<module>org.eclipse.daanse.xmla.ws.jakarta.basic.itest</module>
-		<module>example.book</module>
 	</modules>
 </project>

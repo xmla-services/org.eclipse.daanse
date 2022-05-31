@@ -19,10 +19,20 @@
 			<artifactId>org.eclipse.daanse.xmla.ws.jakarta.basic</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi.core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>biz.aQute.bnd</groupId>
+			<artifactId>biz.aQute.bndlib</artifactId>
 		</dependency>
 	</dependencies>
 

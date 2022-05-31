@@ -1,5 +1,6 @@
 -tester: biz.aQute.tester.junit-platform
 
+-runtrace: true
 -runvm: ${def;argLine}
 
 -resolve.effective: active
@@ -15,7 +16,9 @@
 	bnd.identity;id='org.glassfish.hk2.osgi-resource-locator',\
 	bnd.identity;id=junit-jupiter-engine,\
 	bnd.identity;id=junit-platform-launcher,\
-	bnd.identity;id='com.sun.xml.ws.jaxws-rt'
+	bnd.identity;id='com.sun.xml.ws.jaxws-rt',\
+	bnd.identity;id='org.eclipse.daanse.xmla.ws.jakarta.basic.itest',\
+	bnd.identity;id='com.sun.xml.messaging.saaj.impl';version:Version='3.0.0.M2'
 -runsystempackages: \
 	org.slf4j;version=1.7.25,\
 	org.slf4j.helpers;version=1.7.25,\
@@ -26,7 +29,7 @@
 	org.apache.felix.logback,\
 	slf4j.api	
 	
--runee: JavaSE-11
+-runee: JavaSE-17
 -runfw: org.eclipse.osgi
 # This will help us keep -runbundles sorted
 -runstartlevel: \
@@ -38,6 +41,7 @@
 	com.sun.xml.bind.jaxb-core;version='[4.0.0,4.0.1)',\
 	com.sun.xml.bind.jaxb-impl;version='[4.0.0,4.0.1)',\
 	com.sun.xml.fastinfoset.FastInfoset;version='[2.1.0,2.1.1)',\
+	com.sun.xml.messaging.saaj.impl;version='[3.0.0,3.0.1)',\
 	com.sun.xml.stream.buffer.streambuffer;version='[2.1.0,2.1.1)',\
 	com.sun.xml.ws.jaxws-rt;version='[4.0.0,4.0.1)',\
 	jakarta.activation-api;version='[2.1.0,2.1.1)',\
@@ -47,19 +51,27 @@
 	jakarta.xml.ws-api;version='[4.0.0,4.0.1)',\
 	junit-jupiter-api;version='[5.8.2,5.8.3)',\
 	junit-jupiter-engine;version='[5.8.2,5.8.3)',\
+	junit-jupiter-params;version='[5.8.2,5.8.3)',\
 	junit-platform-commons;version='[1.8.2,1.8.3)',\
 	junit-platform-engine;version='[1.8.2,1.8.3)',\
 	junit-platform-launcher;version='[1.8.2,1.8.3)',\
+	net.bytebuddy.byte-buddy;version='[1.12.9,1.12.10)',\
+	net.bytebuddy.byte-buddy-agent;version='[1.12.9,1.12.10)',\
 	org.apache.felix.scr;version='[2.2.0,2.2.1)',\
 	org.eclipse.daanse.xmla.model.jaxb;version='[0.0.1,0.0.2)',\
 	org.eclipse.daanse.xmla.ws.jakarta.basic;version='[0.0.1,0.0.2)',\
+	org.eclipse.daanse.xmla.ws.jakarta.basic.itest;version='[0.0.1,0.0.2)',\
 	org.glassfish.external.management-api;version='[3.2.3,3.2.4)',\
 	org.glassfish.gmbal.gmbal-api-only;version='[4.0.3,4.0.4)',\
 	org.glassfish.ha.ha-api;version='[3.1.13,3.1.14)',\
 	org.glassfish.hk2.osgi-resource-locator;version='[2.4.0,2.4.1)',\
 	org.jvnet.mimepull;version='[1.9.15,1.9.16)',\
 	org.jvnet.staxex.stax-ex;version='[2.1.0,2.1.1)',\
+	org.mockito.mockito-core;version='[4.5.1,4.5.2)',\
+	org.objenesis;version='[3.2.0,3.2.1)',\
 	org.opentest4j;version='[1.2.0,1.2.1)',\
+	org.osgi.test.common;version='[1.1.0,1.1.1)',\
+	org.osgi.test.junit5;version='[1.1.0,1.1.1)',\
 	org.osgi.util.function;version='[1.2.0,1.2.1)',\
 	org.osgi.util.promise;version='[1.2.0,1.2.1)',\
 	stax2-api;version='[4.2.1,4.2.2)'

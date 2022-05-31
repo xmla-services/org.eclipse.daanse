@@ -69,6 +69,8 @@ public class Row
         }
         return this.any;
     }
+    
+    
 
     public boolean isSetAny() {
         return ((this.any!= null)&&(!this.any.isEmpty()));
