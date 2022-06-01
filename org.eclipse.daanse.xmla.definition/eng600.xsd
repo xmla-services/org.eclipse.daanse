@@ -6,6 +6,6 @@
 	targetNamespace="http://schemas.microsoft.com/analysisservices/2013/engine/600">
 
 	<xsd:element name="SupportedCompatibilityLevels"
-		type="xsd:string" minOccurs="0" />
+		type="xsd:string" />
 
 </xsd:schema>

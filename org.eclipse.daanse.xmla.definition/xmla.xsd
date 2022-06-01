@@ -13,10 +13,10 @@
 	xmlns:eng600="http://schemas.microsoft.com/analysisservices/2013/engine/600"
 	xmlns:eng800="http://schemas.microsoft.com/analysisservices/2013/engine/800"
 
-	xmlns:xmla-ds="urn:schemas-microsoft-com:xml-analysis:mddataset"
-	xmlns:xmla-rs="urn:schemas-microsoft-com:xml-analysis:rowset"
-	xmlns:xmla-e="urn:schemas-microsoft-com:xml-analysis:empty"
-	xmlns:xmla-m="http://schemas.microsoft.com/analysisservices/2003/xmla-multipleresults"
+	xmlns:ana-ds="urn:schemas-microsoft-com:xml-analysis:mddataset"
+	xmlns:ana-rs="urn:schemas-microsoft-com:xml-analysis:rowset"
+	xmlns:ana-e="urn:schemas-microsoft-com:xml-analysis:empty"
+	xmlns:ana-m="http://schemas.microsoft.com/analysisservices/2003/xmla-multipleresults"
 
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
 	targetNamespace="urn:schemas-microsoft-com:xml-analysis">
@@ -768,29 +768,29 @@
 	</xsd:complexType>
 
 	<xsd:complexType name="DataSourceView">
-				<xsd:all>
-					<!--These elements are common to each MajorObject -->
-					<xsd:element name="Name" type="xsd:string" />
-					<xsd:element name="ID" type="xsd:string" minOccurs="0" />
-					<xsd:element name="CreatedTimestamp"
-						type="xsd:dateTime" minOccurs="0" />
-					<xsd:element name="LastSchemaUpdate"
-						type="xsd:dateTime" minOccurs="0" />
-					<xsd:element name="Description" type="xsd:string"
-						minOccurs="0" />
-					<xsd:element name="Annotations" minOccurs="0">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="Annotation" type="Annotation"
-									minOccurs="0" maxOccurs="unbounded" />
-							</xsd:sequence>
-						</xsd:complexType>
-					</xsd:element>
-					<!--Extended elements for DataSourceView object -->
-					<xsd:element name="DataSourceID" type="xsd:string" />
-					<!-- <xsd:element name="Schema"> <xsd:complexType> <xsd:sequence> <xsd:element 
-						ref="xsd:schema" /> </xsd:sequence> </xsd:complexType> </xsd:element> -->
-				</xsd:all>
+		<xsd:all>
+			<!--These elements are common to each MajorObject -->
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="ID" type="xsd:string" minOccurs="0" />
+			<xsd:element name="CreatedTimestamp" type="xsd:dateTime"
+				minOccurs="0" />
+			<xsd:element name="LastSchemaUpdate" type="xsd:dateTime"
+				minOccurs="0" />
+			<xsd:element name="Description" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Annotations" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Annotation" type="Annotation"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!--Extended elements for DataSourceView object -->
+			<xsd:element name="DataSourceID" type="xsd:string" />
+			<!-- <xsd:element name="Schema"> <xsd:complexType> <xsd:sequence> <xsd:element 
+				ref="xsd:schema" /> </xsd:sequence> </xsd:complexType> </xsd:element> -->
+		</xsd:all>
 	</xsd:complexType>
 
 	<xsd:complexType name="Bindings">
@@ -1038,26 +1038,26 @@
 	<xsd:complexType name="Location">
 		<xsd:complexContent>
 			<xsd:extension base="Location_Backup">
-				<xsd:sequence>
-					<xsd:element name="DataSourceType" minOccurs="0">
-						<xsd:simpleType>
-							<xsd:restriction base="xsd:string">
-								<xsd:enumeration value="Remote" />
-								<xsd:enumeration value="Local" />
-							</xsd:restriction>
-						</xsd:simpleType>
-					</xsd:element>
-					<xsd:element name="ConnectionString" type="xsd:string"
-						minOccurs="0" />
-					<xsd:element name="Folders" minOccurs="0">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="Folder" type="Folder"
-									minOccurs="0" maxOccurs="unbounded" />
-							</xsd:sequence>
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:sequence>
+<!-- 				<xsd:all> -->
+<!-- 					<xsd:element name="DataSourceType" minOccurs="0"> -->
+<!-- 						<xsd:simpleType> -->
+<!-- 							<xsd:restriction base="xsd:string"> -->
+<!-- 								<xsd:enumeration value="Remote" /> -->
+<!-- 								<xsd:enumeration value="Local" /> -->
+<!-- 							</xsd:restriction> -->
+<!-- 						</xsd:simpleType> -->
+<!-- 					</xsd:element> -->
+<!-- 					<xsd:element name="ConnectionString" type="xsd:string" -->
+<!-- 						minOccurs="0" /> -->
+<!-- 					<xsd:element name="Folders" minOccurs="0"> -->
+<!-- 						<xsd:complexType> -->
+<!-- 							<xsd:sequence> -->
+<!-- 								<xsd:element name="Folder" type="Folder" -->
+<!-- 									minOccurs="0" maxOccurs="unbounded" /> -->
+<!-- 							</xsd:sequence> -->
+<!-- 						</xsd:complexType> -->
+<!-- 					</xsd:element> -->
+<!-- 				</xsd:all> -->
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -1479,10 +1479,10 @@
 
 	<xsd:complexType name="return">
 		<xsd:choice>
-			<xsd:element ref="xmla-ds:root" />
-			<xsd:element ref="xmla-rs:root" />
-			<xsd:element ref="xmla-e:root" />
-			<xsd:element ref="xmla-m:results" />
+			<xsd:element ref="ana-ds:root" />
+			<xsd:element ref="ana-rs:root" />
+			<xsd:element ref="ana-e:root" />
+			<xsd:element ref="ana-m:results" />
 		</xsd:choice>
 	</xsd:complexType>
 
@@ -4052,8 +4052,7 @@
 	</xsd:complexType>
 
 
-	<xsd:element name="event_session" maxOccurs="unbounded"
-		minOccurs="1">
+	<xsd:element name="event_session">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="templateCategory" minOccurs="0"
@@ -4100,8 +4099,7 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 
-	<xsd:element name="event" minOccurs="0"
-		maxOccurs="unbounded">
+	<xsd:element name="event">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="action" minOccurs="0"
@@ -4116,15 +4114,13 @@
 	</xsd:element>
 
 
-	<xsd:element name="action" minOccurs="0"
-		maxOccurs="unbounded">
+	<xsd:element name="action">
 		<xsd:complexType>
 			<xsd:attributeGroup ref="objectNames" />
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="target" minOccurs="0"
-		maxOccurs="unbounded">
+	<xsd:element name="target">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element ref="parameter" maxOccurs="unbounded"
@@ -6679,7 +6675,7 @@
 				type="xsd:int" />
 		</xsd:complexType>
 	</xsd:element>
-	
+
 	<xsd:element name="Session">
 		<xsd:complexType>
 			<xsd:attribute form="unqualified" name="SessionId"
@@ -6695,7 +6691,7 @@
 				<xsd:element name="return" minOccurs="0" maxOccurs="1">
 					<xsd:complexType>
 						<xsd:sequence>
-							<xsd:element ref="xmla-rs:root" minOccurs="0"
+							<xsd:element ref="ana-rs:root" minOccurs="0"
 								maxOccurs="1">
 							</xsd:element>
 						</xsd:sequence>

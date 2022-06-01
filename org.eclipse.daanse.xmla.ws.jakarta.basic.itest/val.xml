@@ -1,53 +1,59 @@
-<?xml version="1.0" ?>
-<S:Envelope
-	xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-	<S:Header>
-		<ns15:Session
-			xmlns:ns2="http://schemas.microsoft.com/analysisservices/2003/xmla"
-			xmlns:ns3="urn:schemas-microsoft-com:xml-analysis:mddataset"
-			xmlns:ns4="http://schemas.microsoft.com/analysisservices/2003/engine"
-			xmlns:ns5="http://schemas.microsoft.com/analysisservices/2010/engine/200"
-			xmlns:ns6="http://schemas.microsoft.com/analysisservices/2003/ext"
-			xmlns:ns7="http://schemas.microsoft.com/analysisservices/2011/engine/300"
-			xmlns:ns8="http://schemas.microsoft.com/analysisservices/2012/engine/400"
-			xmlns:ns9="http://schemas.microsoft.com/analysisservices/2013/engine/600"
-			xmlns:ns10="http://schemas.microsoft.com/analysisservices/2008/engine/100"
-			xmlns:ns11="http://schemas.microsoft.com/analysisservices/2008/engine/100/100"
-			xmlns:ns12="http://schemas.microsoft.com/analysisservices/2011/engine/300/300"
-			xmlns:ns13="http://schemas.microsoft.com/analysisservices/2003/engine/2"
-			xmlns:ns14="http://schemas.microsoft.com/analysisservices/2010/engine/200/200"
-			xmlns:ns15="urn:schemas-microsoft-com:xml-analysis"
-			xmlns:ns16="http://schemas.microsoft.com/analysisservices/2013/engine/800"
-			xmlns:ns17="urn:schemas-microsoft-com:xml-analysis:rowset"
-			xmlns:ns18="urn:schemas-microsoft-com:xml-analysis:empty"
-			xmlns:ns19="http://schemas.microsoft.com/analysisservices/2003/xmla-multipleresults"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" />
-	</S:Header>
-	<S:Body>
-		<ns15:DiscoverResponse
-			xmlns:ns2="http://schemas.microsoft.com/analysisservices/2003/xmla"
-			xmlns:ns3="urn:schemas-microsoft-com:xml-analysis:mddataset"
-			xmlns:ns4="http://schemas.microsoft.com/analysisservices/2003/engine"
-			xmlns:ns5="http://schemas.microsoft.com/analysisservices/2010/engine/200"
-			xmlns:ns6="http://schemas.microsoft.com/analysisservices/2003/ext"
-			xmlns:ns7="http://schemas.microsoft.com/analysisservices/2011/engine/300"
-			xmlns:ns8="http://schemas.microsoft.com/analysisservices/2012/engine/400"
-			xmlns:ns9="http://schemas.microsoft.com/analysisservices/2013/engine/600"
-			xmlns:ns10="http://schemas.microsoft.com/analysisservices/2008/engine/100"
-			xmlns:ns11="http://schemas.microsoft.com/analysisservices/2008/engine/100/100"
-			xmlns:ns12="http://schemas.microsoft.com/analysisservices/2011/engine/300/300"
-			xmlns:ns13="http://schemas.microsoft.com/analysisservices/2003/engine/2"
-			xmlns:ns14="http://schemas.microsoft.com/analysisservices/2010/engine/200/200"
-			xmlns:ns15="urn:schemas-microsoft-com:xml-analysis"
-			xmlns:ns16="http://schemas.microsoft.com/analysisservices/2013/engine/800"
-			xmlns:ns17="urn:schemas-microsoft-com:xml-analysis:rowset"
-			xmlns:ns18="urn:schemas-microsoft-com:xml-analysis:empty"
-			xmlns:ns19="http://schemas.microsoft.com/analysisservices/2003/xmla-multipleresults">
-			<return>
-				<ns17:root>
-					<row />
-				</ns17:root>
-			</return>
-		</ns15:DiscoverResponse>
-	</S:Body>
-</S:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns="urn:schemas-microsoft-com:xml-analysis">
+	<SOAP-ENV:Header />
+	<SOAP-ENV:Body>
+		<Discover>
+			<RequestType>theRequestType</RequestType>
+			<Restrictions>
+				<RestrictionList />
+			</Restrictions>
+			<Properties>
+				<PropertyList>
+					<DataSourceInfo>theDataSourceInfo</DataSourceInfo>
+					<Catalog>theCatalog</Catalog>
+					<Format>theFormat</Format>
+					<Content>theContent</Content>
+				</PropertyList>
+			</Properties>
+		</Discover>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns="urn:schemas-microsoft-com:xml-analysis">
+	<SOAP-ENV:Header />
+	<SOAP-ENV:Body>
+		<Discover xmlns="">
+
+			<RequestType>theRequestType</RequestType>
+
+			<Restrictions>
+
+				<RestrictionList />
+
+			</Restrictions>
+
+			<Properties>
+
+				<PropertyList>
+
+					<DataSourceInfo>theDataSourceInfo</DataSourceInfo>
+
+					<Catalog>theCatalog</Catalog>
+
+					<Format>theFormat</Format>
+
+					<Content>theContent</Content>
+
+				</PropertyList>
+
+			</Properties>
+
+		</Discover>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

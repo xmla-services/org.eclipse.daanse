@@ -24,15 +24,16 @@ public class SOAPUtil {
 			Consumer<SOAPMessage> consumer) {
 		try {
 
-			MessageFactory messageFactory = MessageFactory.newInstance();
+			MessageFactory messageFactory = MessageFactory.newInstance()	;
 			SOAPMessage message = messageFactory.createMessage();
-
+			
 			consumer.accept(message);
-
+			
 			MimeHeaders headers = message.getMimeHeaders();
 			headers.addHeader("SOAPAction", soapAction);
-
 			message.saveChanges();
+
+
 
 			/* Print the request message, just for debugging purposes */
 			logger.debug("Request SOAP Message:");

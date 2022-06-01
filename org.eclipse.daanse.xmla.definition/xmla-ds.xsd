@@ -6,7 +6,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:msxmla="http://schemas.microsoft.com/analysisservices/2003/xmla"
-	xmlns:xmla-x="urn:schemas-microsoft-com:xml-analysis:exception"
+	xmlns:ana-x="urn:schemas-microsoft-com:xml-analysis:exception"
 	xmlns:eng="http://schemas.microsoft.com/analysisservices/2003/engine">
 
 
@@ -32,9 +32,9 @@
 			<xsd:element name="CellData" minOccurs="0"
 				type="CellData" />
 			<xsd:element name="Exception" minOccurs="0"
-				type="xmla-x:Exception" />
+				type="ana-x:Exception" />
 			<xsd:element name="Messages" minOccurs="0"
-				type="xmla-x:Messages" />
+				type="ana-x:Messages" />
 		</xsd:sequence>
 	</xsd:complexType>
 

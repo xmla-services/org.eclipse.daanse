@@ -2,7 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	version="1.0" xmlns="urn:schemas-microsoft-com:xml-analysis:empty"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
-	xmlns:xmla-x="urn:schemas-microsoft-com:xml-analysis:exception"
+	xmlns:ana-x="urn:schemas-microsoft-com:xml-analysis:exception"
 	targetNamespace="urn:schemas-microsoft-com:xml-analysis:empty">
 
 	<xsd:import
@@ -12,9 +12,9 @@
 	<xsd:complexType name="emptyresult">
 		<xsd:sequence>
 			<xsd:element name="Exception" minOccurs="0"
-				type="xmla-x:Exception" />
+				type="ana-x:Exception" />
 			<xsd:element name="Messages" minOccurs="0"
-				type="xmla-x:Messages" />
+				type="ana-x:Messages" />
 		</xsd:sequence>
 	</xsd:complexType>
 

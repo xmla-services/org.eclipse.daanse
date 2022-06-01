@@ -3,7 +3,7 @@
 	version="1.0"
 	xmlns="http://schemas.microsoft.com/analysisservices/2010/engine/200/200"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
-	xmlns:xmla="urn:schemas-microsoft-com:xml-analysis"
+	xmlns:ana="urn:schemas-microsoft-com:xml-analysis"
 	targetNamespace="http://schemas.microsoft.com/analysisservices/2010/engine/200/200">
 
 	<xsd:import
@@ -13,13 +13,13 @@
 
 	<xsd:complexType name="RowNumberBinding">
 		<xsd:complexContent>
-			<xsd:extension base="xmla:Binding" />
+			<xsd:extension base="ana:Binding" />
 		</xsd:complexContent>
 	</xsd:complexType>
 
 	<xsd:complexType name="ExpressionBinding">
 		<xsd:complexContent>
-			<xsd:extension base="xmla:Binding">
+			<xsd:extension base="ana:Binding">
 				<xsd:all>
 					<xsd:element name="Expression" type="xsd:string" />
 				</xsd:all>

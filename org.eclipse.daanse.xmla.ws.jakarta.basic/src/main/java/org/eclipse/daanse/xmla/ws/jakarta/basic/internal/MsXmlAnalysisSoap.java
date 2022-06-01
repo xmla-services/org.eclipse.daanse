@@ -16,13 +16,13 @@ import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
-import jakarta.xml.ws.BindingType;
 import jakarta.xml.ws.Holder;
 import jakarta.xml.ws.RequestWrapper;
 import jakarta.xml.ws.ResponseWrapper;
 
-@WebService(name = "MsXmlAnalysisSoapPortType", portName = "MsXmlAnalysisSoapPort", serviceName = "MsXmlAnalysisService", targetNamespace = "urn:daanse-eclipse-org:xmla-ws")
-@BindingType("http://schemas.xmlsoap.org/wsdl/soap/http")
+@WebService(name = "MsXmlAnalysisSoapPortType", portName = "MsXmlAnalysisSoapPort", serviceName = "MsXmlAnalysisService", targetNamespace = "urn:schemas-microsoft-com:xml-analysisFOOOOOOOOO")
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
+
 @XmlSeeAlso({ org.eclipse.daanse.xmla.model.jaxb.msxmla.ObjectFactory.class,
 		org.eclipse.daanse.xmla.model.jaxb.ext.ObjectFactory.class,
 		org.eclipse.daanse.xmla.model.jaxb.xmla.ObjectFactory.class,
@@ -62,12 +62,11 @@ public class MsXmlAnalysisSoap {
 
 	@WebMethod(operationName = "Discover", action = "urn:schemas-microsoft-com:xml-analysis:Discover")
 	@WebResult(name = "DiscoverResponse", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", partName = "parameters")
-	@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 	public DiscoverResponse discover(
-			@WebParam(name = "Discover", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", partName = "parameters") Discover parameters,
-			@WebParam(name = "Session", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, mode = WebParam.Mode.INOUT, partName = "Session") Holder<Session> session,
-			@WebParam(name = "BeginSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, partName = "BeginSession") BeginSession beginSession,
-			@WebParam(name = "EndSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, partName = "EndSession") EndSession endSession) {
+			@WebParam(name = "Discover", targetNamespace = "urn:schemas-microsoft-com:xml-analysis",partName = "parameters") Discover parameters,
+			@WebParam(name = "Session", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, mode = WebParam.Mode.INOUT) Holder<Session> session,
+			@WebParam(name = "BeginSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true) BeginSession beginSession,
+			@WebParam(name = "EndSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true) EndSession endSession) {
 
 		DiscoverResponse discoverResponse = xmlaService.discover(parameters, session, beginSession, endSession);
 		return discoverResponse;
@@ -77,10 +76,10 @@ public class MsXmlAnalysisSoap {
 	@WebResult(name = "ExecuteResponse", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", partName = "parameters")
 	@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 	public ExecuteResponse execute(
-			@WebParam(name = "Execute", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", partName = "parameters") Execute parameters,
-			@WebParam(name = "Session", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, mode = WebParam.Mode.INOUT, partName = "Session") Holder<Session> session,
-			@WebParam(name = "BeginSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, partName = "BeginSession") BeginSession beginSession,
-			@WebParam(name = "EndSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, partName = "EndSession") EndSession endSession) {
+			@WebParam(name = "Execute", targetNamespace = "urn:schemas-microsoft-com:xml-analysis") Execute parameters,
+			@WebParam(name = "Session", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true, mode = WebParam.Mode.INOUT) Holder<Session> session,
+			@WebParam(name = "BeginSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true) BeginSession beginSession,
+			@WebParam(name = "EndSession", targetNamespace = "urn:schemas-microsoft-com:xml-analysis", header = true) EndSession endSession) {
 
 		ExecuteResponse response = xmlaService.execute(parameters, session, beginSession, endSession);
 		return response;

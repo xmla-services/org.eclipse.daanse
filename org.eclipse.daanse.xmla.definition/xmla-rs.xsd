@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	version="1.0" xmlns="urn:schemas-microsoft-com:xml-analysis:rowset"
-	xmlns:xmla-x="urn:schemas-microsoft-com:xml-analysis:exception"
+	xmlns:ana-x="urn:schemas-microsoft-com:xml-analysis:exception"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
 	targetNamespace="urn:schemas-microsoft-com:xml-analysis:rowset">
 
@@ -17,9 +17,9 @@
 			<xsd:element name="row" minOccurs="0"
 				maxOccurs="unbounded" type="row" />
 			<xsd:element name="Exception" minOccurs="0"
-				type="xmla-x:Exception" />
+				type="ana-x:Exception" />
 			<xsd:element name="Messages" minOccurs="0"
-				type="xmla-x:Messages" />
+				type="ana-x:Messages" />
 		</xsd:sequence>
 	</xsd:complexType>
 

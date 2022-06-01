@@ -4,7 +4,7 @@
 	targetNamespace="http://schemas.microsoft.com/analysisservices/2003/xmla"
 	xmlns="http://schemas.microsoft.com/analysisservices/2003/xmla"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
-	xmlns:xmla-ds="urn:schemas-microsoft-com:xml-analysis:mddataset">
+	xmlns:ana-ds="urn:schemas-microsoft-com:xml-analysis:mddataset">
 
 	<xsd:import
 		namespace="urn:schemas-microsoft-com:xml-analysis:mddataset"
@@ -19,7 +19,7 @@
 					maxOccurs="1">
 					<xsd:complexType>
 						<xsd:sequence>
-							<xsd:element name="Members" type="xmla-ds:TupleType"
+							<xsd:element name="Members" type="ana-ds:TupleType"
 								minOccurs="1" maxOccurs="unbounded" />
 						</xsd:sequence>
 					</xsd:complexType>

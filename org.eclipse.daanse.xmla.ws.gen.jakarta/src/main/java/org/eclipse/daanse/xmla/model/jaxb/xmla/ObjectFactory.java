@@ -819,14 +819,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Location }
-     * 
-     */
-    public Location createLocation() {
-        return new Location();
-    }
-
-    /**
      * Create an instance of {@link Restore }
      * 
      */
@@ -1184,6 +1176,14 @@ public class ObjectFactory {
      */
     public MajorObject createMajorObject() {
         return new MajorObject();
+    }
+
+    /**
+     * Create an instance of {@link Location }
+     * 
+     */
+    public Location createLocation() {
+        return new Location();
     }
 
     /**
@@ -3312,14 +3312,6 @@ public class ObjectFactory {
      */
     public Synchronize.Locations createSynchronizeLocations() {
         return new Synchronize.Locations();
-    }
-
-    /**
-     * Create an instance of {@link Location.Folders }
-     * 
-     */
-    public Location.Folders createLocationFolders() {
-        return new Location.Folders();
     }
 
     /**

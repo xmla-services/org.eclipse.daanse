@@ -61,8 +61,8 @@ public class BooleanExpr {
      * <p>
      * You are getting this "catch-all" property because of the following reason: 
      * The field name "And" is used by two different parts of a schema. See: 
-     * line 4194 of file:/home/stbischof/dev/git/org.eclipse.daanse.xmla/org.eclipse.daanse.xmla.definition/xmla.xsd
-     * line 4188 of file:/home/stbischof/dev/git/org.eclipse.daanse.xmla/org.eclipse.daanse.xmla.definition/xmla.xsd
+     * line 4190 of file:/home/stbischof/dev/git/org.eclipse.daanse.xmla/org.eclipse.daanse.xmla.definition/xmla.xsd
+     * line 4184 of file:/home/stbischof/dev/git/org.eclipse.daanse.xmla/org.eclipse.daanse.xmla.definition/xmla.xsd
      * <p>
      * To get rid of this property, apply a property customization to one 
      * of both of the following declarations to change their names: 

@@ -6,6 +6,6 @@
 	targetNamespace="http://schemas.microsoft.com/analysisservices/2012/engine/400">
 
 	<xsd:element name="DefaultCompatibilityLevel"
-		type="xsd:long" minOccurs="0" />
+		type="xsd:long"  />
 
 </xsd:schema>

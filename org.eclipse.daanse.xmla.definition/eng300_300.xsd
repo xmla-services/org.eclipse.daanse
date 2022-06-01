@@ -3,7 +3,7 @@
 	version="1.0"
 	xmlns="http://schemas.microsoft.com/analysisservices/2011/engine/300/300"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0"
-	xmlns:xmla="urn:schemas-microsoft-com:xml-analysis"
+	xmlns:ana="urn:schemas-microsoft-com:xml-analysis"
 	xmlns:eng300="http://schemas.microsoft.com/analysisservices/2011/engine/300"
 	targetNamespace="http://schemas.microsoft.com/analysisservices/2011/engine/300/300">
 
@@ -89,7 +89,7 @@
 			<xsd:element name="Annotations" minOccurs="0">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="Annotation" type="xmla:Annotation"
+						<xsd:element name="Annotation" type="ana:Annotation"
 							minOccurs="0" maxOccurs="unbounded" />
 					</xsd:sequence>
 				</xsd:complexType>
@@ -110,7 +110,7 @@
 	<xsd:element name="XEvent">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="xmla:event_session" />
+				<xsd:element ref="ana:event_session" />
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
