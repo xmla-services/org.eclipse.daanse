@@ -1,28 +1,32 @@
 package org.eclipse.daanse.xmla.ws.jakarta.basic.itest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.condition.AllOf.allOf;
 import static org.assertj.core.condition.VerboseCondition.verboseCondition;
 import static org.eclipse.daanse.xmla.ws.jakarta.basic.itest.SOAPUtil.callSoapWebService;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Hashtable;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.xml.namespace.QName;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.condition.MappedCondition;
 import org.assertj.core.condition.VerboseCondition;
-import org.assertj.core.description.Description;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.Discover;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.Discover.Restrictions;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.DiscoverResponse;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.DiscoverResponse.Return;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.Properties;
+import org.eclipse.daanse.xmla.model.jaxb.xmla.PropertyList;
 import org.eclipse.daanse.xmla.model.jaxb.xmla_rowset.Row;
 import org.eclipse.daanse.xmla.model.jaxb.xmla_rowset.Rowset;
 import org.eclipse.daanse.xmla.ws.jakarta.basic.XmlaService;
@@ -37,6 +41,7 @@ import org.osgi.test.common.annotation.InjectBundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import aQute.bnd.properties.PropertiesLineReader;
 import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPEnvelope;
 import jakarta.xml.soap.SOAPException;
@@ -67,11 +72,13 @@ public class JavaBasicTest {
 	@InjectBundleContext
 	BundleContext bc;
 
-	XmlaService xmlaService;
+	private XmlaService xmlaService;
+	private ArgumentCaptor<Discover> dicoverCaptor;
 
 	@BeforeEach
 	void beforaEach() {
-		xmlaService = Mockito.mock(XmlaService.class);
+		xmlaService = mock(XmlaService.class);
+		dicoverCaptor = ArgumentCaptor.forClass(Discover.class);
 		bc.registerService(XmlaService.class, xmlaService, new Hashtable<>());
 	}
 
@@ -90,17 +97,34 @@ public class JavaBasicTest {
 				</urn:Discover>
 				""";
 
-		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, messageFrom(discoverText));
-
-		ArgumentCaptor<Discover> dicoverCaptor = ArgumentCaptor.forClass(Discover.class);
+		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(discoverText));
 
 		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
 
-		Discover discover = dicoverCaptor.getValue();
+		var discoverAssert = assertThat(dicoverCaptor.getValue());
 
-		var discoverAssert = Assertions.assertThat(discover);
-
-		discoverAssert.has(allOf(requestType("MDSCHEMA_CUBES")));
+		discoverAssert.is(//
+				allOf(//
+						notNull(), //
+						map(Discover::getRequestType, //
+								allOf(//
+										notNull(), //
+										equalTo("MDSCHEMA_CUBES"))), //
+						map(Discover::getRestrictions, //
+								allOf(//
+										notNull(), //
+										map(Restrictions::getRestrictionList, equalTo(null)))), //
+						map(Discover::getProperties, //
+								allOf(//
+										notNull(), //
+										map(Properties::getPropertyList, //
+												allOf(//
+														notNull(), //
+														map(PropertyList::getContent, //
+																allOf(//
+																		notNull(), //
+																		equalTo("Data1")//
+																))))))));
 
 		discoverAssert.extracting(Discover::getRequestType)
 				.isNotNull()
@@ -120,10 +144,28 @@ public class JavaBasicTest {
 
 	}
 
-	private VerboseCondition<Discover> requestType(String requestType) {
+	private static MappedCondition<Discover, String> requestType(org.assertj.core.api.Condition<String> condition) {
+		return MappedCondition.mappedCondition(Discover::getRequestType, condition);
+	}
+
+	private static <FROM, TO> MappedCondition<FROM, TO> map(Function<FROM, TO> mapping,
+			org.assertj.core.api.Condition<TO> condition) {
+		return MappedCondition.mappedCondition(mapping, condition);
+	}
+
+	private static VerboseCondition<Discover> requestType(String requestType) {
 		return verboseCondition(d -> d.getRequestType()
 				.equals(requestType), String.format("type: %s ", requestType),
 				d -> String.format("but was: %s", d.getRequestType()));
+	}
+
+	private static <T> VerboseCondition<T> equalTo(T otherObject) {
+		return verboseCondition(o -> Objects.equals(o, otherObject), String.format("equals: %s ", otherObject),
+				o -> String.format("but was: %s", o));
+	}
+
+	private static VerboseCondition<Object> notNull() {
+		return verboseCondition(o -> Objects.nonNull(o), String.format("notNull "), o -> String.format("but was: %s", o));
 	}
 
 	@Test
@@ -141,11 +183,11 @@ public class JavaBasicTest {
 
 		when(xmlaService.discover(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(discoverResponse);
 
-		SOAPMessage response = callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, messageFrom(""));
+		SOAPMessage response = callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(""));
 
 	}
 
-	private static Consumer<SOAPMessage> messageFrom(String xmlString) throws SOAPException {
+	private static Consumer<SOAPMessage> envelop(String xmlString) throws SOAPException {
 
 		return plainSoapMessage -> {
 
