@@ -1,31 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
+<!--	<parent>-->
+<!--		<artifactId>org.eclipse.daanse.xmla</artifactId>-->
+<!--		<version>${revision}</version>-->
+<!--	</parent>-->
 		<groupId>org.eclipse.daanse</groupId>
-		<artifactId>org.eclipse.daanse.xmla</artifactId>
-		<version>${revision}</version>
-	</parent>
-	<groupId>org.eclipse.daanse.xmla.mstestclient</groupId>
 	<artifactId>org.eclipse.daanse.xmla.mstestclient</artifactId>
+	<version>1</version>
 
 
 	<profiles>
 		<profile>
 			<id>Windows</id>
+			
 			<activation>
-				<os>
-					<family>Windows</family>
-				</os>
+			<activeByDefault>true</activeByDefault>
+<!--				<os>-->
+<!--					<family>Windows</family>-->
+<!--				</os>-->
 			</activation>
 			<properties>
 				<suffix>exe</suffix>
 			</properties>
+		</profile>
 
+
+	</profiles>
 			<build>
 				<plugins>
 					<plugin>
+					 <groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.8.1</version>
+						<version>3.10.1</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.codehaus.plexus</groupId>
@@ -37,6 +43,9 @@
 							<verbose>true</verbose>
 							<compilerId>csharp</compilerId>
 							<fork>true</fork>
+							<debug>true</debug>
+							<outputFileName>msXmlaTestClient</outputFileName>
+							<verbose>true</verbose>
 							<compilerArguments>
 								<target>exe</target>
 								<nologo />
@@ -45,9 +54,6 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
 
-
-	</profiles>
 
 </project>
