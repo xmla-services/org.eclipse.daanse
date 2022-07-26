@@ -13,7 +13,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.daanse</groupId>
-	<artifactId>org.eclipse.daanse.xmla</artifactId>
+	<artifactId>org.eclipse.daanse.parent</artifactId>
 	<description>Daanse XMLA related sources</description>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
@@ -47,9 +47,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>https://github.com/xmla-services/org.eclipse.daanse.xmla</url>
-		<connection>scm:git:https://github.com/xmla-services/org.eclipse.daanse.xmla.git</connection>
-		<developerConnection>scm:git:git@github.com:xmla-services/org.eclipse.daanse.xmla.git</developerConnection>
+		<url>https://github.com/xmla-services/org.eclipse.daanse</url>
+		<connection>scm:git:https://github.com/xmla-services/org.eclipse.daanse.git</connection>
+		<developerConnection>scm:git:git@github.com:xmla-services/org.eclipse.daanse.git</developerConnection>
 	</scm>
 	<developers>
 		<developer>
@@ -67,7 +67,7 @@
 	</developers>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/xmla-services/org.eclipse.daanse.xmla/issues</url>
+		<url>https://github.com/xmla-services/org.eclipse.daanse/issues</url>
 	</issueManagement>
 
 
@@ -454,6 +454,7 @@
 
 	</dependencies>
 
+
 	<profiles>
 		<profile>
 			<id>itest</id>
@@ -665,9 +666,6 @@
 		</profile>
 	</profiles>
 	<modules>
-		<module>org.eclipse.daanse.xmla.model.jaxb</module>
-		<module>org.eclipse.daanse.xmla.ws.jakarta.basic</module>
-		<module>org.eclipse.daanse.xmla.ws.jakarta.basic.itest</module>
-		<module>org.eclipse.daanse.xmla.mstestclient</module>
+		<module>org.eclipse.daanse.xmla</module>
 	</modules>
 </project>
