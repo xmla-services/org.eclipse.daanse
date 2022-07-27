@@ -29,5 +29,6 @@
 		<module>org.eclipse.daanse.xmla.ws.jakarta.basic</module>
 		<module>org.eclipse.daanse.xmla.ws.jakarta.basic.itest</module>
 		<module>org.eclipse.daanse.xmla.mstestclient</module>
+		<module>org.eclipse.daanse.xmla.model.ecore</module>
 	</modules>
 </project>

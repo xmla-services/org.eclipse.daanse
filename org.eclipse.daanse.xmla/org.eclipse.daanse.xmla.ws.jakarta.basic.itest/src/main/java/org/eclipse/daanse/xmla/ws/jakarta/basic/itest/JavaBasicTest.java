@@ -88,6 +88,7 @@ public class JavaBasicTest {
 	@Test
 	void testRequestwsdl(@InjectService XmlaService xmlaService) throws Exception {
 
+		Thread.sleep(1000000);
 		System.out.println(1);
 	}
 
