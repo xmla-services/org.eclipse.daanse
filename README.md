@@ -1,1 +1,1 @@
-# org.eclipse.daanse.xmla
+# org.eclipse.daanse
