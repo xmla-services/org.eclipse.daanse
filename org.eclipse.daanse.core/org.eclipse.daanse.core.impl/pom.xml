@@ -2,30 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.eclipse.daanse</groupId>
-		<artifactId>org.eclipse.daanse.xmla</artifactId>
+		<artifactId>org.eclipse.daanse.core</artifactId>
 		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<artifactId>org.eclipse.daanse.xmla.ws.jakarta.basic</artifactId>
-
+	<artifactId>org.eclipse.daanse.core.impl</artifactId>
 
 	<dependencies>
 
-		<dependency>
-			<groupId>org.eclipse.daanse</groupId>
-			<artifactId>org.eclipse.daanse.xmla.model.jaxb</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>jakarta.jws</groupId>
-			<artifactId>jakarta.jws-api</artifactId>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>jakarta.xml.ws</groupId>
-			<artifactId>jakarta.xml.ws-api</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>osgi.annotation</artifactId>
@@ -34,6 +18,20 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.service.component.annotations</artifactId>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.metatype.annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.util.converter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.daanse</groupId>
+			<artifactId>org.eclipse.daanse.core.api</artifactId>
+			<version>${revision}</version>
+		</dependency>
 	</dependencies>
 </project>

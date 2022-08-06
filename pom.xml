@@ -338,6 +338,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.service.metatype.annotations</artifactId>
+				<version>1.4.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.util.function</artifactId>
 				<version>1.2.0</version>
 				<scope>compile</scope>
@@ -348,6 +354,14 @@
 				<version>1.2.0</version>
 				<scope>compile</scope>
 			</dependency>
+			
+			<dependency>
+			    <groupId>org.osgi</groupId>
+			    <artifactId>org.osgi.util.converter</artifactId>
+			    <version>1.0.9</version>
+			    <scope>provided</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
@@ -542,6 +556,7 @@
 								<configuration>
 									<bnd>
 										<![CDATA[
+								-dsannotations-options: felixExtensions
 								Test-Cases: ${classes;HIERARCHY_INDIRECTLY_ANNOTATED;org.junit.platform.commons.annotation.Testable;CONCRETE}
 								]]>
 									</bnd>
@@ -667,5 +682,7 @@
 	</profiles>
 	<modules>
 		<module>org.eclipse.daanse.xmla</module>
+		<module>org.eclipse.daanse.core</module>
+		<module>org.eclipse.daanse.mdx</module>
 	</modules>
 </project>
