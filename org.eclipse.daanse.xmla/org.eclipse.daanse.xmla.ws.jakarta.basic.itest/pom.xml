@@ -20,7 +20,11 @@
 			<artifactId>org.eclipse.daanse.xmla.ws.jakarta.basic</artifactId>
 			<version>${revision}</version>
 		</dependency>
-
+<dependency>
+    <groupId>org.glassfish.gmbal</groupId>
+    <artifactId>gmbal</artifactId>
+    <version>4.0.3</version>
+</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>

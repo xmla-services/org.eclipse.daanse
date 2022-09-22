@@ -8,7 +8,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.daanse.xmla.model.jaxb.xmla.Discover;
@@ -21,8 +28,6 @@ import org.eclipse.daanse.xmla.model.jaxb.xmla_rowset.Rowset;
 import org.eclipse.daanse.xmla.ws.jakarta.basic.XmlaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.osgi.framework.BundleContext;
@@ -34,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import aQute.bnd.annotation.service.ServiceCapability;
 
 @ServiceCapability(XmlaService.class)
-@EnabledOnOs(OS.WINDOWS)
+//@EnabledOnOs(OS.WINDOWS)
 public class MsClientTest {
 	private Logger logger = LoggerFactory.getLogger(MsClientTest.class);
 
@@ -51,31 +56,46 @@ public class MsClientTest {
 	}
 
 	@Test
-	@EnabledOnOs(OS.WINDOWS)
 	void testRequest_1(@InjectService XmlaService xmlaService) throws Exception {
 
-		//prepare response
+		Thread.sleep(6000);
+		// prepare response
 		DiscoverResponse discoverResponse = new DiscoverResponse();
 		Return r = new Return();
 		Rowset rs = new Rowset();
 		Row row = new Row();
-		
+
 		rs.getRow().add(row);
-		
+
 		r.setRoot(rs);
 		discoverResponse.setReturn(r);
-		
+
 		when(xmlaService.discover(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(discoverResponse);
 
-		//call test
-		Process process=callByMsClient("Test1");
+		// call test
 
-		//verify request
-		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
+		Process process = callByMsClient("schema", "MDSCHEMA_CUBES");
 
-		var discoverAssert = assertThat(dicoverCaptor.getValue());
+		byte[] errors = process.getErrorStream().readAllBytes();
+		byte[] info = process.getInputStream().readAllBytes();
+		process.waitFor(100000, TimeUnit.SECONDS);
 
-		discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("MDSCHEMA_CUBES");
+
+		System.out.println(info);
+
+		System.out.println(errors);
+		logger.info(new String(info));
+		logger.error(new String(errors));
+
+		Assertions.assertThat(errors).isEmpty();
+		Assertions.assertThat(process.exitValue()).isEqualTo(0);
+
+		// verify request
+		verify(xmlaService, (Mockito.atLeastOnce())).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
+
+		var discoverAssert = assertThat(dicoverCaptor.getAllValues().get(0));
+
+		discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("DISCOVER_PROPERTIES");
 
 		discoverAssert.extracting(Discover::getRestrictions)
 				.isNotNull()
@@ -86,28 +106,32 @@ public class MsClientTest {
 				.isNotNull()
 				.extracting(Properties::getPropertyList)
 				.isNotNull()
-				.satisfies(pl -> pl.getContent().equals("Data"));
+				.satisfies(pl -> pl.getLocaleIdentifier().equals(new BigInteger("1033")));
 
 //		verify client 
-		
-		byte[] errors=	process.getErrorStream().readAllBytes();
-		byte[] info=	process.getInputStream().readAllBytes();
-		
-		
-		process.exitValue();
-		logger.info(new String(info));
-		logger.error(new String(errors));
-		
-		Assertions.assertThat(errors).isEmpty();
-		Assertions.assertThat(process.exitValue()).isEqualTo(0);
+
+
 
 	}
 
-	private Process callByMsClient(String value) throws IOException {
+	private Process callByMsClient(String... values) throws IOException {
+		String dotNet = System.getProperty("user.home") + "/.dotnet/dotnet";
 
-		ProcessBuilder processBuilder = new ProcessBuilder("XmlaTestClient.exe", "-runtest", value);
+		final var cmds = new ArrayList<String>();
+		cmds.add(dotNet);
+		cmds.add("run");
+		cmds.add("Data source=http://localhost:8081/xmla;UID=Domain\\User;PWD=UserDomainPassword");
+
+		Stream.of(values).forEach(v -> cmds.add(v));
+		
+		System.out.println(cmds);
+
+		ProcessBuilder processBuilder = new ProcessBuilder(cmds);
 		processBuilder.inheritIO();
+		processBuilder.directory(Paths.get("../../../../../MsAdomdClientTester/").toAbsolutePath().toFile());
+
 		Process p = processBuilder.start();
+
 		return p;
 
 	}

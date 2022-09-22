@@ -27,7 +27,7 @@ public class Discover {
 	protected Properties properties;
 
 	public Discover() {
-		System.out.println();
+		System.out.println(1);
 
 	}
 
@@ -62,6 +62,8 @@ public class Discover {
 		@XmlElementRef(name = "RestrictionList", type = JAXBElement.class, required = false)
 		protected JAXBElement<Discover.Restrictions.RestrictionList> restrictionList;
 
+		public Restrictions() {
+System.out.println(12);		}
 		/**
 		 * Gets the value of the restrictionList property.
 		 * 

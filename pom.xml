@@ -299,6 +299,7 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>1.7.36</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -326,21 +327,33 @@
 			</dependency>
 			<dependency>
 				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.service.cm</artifactId>
+				<version>1.6.0</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.namespace.service</artifactId>
 				<version>1.0.0</version>
-				<scope>provided</scope>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.service.component.annotations</artifactId>
 				<version>1.5.0</version>
-				<scope>provided</scope>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.service.component</artifactId>
+				<version>1.5.0</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.service.metatype.annotations</artifactId>
 				<version>1.4.1</version>
-				<scope>provided</scope>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.osgi</groupId>
@@ -354,12 +367,12 @@
 				<version>1.2.0</version>
 				<scope>compile</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>org.osgi</groupId>
-			    <artifactId>org.osgi.util.converter</artifactId>
-			    <version>1.0.9</version>
-			    <scope>provided</scope>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.util.converter</artifactId>
+				<version>1.0.9</version>
+				<scope>compile</scope>
 			</dependency>
 
 			<dependency>
@@ -397,8 +410,13 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.scr</artifactId>
-				<version>2.2.0</version>
+				<version>2.2.2</version>
 				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.configadmin</artifactId>
+				<version>1.9.24</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
@@ -414,29 +432,32 @@
 			</dependency>
 			<dependency>
 				<groupId>biz.aQute.bnd</groupId>
-				<artifactId>biz.aQute.bndlib</artifactId>
+				<artifactId>biz.aQute.bnd.annotation</artifactId>
 				<version>${bnd.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.ws</groupId>
 				<artifactId>jaxws-ri</artifactId>
-				<version>4.0.0-M4</version>
+				<version>4.0.0</version>
 				<type>pom</type>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.ws</groupId>
 				<artifactId>jaxws-tools</artifactId>
-				<version>4.0.0-M4</version>
+				<version>4.0.0</version>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>jakarta.xml.bind</groupId>
 				<artifactId>jakarta.xml.bind-api</artifactId>
 				<version>4.0.0</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>jakarta.xml.ws</groupId>
 				<artifactId>jakarta.xml.ws-api</artifactId>
 				<version>4.0.0</version>
+				<scope>compile</scope>
 			</dependency>
 			<!-- 
 			<dependency>
@@ -578,6 +599,43 @@
 
 			<dependencies>
 
+				<dependency>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.gogo.shell</artifactId>
+					<version>1.1.4</version>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.gogo.runtime</artifactId>
+					<version>1.1.6</version>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.gogo.command</artifactId>
+					<version>1.1.2</version>
+				</dependency>
+				<dependency>
+					<groupId>biz.aQute</groupId>
+					<artifactId>biz.aQute.gogo.commands.provider</artifactId>
+					<version>1.9.0</version>
+					<scope>runtime</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.gogo.jline</artifactId>
+					<version>1.1.8</version>
+					<scope>runtime</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.jline</groupId>
+					<artifactId>jline</artifactId>
+					<version>3.13.2</version>
+					<scope>runtime</scope>
+				</dependency>
 				<!-- OSGI-Tests-->
 				<dependency>
 					<groupId>org.osgi</groupId>

@@ -418,9 +418,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PropertyList", propOrder = {
-
-})
+@XmlType(name = "PropertyList")
 public class PropertyList {
 
     @XmlElement(name = "DataSourceInfo")
@@ -672,6 +670,11 @@ public class PropertyList {
     @XmlElement(name = "ApplicationContext")
     protected String applicationContext;
 
+    
+    public PropertyList() {
+    	System.out.println(1);
+			// TODO Auto-generated constructor stub
+		}
     /**
      * Gets the value of the dataSourceInfo property.
      * 

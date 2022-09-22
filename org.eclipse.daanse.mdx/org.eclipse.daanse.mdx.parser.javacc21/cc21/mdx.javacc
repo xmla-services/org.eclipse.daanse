@@ -1,0 +1,516 @@
+/*******************************************************************************
+ * Copyright (c) 2022 Contributors to the  Eclipse Foundation.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Name (Company) - description
+ *******************************************************************************/
+
+// https://docs.oracle.com/cd/E57185_01/ESBTR/mdx_syn_gram.html
+// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ms717923(v=vs.85)
+
+IGNORE_CASE = true;
+PARSER_PACKAGE=org.eclipse.daanse.mdx.parser.impl;
+NODE_PACKAGE=org.eclipse.daanse.mdx.parser.impl.tree;
+PARSER_CLASS=MDXParser;
+TABS_TO_SPACES=4;
+NODE_PREFIX=AST;
+
+TOKEN :
+{
+    <AND: "AND">
+    | <AS: "AS">
+    | <AXIS: "AXIS">
+    | <BEGIN: "BEGIN">
+    | <BY: "BY">
+    | <CASE: "CASE">
+    | <CALCULATION: "CALCULATION">
+    | <CAST: "CAST">
+    | <CELL: "CELL">
+    | <CHAPTERS: "CHAPTERS">
+    | <CREATE: "CREATE">
+    | <COLUMNS: "COLUMNS">
+    | <COMMIT: "COMMIT">
+    | <CUBE: "CUBE">
+    | <DIMENSION: "DIMENSION">
+    | <DRILLTHROUGH: "DRILLTHROUGH">
+    | <ELSE: "ELSE">
+    | <EMPTY: "EMPTY">
+    | <END: "END">
+    | <EXPLAIN: "EXPLAIN">
+    | <FIRSTROWSET: "FIRSTROWSET">
+    | <FOR: "FOR">
+    | <FROM: "FROM">
+    | <IN: "IN">
+    | <IS: "IS">
+    | <MATCHES: "MATCHES">
+    | <MAXROWS: "MAXROWS">
+    | <MEMBER: "MEMBER">
+    | <MEASURE: "MEASURE">
+    | <NON: "NON">
+    | <NOT: "NOT">
+    | <NULL: "NULL">
+    | <ON: "ON">
+    | <OR: "OR">
+    | <PAGES: "PAGES">
+    | <PLAN: "PLAN">
+    | <PROPERTIES: "PROPERTIES">
+    | <REFRESH: "REFRESH">
+    | <RETURN: "RETURN">
+    | <ROLLBACK: "ROLLBACK">
+    | <ROWS: "ROWS">
+    | <SECTIONS: "SECTIONS">
+    | <SELECT: "SELECT">
+    | <SESSION: "SESSION">
+    | <SET: "SET">
+    | <THEN: "THEN">
+    | <TRAN: "TRAN">
+    | <TRANSACTION: "TRANSACTION">
+    | <UPDATE: "UPDATE">
+    | <USE_EQUAL_ALLOCATION: "USE_EQUAL_ALLOCATION">
+    | <USE_EQUAL_INCREMENT: "USE_EQUAL_INCREMENT">
+    | <USE_WEIGHTED_ALLOCATION: "USE_WEIGHTED_ALLOCATION">
+    | <USE_WEIGHTED_INCREMENT: "USE_WEIGHTED_INCREMENT">
+    | <WHEN: "WHEN">
+    | <WHERE: "WHERE">
+    | <XOR: "XOR">
+    | <WITH: "WITH">
+    | <EXISTING: "EXISTING">
+    | <$SYSTEM: "$SYSTEM">
+}
+
+// White space
+
+SKIP :
+{
+    " "
+    | "\t"
+    | "\n"
+    | "\r"
+    | "\f"
+}
+
+/*
+ * Comments
+ * https://javacc.github.io/javacc/documentation/bnf.html#comments
+ * additional --
+ */
+
+<DEFAULT> MORE : { "//" : IN_SINGLE_LINE_COMMENT
+                 | <"/**" ~["/"]> : IN_FORMAL_COMMENT
+                 | "--" : IN_SINGLE_LINE_COMMENT
+                 | "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT> SPECIAL_TOKEN : {
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n"> : DEFAULT
+}
+
+<IN_FORMAL_COMMENT> SPECIAL_TOKEN : {
+  <FORMAL_COMMENT: "*/"> : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT> SPECIAL_TOKEN : {
+  <MULTI_LINE_COMMENT: "*/"> : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT> MORE : {
+  <~[]>
+}
+
+/*
+ * Separators
+ */
+<DEFAULT> TOKEN : { <LPAREN: "(">
+                  | <RPAREN: ")">
+                  | <LBRACE: "{">
+                  | <RBRACE: "}">
+                  | <LBRACKET: "[">
+                  | <RBRACKET: "]">
+                  | <COMMA: ",">
+                  | <SEMICOLON: ";">
+                  | <DOT: ".">
+}
+
+/*
+ * Operators
+ */
+<DEFAULT> TOKEN : { < ASTERISK: "*" >
+                  | <BANG: "!">
+                  | <COLON: ":">
+                  | <CONCAT: "||">
+                  | < EQ : "=" >
+                  | < GE : ">=" >
+                  | < GT : ">" >
+                  | < LE : "<=" >
+                  | < LT : "<" >
+                  | < MINUS : "-" >
+                  | < NE : "<>" >
+                  | < PLUS : "+" >
+                  | < SOLIDUS : "/" >
+                  | < ATSIGN : "@" >
+}
+
+
+/*
+ * Identifiers
+ * - https://javacc.github.io/javacc/documentation/bnf.html#identifiers
+ */
+<DEFAULT> TOKEN : {
+  < ID: <LETTER> (<LETTER> | <DIGIT>)* >
+    |
+    < QUOTED_ID:
+    <LBRACKET>
+    (   (~["]","\n","\r"])
+        | ("]]")
+        )*
+    <RBRACKET>
+    >
+    |
+    < AMP_QUOTED_ID: "&" <QUOTED_ID> >
+    |
+    < AMP_UNQUOTED_ID: "&" ["a"-"z","A"-"Z"] (<LETTER> | <DIGIT>)* >
+    |    
+< #LETTER:
+[
+ "\u0024",
+ "\u0041"-"\u005a",
+ "\u005f",
+ "\u0061"-"\u007a",
+ "\u00c0"-"\u00d6",
+ "\u00d8"-"\u00f6",
+ "\u00f8"-"\u00ff",
+ "\u0100"-"\u1fff",
+ "\u3040"-"\u318f",
+ "\u3300"-"\u337f",
+ "\u3400"-"\u3d2d",
+ "\u4e00"-"\u9fff",
+ "\uf900"-"\ufaff"
+]
+>
+|
+< #DIGIT:
+ [
+  "\u0030"-"\u0039",
+  "\u0660"-"\u0669",
+  "\u06f0"-"\u06f9",
+  "\u0966"-"\u096f",
+  "\u09e6"-"\u09ef",
+  "\u0a66"-"\u0a6f",
+  "\u0ae6"-"\u0aef",
+  "\u0b66"-"\u0b6f",
+  "\u0be7"-"\u0bef",
+  "\u0c66"-"\u0c6f",
+  "\u0ce6"-"\u0cef",
+  "\u0d66"-"\u0d6f",
+  "\u0e50"-"\u0e59",
+  "\u0ed0"-"\u0ed9",
+  "\u1040"-"\u1049"
+ ]
+ >
+}
+
+// Literals
+TOKEN :
+{
+    < UNSIGNED_INTEGER_LITERAL: (["0"-"9"])+ >
+    |
+    < APPROX_NUMERIC_LITERAL:
+    (<UNSIGNED_INTEGER_LITERAL> | <DECIMAL_NUMERIC_LITERAL>) <EXPONENT> >
+    |
+    < DECIMAL_NUMERIC_LITERAL:
+    (["0"-"9"])+(".")?(["0"-"9"])*
+    | "."(["0"-"9"])+
+    >
+    |
+    < FLOATING_POINT_LITERAL:
+      (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+    | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+    | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+    | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+    >
+    |
+    < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+    |
+    < STRING: <SINGLE_QUOTED_STRING> | <DOUBLE_QUOTED_STRING> >
+    |
+    < SINGLE_QUOTED_STRING: "'" ( (~["'"]) | ("''"))* "'" >
+    |    
+    < DOUBLE_QUOTED_STRING: "\"" ( (~["\""]) | ("\"\""))* "\"" >
+    |
+    < #WHITESPACE:
+    [ " ","\t","\n","\r","\f" ]
+    >
+}
+
+// ----------------------------------------------------------------------------
+// MDX Statement
+//
+// <statement> ::= <selectStatement>
+//                   | <drillthroughStatement>
+//                   | <explainStatement>
+//
+// <selectStatement> ::= [WITH <formulaSpecification>]
+//                         SELECT [<SelectQueryAxisClause>
+//                                [, <SelectQueryAxisClause>...]]
+//                         FROM [<cubeSpecification>]
+//                         [WHERE <slicerSpecification>]
+//                         [<cellProps>]
+//
+// <drillthroughStatment> ::=
+//     DRILLTHROUGH
+//     [ MAXROWS <count> ]
+//     [ FIRSTROWSET <count> ]
+//     <selectStatement>
+//     [ RETURN <memberOrAttribute> [, <memberOrAttribute>...] ]
+//
+// <explainStatement> ::=
+//     EXPLAIN PLAN FOR ( <selectStatement> | <drillthroughStatement> )
+//
+
+
+Statement:
+	SelectStatement
+	|
+	DrillthroughStatement
+//    |
+//	  CreateFormulaStatement
+//    |
+//    ExplainStatement
+//    |
+//    RefreshStatement
+//    |
+//    UpdateStatement
+//    |
+//    TransactionCommandStatement	
+	<EOF>;
+	
+	
+DrillthroughStatement:
+  <DRILLTHROUGH>
+  ( <MAXROWS> <UNSIGNED_INTEGER_LITERAL> )?
+  ( <FIRSTROWSET> <UNSIGNED_INTEGER_LITERAL> )?
+  SelectStatement
+  ( <RETURN> ReturnItems )?;
+
+
+ReturnItems:
+	ReturnItem (<COMMA> ReturnItem )* ;
+
+ReturnItem:
+   Identifier;
+
+Identifier:  
+ (<AMP_UNQUOTED_ID> | <QUOTED_ID>);
+
+NumericLiteral:
+  <DECIMAL_NUMERIC_LITERAL>
+  | <UNSIGNED_INTEGER_LITERAL>
+  | <APPROX_NUMERIC_LITERAL>
+;
+
+//CreateCellCalculationBodyClause:
+//;
+
+//MeasureBodyClause:
+//  <APPROX_NUMERIC_LITERAL>
+//;
+
+SelectWithClause:
+//    <CELL> <CALCULATION> CreateCellCalculationBodyClause
+  ("CALCULATED")? <MEMBER> CreateMemberBodyClause
+  | <SET> CreateSetBodyClause
+ // | <MEASURE> = MeasureBodyClause
+  ;
+
+
+SelectStatement:
+  ( <WITH> ( SelectWithClause )+ )?
+  <SELECT>
+    (
+      <ASTERISK>
+      |
+      SelectQueryAxisClause (<COMMA> SelectQueryAxisClause)*
+    ) //TODO this is ?  uncommented just for test
+  <FROM> SelectSubcubeClause
+    (
+      SelectSlicerAxisClause
+    )?
+    (
+      SelectCellPropertyListClause
+    )?
+    ;
+
+SelectSlicerAxisClause:
+  <WHERE> Expression
+  ;
+
+SelectCellPropertyListClause:
+  (<CELL>)? <PROPERTIES> CellProperty ( <COMMA> CellProperty )*
+  ;
+
+
+CreateMemberBodyClause:
+  Identifier <AS> FormulaExpression (<COMMA> MemberPropertyDefinition)*;
+
+MemberPropertyDefinition:
+  Identifier <EQ> Expression;
+
+FormulaExpression:
+   Identifier <EQ> Identifier;
+
+Expression:
+  ValueExpression (<COLON> ValueExpression)*;
+  
+ValueExpression:
+  Term5 (ValueExpressionXOR | ValueExpressionOR)*
+  ;
+
+ValueExpressionXOR:
+  <XOR> Term5
+  ;
+
+ValueExpressionOR:
+  <OR> Term5
+  ;
+
+Term5:
+  Term4 (<AND> Term4)*
+  ;
+
+Term4:
+  <NOT> Term4 | Term3
+  ;
+
+Term3:
+  Term2 (CompOperator Term2)*
+  ;
+
+
+CompOperator:
+  <EQ>
+  | <NE>
+  | <LT>
+  | <GT>
+  | <LE>
+  | <GE>
+  ;
+   
+   
+Term2:
+  Term ((<CONCAT> | <PLUS> | <MINUS>) Term)*
+  ;
+
+Term:
+  Factor ((<SOLIDUS> | <ASTERISK>) Factor)*
+  ;
+
+Factor:
+  <MINUS> ValueExpressionPrimary
+  | <PLUS> ValueExpressionPrimary
+  | ValueExpressionPrimary
+  ;
+
+Function:
+  <ID> <LPAREN> (Expressions)? <RPAREN> //Members ord Level is also a function
+  ;
+
+ValueExpressionPrimary:
+  ValueExpressionPrimary0 (<DOT> (<AMP_UNQUOTED_ID> |<AMP_QUOTED_ID> | <QUOTED_ID> | <ID>))*
+  ;
+
+ValueExpressionPrimary0:
+  Function
+  | (<LPAREN> Expressions <RPAREN>)
+  | (<LBRACE> (Expressions)? <RBRACE>)
+  | CaseExpression
+  | <STRING>
+  | <UNSIGNED_INTEGER_LITERAL>
+  | Identifier
+  ;
+
+Expressions:
+  Expression (<COMMA> Expression)*
+  ; 
+
+CaseExpression:
+  <CASE> (ValueExpression)? (WhenClauses)? (<ELSE> ValueExpression)? <END>
+   ;
+   
+WhenClauses:
+  WhenClause (WhenClause)*
+  ;
+   
+WhenClause:
+  <WHEN> ValueExpression <THEN> ValueExpression
+  ;
+   
+      
+CellProperty:
+  Identifier;
+
+CreateSetBodyClause:
+  Identifier <AS> Identifier;
+
+
+SelectDimensionPropertyListClause:
+    (<DIMENSION>)? <PROPERTIES>
+        Identifier ( <COMMA> Identifier )*
+;
+
+
+
+IntegerExpression:
+ NumericLiteral
+;
+
+// <SelectQueryAxisClause> ::= [NON EMPTY] <set> [<dimProps>] ON <axis_name>
+SelectQueryAxisClause :
+  ( <NON> <EMPTY> )? 
+  Expression
+  (
+  SelectDimensionPropertyListClause
+  )?
+  <ON>
+  (
+       IntegerExpression
+    |  <AXIS> <LPAREN> NumericLiteral <RPAREN>
+    |  <COLUMNS>
+    |  <ROWS>
+    |  <PAGES>
+    |  <SECTIONS>
+    |  <CHAPTERS>
+  );
+  
+SelectSubcubeClause :
+  (
+    Identifier
+    |  <LPAREN> <SELECT> 
+         ( SelectQueryAxisClause (<COMMA> SelectQueryAxisClause)*)?
+         |  ( <ASTERISK> )?
+       <FROM> SelectSubcubeClause
+       ( <WHERE> Expression)?
+       <RPAREN>
+  );
+  
+  
+INJECT PARSER_CLASS : 
+/*******************************************************************************
+ * Copyright (c) YYYY, YYYY Contributors to the  Eclipse Foundation.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     look into the corresponding CommentMdxParser.jj file.
+ *******************************************************************************/

@@ -31,5 +31,8 @@
 		<module>org.eclipse.daanse.xmla.ws.jakarta.basic.itest</module>
 		<module>org.eclipse.daanse.xmla.mstestclient</module>
 		<module>org.eclipse.daanse.xmla.model.ecore</module>
+		<module>org.eclipse.daanse.xmla.ws.jakarta.emf</module>
+		<module>org.eclipse.daanse.xmla.ws.jakarta.databind</module>
+		<module>org.eclipse.daanse.xmla.ws.jakarta.emf.itest</module>
 	</modules>
 </project>

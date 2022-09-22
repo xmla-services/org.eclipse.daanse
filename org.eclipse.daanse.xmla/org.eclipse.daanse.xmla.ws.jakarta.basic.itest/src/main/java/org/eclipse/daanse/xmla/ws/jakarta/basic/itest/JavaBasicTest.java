@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
 import java.util.Hashtable;
 import java.util.function.Consumer;
 
@@ -72,6 +73,18 @@ public class JavaBasicTest {
 			</Properties>
 			</urn:Discover>
 			""";
+	
+	public static final String REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier = """
+			<urn:Discover xmlns:urn="urn:schemas-microsoft-com:xml-analysis">
+      <RequestType>DISCOVER_PROPERTIES</RequestType>
+       <Restrictions />
+       <Properties>
+         <PropertyList>
+           <LocaleIdentifier>1033</LocaleIdentifier>
+         </PropertyList>
+       </Properties>
+			</urn:Discover>
+			""";
 
 	@InjectBundleContext
 	BundleContext bc;
@@ -88,13 +101,35 @@ public class JavaBasicTest {
 	@Test
 	void testRequestwsdl(@InjectService XmlaService xmlaService) throws Exception {
 
-		Thread.sleep(1000000);
+//		Thread.sleep(1000000);
 		System.out.println(1);
 	}
+	@Test
+	void testRequest_DISCOVER_PROPERTIES_LocaleIdentifier(@InjectService XmlaService xmlaService) throws Exception {
 
+		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier));
+
+		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
+
+		var discoverAssert = assertThat(dicoverCaptor.getValue());
+
+		discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("DISCOVER_PROPERTIES");
+
+		discoverAssert.extracting(Discover::getRestrictions)
+				.isNotNull()
+				.extracting(Restrictions::getRestrictionList)
+				.isNull();
+		
+		discoverAssert.extracting(Discover::getProperties)
+				.isNotNull()
+				.extracting(Properties::getPropertyList)
+				.isNotNull()
+				.satisfies(pl -> pl.getLocaleIdentifier().equals(new BigInteger("1033")));
+
+	}
 	@Test
 	void testRequest_MDSCHEMA_CUBES_Content_Data(@InjectService XmlaService xmlaService) throws Exception {
-
+//Thread.sleep(100000);
 		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_MDSCHEMACUBES_CONTENT));
 
 		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
