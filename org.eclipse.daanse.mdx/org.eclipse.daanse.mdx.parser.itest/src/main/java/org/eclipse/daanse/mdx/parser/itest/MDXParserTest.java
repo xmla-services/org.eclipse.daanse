@@ -3,6 +3,9 @@ package org.eclipse.daanse.mdx.parser.itest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.eclipse.daanse.mdx.parser.api.MdxParser;
 import org.eclipse.daanse.mdx.parser.api.MdxParserException;
 import org.eclipse.daanse.mdx.parser.api.MdxParserProvider;
@@ -25,8 +28,9 @@ public class MDXParserTest {
 
 		MdxParser parser = parserProvider.newParser(mdx);
 
-		assertThat(assertDoesNotThrow(() -> parser.parseStatement())).isInstanceOf(SelectStatement.class);
+		assertThat(assertDoesNotThrow(() -> parser.parseMdxStatement())).isInstanceOf(SelectStatement.class);
 
 	}
+	
 
 }

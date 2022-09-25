@@ -15,13 +15,13 @@ public class MdxParserWrapper implements MdxParser {
 	}
 
 	@Override
-	public MdxStatement parseStatement() throws MdxParserException {
-		delegate.Statement();
+	public MdxStatement parseMdxStatement() throws MdxParserException {
+	MdxStatement mdxStatement=	delegate.parseMdxStatement();
 		Node root = delegate.rootNode();
 		System.out.println("Dumping the AST...");
 		root.dump();
 
-		return Converter.toStatement(root);
+		return mdxStatement;
 	}
 
 }
