@@ -597,14 +597,21 @@ SelectQueryClause parseSelectQueryAsteriskClause() :
 SelectQueryClause parseSelectQueryAxesClause() :
 {
   List < SelectQueryAxisClause > selectQueryAxisClauses = new LinkedList < SelectQueryAxisClause > ();
+  SelectQueryAxisClause selectQueryAxisClause;
 }
 {
-  parseSelectQueryAxisClause()
+  selectQueryAxisClause = parseSelectQueryAxisClause()
+  {
+    selectQueryAxisClauses.add(selectQueryAxisClause);
+  }
   (
-    < COMMA > parseSelectQueryAxisClause()
+    < COMMA > selectQueryAxisClause = parseSelectQueryAxisClause()
+    {
+      selectQueryAxisClauses.add(selectQueryAxisClause);
+    }
   )*
   {
-    return new SelectQueryAxesClause();
+    return new SelectQueryAxesClause(selectQueryAxisClauses);
   }
 }
 

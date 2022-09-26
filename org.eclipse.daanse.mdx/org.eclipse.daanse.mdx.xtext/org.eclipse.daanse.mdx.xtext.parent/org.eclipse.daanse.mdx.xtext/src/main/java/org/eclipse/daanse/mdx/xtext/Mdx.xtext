@@ -1,0 +1,295 @@
+grammar org.eclipse.daanse.mdx.xtext.Mdx with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+generate mdx "http://www.eclipse.org/daanse/mdx/xtext/Mdx"
+
+
+MdxStatement:
+	(SelectStatement);
+
+SelectStatement:
+	{SelectStatement} ('WITH' FormulaSpecification)?
+	'SELECT' axis_specification_list?
+	'FROM' cube_specification
+	('WHERE' slicer_specification)?
+	cell_props?;
+
+FormulaSpecification:
+	single_formula_specification+;
+
+single_formula_specification:
+	member_specification
+	| set_specification;
+
+set_specification:
+	'SET' set_name 'AS'
+	(QUOTE expression QUOTE | expression);
+
+member_specification:
+	'MEMBER' member_name 'AS'
+	((QUOTE value_expression QUOTE | value_expression)
+	COMMA member_property_def_list?);
+
+axis_specification_list:
+	axis_specification (COMMA axis_specification)*;
+
+member_property_def_list:
+	member_property_definition (COMMA member_property_definition)*;
+
+member_name:
+	compound_id;
+
+member_property_definition:
+	identifier EQ value_expression;
+
+set_name:
+	compound_id;
+
+compound_id:
+identifier (DOT identifier)*
+;
+
+axis_specification:
+	('NON' 'EMPTY')? expression dim_props? 'ON' axis_name;
+
+axis_name:
+	identifier;
+
+dim_props:
+	'DIMENSION'? 'PROPERTIES' property_list;
+
+property_list:
+	property (COMMA property)*;
+
+property:
+	compound_id;
+
+cube_specification:
+	cube_name;
+
+cube_name:
+	compound_id;
+
+slicer_specification:
+	expression;
+
+cell_props:
+	'CELL'? 'PROPERTIES' cell_property_list;
+
+cell_property_list:
+	cell_property COMMA cell_property*;
+
+cell_property:
+	mandatory_cell_property
+	| provider_specific_cell_property;
+
+mandatory_cell_property:
+	'CELL_ORDINAL'
+	| 'VALUE'
+	| 'FORMATTED_VALUE';
+
+provider_specific_cell_property:
+	identifier;
+
+expression:
+	value_expression (COLON value_expression)*;
+
+value_expression:
+	term5
+	(value_xor_expression | value_or_expression)*;
+
+value_xor_expression:
+	'XOR' term5;
+
+value_or_expression:
+	'OR' term5;
+
+term5:
+	term4
+	('AND' term4)*;
+
+term4:
+	'NOT' term4
+	| term3;
+
+term3:
+	term2 (comp_op term2)*;
+
+term2:
+	term ((CONCAT | PLUS | MINUS) term)*;
+
+term:
+	factor ((SOLIDUS | ASTERISK) factor)*;
+
+factor:
+	MINUS value_expression_primary
+	| PLUS value_expression_primary
+	| value_expression_primary;
+
+function:
+	identifier LPAREN (exp_list)? RPAREN;
+
+value_expression_primary:
+	value_expression_primary0
+	(DOT
+	(unquoted_identifier
+	| quoted_identifier
+	| amp_quoted_identifier
+	| function))*;
+
+value_expression_primary0:
+	function
+	| (LPAREN exp_list RPAREN)
+	| (LBRACE (exp_list)? RBRACE)
+	| case_expression
+	| STRING
+	| INT
+	| identifier;
+
+exp_list:
+	expression (COMMA expression)*;
+
+case_expression:
+	'CASE' (value_expression)?
+	(when_list)?
+	('ELSE' value_expression)?
+	'END';
+
+when_list:
+	when_clause (when_clause)*;
+
+when_clause:
+	'WHEN' value_expression 'THEN' value_expression;
+
+comp_op:
+	EQ
+	| NE
+	| LT
+	| GT
+	| LE
+	| GE;
+
+identifier:
+	(unquoted_identifier
+	| quoted_identifier);
+
+unquoted_identifier:
+	keyword
+	| ID;
+
+amp_quoted_identifier:
+	AMP_QUOTED_ID;
+
+quoted_identifier:
+	QUOTED_ID;
+
+keyword:
+	'DIMENSION'
+	| 'PROPERTIES';
+
+// MDX Lexical Rules					
+DECIMAL returns ecore::EBigDecimal:
+	INT '.' INT;
+
+// Typed
+QUOTE:
+	'\'';
+
+ASTERISK:
+	'*';
+
+COLON:
+	':';
+
+SEMICOLON:
+	';';
+
+COMMA:
+	',';
+
+CONCAT:
+	'||';
+
+DOT:
+	'.';
+
+EQ:
+	'=';
+
+GE:
+	'>=';
+
+GT:
+	'>';
+
+LBRACE:
+	'{';
+
+LE:
+	'<=';
+
+LPAREN:
+	'(';
+
+LT:
+	'<';
+
+MINUS:
+	'-';
+
+NE:
+	'<>';
+
+PLUS:
+	'+';
+
+RBRACE:
+	'}';
+
+RPAREN:
+	')';
+
+SOLIDUS:
+	'/';
+
+@Override
+terminal ID:
+	'^'? ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9' | '$')*;
+
+terminal AMP_QUOTED_ID:
+	'[&' (ID ((' ' | '\t' | '.')+ ID)* | DIGIT) ']';
+
+terminal QUOTED_ID:
+	('[' (ID ((' ' | '\t' | '.')+ ID)* | DIGIT) ']');
+
+terminal LETTER:
+	("$" |
+	"A".."Z" |
+	"_" |
+	"a".."z" |
+	"\u00c0".."\u00d6" |
+	"\u00d8".."\u00f6" |
+	"\u00f8".."\u00ff" |
+	"\u0100".."\u1fff" |
+	"\u3040".."\u318f" |
+	"\u3300".."\u337f" |
+	"\u3400".."\u3d2d" |
+	"\u4e00".."\u9fff" |
+	"\uf900".."\ufaff");
+
+terminal DIGIT:
+	("0".."9" |
+	"\u0660".."\u0669" |
+	"\u06f0".."\u06f9" |
+	"\u0966".."\u096f" |
+	"\u09e6".."\u09ef" |
+	"\u0a66".."\u0a6f" |
+	"\u0ae6".."\u0aef" |
+	"\u0b66".."\u0b6f" |
+	"\u0be7".."\u0bef" |
+	"\u0c66".."\u0c6f" |
+	"\u0ce6".."\u0cef" |
+	"\u0d66".."\u0d6f" |
+	"\u0e50".."\u0e59" |
+	"\u0ed0".."\u0ed9" |
+	"\u1040".."\u1049");

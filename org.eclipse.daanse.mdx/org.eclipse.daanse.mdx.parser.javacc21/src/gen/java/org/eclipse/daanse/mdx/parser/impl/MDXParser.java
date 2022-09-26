@@ -804,33 +804,38 @@ public class MDXParser implements mdxConstants {
             openNodeScope(parseSelectQueryAxesClause8);
         }
         List<SelectQueryAxisClause> selectQueryAxisClauses= new LinkedList<SelectQueryAxisClause> ();
+        SelectQueryAxisClause selectQueryAxisClause;
         ParseException parseException212= null;
         int callStackSize213= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:602:3
-            pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 602, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:603:3
+            pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 603, 3);
             try {
-                parseSelectQueryAxisClause();
+                selectQueryAxisClause= parseSelectQueryAxisClause();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:603:3
+            // Code for CodeBlock specified at cc21/mdx.jj:604:3
+            selectQueryAxisClauses.add(selectQueryAxisClause);
+            // Code for ZeroOrMore specified at cc21/mdx.jj:607:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:604:5
+                // Code for RegexpRef specified at cc21/mdx.jj:608:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:604:15
-                pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 604, 15);
+                // Code for NonTerminal specified at cc21/mdx.jj:608:15
+                pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 608, 15);
                 try {
-                    parseSelectQueryAxisClause();
+                    selectQueryAxisClause= parseSelectQueryAxisClause();
                 }
                 finally {
                     popCallStack();
                 }
+                // Code for CodeBlock specified at cc21/mdx.jj:609:5
+                selectQueryAxisClauses.add(selectQueryAxisClause);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:606:3
-            return new SelectQueryAxesClause();
+            // Code for CodeBlock specified at cc21/mdx.jj:613:3
+            return new SelectQueryAxesClause(selectQueryAxisClauses);
         }
         catch(ParseException e) {
             parseException212= e;
@@ -850,7 +855,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:611:1
+    // cc21/mdx.jj:618:1
     final public SelectSlicerAxisClause parseSelectSlicerAxisClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -861,30 +866,30 @@ public class MDXParser implements mdxConstants {
             openNodeScope(parseSelectSlicerAxisClause9);
         }
         Expression expression= null;
-        ParseException parseException233= null;
-        int callStackSize234= parsingStack.size();
+        ParseException parseException239= null;
+        int callStackSize240= parsingStack.size();
         try {
-            // Code for RegexpRef specified at cc21/mdx.jj:616:3
+            // Code for RegexpRef specified at cc21/mdx.jj:623:3
             consumeToken(WHERE);
-            // Code for NonTerminal specified at cc21/mdx.jj:616:13
-            pushOntoCallStack("parseSelectSlicerAxisClause", "cc21/mdx.jj", 616, 13);
+            // Code for NonTerminal specified at cc21/mdx.jj:623:13
+            pushOntoCallStack("parseSelectSlicerAxisClause", "cc21/mdx.jj", 623, 13);
             try {
                 expression= parseExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:617:3
+            // Code for CodeBlock specified at cc21/mdx.jj:624:3
             return new SelectSlicerAxisClause();
         }
         catch(ParseException e) {
-            parseException233= e;
+            parseException239= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize234);
+            restoreCallStack(callStackSize240);
             if (parseSelectSlicerAxisClause9!=null) {
-                if (parseException233== null) {
+                if (parseException239== null) {
                     closeNodeScope(parseSelectSlicerAxisClause9, nodeArity()> 1);
                 }
                 else  {
@@ -895,7 +900,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:622:1
+    // cc21/mdx.jj:629:1
     final public SelectCellPropertyListClause parseSelectCellPropertyListClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -906,31 +911,31 @@ public class MDXParser implements mdxConstants {
             openNodeScope(parseSelectCellPropertyListClause10);
         }
         List<CellProperty> cellPropertys= new LinkedList<CellProperty> ();
-        ParseException parseException245= null;
-        int callStackSize246= parsingStack.size();
+        ParseException parseException251= null;
+        int callStackSize252= parsingStack.size();
         try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:627:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:634:3
             if (nextTokenType()== CELL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:627:4
+                // Code for RegexpRef specified at cc21/mdx.jj:634:4
                 consumeToken(CELL);
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:627:15
+            // Code for RegexpRef specified at cc21/mdx.jj:634:15
             consumeToken(PROPERTIES);
-            // Code for NonTerminal specified at cc21/mdx.jj:627:30
-            pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 627, 30);
+            // Code for NonTerminal specified at cc21/mdx.jj:634:30
+            pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 634, 30);
             try {
                 parseCellProperty();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:628:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:635:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:629:5
+                // Code for RegexpRef specified at cc21/mdx.jj:636:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:629:15
-                pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 629, 15);
+                // Code for NonTerminal specified at cc21/mdx.jj:636:15
+                pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 636, 15);
                 try {
                     parseCellProperty();
                 }
@@ -938,17 +943,17 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:631:3
+            // Code for CodeBlock specified at cc21/mdx.jj:638:3
             return new SelectCellPropertyListClause();
         }
         catch(ParseException e) {
-            parseException245= e;
+            parseException251= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize246);
+            restoreCallStack(callStackSize252);
             if (parseSelectCellPropertyListClause10!=null) {
-                if (parseException245== null) {
+                if (parseException251== null) {
                     closeNodeScope(parseSelectCellPropertyListClause10, nodeArity()> 1);
                 }
                 else  {
@@ -959,7 +964,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:636:1
+    // cc21/mdx.jj:643:1
     final public CreateMemberBodyClause parseCreateMemberBodyClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -969,34 +974,34 @@ public class MDXParser implements mdxConstants {
             parseCreateMemberBodyClause11= new ASTparseCreateMemberBodyClause();
             openNodeScope(parseCreateMemberBodyClause11);
         }
-        ParseException parseException278= null;
-        int callStackSize279= parsingStack.size();
+        ParseException parseException284= null;
+        int callStackSize285= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:640:3
-            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 640, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:647:3
+            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 647, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:640:21
+            // Code for RegexpRef specified at cc21/mdx.jj:647:21
             consumeToken(AS);
-            // Code for NonTerminal specified at cc21/mdx.jj:640:28
-            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 640, 28);
+            // Code for NonTerminal specified at cc21/mdx.jj:647:28
+            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 647, 28);
             try {
                 parseFormulaExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:641:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:648:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:642:5
+                // Code for RegexpRef specified at cc21/mdx.jj:649:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:642:15
-                pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 642, 15);
+                // Code for NonTerminal specified at cc21/mdx.jj:649:15
+                pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 649, 15);
                 try {
                     parseMemberPropertyDefinition();
                 }
@@ -1004,17 +1009,17 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:644:3
+            // Code for CodeBlock specified at cc21/mdx.jj:651:3
             return new CreateMemberBodyClause();
         }
         catch(ParseException e) {
-            parseException278= e;
+            parseException284= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize279);
+            restoreCallStack(callStackSize285);
             if (parseCreateMemberBodyClause11!=null) {
-                if (parseException278== null) {
+                if (parseException284== null) {
                     closeNodeScope(parseCreateMemberBodyClause11, nodeArity()> 1);
                 }
                 else  {
@@ -1025,7 +1030,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:649:1
+    // cc21/mdx.jj:656:1
     final public MemberPropertyDefinition parseMemberPropertyDefinition() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1035,38 +1040,38 @@ public class MDXParser implements mdxConstants {
             parseMemberPropertyDefinition12= new ASTparseMemberPropertyDefinition();
             openNodeScope(parseMemberPropertyDefinition12);
         }
-        ParseException parseException305= null;
-        int callStackSize306= parsingStack.size();
+        ParseException parseException311= null;
+        int callStackSize312= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:653:3
-            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 653, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:660:3
+            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 660, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:653:21
+            // Code for RegexpRef specified at cc21/mdx.jj:660:21
             consumeToken(EQ);
-            // Code for NonTerminal specified at cc21/mdx.jj:653:28
-            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 653, 28);
+            // Code for NonTerminal specified at cc21/mdx.jj:660:28
+            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 660, 28);
             try {
                 parseExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:654:3
+            // Code for CodeBlock specified at cc21/mdx.jj:661:3
             return new MemberPropertyDefinition();
         }
         catch(ParseException e) {
-            parseException305= e;
+            parseException311= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize306);
+            restoreCallStack(callStackSize312);
             if (parseMemberPropertyDefinition12!=null) {
-                if (parseException305== null) {
+                if (parseException311== null) {
                     closeNodeScope(parseMemberPropertyDefinition12, nodeArity()> 1);
                 }
                 else  {
@@ -1077,7 +1082,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:659:1
+    // cc21/mdx.jj:666:1
     final public FormulaExpression parseFormulaExpression() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1087,38 +1092,38 @@ public class MDXParser implements mdxConstants {
             parseFormulaExpression13= new ASTparseFormulaExpression();
             openNodeScope(parseFormulaExpression13);
         }
-        ParseException parseException320= null;
-        int callStackSize321= parsingStack.size();
+        ParseException parseException326= null;
+        int callStackSize327= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:663:3
-            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 663, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:670:3
+            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 670, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:663:21
+            // Code for RegexpRef specified at cc21/mdx.jj:670:21
             consumeToken(EQ);
-            // Code for NonTerminal specified at cc21/mdx.jj:663:28
-            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 663, 28);
+            // Code for NonTerminal specified at cc21/mdx.jj:670:28
+            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 670, 28);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:664:3
+            // Code for CodeBlock specified at cc21/mdx.jj:671:3
             return new FormulaExpression();
         }
         catch(ParseException e) {
-            parseException320= e;
+            parseException326= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize321);
+            restoreCallStack(callStackSize327);
             if (parseFormulaExpression13!=null) {
-                if (parseException320== null) {
+                if (parseException326== null) {
                     closeNodeScope(parseFormulaExpression13, nodeArity()> 1);
                 }
                 else  {
@@ -1129,7 +1134,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:669:1
+    // cc21/mdx.jj:676:1
     final public Expression parseExpression() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1141,45 +1146,45 @@ public class MDXParser implements mdxConstants {
         }
         Expression expression;
         Segment segment;
-        ParseException parseException335= null;
-        int callStackSize336= parsingStack.size();
+        ParseException parseException341= null;
+        int callStackSize342= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:675:3
-            pushOntoCallStack("parseExpression", "cc21/mdx.jj", 675, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:682:3
+            pushOntoCallStack("parseExpression", "cc21/mdx.jj", 682, 3);
             try {
                 expression= unaliasedExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:676:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:683:3
             while (true) {
                 if (!(nextTokenType()== AS)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:677:5
+                // Code for RegexpRef specified at cc21/mdx.jj:684:5
                 consumeToken(AS);
-                // Code for NonTerminal specified at cc21/mdx.jj:677:12
-                pushOntoCallStack("parseExpression", "cc21/mdx.jj", 677, 12);
+                // Code for NonTerminal specified at cc21/mdx.jj:684:12
+                pushOntoCallStack("parseExpression", "cc21/mdx.jj", 684, 12);
                 try {
                     segment= parseIdentifier();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:678:5
+                // Code for CodeBlock specified at cc21/mdx.jj:685:5
                 CompoundId compundId= new CompoundId(List.of(segment));
                 expression= new CallExpression("AS", CallExpression.Type.Term_Infix, List.of(expression, compundId));
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:686:3
+            // Code for CodeBlock specified at cc21/mdx.jj:693:3
             return expression;
         }
         catch(ParseException e) {
-            parseException335= e;
+            parseException341= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize336);
+            restoreCallStack(callStackSize342);
             if (parseExpression14!=null) {
-                if (parseException335== null) {
+                if (parseException341== null) {
                     closeNodeScope(parseExpression14, nodeArity()> 1);
                 }
                 else  {
@@ -1190,46 +1195,46 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:691:1
+    // cc21/mdx.jj:698:1
     final public Expression expressionOrEmpty() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "expressionOrEmpty";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:696:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:703:3
         ASTexpressionOrEmpty expressionOrEmpty15= null;
         if (buildTree) {
             expressionOrEmpty15= new ASTexpressionOrEmpty();
             openNodeScope(expressionOrEmpty15);
         }
         Expression expression;
-        ParseException parseException359= null;
-        int callStackSize360= parsingStack.size();
+        ParseException parseException365= null;
+        int callStackSize366= parsingStack.size();
         try {
-            if (first_set$mdx_jj$696$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:696:3
-                pushOntoCallStack("expressionOrEmpty", "cc21/mdx.jj", 696, 3);
+            if (first_set$mdx_jj$703$3.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:703:3
+                pushOntoCallStack("expressionOrEmpty", "cc21/mdx.jj", 703, 3);
                 try {
                     expression= parseExpression();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:697:3
+                // Code for CodeBlock specified at cc21/mdx.jj:704:3
                 return expression;
             }
             else  {
-                // Code for CodeBlock specified at cc21/mdx.jj:701:3
+                // Code for CodeBlock specified at cc21/mdx.jj:708:3
                 return new CallExpression("", CallExpression.Type.Empty, List.of());
             }
         }
         catch(ParseException e) {
-            parseException359= e;
+            parseException365= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize360);
+            restoreCallStack(callStackSize366);
             if (expressionOrEmpty15!=null) {
-                if (parseException359== null) {
+                if (parseException365== null) {
                     closeNodeScope(expressionOrEmpty15, nodeArity()> 1);
                 }
                 else  {
@@ -1240,7 +1245,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:709:1
+    // cc21/mdx.jj:716:1
     final public// Comma-separated list of expressions, some of which may be empty. Used
     // for functions.
     List<Expression> expOrEmptyList() {
@@ -1254,46 +1259,46 @@ public class MDXParser implements mdxConstants {
         }
         Expression expression;
         List<Expression> list= new LinkedList<Expression> ();
-        ParseException parseException377= null;
-        int callStackSize378= parsingStack.size();
+        ParseException parseException383= null;
+        int callStackSize384= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:715:3
-            pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 715, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:722:3
+            pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 722, 3);
             try {
                 expression= expressionOrEmpty();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:716:3
+            // Code for CodeBlock specified at cc21/mdx.jj:723:3
             list.add(expression);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:719:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:726:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:720:5
+                // Code for RegexpRef specified at cc21/mdx.jj:727:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:721:5
-                pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 721, 5);
+                // Code for NonTerminal specified at cc21/mdx.jj:728:5
+                pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 728, 5);
                 try {
                     expression= expressionOrEmpty();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:722:5
+                // Code for CodeBlock specified at cc21/mdx.jj:729:5
                 list.add(expression);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:726:3
+            // Code for CodeBlock specified at cc21/mdx.jj:733:3
             return list;
         }
         catch(ParseException e) {
-            parseException377= e;
+            parseException383= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize378);
+            restoreCallStack(callStackSize384);
             if (expOrEmptyList16!=null) {
-                if (parseException377== null) {
+                if (parseException383== null) {
                     closeNodeScope(expOrEmptyList16, nodeArity()> 1);
                 }
                 else  {
@@ -1304,7 +1309,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:732:1
+    // cc21/mdx.jj:739:1
     final public// List of expressions, none of which may be empty.
     List<Expression> expList() {
         if (cancelled) throw new CancellationException();
@@ -1317,46 +1322,46 @@ public class MDXParser implements mdxConstants {
         }
         Expression expression;
         List<Expression> list= new LinkedList<Expression> ();
-        ParseException parseException404= null;
-        int callStackSize405= parsingStack.size();
+        ParseException parseException410= null;
+        int callStackSize411= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:738:3
-            pushOntoCallStack("expList", "cc21/mdx.jj", 738, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:745:3
+            pushOntoCallStack("expList", "cc21/mdx.jj", 745, 3);
             try {
                 expression= parseExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:739:3
+            // Code for CodeBlock specified at cc21/mdx.jj:746:3
             list.add(expression);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:742:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:749:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:743:5
+                // Code for RegexpRef specified at cc21/mdx.jj:750:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:744:5
-                pushOntoCallStack("expList", "cc21/mdx.jj", 744, 5);
+                // Code for NonTerminal specified at cc21/mdx.jj:751:5
+                pushOntoCallStack("expList", "cc21/mdx.jj", 751, 5);
                 try {
                     expression= parseExpression();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:745:5
+                // Code for CodeBlock specified at cc21/mdx.jj:752:5
                 list.add(expression);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:749:3
+            // Code for CodeBlock specified at cc21/mdx.jj:756:3
             return list;
         }
         catch(ParseException e) {
-            parseException404= e;
+            parseException410= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize405);
+            restoreCallStack(callStackSize411);
             if (expList17!=null) {
-                if (parseException404== null) {
+                if (parseException410== null) {
                     closeNodeScope(expList17, nodeArity()> 1);
                 }
                 else  {
@@ -1367,7 +1372,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:754:1
+    // cc21/mdx.jj:761:1
     final public Expression expressionEof() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1378,30 +1383,30 @@ public class MDXParser implements mdxConstants {
             openNodeScope(expressionEof18);
         }
         Expression expression;
-        ParseException parseException431= null;
-        int callStackSize432= parsingStack.size();
+        ParseException parseException437= null;
+        int callStackSize438= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:759:3
-            pushOntoCallStack("expressionEof", "cc21/mdx.jj", 759, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:766:3
+            pushOntoCallStack("expressionEof", "cc21/mdx.jj", 766, 3);
             try {
                 expression= parseExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for EndOfFile specified at cc21/mdx.jj:759:34
+            // Code for EndOfFile specified at cc21/mdx.jj:766:34
             consumeToken(EOF);
-            // Code for CodeBlock specified at cc21/mdx.jj:760:3
+            // Code for CodeBlock specified at cc21/mdx.jj:767:3
             return expression;
         }
         catch(ParseException e) {
-            parseException431= e;
+            parseException437= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize432);
+            restoreCallStack(callStackSize438);
             if (expressionEof18!=null) {
-                if (parseException431== null) {
+                if (parseException437== null) {
                     closeNodeScope(expressionEof18, nodeArity()> 1);
                 }
                 else  {
@@ -1412,7 +1417,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:770:1
+    // cc21/mdx.jj:777:1
     final public// ----------------------------------------------------------------------------
     // Elements
     //
@@ -1428,12 +1433,12 @@ public class MDXParser implements mdxConstants {
             openNodeScope(parseIdentifier19);
         }
         Segment segment;
-        ParseException parseException443= null;
-        int callStackSize444= parsingStack.size();
+        ParseException parseException449= null;
+        int callStackSize450= parsingStack.size();
         try {
-            if (first_set$mdx_jj$776$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:776:5
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 776, 5);
+            if (first_set$mdx_jj$783$5.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:783:5
+                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 783, 5);
                 try {
                     segment= parseNameSegment();
                 }
@@ -1442,8 +1447,8 @@ public class MDXParser implements mdxConstants {
                 }
             }
             else if (nextTokenType()== AMP_QUOTED_ID||nextTokenType== AMP_UNQUOTED_ID) {
-                // Code for NonTerminal specified at cc21/mdx.jj:778:5
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 778, 5);
+                // Code for NonTerminal specified at cc21/mdx.jj:785:5
+                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 785, 5);
                 try {
                     segment= parseKeyIdentifier();
                 }
@@ -1452,20 +1457,20 @@ public class MDXParser implements mdxConstants {
                 }
             }
             else  {
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 776, 5);
-                throw new ParseException(this, first_set$mdx_jj$776$5$, parsingStack);
+                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 783, 5);
+                throw new ParseException(this, first_set$mdx_jj$783$5$, parsingStack);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:780:3
+            // Code for CodeBlock specified at cc21/mdx.jj:787:3
             return segment;
         }
         catch(ParseException e) {
-            parseException443= e;
+            parseException449= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize444);
+            restoreCallStack(callStackSize450);
             if (parseIdentifier19!=null) {
-                if (parseException443== null) {
+                if (parseException449== null) {
                     closeNodeScope(parseIdentifier19, nodeArity()> 1);
                 }
                 else  {
@@ -1477,68 +1482,68 @@ public class MDXParser implements mdxConstants {
     }
 
     static private final EnumSet<TokenType> parseNameSegment_FIRST_SET= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    // cc21/mdx.jj:785:1
+    // cc21/mdx.jj:792:1
     final public NameSegment parseNameSegment() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "parseNameSegment";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:790:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:797:3
         ASTparseNameSegment parseNameSegment20= null;
         if (buildTree) {
             parseNameSegment20= new ASTparseNameSegment();
             openNodeScope(parseNameSegment20);
         }
         String id;
-        ParseException parseException465= null;
-        int callStackSize466= parsingStack.size();
+        ParseException parseException471= null;
+        int callStackSize472= parsingStack.size();
         try {
             if (nextTokenType()== DIMENSION||nextTokenType== PROPERTIES) {
-                // Code for NonTerminal specified at cc21/mdx.jj:790:3
-                pushOntoCallStack("parseNameSegment", "cc21/mdx.jj", 790, 3);
+                // Code for NonTerminal specified at cc21/mdx.jj:797:3
+                pushOntoCallStack("parseNameSegment", "cc21/mdx.jj", 797, 3);
                 try {
                     id= parseKeyword();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:791:3
+                // Code for CodeBlock specified at cc21/mdx.jj:798:3
                 // Allow a non-reserved keyword to be converted back into an identifier
                 // if it is not in a context where it is meaningful.
                 return new NameSegment(id, Segment.Quoting.UNQUOTED);
             }
             else if (nextTokenType()== ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:796:3
+                // Code for RegexpRef specified at cc21/mdx.jj:803:3
                 consumeToken(ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:797:3
+                // Code for CodeBlock specified at cc21/mdx.jj:804:3
                 return new NameSegment(getToken(0).getImage(), Segment.Quoting.UNQUOTED);
             }
             else if (nextTokenType()== ATSIGN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:800:3
+                // Code for RegexpRef specified at cc21/mdx.jj:807:3
                 consumeToken(ATSIGN);
-                // Code for RegexpRef specified at cc21/mdx.jj:800:14
+                // Code for RegexpRef specified at cc21/mdx.jj:807:14
                 consumeToken(ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:801:3
+                // Code for CodeBlock specified at cc21/mdx.jj:808:3
                 return new NameSegment("@"+getToken(0).getImage(), Segment.Quoting.UNQUOTED);
             }
             else if (nextTokenType()== QUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:804:3
+                // Code for RegexpRef specified at cc21/mdx.jj:811:3
                 consumeToken(QUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:805:3
+                // Code for CodeBlock specified at cc21/mdx.jj:812:3
                 return new NameSegment(stripQuotes(getToken(0).getImage(), "[", "]", "]]"), Segment.Quoting.QUOTED);
             }
             else  {
-                pushOntoCallStack("parseNameSegment", "cc21/mdx.jj", 790, 3);
+                pushOntoCallStack("parseNameSegment", "cc21/mdx.jj", 797, 3);
                 throw new ParseException(this, parseNameSegment_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException465= e;
+            parseException471= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize466);
+            restoreCallStack(callStackSize472);
             if (parseNameSegment20!=null) {
-                if (parseException465== null) {
+                if (parseException471== null) {
                     closeNodeScope(parseNameSegment20, nodeArity()> 1);
                 }
                 else  {
@@ -1549,7 +1554,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:813:1
+    // cc21/mdx.jj:820:1
     final public// for example '&foo&[1]&bar' in '[x].&foo&[1]&bar.[y]'
     KeySegment parseKeyIdentifier() {
         if (cancelled) throw new CancellationException();
@@ -1562,34 +1567,34 @@ public class MDXParser implements mdxConstants {
         }
         List<NameSegment> list= new ArrayList<NameSegment> ();
         NameSegment key;
-        ParseException parseException507= null;
-        int callStackSize508= parsingStack.size();
+        ParseException parseException513= null;
+        int callStackSize514= parsingStack.size();
         try {
-            // Code for OneOrMore specified at cc21/mdx.jj:819:3
+            // Code for OneOrMore specified at cc21/mdx.jj:826:3
             while (true) {
-                // Code for NonTerminal specified at cc21/mdx.jj:820:5
-                pushOntoCallStack("parseKeyIdentifier", "cc21/mdx.jj", 820, 5);
+                // Code for NonTerminal specified at cc21/mdx.jj:827:5
+                pushOntoCallStack("parseKeyIdentifier", "cc21/mdx.jj", 827, 5);
                 try {
                     key= parseAmpId();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:821:5
+                // Code for CodeBlock specified at cc21/mdx.jj:828:5
                 list.add(key);
                 if (!(nextTokenType()== AMP_QUOTED_ID||nextTokenType== AMP_UNQUOTED_ID)) break;
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:825:3
+            // Code for CodeBlock specified at cc21/mdx.jj:832:3
             return new KeySegment(list);
         }
         catch(ParseException e) {
-            parseException507= e;
+            parseException513= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize508);
+            restoreCallStack(callStackSize514);
             if (parseKeyIdentifier21!=null) {
-                if (parseException507== null) {
+                if (parseException513== null) {
                     closeNodeScope(parseKeyIdentifier21, nodeArity()> 1);
                 }
                 else  {
@@ -1601,45 +1606,45 @@ public class MDXParser implements mdxConstants {
     }
 
     static private final EnumSet<TokenType> parseAmpId_FIRST_SET= tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    // cc21/mdx.jj:830:1
+    // cc21/mdx.jj:837:1
     final public NameSegment parseAmpId() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "parseAmpId";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:834:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:841:3
         ASTparseAmpId parseAmpId22= null;
         if (buildTree) {
             parseAmpId22= new ASTparseAmpId();
             openNodeScope(parseAmpId22);
         }
-        ParseException parseException525= null;
-        int callStackSize526= parsingStack.size();
+        ParseException parseException531= null;
+        int callStackSize532= parsingStack.size();
         try {
             if (nextTokenType()== AMP_QUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:834:3
+                // Code for RegexpRef specified at cc21/mdx.jj:841:3
                 consumeToken(AMP_QUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:835:3
+                // Code for CodeBlock specified at cc21/mdx.jj:842:3
                 return new NameSegment(stripQuotes(getToken(0).getImage(), "&[", "]", "]]"), Segment.Quoting.QUOTED);
             }
             else if (nextTokenType()== AMP_UNQUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:841:3
+                // Code for RegexpRef specified at cc21/mdx.jj:848:3
                 consumeToken(AMP_UNQUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:842:3
+                // Code for CodeBlock specified at cc21/mdx.jj:849:3
                 return new NameSegment(getToken(0).getImage().substring(1), Segment.Quoting.UNQUOTED);
             }
             else  {
-                pushOntoCallStack("parseAmpId", "cc21/mdx.jj", 834, 3);
+                pushOntoCallStack("parseAmpId", "cc21/mdx.jj", 841, 3);
                 throw new ParseException(this, parseAmpId_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException525= e;
+            parseException531= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize526);
+            restoreCallStack(callStackSize532);
             if (parseAmpId22!=null) {
-                if (parseException525== null) {
+                if (parseException531== null) {
                     closeNodeScope(parseAmpId22, nodeArity()> 1);
                 }
                 else  {
@@ -1651,47 +1656,47 @@ public class MDXParser implements mdxConstants {
     }
 
     static private final EnumSet<TokenType> parseKeyword_FIRST_SET= tokenTypeSet(DIMENSION, PROPERTIES);
-    // cc21/mdx.jj:851:1
+    // cc21/mdx.jj:858:1
     final public// a keyword (unlike a reserved word) can be converted back into an
     // identifier in some contexts
     String parseKeyword() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "parseKeyword";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:855:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:862:3
         ASTparseKeyword parseKeyword23= null;
         if (buildTree) {
             parseKeyword23= new ASTparseKeyword();
             openNodeScope(parseKeyword23);
         }
-        ParseException parseException546= null;
-        int callStackSize547= parsingStack.size();
+        ParseException parseException552= null;
+        int callStackSize553= parsingStack.size();
         try {
             if (nextTokenType()== DIMENSION) {
-                // Code for RegexpRef specified at cc21/mdx.jj:855:3
+                // Code for RegexpRef specified at cc21/mdx.jj:862:3
                 consumeToken(DIMENSION);
-                // Code for CodeBlock specified at cc21/mdx.jj:856:3
+                // Code for CodeBlock specified at cc21/mdx.jj:863:3
                 return"Dimension";
             }
             else if (nextTokenType()== PROPERTIES) {
-                // Code for RegexpRef specified at cc21/mdx.jj:859:3
+                // Code for RegexpRef specified at cc21/mdx.jj:866:3
                 consumeToken(PROPERTIES);
-                // Code for CodeBlock specified at cc21/mdx.jj:860:3
+                // Code for CodeBlock specified at cc21/mdx.jj:867:3
                 return"Properties";
             }
             else  {
-                pushOntoCallStack("parseKeyword", "cc21/mdx.jj", 855, 3);
+                pushOntoCallStack("parseKeyword", "cc21/mdx.jj", 862, 3);
                 throw new ParseException(this, parseKeyword_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException546= e;
+            parseException552= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize547);
+            restoreCallStack(callStackSize553);
             if (parseKeyword23!=null) {
-                if (parseException546== null) {
+                if (parseException552== null) {
                     closeNodeScope(parseKeyword23, nodeArity()> 1);
                 }
                 else  {
@@ -1702,7 +1707,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:865:1
+    // cc21/mdx.jj:872:1
     final public CompoundId parseCompoundId() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1715,46 +1720,46 @@ public class MDXParser implements mdxConstants {
         CompoundId compoundId;
         List<Segment> list= new ArrayList<Segment> ();
         Segment s;
-        ParseException parseException567= null;
-        int callStackSize568= parsingStack.size();
+        ParseException parseException573= null;
+        int callStackSize574= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:872:3
-            pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 872, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:879:3
+            pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 879, 3);
             try {
                 s= parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:873:3
+            // Code for CodeBlock specified at cc21/mdx.jj:880:3
             list.add(s);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:876:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:883:3
             while (true) {
-                if (!(scan$mdx_jj$877$5())) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:878:5
+                if (!(scan$mdx_jj$884$5())) break;
+                // Code for RegexpRef specified at cc21/mdx.jj:885:5
                 consumeToken(DOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:878:13
-                pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 878, 13);
+                // Code for NonTerminal specified at cc21/mdx.jj:885:13
+                pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 885, 13);
                 try {
                     s= parseIdentifier();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:879:5
+                // Code for CodeBlock specified at cc21/mdx.jj:886:5
                 list.add(s);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:883:3
+            // Code for CodeBlock specified at cc21/mdx.jj:890:3
             return new CompoundId(list);
         }
         catch(ParseException e) {
-            parseException567= e;
+            parseException573= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize568);
+            restoreCallStack(callStackSize574);
             if (parseCompoundId24!=null) {
-                if (parseException567== null) {
+                if (parseException573== null) {
                     closeNodeScope(parseCompoundId24, nodeArity()> 1);
                 }
                 else  {
@@ -1765,7 +1770,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:890:1
+    // cc21/mdx.jj:897:1
     final public// ----------------------------------------------------------------------------
     // Expressions
     Expression unaliasedExpression() {
@@ -1778,39 +1783,25 @@ public class MDXParser implements mdxConstants {
             openNodeScope(unaliasedExpression25);
         }
         Expression x, y;
-        ParseException parseException594= null;
-        int callStackSize595= parsingStack.size();
+        ParseException parseException600= null;
+        int callStackSize601= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:895:3
-            pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 895, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:902:3
+            pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 902, 3);
             try {
                 x= term5();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:896:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:903:3
             while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:897:5
+                // Code for ExpansionChoice specified at cc21/mdx.jj:904:5
                 if (nextTokenType()== OR) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:897:5
-                    consumeToken(OR);
-                    // Code for NonTerminal specified at cc21/mdx.jj:897:12
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 897, 12);
-                    try {
-                        y= term5();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:898:5
-                    x= new CallExpression("OR", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== XOR) {
                     // Code for RegexpRef specified at cc21/mdx.jj:904:5
-                    consumeToken(XOR);
-                    // Code for NonTerminal specified at cc21/mdx.jj:904:13
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 904, 13);
+                    consumeToken(OR);
+                    // Code for NonTerminal specified at cc21/mdx.jj:904:12
+                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 904, 12);
                     try {
                         y= term5();
                     }
@@ -1818,37 +1809,51 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                     // Code for CodeBlock specified at cc21/mdx.jj:905:5
-                    x= new CallExpression("XOR", CallExpression.Type.Term_Infix, List.of(x, y));
+                    x= new CallExpression("OR", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
-                else if (nextTokenType()== COLON) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:913:5
-                    consumeToken(COLON);
-                    // Code for NonTerminal specified at cc21/mdx.jj:913:15
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 913, 15);
+                else if (nextTokenType()== XOR) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:911:5
+                    consumeToken(XOR);
+                    // Code for NonTerminal specified at cc21/mdx.jj:911:13
+                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 911, 13);
                     try {
                         y= term5();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:914:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:912:5
+                    x= new CallExpression("XOR", CallExpression.Type.Term_Infix, List.of(x, y));
+                }
+                else if (nextTokenType()== COLON) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:920:5
+                    consumeToken(COLON);
+                    // Code for NonTerminal specified at cc21/mdx.jj:920:15
+                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 920, 15);
+                    try {
+                        y= term5();
+                    }
+                    finally {
+                        popCallStack();
+                    }
+                    // Code for CodeBlock specified at cc21/mdx.jj:921:5
                     x= new CallExpression(":", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
                 else  {
                     break;
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:921:3
+            // Code for CodeBlock specified at cc21/mdx.jj:928:3
             return x;
         }
         catch(ParseException e) {
-            parseException594= e;
+            parseException600= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize595);
+            restoreCallStack(callStackSize601);
             if (unaliasedExpression25!=null) {
-                if (parseException594== null) {
+                if (parseException600== null) {
                     closeNodeScope(unaliasedExpression25, nodeArity()> 1);
                 }
                 else  {
@@ -1859,7 +1864,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:926:1
+    // cc21/mdx.jj:933:1
     final public Expression term5() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1870,44 +1875,44 @@ public class MDXParser implements mdxConstants {
             openNodeScope(term526);
         }
         Expression x, y;
-        ParseException parseException645= null;
-        int callStackSize646= parsingStack.size();
+        ParseException parseException651= null;
+        int callStackSize652= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:931:3
-            pushOntoCallStack("term5", "cc21/mdx.jj", 931, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:938:3
+            pushOntoCallStack("term5", "cc21/mdx.jj", 938, 3);
             try {
                 x= term4();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:932:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:939:3
             while (true) {
                 if (!(nextTokenType()== AND)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:933:5
+                // Code for RegexpRef specified at cc21/mdx.jj:940:5
                 consumeToken(AND);
-                // Code for NonTerminal specified at cc21/mdx.jj:933:13
-                pushOntoCallStack("term5", "cc21/mdx.jj", 933, 13);
+                // Code for NonTerminal specified at cc21/mdx.jj:940:13
+                pushOntoCallStack("term5", "cc21/mdx.jj", 940, 13);
                 try {
                     y= term4();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:934:5
+                // Code for CodeBlock specified at cc21/mdx.jj:941:5
                 x= new CallExpression("AND", CallExpression.Type.Term_Infix, List.of(x, y));
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:941:3
+            // Code for CodeBlock specified at cc21/mdx.jj:948:3
             return x;
         }
         catch(ParseException e) {
-            parseException645= e;
+            parseException651= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize646);
+            restoreCallStack(callStackSize652);
             if (term526!=null) {
-                if (parseException645== null) {
+                if (parseException651== null) {
                     closeNodeScope(term526, nodeArity()> 1);
                 }
                 else  {
@@ -1923,60 +1928,60 @@ public class MDXParser implements mdxConstants {
         return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    // cc21/mdx.jj:946:1
+    // cc21/mdx.jj:953:1
     final public Expression term4() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "term4";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:951:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:958:3
         ASTterm4 term427= null;
         if (buildTree) {
             term427= new ASTterm4();
             openNodeScope(term427);
         }
         Expression x;
-        ParseException parseException669= null;
-        int callStackSize670= parsingStack.size();
+        ParseException parseException675= null;
+        int callStackSize676= parsingStack.size();
         try {
-            if (first_set$mdx_jj$951$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:951:3
-                pushOntoCallStack("term4", "cc21/mdx.jj", 951, 3);
+            if (first_set$mdx_jj$958$3.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:958:3
+                pushOntoCallStack("term4", "cc21/mdx.jj", 958, 3);
                 try {
                     x= term3();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:952:3
+                // Code for CodeBlock specified at cc21/mdx.jj:959:3
                 return x;
             }
             else if (nextTokenType()== NOT) {
-                // Code for RegexpRef specified at cc21/mdx.jj:955:3
+                // Code for RegexpRef specified at cc21/mdx.jj:962:3
                 consumeToken(NOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:955:11
-                pushOntoCallStack("term4", "cc21/mdx.jj", 955, 11);
+                // Code for NonTerminal specified at cc21/mdx.jj:962:11
+                pushOntoCallStack("term4", "cc21/mdx.jj", 962, 11);
                 try {
                     x= term4();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:956:3
+                // Code for CodeBlock specified at cc21/mdx.jj:963:3
                 return new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(x));
             }
             else  {
-                pushOntoCallStack("term4", "cc21/mdx.jj", 951, 3);
+                pushOntoCallStack("term4", "cc21/mdx.jj", 958, 3);
                 throw new ParseException(this, term4_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException669= e;
+            parseException675= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize670);
+            restoreCallStack(callStackSize676);
             if (term427!=null) {
-                if (parseException669== null) {
+                if (parseException675== null) {
                     closeNodeScope(term427, nodeArity()> 1);
                 }
                 else  {
@@ -1987,7 +1992,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:964:1
+    // cc21/mdx.jj:971:1
     final public Expression term3() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -1999,153 +2004,137 @@ public class MDXParser implements mdxConstants {
         }
         Expression x, y;
         Token op;
-        ParseException parseException693= null;
-        int callStackSize694= parsingStack.size();
+        ParseException parseException699= null;
+        int callStackSize700= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:970:3
-            pushOntoCallStack("term3", "cc21/mdx.jj", 970, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:977:3
+            pushOntoCallStack("term3", "cc21/mdx.jj", 977, 3);
             try {
                 x= term2();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:971:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:978:3
             while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:973:5
-                if (first_set$mdx_jj$973$5.contains(nextTokenType())) {
+                // Code for ExpansionChoice specified at cc21/mdx.jj:980:5
+                if (first_set$mdx_jj$980$5.contains(nextTokenType())) {
                     if (nextTokenType()== EQ) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:974:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:981:7
                         consumeToken(EQ);
-                        // Code for CodeBlock specified at cc21/mdx.jj:975:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:982:7
                         op= getToken(0);
                     }
                     else if (nextTokenType()== NE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:978:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:985:7
                         consumeToken(NE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:979:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:986:7
                         op= getToken(0);
                     }
                     else if (nextTokenType()== LT) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:982:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:989:7
                         consumeToken(LT);
-                        // Code for CodeBlock specified at cc21/mdx.jj:983:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:990:7
                         op= getToken(0);
                     }
                     else if (nextTokenType()== GT) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:986:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:993:7
                         consumeToken(GT);
-                        // Code for CodeBlock specified at cc21/mdx.jj:987:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:994:7
                         op= getToken(0);
                     }
                     else if (nextTokenType()== LE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:990:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:997:7
                         consumeToken(LE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:991:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:998:7
                         op= getToken(0);
                     }
                     else if (nextTokenType()== GE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:994:7
+                        // Code for RegexpRef specified at cc21/mdx.jj:1001:7
                         consumeToken(GE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:995:7
+                        // Code for CodeBlock specified at cc21/mdx.jj:1002:7
                         op= getToken(0);
                     }
                     else  {
-                        pushOntoCallStack("term3", "cc21/mdx.jj", 974, 7);
-                        throw new ParseException(this, first_set$mdx_jj$974$7, parsingStack);
+                        pushOntoCallStack("term3", "cc21/mdx.jj", 981, 7);
+                        throw new ParseException(this, first_set$mdx_jj$981$7, parsingStack);
                     }
-                    // Code for NonTerminal specified at cc21/mdx.jj:999:5
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 999, 5);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1006:5
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1006, 5);
                     try {
                         y= term2();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1000:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1007:5
                     x= new CallExpression(op.getImage(), CallExpression.Type.Term_Infix, List.of(x, y));
                 }
-                else if (scan$mdx_jj$1009$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1010:5
+                else if (scan$mdx_jj$1016$5()) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1017:5
                     consumeToken(IS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1010:12
+                    // Code for RegexpRef specified at cc21/mdx.jj:1017:12
                     consumeToken(NULL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1011:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1018:5
                     x= new CallExpression("IS NULL", CallExpression.Type.Term_Postfix, List.of(x));
                 }
-                else if (scan$mdx_jj$1019$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1020:5
+                else if (scan$mdx_jj$1026$5()) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1027:5
                     consumeToken(IS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1020:12
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1020, 12);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1027:12
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1027, 12);
                     try {
                         y= term2();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1021:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1028:5
                     x= new CallExpression("IS", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
                 else if (nextTokenType()== IS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1027:5
+                    // Code for RegexpRef specified at cc21/mdx.jj:1034:5
                     consumeToken(IS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1027:12
+                    // Code for RegexpRef specified at cc21/mdx.jj:1034:12
                     consumeToken(EMPTY);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1028:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1035:5
                     x= new CallExpression("IS EMPTY", CallExpression.Type.Term_Postfix, List.of(x));
                 }
                 else if (nextTokenType()== MATCHES) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1032:5
+                    // Code for RegexpRef specified at cc21/mdx.jj:1039:5
                     consumeToken(MATCHES);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1032:17
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1032, 17);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1039:17
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1039, 17);
                     try {
                         y= term2();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1033:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1040:5
                     x= new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
-                else if (scan$mdx_jj$1039$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1040:5
+                else if (scan$mdx_jj$1046$5()) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1047:5
                     consumeToken(NOT);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1040:13
+                    // Code for RegexpRef specified at cc21/mdx.jj:1047:13
                     consumeToken(MATCHES);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1040:25
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1040, 25);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1047:25
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1047, 25);
                     try {
                         y= term2();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1041:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1048:5
                     x= new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y))));
                 }
                 else if (nextTokenType()== IN) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1052:5
-                    consumeToken(IN);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1052:12
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1052, 12);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1053:5
-                    x= new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== NOT) {
                     // Code for RegexpRef specified at cc21/mdx.jj:1059:5
-                    consumeToken(NOT);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1059:13
                     consumeToken(IN);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1059:20
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1059, 20);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1059:12
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1059, 12);
                     try {
                         y= term2();
                     }
@@ -2153,23 +2142,39 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                     // Code for CodeBlock specified at cc21/mdx.jj:1060:5
+                    x= new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y));
+                }
+                else if (nextTokenType()== NOT) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1066:5
+                    consumeToken(NOT);
+                    // Code for RegexpRef specified at cc21/mdx.jj:1066:13
+                    consumeToken(IN);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1066:20
+                    pushOntoCallStack("term3", "cc21/mdx.jj", 1066, 20);
+                    try {
+                        y= term2();
+                    }
+                    finally {
+                        popCallStack();
+                    }
+                    // Code for CodeBlock specified at cc21/mdx.jj:1067:5
                     x= new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y))));
                 }
                 else  {
                     break;
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1072:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1079:3
             return x;
         }
         catch(ParseException e) {
-            parseException693= e;
+            parseException699= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize694);
+            restoreCallStack(callStackSize700);
             if (term328!=null) {
-                if (parseException693== null) {
+                if (parseException699== null) {
                     closeNodeScope(term328, nodeArity()> 1);
                 }
                 else  {
@@ -2180,7 +2185,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1077:1
+    // cc21/mdx.jj:1084:1
     final public Expression term2() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2191,39 +2196,25 @@ public class MDXParser implements mdxConstants {
             openNodeScope(term229);
         }
         Expression x, y;
-        ParseException parseException865= null;
-        int callStackSize866= parsingStack.size();
+        ParseException parseException871= null;
+        int callStackSize872= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1082:3
-            pushOntoCallStack("term2", "cc21/mdx.jj", 1082, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1089:3
+            pushOntoCallStack("term2", "cc21/mdx.jj", 1089, 3);
             try {
                 x= term();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1083:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:1090:3
             while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:1084:5
+                // Code for ExpansionChoice specified at cc21/mdx.jj:1091:5
                 if (nextTokenType()== PLUS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1084:5
-                    consumeToken(PLUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1084:14
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1084, 14);
-                    try {
-                        y= term();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1085:5
-                    x= new CallExpression("+", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== MINUS) {
                     // Code for RegexpRef specified at cc21/mdx.jj:1091:5
-                    consumeToken(MINUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1091:15
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1091, 15);
+                    consumeToken(PLUS);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1091:14
+                    pushOntoCallStack("term2", "cc21/mdx.jj", 1091, 14);
                     try {
                         y= term();
                     }
@@ -2231,13 +2222,13 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                     // Code for CodeBlock specified at cc21/mdx.jj:1092:5
-                    x= new CallExpression("-", CallExpression.Type.Term_Infix, List.of(x, y));
+                    x= new CallExpression("+", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
-                else if (nextTokenType()== CONCAT) {
+                else if (nextTokenType()== MINUS) {
                     // Code for RegexpRef specified at cc21/mdx.jj:1098:5
-                    consumeToken(CONCAT);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1098:16
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1098, 16);
+                    consumeToken(MINUS);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1098:15
+                    pushOntoCallStack("term2", "cc21/mdx.jj", 1098, 15);
                     try {
                         y= term();
                     }
@@ -2245,23 +2236,37 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                     // Code for CodeBlock specified at cc21/mdx.jj:1099:5
+                    x= new CallExpression("-", CallExpression.Type.Term_Infix, List.of(x, y));
+                }
+                else if (nextTokenType()== CONCAT) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1105:5
+                    consumeToken(CONCAT);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1105:16
+                    pushOntoCallStack("term2", "cc21/mdx.jj", 1105, 16);
+                    try {
+                        y= term();
+                    }
+                    finally {
+                        popCallStack();
+                    }
+                    // Code for CodeBlock specified at cc21/mdx.jj:1106:5
                     x= new CallExpression("||", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
                 else  {
                     break;
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1106:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1113:3
             return x;
         }
         catch(ParseException e) {
-            parseException865= e;
+            parseException871= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize866);
+            restoreCallStack(callStackSize872);
             if (term229!=null) {
-                if (parseException865== null) {
+                if (parseException871== null) {
                     closeNodeScope(term229, nodeArity()> 1);
                 }
                 else  {
@@ -2272,7 +2277,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1111:1
+    // cc21/mdx.jj:1118:1
     final public Expression term() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2283,39 +2288,25 @@ public class MDXParser implements mdxConstants {
             openNodeScope(term30);
         }
         Expression x, y;
-        ParseException parseException916= null;
-        int callStackSize917= parsingStack.size();
+        ParseException parseException922= null;
+        int callStackSize923= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1116:3
-            pushOntoCallStack("term", "cc21/mdx.jj", 1116, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1123:3
+            pushOntoCallStack("term", "cc21/mdx.jj", 1123, 3);
             try {
                 x= factor();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1117:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:1124:3
             while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:1118:5
+                // Code for ExpansionChoice specified at cc21/mdx.jj:1125:5
                 if (nextTokenType()== ASTERISK) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1118:5
-                    consumeToken(ASTERISK);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1118:18
-                    pushOntoCallStack("term", "cc21/mdx.jj", 1118, 18);
-                    try {
-                        y= factor();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1119:5
-                    x= new CallExpression("*", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== SOLIDUS) {
                     // Code for RegexpRef specified at cc21/mdx.jj:1125:5
-                    consumeToken(SOLIDUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1125:17
-                    pushOntoCallStack("term", "cc21/mdx.jj", 1125, 17);
+                    consumeToken(ASTERISK);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1125:18
+                    pushOntoCallStack("term", "cc21/mdx.jj", 1125, 18);
                     try {
                         y= factor();
                     }
@@ -2323,23 +2314,37 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                     // Code for CodeBlock specified at cc21/mdx.jj:1126:5
+                    x= new CallExpression("*", CallExpression.Type.Term_Infix, List.of(x, y));
+                }
+                else if (nextTokenType()== SOLIDUS) {
+                    // Code for RegexpRef specified at cc21/mdx.jj:1132:5
+                    consumeToken(SOLIDUS);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1132:17
+                    pushOntoCallStack("term", "cc21/mdx.jj", 1132, 17);
+                    try {
+                        y= factor();
+                    }
+                    finally {
+                        popCallStack();
+                    }
+                    // Code for CodeBlock specified at cc21/mdx.jj:1133:5
                     x= new CallExpression("/", CallExpression.Type.Term_Infix, List.of(x, y));
                 }
                 else  {
                     break;
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1133:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1140:3
             return x;
         }
         catch(ParseException e) {
-            parseException916= e;
+            parseException922= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize917);
+            restoreCallStack(callStackSize923);
             if (term30!=null) {
-                if (parseException916== null) {
+                if (parseException922== null) {
                     closeNodeScope(term30, nodeArity()> 1);
                 }
                 else  {
@@ -2355,66 +2360,52 @@ public class MDXParser implements mdxConstants {
         return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    // cc21/mdx.jj:1138:1
+    // cc21/mdx.jj:1145:1
     final public Expression factor() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "factor";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1143:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1150:3
         ASTfactor factor31= null;
         if (buildTree) {
             factor31= new ASTfactor();
             openNodeScope(factor31);
         }
         Expression p;
-        ParseException parseException955= null;
-        int callStackSize956= parsingStack.size();
+        ParseException parseException961= null;
+        int callStackSize962= parsingStack.size();
         try {
-            if (first_set$mdx_jj$1143$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1143:3
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1143, 3);
+            if (first_set$mdx_jj$1150$3.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:1150:3
+                pushOntoCallStack("factor", "cc21/mdx.jj", 1150, 3);
                 try {
                     p= primary();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1144:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1151:3
                 return p;
             }
             else if (nextTokenType()== PLUS) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1147:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1154:3
                 consumeToken(PLUS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1147:12
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1147, 12);
+                // Code for NonTerminal specified at cc21/mdx.jj:1154:12
+                pushOntoCallStack("factor", "cc21/mdx.jj", 1154, 12);
                 try {
                     p= primary();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1148:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1155:3
                 return p;
             }
             else if (nextTokenType()== MINUS) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1151:3
-                consumeToken(MINUS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1151:13
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1151, 13);
-                try {
-                    p= primary();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1152:3
-                return new CallExpression("-", CallExpression.Type.Term_Prefix, List.of(p));
-            }
-            else if (nextTokenType()== EXISTING) {
                 // Code for RegexpRef specified at cc21/mdx.jj:1158:3
-                consumeToken(EXISTING);
-                // Code for NonTerminal specified at cc21/mdx.jj:1158:16
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1158, 16);
+                consumeToken(MINUS);
+                // Code for NonTerminal specified at cc21/mdx.jj:1158:13
+                pushOntoCallStack("factor", "cc21/mdx.jj", 1158, 13);
                 try {
                     p= primary();
                 }
@@ -2422,21 +2413,35 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
                 // Code for CodeBlock specified at cc21/mdx.jj:1159:3
+                return new CallExpression("-", CallExpression.Type.Term_Prefix, List.of(p));
+            }
+            else if (nextTokenType()== EXISTING) {
+                // Code for RegexpRef specified at cc21/mdx.jj:1165:3
+                consumeToken(EXISTING);
+                // Code for NonTerminal specified at cc21/mdx.jj:1165:16
+                pushOntoCallStack("factor", "cc21/mdx.jj", 1165, 16);
+                try {
+                    p= primary();
+                }
+                finally {
+                    popCallStack();
+                }
+                // Code for CodeBlock specified at cc21/mdx.jj:1166:3
                 return new CallExpression("Existing", CallExpression.Type.Term_Prefix, List.of(p));
             }
             else  {
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1143, 3);
+                pushOntoCallStack("factor", "cc21/mdx.jj", 1150, 3);
                 throw new ParseException(this, factor_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException955= e;
+            parseException961= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize956);
+            restoreCallStack(callStackSize962);
             if (factor31!=null) {
-                if (parseException955== null) {
+                if (parseException961== null) {
                     closeNodeScope(factor31, nodeArity()> 1);
                 }
                 else  {
@@ -2447,7 +2452,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1167:1
+    // cc21/mdx.jj:1174:1
     final public Expression primary() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2458,24 +2463,24 @@ public class MDXParser implements mdxConstants {
             openNodeScope(primary32);
         }
         Expression expression;
-        ParseException parseException1003= null;
-        int callStackSize1004= parsingStack.size();
+        ParseException parseException1009= null;
+        int callStackSize1010= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1172:3
-            pushOntoCallStack("primary", "cc21/mdx.jj", 1172, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1179:3
+            pushOntoCallStack("primary", "cc21/mdx.jj", 1179, 3);
             try {
                 expression= atom();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:1180:3
             while (true) {
                 if (!(nextTokenType()== DOT)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1174:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1181:5
                 consumeToken(DOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:1174:13
-                pushOntoCallStack("primary", "cc21/mdx.jj", 1174, 13);
+                // Code for NonTerminal specified at cc21/mdx.jj:1181:13
+                pushOntoCallStack("primary", "cc21/mdx.jj", 1181, 13);
                 try {
                     expression= segmentOrFuncall(expression);
                 }
@@ -2483,17 +2488,17 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1176:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1183:3
             return expression;
         }
         catch(ParseException e) {
-            parseException1003= e;
+            parseException1009= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1004);
+            restoreCallStack(callStackSize1010);
             if (primary32!=null) {
-                if (parseException1003== null) {
+                if (parseException1009== null) {
                     closeNodeScope(primary32, nodeArity()> 1);
                 }
                 else  {
@@ -2504,7 +2509,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1181:1
+    // cc21/mdx.jj:1188:1
     final public Expression segmentOrFuncall(Expression left) {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2516,28 +2521,28 @@ public class MDXParser implements mdxConstants {
         }
         Segment segment;
         List<Expression> argList= null;
-        ParseException parseException1024= null;
-        int callStackSize1025= parsingStack.size();
+        ParseException parseException1030= null;
+        int callStackSize1031= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1187:3
-            pushOntoCallStack("segmentOrFuncall", "cc21/mdx.jj", 1187, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1194:3
+            pushOntoCallStack("segmentOrFuncall", "cc21/mdx.jj", 1194, 3);
             try {
                 segment= parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1188:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1195:3
             if (nextTokenType()== LPAREN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1189:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1196:5
                 consumeToken(LPAREN);
-                if (scan$mdx_jj$1191$7()) {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1192:7
+                if (scan$mdx_jj$1198$7()) {
+                    // Code for CodeBlock specified at cc21/mdx.jj:1199:7
                     argList= Collections.emptyList();
                 }
                 else  {
-                    // Code for NonTerminal specified at cc21/mdx.jj:1196:7
-                    pushOntoCallStack("segmentOrFuncall", "cc21/mdx.jj", 1196, 7);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1203:7
+                    pushOntoCallStack("segmentOrFuncall", "cc21/mdx.jj", 1203, 7);
                     try {
                         argList= expOrEmptyList();
                     }
@@ -2545,20 +2550,20 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1198:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1205:5
                 consumeToken(RPAREN);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1200:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1207:3
             return createCall(left, segment, argList);
         }
         catch(ParseException e) {
-            parseException1024= e;
+            parseException1030= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1025);
+            restoreCallStack(callStackSize1031);
             if (segmentOrFuncall33!=null) {
-                if (parseException1024== null) {
+                if (parseException1030== null) {
                     closeNodeScope(segmentOrFuncall33, nodeArity()> 1);
                 }
                 else  {
@@ -2570,51 +2575,51 @@ public class MDXParser implements mdxConstants {
     }
 
     static private final EnumSet<TokenType> parseNumericLiteral_FIRST_SET= tokenTypeSet(UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
-    // cc21/mdx.jj:1205:1
+    // cc21/mdx.jj:1212:1
     final public NumericLiteral parseNumericLiteral() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "parseNumericLiteral";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1209:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1216:3
         ASTparseNumericLiteral parseNumericLiteral34= null;
         if (buildTree) {
             parseNumericLiteral34= new ASTparseNumericLiteral();
             openNodeScope(parseNumericLiteral34);
         }
-        ParseException parseException1061= null;
-        int callStackSize1062= parsingStack.size();
+        ParseException parseException1067= null;
+        int callStackSize1068= parsingStack.size();
         try {
             if (nextTokenType()== DECIMAL_NUMERIC_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1209:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1216:3
                 consumeToken(DECIMAL_NUMERIC_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1210:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1217:3
                 return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
             }
             else if (nextTokenType()== UNSIGNED_INTEGER_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1213:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1220:3
                 consumeToken(UNSIGNED_INTEGER_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1214:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1221:3
                 return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
             }
             else if (nextTokenType()== APPROX_NUMERIC_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1217:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1224:3
                 consumeToken(APPROX_NUMERIC_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1218:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1225:3
                 return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
             }
             else  {
-                pushOntoCallStack("parseNumericLiteral", "cc21/mdx.jj", 1209, 3);
+                pushOntoCallStack("parseNumericLiteral", "cc21/mdx.jj", 1216, 3);
                 throw new ParseException(this, parseNumericLiteral_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException1061= e;
+            parseException1067= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1062);
+            restoreCallStack(callStackSize1068);
             if (parseNumericLiteral34!=null) {
-                if (parseException1061== null) {
+                if (parseException1067== null) {
                     closeNodeScope(parseNumericLiteral34, nodeArity()> 1);
                 }
                 else  {
@@ -2630,12 +2635,12 @@ public class MDXParser implements mdxConstants {
         return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    // cc21/mdx.jj:1223:1
+    // cc21/mdx.jj:1230:1
     final public Expression atom() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
         this.currentlyParsedProduction= "atom";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1230:3
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1237:3
         ASTatom atom35= null;
         if (buildTree) {
             atom35= new ASTatom();
@@ -2644,95 +2649,95 @@ public class MDXParser implements mdxConstants {
         Expression expression;
         NameSegment segment;
         List<Expression> expressions;
-        ParseException parseException1091= null;
-        int callStackSize1092= parsingStack.size();
+        ParseException parseException1097= null;
+        int callStackSize1098= parsingStack.size();
         try {
             if (nextTokenType()== SINGLE_QUOTED_STRING) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1230:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1237:3
                 consumeToken(SINGLE_QUOTED_STRING);
-                // Code for CodeBlock specified at cc21/mdx.jj:1231:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1238:3
                 return new StringLiteral(stripQuotes(getToken(0).getImage(), "'", "'", "''"));
             }
             else if (nextTokenType()== DOUBLE_QUOTED_STRING) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1234:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1241:3
                 consumeToken(DOUBLE_QUOTED_STRING);
-                // Code for CodeBlock specified at cc21/mdx.jj:1235:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1242:3
                 return new StringLiteral(stripQuotes(getToken(0).getImage(), '"'+"", '"'+"", '"'+""+'"'));
             }
             else if (nextTokenType()== UNSIGNED_INTEGER_LITERAL||nextTokenType== APPROX_NUMERIC_LITERAL||nextTokenType== DECIMAL_NUMERIC_LITERAL) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1238:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1238, 3);
+                // Code for NonTerminal specified at cc21/mdx.jj:1245:3
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1245, 3);
                 try {
                     expression= parseNumericLiteral();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1239:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1246:3
                 return expression;
             }
             else if (nextTokenType()== NULL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1242:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1249:3
                 consumeToken(NULL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1243:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1250:3
                 return NullLiteral.SINGLETON;
             }
             else if (nextTokenType()== CAST) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1246:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1253:3
                 consumeToken(CAST);
-                // Code for RegexpRef specified at cc21/mdx.jj:1246:12
+                // Code for RegexpRef specified at cc21/mdx.jj:1253:12
                 consumeToken(LPAREN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1246:23
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1246, 23);
+                // Code for NonTerminal specified at cc21/mdx.jj:1253:23
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1253, 23);
                 try {
                     expression= unaliasedExpression();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1247:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1254:3
                 consumeToken(AS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1247:10
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1247, 10);
+                // Code for NonTerminal specified at cc21/mdx.jj:1254:10
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1254, 10);
                 try {
                     segment= parseNameSegment();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1247:39
+                // Code for RegexpRef specified at cc21/mdx.jj:1254:39
                 consumeToken(RPAREN);
-                // Code for CodeBlock specified at cc21/mdx.jj:1248:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1255:3
                 return new CallExpression("CAST", CallExpression.Type.Cast, List.of(expression, new SymbolLiteral(segment.name())));
             }
             else if (nextTokenType()== LPAREN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1256:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1263:3
                 consumeToken(LPAREN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1256:14
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1256, 14);
+                // Code for NonTerminal specified at cc21/mdx.jj:1263:14
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1263, 14);
                 try {
                     expressions= expList();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1256:38
+                // Code for RegexpRef specified at cc21/mdx.jj:1263:38
                 consumeToken(RPAREN);
-                // Code for CodeBlock specified at cc21/mdx.jj:1257:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1264:3
                 // Whereas ([Sales],[Time]) and () are tuples, ([Sales]) and (5)
                 // are just expressions.
                 return new CallExpression("()", CallExpression.Type.Parentheses, expressions);
             }
             else if (nextTokenType()== LBRACE) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1265:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1272:3
                 consumeToken(LBRACE);
-                if (scan$mdx_jj$1267$5()) {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1268:5
+                if (scan$mdx_jj$1274$5()) {
+                    // Code for CodeBlock specified at cc21/mdx.jj:1275:5
                     expressions= Collections.emptyList();
                 }
-                else if (first_set$mdx_jj$1272$5.contains(nextTokenType())) {
-                    // Code for NonTerminal specified at cc21/mdx.jj:1272:5
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1272, 5);
+                else if (first_set$mdx_jj$1279$5.contains(nextTokenType())) {
+                    // Code for NonTerminal specified at cc21/mdx.jj:1279:5
+                    pushOntoCallStack("atom", "cc21/mdx.jj", 1279, 5);
                     try {
                         expressions= expList();
                     }
@@ -2741,29 +2746,29 @@ public class MDXParser implements mdxConstants {
                     }
                 }
                 else  {
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1267, 5);
-                    throw new ParseException(this, first_set$mdx_jj$1267$5, parsingStack);
+                    pushOntoCallStack("atom", "cc21/mdx.jj", 1274, 5);
+                    throw new ParseException(this, first_set$mdx_jj$1274$5, parsingStack);
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1274:3
+                // Code for RegexpRef specified at cc21/mdx.jj:1281:3
                 consumeToken(RBRACE);
-                // Code for CodeBlock specified at cc21/mdx.jj:1275:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1282:3
                 return new CallExpression("{}", CallExpression.Type.Braces, expressions);
             }
             else if (nextTokenType()== CASE) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1279:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1279, 3);
+                // Code for NonTerminal specified at cc21/mdx.jj:1286:3
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1286, 3);
                 try {
                     expression= caseExpression();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1280:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1287:3
                 return expression;
             }
-            else if (first_set$mdx_jj$1286$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1286:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1286, 3);
+            else if (first_set$mdx_jj$1293$3.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:1293:3
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1293, 3);
                 try {
                     // Function call "foo(a, b)" or "whiz!bang!foo(a, b)".
                     // Properties "x.PROP" and methods "exp.meth(a)" are in primary().
@@ -2772,35 +2777,35 @@ public class MDXParser implements mdxConstants {
                 finally {
                     popCallStack();
                 }
-                // Code for ZeroOrMore specified at cc21/mdx.jj:1287:3
+                // Code for ZeroOrMore specified at cc21/mdx.jj:1294:3
                 while (true) {
                     if (!(nextTokenType()== BANG)) break;
-                    // Code for RegexpRef specified at cc21/mdx.jj:1288:5
+                    // Code for RegexpRef specified at cc21/mdx.jj:1295:5
                     consumeToken(BANG);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1288:14
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1288, 14);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1295:14
+                    pushOntoCallStack("atom", "cc21/mdx.jj", 1295, 14);
                     try {
                         segment= parseNameSegment();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1289:5
+                    // Code for CodeBlock specified at cc21/mdx.jj:1296:5
                     // We support the syntax for qualifying function names with package
                     // names separated by bang ('!'), e.g. 'whiz!bang!foo(a, b)'
                     // but currently we ignore the qualifiers. The previous example is
                     // equivalent to 'foo(a, b)'.
                 }
                 if (nextTokenType()== LPAREN) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1297:5
+                    // Code for RegexpRef specified at cc21/mdx.jj:1304:5
                     consumeToken(LPAREN);
-                    if (scan$mdx_jj$1299$7()) {
-                        // Code for CodeBlock specified at cc21/mdx.jj:1300:7
+                    if (scan$mdx_jj$1306$7()) {
+                        // Code for CodeBlock specified at cc21/mdx.jj:1307:7
                         expressions= Collections.emptyList();
                     }
                     else  {
-                        // Code for NonTerminal specified at cc21/mdx.jj:1304:7
-                        pushOntoCallStack("atom", "cc21/mdx.jj", 1304, 7);
+                        // Code for NonTerminal specified at cc21/mdx.jj:1311:7
+                        pushOntoCallStack("atom", "cc21/mdx.jj", 1311, 7);
                         try {
                             expressions= expOrEmptyList();
                         }
@@ -2808,29 +2813,29 @@ public class MDXParser implements mdxConstants {
                             popCallStack();
                         }
                     }
-                    // Code for RegexpRef specified at cc21/mdx.jj:1306:5
+                    // Code for RegexpRef specified at cc21/mdx.jj:1313:5
                     consumeToken(RPAREN);
                 }
                 else  {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1308:16
+                    // Code for CodeBlock specified at cc21/mdx.jj:1315:16
                     expressions= null;
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1312:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1319:3
                 return createCall(null, segment, expressions);
             }
             else  {
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1230, 3);
+                pushOntoCallStack("atom", "cc21/mdx.jj", 1237, 3);
                 throw new ParseException(this, atom_FIRST_SET, parsingStack);
             }
         }
         catch(ParseException e) {
-            parseException1091= e;
+            parseException1097= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1092);
+            restoreCallStack(callStackSize1098);
             if (atom35!=null) {
-                if (parseException1091== null) {
+                if (parseException1097== null) {
                     closeNodeScope(atom35, nodeArity()> 1);
                 }
                 else  {
@@ -2841,7 +2846,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1317:1
+    // cc21/mdx.jj:1324:1
     final public Expression caseExpression() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2854,56 +2859,30 @@ public class MDXParser implements mdxConstants {
         Expression expression, expression2;
         List<Expression> expressions= new ArrayList<Expression> ();
         boolean match= false;
-        ParseException parseException1265= null;
-        int callStackSize1266= parsingStack.size();
+        ParseException parseException1271= null;
+        int callStackSize1272= parsingStack.size();
         try {
-            // Code for RegexpRef specified at cc21/mdx.jj:1324:3
+            // Code for RegexpRef specified at cc21/mdx.jj:1331:3
             consumeToken(CASE);
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1325:3
-            if (first_set$mdx_jj$1326$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1326:5
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1326, 5);
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1332:3
+            if (first_set$mdx_jj$1333$5.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:1333:5
+                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1333, 5);
                 try {
                     expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1327:5
-                match= true;
-                expressions.add(expression);
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1332:3
-            while (true) {
-                if (!(nextTokenType()== WHEN)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1333:5
-                consumeToken(WHEN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1333:14
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1333, 14);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1333:45
-                consumeToken(THEN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1333:54
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1333, 54);
-                try {
-                    expression2= parseExpression();
                 }
                 finally {
                     popCallStack();
                 }
                 // Code for CodeBlock specified at cc21/mdx.jj:1334:5
+                match= true;
                 expressions.add(expression);
-                expressions.add(expression2);
             }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1339:3
-            if (nextTokenType()== ELSE) {
+            // Code for ZeroOrMore specified at cc21/mdx.jj:1339:3
+            while (true) {
+                if (!(nextTokenType()== WHEN)) break;
                 // Code for RegexpRef specified at cc21/mdx.jj:1340:5
-                consumeToken(ELSE);
+                consumeToken(WHEN);
                 // Code for NonTerminal specified at cc21/mdx.jj:1340:14
                 pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1340, 14);
                 try {
@@ -2912,12 +2891,38 @@ public class MDXParser implements mdxConstants {
                 finally {
                     popCallStack();
                 }
+                // Code for RegexpRef specified at cc21/mdx.jj:1340:45
+                consumeToken(THEN);
+                // Code for NonTerminal specified at cc21/mdx.jj:1340:54
+                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1340, 54);
+                try {
+                    expression2= parseExpression();
+                }
+                finally {
+                    popCallStack();
+                }
                 // Code for CodeBlock specified at cc21/mdx.jj:1341:5
                 expressions.add(expression);
+                expressions.add(expression2);
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:1345:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1346:3
+            if (nextTokenType()== ELSE) {
+                // Code for RegexpRef specified at cc21/mdx.jj:1347:5
+                consumeToken(ELSE);
+                // Code for NonTerminal specified at cc21/mdx.jj:1347:14
+                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1347, 14);
+                try {
+                    expression= parseExpression();
+                }
+                finally {
+                    popCallStack();
+                }
+                // Code for CodeBlock specified at cc21/mdx.jj:1348:5
+                expressions.add(expression);
+            }
+            // Code for RegexpRef specified at cc21/mdx.jj:1352:3
             consumeToken(END);
-            // Code for CodeBlock specified at cc21/mdx.jj:1346:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1353:3
             if (match) {
                 return new CallExpression("_CaseMatch", CallExpression.Type.Term_Case, expressions);
             }
@@ -2926,13 +2931,13 @@ public class MDXParser implements mdxConstants {
             }
         }
         catch(ParseException e) {
-            parseException1265= e;
+            parseException1271= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1266);
+            restoreCallStack(callStackSize1272);
             if (caseExpression36!=null) {
-                if (parseException1265== null) {
+                if (parseException1271== null) {
                     closeNodeScope(caseExpression36, nodeArity()> 1);
                 }
                 else  {
@@ -2943,7 +2948,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1360:1
+    // cc21/mdx.jj:1367:1
     final public CellProperty parseCellProperty() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2953,28 +2958,28 @@ public class MDXParser implements mdxConstants {
             parseCellProperty37= new ASTparseCellProperty();
             openNodeScope(parseCellProperty37);
         }
-        ParseException parseException1325= null;
-        int callStackSize1326= parsingStack.size();
+        ParseException parseException1331= null;
+        int callStackSize1332= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1363:3
-            pushOntoCallStack("parseCellProperty", "cc21/mdx.jj", 1363, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1370:3
+            pushOntoCallStack("parseCellProperty", "cc21/mdx.jj", 1370, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1364:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1371:3
             return new CellProperty(List.of());
         }
         catch(ParseException e) {
-            parseException1325= e;
+            parseException1331= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1326);
+            restoreCallStack(callStackSize1332);
             if (parseCellProperty37!=null) {
-                if (parseException1325== null) {
+                if (parseException1331== null) {
                     closeNodeScope(parseCellProperty37, nodeArity()> 1);
                 }
                 else  {
@@ -2985,7 +2990,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1369:1
+    // cc21/mdx.jj:1376:1
     final public CreateSetBodyClause parseCreateSetBodyClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -2995,38 +3000,38 @@ public class MDXParser implements mdxConstants {
             parseCreateSetBodyClause38= new ASTparseCreateSetBodyClause();
             openNodeScope(parseCreateSetBodyClause38);
         }
-        ParseException parseException1334= null;
-        int callStackSize1335= parsingStack.size();
+        ParseException parseException1340= null;
+        int callStackSize1341= parsingStack.size();
         try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1372:3
-            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1372, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1379:3
+            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1379, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:1372:21
+            // Code for RegexpRef specified at cc21/mdx.jj:1379:21
             consumeToken(AS);
-            // Code for NonTerminal specified at cc21/mdx.jj:1372:28
-            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1372, 28);
+            // Code for NonTerminal specified at cc21/mdx.jj:1379:28
+            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1379, 28);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1373:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1380:3
             return new CreateSetBodyClause();
         }
         catch(ParseException e) {
-            parseException1334= e;
+            parseException1340= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1335);
+            restoreCallStack(callStackSize1341);
             if (parseCreateSetBodyClause38!=null) {
-                if (parseException1334== null) {
+                if (parseException1340== null) {
                     closeNodeScope(parseCreateSetBodyClause38, nodeArity()> 1);
                 }
                 else  {
@@ -3037,7 +3042,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1378:1
+    // cc21/mdx.jj:1385:1
     final public SelectDimensionPropertyListClause parseSelectDimensionPropertyListClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -3047,31 +3052,31 @@ public class MDXParser implements mdxConstants {
             parseSelectDimensionPropertyListClause39= new ASTparseSelectDimensionPropertyListClause();
             openNodeScope(parseSelectDimensionPropertyListClause39);
         }
-        ParseException parseException1349= null;
-        int callStackSize1350= parsingStack.size();
+        ParseException parseException1355= null;
+        int callStackSize1356= parsingStack.size();
         try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1381:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1388:3
             if (nextTokenType()== DIMENSION) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1381:4
+                // Code for RegexpRef specified at cc21/mdx.jj:1388:4
                 consumeToken(DIMENSION);
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:1381:20
+            // Code for RegexpRef specified at cc21/mdx.jj:1388:20
             consumeToken(PROPERTIES);
-            // Code for NonTerminal specified at cc21/mdx.jj:1382:3
-            pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1382, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1389:3
+            pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1389, 3);
             try {
                 parseIdentifier();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1383:3
+            // Code for ZeroOrMore specified at cc21/mdx.jj:1390:3
             while (true) {
                 if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1384:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1391:5
                 consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:1384:15
-                pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1384, 15);
+                // Code for NonTerminal specified at cc21/mdx.jj:1391:15
+                pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1391, 15);
                 try {
                     parseIdentifier();
                 }
@@ -3079,17 +3084,17 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1386:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1393:3
             return new SelectDimensionPropertyListClause();
         }
         catch(ParseException e) {
-            parseException1349= e;
+            parseException1355= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1350);
+            restoreCallStack(callStackSize1356);
             if (parseSelectDimensionPropertyListClause39!=null) {
-                if (parseException1349== null) {
+                if (parseException1355== null) {
                     closeNodeScope(parseSelectDimensionPropertyListClause39, nodeArity()> 1);
                 }
                 else  {
@@ -3100,7 +3105,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1392:1
+    // cc21/mdx.jj:1399:1
     final public// <SelectQueryAxisClause> ::= [NON EMPTY] <set> [<dimProps>] ON <axis_name>
     SelectQueryAxisClause parseSelectQueryAxisClause() {
         if (cancelled) throw new CancellationException();
@@ -3116,30 +3121,30 @@ public class MDXParser implements mdxConstants {
         Expression expression;
         int n;
         Axis axis;
-        ParseException parseException1382= null;
-        int callStackSize1383= parsingStack.size();
+        ParseException parseException1388= null;
+        int callStackSize1389= parsingStack.size();
         try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1401:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1408:3
             if (nextTokenType()== NON) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1401:4
+                // Code for RegexpRef specified at cc21/mdx.jj:1408:4
                 consumeToken(NON);
-                // Code for RegexpRef specified at cc21/mdx.jj:1401:12
+                // Code for RegexpRef specified at cc21/mdx.jj:1408:12
                 consumeToken(EMPTY);
-                // Code for CodeBlock specified at cc21/mdx.jj:1402:3
+                // Code for CodeBlock specified at cc21/mdx.jj:1409:3
                 nonEmpty= true;
             }
-            // Code for NonTerminal specified at cc21/mdx.jj:1406:3
-            pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1406, 3);
+            // Code for NonTerminal specified at cc21/mdx.jj:1413:3
+            pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1413, 3);
             try {
                 expression= parseExpression();
             }
             finally {
                 popCallStack();
             }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1407:3
+            // Code for ZeroOrOne specified at cc21/mdx.jj:1414:3
             if (nextTokenType()== DIMENSION||nextTokenType== PROPERTIES) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1408:5
-                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1408, 5);
+                // Code for NonTerminal specified at cc21/mdx.jj:1415:5
+                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1415, 5);
                 try {
                     selectDimensionPropertyListClause= parseSelectDimensionPropertyListClause();
                 }
@@ -3147,32 +3152,32 @@ public class MDXParser implements mdxConstants {
                     popCallStack();
                 }
             }
-            // Code for RegexpRef specified at cc21/mdx.jj:1410:3
+            // Code for RegexpRef specified at cc21/mdx.jj:1417:3
             consumeToken(ON);
             if (nextTokenType()== AXIS||nextTokenType== UNSIGNED_INTEGER_LITERAL) {
                 if (nextTokenType()== UNSIGNED_INTEGER_LITERAL) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1413:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1420:7
                     consumeToken(UNSIGNED_INTEGER_LITERAL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1414:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1421:7
                     n= Integer.valueOf(getToken(0).getImage()).intValue();
                 }
                 else if (nextTokenType()== AXIS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1417:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1424:7
                     consumeToken(AXIS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1417:16
+                    // Code for RegexpRef specified at cc21/mdx.jj:1424:16
                     consumeToken(LPAREN);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1417:27
+                    // Code for RegexpRef specified at cc21/mdx.jj:1424:27
                     consumeToken(UNSIGNED_INTEGER_LITERAL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1418:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1425:7
                     n= Integer.valueOf(getToken(0).getImage()).intValue();
-                    // Code for RegexpRef specified at cc21/mdx.jj:1421:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1428:7
                     consumeToken(RPAREN);
                 }
                 else  {
-                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1413, 7);
-                    throw new ParseException(this, first_set$mdx_jj$1413$7, parsingStack);
+                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1420, 7);
+                    throw new ParseException(this, first_set$mdx_jj$1420$7, parsingStack);
                 }
-                // Code for CodeBlock specified at cc21/mdx.jj:1423:5
+                // Code for CodeBlock specified at cc21/mdx.jj:1430:5
                 if (n<0) {
                     throw new IllegalArgumentException("Only axis numbers >= 0 allowed.");
                 }
@@ -3180,57 +3185,57 @@ public class MDXParser implements mdxConstants {
                     axis= Axis.create(n);
                 }
             }
-            else if (first_set$mdx_jj$1434$5.contains(nextTokenType())) {
+            else if (first_set$mdx_jj$1441$5.contains(nextTokenType())) {
                 if (nextTokenType()== COLUMNS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1435:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1442:7
                     consumeToken(COLUMNS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1436:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1443:7
                     axis= Axis.COLUMNS;
                 }
                 else if (nextTokenType()== ROWS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1439:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1446:7
                     consumeToken(ROWS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1440:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1447:7
                     axis= Axis.ROWS;
                 }
                 else if (nextTokenType()== PAGES) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1443:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1450:7
                     consumeToken(PAGES);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1444:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1451:7
                     axis= Axis.PAGES;
                 }
                 else if (nextTokenType()== SECTIONS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1447:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1454:7
                     consumeToken(SECTIONS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1448:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1455:7
                     axis= Axis.SECTIONS;
                 }
                 else if (nextTokenType()== CHAPTERS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1451:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1458:7
                     consumeToken(CHAPTERS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1452:7
+                    // Code for CodeBlock specified at cc21/mdx.jj:1459:7
                     axis= Axis.CHAPTERS;
                 }
                 else  {
-                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1435, 7);
-                    throw new ParseException(this, first_set$mdx_jj$1435$7, parsingStack);
+                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1442, 7);
+                    throw new ParseException(this, first_set$mdx_jj$1442$7, parsingStack);
                 }
             }
             else  {
-                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1412, 5);
-                throw new ParseException(this, first_set$mdx_jj$1412$5, parsingStack);
+                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1419, 5);
+                throw new ParseException(this, first_set$mdx_jj$1419$5, parsingStack);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1457:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1464:3
             return new SelectQueryAxisClause(nonEmpty, expression, axis, selectDimensionPropertyListClause);
         }
         catch(ParseException e) {
-            parseException1382= e;
+            parseException1388= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1383);
+            restoreCallStack(callStackSize1389);
             if (parseSelectQueryAxisClause40!=null) {
-                if (parseException1382== null) {
+                if (parseException1388== null) {
                     closeNodeScope(parseSelectQueryAxisClause40, nodeArity()> 1);
                 }
                 else  {
@@ -3241,7 +3246,7 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // cc21/mdx.jj:1462:1
+    // cc21/mdx.jj:1469:1
     final public SelectSubcubeClause parseSelectSubcubeClause() {
         if (cancelled) throw new CancellationException();
         String prevProduction= currentlyParsedProduction;
@@ -3251,12 +3256,12 @@ public class MDXParser implements mdxConstants {
             parseSelectSubcubeClause41= new ASTparseSelectSubcubeClause();
             openNodeScope(parseSelectSubcubeClause41);
         }
-        ParseException parseException1511= null;
-        int callStackSize1512= parsingStack.size();
+        ParseException parseException1517= null;
+        int callStackSize1518= parsingStack.size();
         try {
-            if (first_set$mdx_jj$1467$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1467:5
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1467, 5);
+            if (first_set$mdx_jj$1474$5.contains(nextTokenType())) {
+                // Code for NonTerminal specified at cc21/mdx.jj:1474:5
+                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1474, 5);
                 try {
                     parseIdentifier();
                 }
@@ -3265,27 +3270,27 @@ public class MDXParser implements mdxConstants {
                 }
             }
             else if (nextTokenType()== LPAREN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1468:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1475:5
                 consumeToken(LPAREN);
-                // Code for RegexpRef specified at cc21/mdx.jj:1468:16
+                // Code for RegexpRef specified at cc21/mdx.jj:1475:16
                 consumeToken(SELECT);
-                // Code for ZeroOrOne specified at cc21/mdx.jj:1469:5
-                if (first_set$mdx_jj$1470$7.contains(nextTokenType())) {
-                    // Code for NonTerminal specified at cc21/mdx.jj:1470:7
-                    pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1470, 7);
+                // Code for ZeroOrOne specified at cc21/mdx.jj:1476:5
+                if (first_set$mdx_jj$1477$7.contains(nextTokenType())) {
+                    // Code for NonTerminal specified at cc21/mdx.jj:1477:7
+                    pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1477, 7);
                     try {
                         parseSelectQueryAxisClause();
                     }
                     finally {
                         popCallStack();
                     }
-                    // Code for ZeroOrMore specified at cc21/mdx.jj:1471:7
+                    // Code for ZeroOrMore specified at cc21/mdx.jj:1478:7
                     while (true) {
                         if (!(nextTokenType()== COMMA)) break;
-                        // Code for RegexpRef specified at cc21/mdx.jj:1472:9
+                        // Code for RegexpRef specified at cc21/mdx.jj:1479:9
                         consumeToken(COMMA);
-                        // Code for NonTerminal specified at cc21/mdx.jj:1472:19
-                        pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1472, 19);
+                        // Code for NonTerminal specified at cc21/mdx.jj:1479:19
+                        pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1479, 19);
                         try {
                             parseSelectQueryAxisClause();
                         }
@@ -3296,27 +3301,27 @@ public class MDXParser implements mdxConstants {
                 }
             }
             else if (nextTokenType()== FROM||nextTokenType== ASTERISK) {
-                // Code for ZeroOrOne specified at cc21/mdx.jj:1475:5
+                // Code for ZeroOrOne specified at cc21/mdx.jj:1482:5
                 if (nextTokenType()== ASTERISK) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1475:6
+                    // Code for RegexpRef specified at cc21/mdx.jj:1482:6
                     consumeToken(ASTERISK);
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1476:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1483:5
                 consumeToken(FROM);
-                // Code for NonTerminal specified at cc21/mdx.jj:1476:14
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1476, 14);
+                // Code for NonTerminal specified at cc21/mdx.jj:1483:14
+                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1483, 14);
                 try {
                     parseSelectSubcubeClause();
                 }
                 finally {
                     popCallStack();
                 }
-                // Code for ZeroOrOne specified at cc21/mdx.jj:1477:5
+                // Code for ZeroOrOne specified at cc21/mdx.jj:1484:5
                 if (nextTokenType()== WHERE) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1478:7
+                    // Code for RegexpRef specified at cc21/mdx.jj:1485:7
                     consumeToken(WHERE);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1478:17
-                    pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1478, 17);
+                    // Code for NonTerminal specified at cc21/mdx.jj:1485:17
+                    pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1485, 17);
                     try {
                         parseExpression();
                     }
@@ -3324,24 +3329,24 @@ public class MDXParser implements mdxConstants {
                         popCallStack();
                     }
                 }
-                // Code for RegexpRef specified at cc21/mdx.jj:1480:5
+                // Code for RegexpRef specified at cc21/mdx.jj:1487:5
                 consumeToken(RPAREN);
             }
             else  {
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1467, 5);
-                throw new ParseException(this, first_set$mdx_jj$1467$5$, parsingStack);
+                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 1474, 5);
+                throw new ParseException(this, first_set$mdx_jj$1474$5$, parsingStack);
             }
-            // Code for CodeBlock specified at cc21/mdx.jj:1482:3
+            // Code for CodeBlock specified at cc21/mdx.jj:1489:3
             return new SelectSubcubeClause();
         }
         catch(ParseException e) {
-            parseException1511= e;
+            parseException1517= e;
             throw e;
         }
         finally {
-            restoreCallStack(callStackSize1512);
+            restoreCallStack(callStackSize1518);
             if (parseSelectSubcubeClause41!=null) {
-                if (parseException1511== null) {
+                if (parseException1517== null) {
                     closeNodeScope(parseSelectSubcubeClause41, nodeArity()> 1);
                 }
                 else  {
@@ -3358,56 +3363,56 @@ public class MDXParser implements mdxConstants {
         return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$696$3= first_set$mdx_jj$696$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$696$3_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$703$3= first_set$mdx_jj$703$3_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$703$3_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$776$5$= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$776$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$790$3= tokenTypeSet(DIMENSION, PROPERTIES);
-    static private final EnumSet<TokenType> first_set$mdx_jj$820$5= tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$951$3= first_set$mdx_jj$951$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$951$3_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$783$5$= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+    static private final EnumSet<TokenType> first_set$mdx_jj$783$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
+    static private final EnumSet<TokenType> first_set$mdx_jj$797$3= tokenTypeSet(DIMENSION, PROPERTIES);
+    static private final EnumSet<TokenType> first_set$mdx_jj$827$5= tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+    static private final EnumSet<TokenType> first_set$mdx_jj$958$3= first_set$mdx_jj$958$3_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$958$3_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$973$5= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
-    static private final EnumSet<TokenType> first_set$mdx_jj$974$7= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1143$3= first_set$mdx_jj$1143$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1143$3_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$980$5= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
+    static private final EnumSet<TokenType> first_set$mdx_jj$981$7= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1150$3= first_set$mdx_jj$1150$3_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1150$3_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$1238$3= tokenTypeSet(UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1267$5= first_set$mdx_jj$1267$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1267$5_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$1245$3= tokenTypeSet(UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1274$5= first_set$mdx_jj$1274$5_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1274$5_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, RBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$1272$5= first_set$mdx_jj$1272$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1272$5_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$1279$5= first_set$mdx_jj$1279$5_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1279$5_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$1286$3= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1326$5= first_set$mdx_jj$1326$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1326$5_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$1293$3= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1333$5= first_set$mdx_jj$1333$5_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1333$5_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$1412$5= tokenTypeSet(AXIS, CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS, UNSIGNED_INTEGER_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1413$7= tokenTypeSet(AXIS, UNSIGNED_INTEGER_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1434$5= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1435$7= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1467$5$= first_set$mdx_jj$1467$5$_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1467$5$_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$1419$5= tokenTypeSet(AXIS, CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS, UNSIGNED_INTEGER_LITERAL);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1420$7= tokenTypeSet(AXIS, UNSIGNED_INTEGER_LITERAL);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1441$5= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1442$7= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1474$5$= first_set$mdx_jj$1474$5$_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1474$5$_init() {
         return tokenTypeSet(DIMENSION, FROM, PROPERTIES, LPAREN, ASTERISK, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
     }
 
-    static private final EnumSet<TokenType> first_set$mdx_jj$1467$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1470$7= first_set$mdx_jj$1470$7_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1470$7_init() {
+    static private final EnumSet<TokenType> first_set$mdx_jj$1474$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+    static private final EnumSet<TokenType> first_set$mdx_jj$1477$7= first_set$mdx_jj$1477$7_init();
+    static private EnumSet<TokenType> first_set$mdx_jj$1477$7_init() {
         return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
     }
 
@@ -3431,21 +3436,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:677:5
+    // cc21/mdx.jj:684:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$677$5() {
+    private final boolean check$mdx_jj$684$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:677:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:684:5
             if (!scanToken(AS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:677:12
-            // NonTerminal parseIdentifier at cc21/mdx.jj:677:12
-            pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 677, 12);
-            boolean prevScanToEnd1605= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:684:12
+            // NonTerminal parseIdentifier at cc21/mdx.jj:684:12
+            pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 684, 12);
+            boolean prevScanToEnd1611= scanToEnd;
             currentLookaheadProduction= "parseIdentifier";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3454,11 +3459,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1605;
+                scanToEnd= prevScanToEnd1611;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:678:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:685:5
             return true;
         }
         finally {
@@ -3467,18 +3472,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:696:3
+    // cc21/mdx.jj:703:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$696$3() {
+    private final boolean check$mdx_jj$703$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:696:3
-            // NonTerminal parseExpression at cc21/mdx.jj:696:3
-            pushOntoLookaheadStack("expressionOrEmpty", "cc21/mdx.jj", 696, 3);
-            boolean prevScanToEnd1606= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:703:3
+            // NonTerminal parseExpression at cc21/mdx.jj:703:3
+            pushOntoLookaheadStack("expressionOrEmpty", "cc21/mdx.jj", 703, 3);
+            boolean prevScanToEnd1612= scanToEnd;
             currentLookaheadProduction= "parseExpression";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -3487,11 +3492,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1606;
+                scanToEnd= prevScanToEnd1612;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:697:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:704:3
             return true;
         }
         finally {
@@ -3500,15 +3505,15 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:701:3
+    // cc21/mdx.jj:708:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$701$3() {
+    private final boolean check$mdx_jj$708$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:701:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:708:3
             return true;
         }
         finally {
@@ -3517,21 +3522,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:720:5
+    // cc21/mdx.jj:727:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$720$5() {
+    private final boolean check$mdx_jj$727$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:720:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:727:5
             if (!scanToken(COMMA)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:721:5
-            // NonTerminal expressionOrEmpty at cc21/mdx.jj:721:5
-            pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 721, 5);
-            boolean prevScanToEnd1607= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:728:5
+            // NonTerminal expressionOrEmpty at cc21/mdx.jj:728:5
+            pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 728, 5);
+            boolean prevScanToEnd1613= scanToEnd;
             currentLookaheadProduction= "expressionOrEmpty";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3540,11 +3545,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1607;
+                scanToEnd= prevScanToEnd1613;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:722:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:729:5
             return true;
         }
         finally {
@@ -3553,21 +3558,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:743:5
+    // cc21/mdx.jj:750:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$743$5() {
+    private final boolean check$mdx_jj$750$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:743:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:750:5
             if (!scanToken(COMMA)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:744:5
-            // NonTerminal parseExpression at cc21/mdx.jj:744:5
-            pushOntoLookaheadStack("expList", "cc21/mdx.jj", 744, 5);
-            boolean prevScanToEnd1608= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:751:5
+            // NonTerminal parseExpression at cc21/mdx.jj:751:5
+            pushOntoLookaheadStack("expList", "cc21/mdx.jj", 751, 5);
+            boolean prevScanToEnd1614= scanToEnd;
             currentLookaheadProduction= "parseExpression";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3576,11 +3581,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1608;
+                scanToEnd= prevScanToEnd1614;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:745:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:752:5
             return true;
         }
         finally {
@@ -3589,18 +3594,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:776:5
+    // cc21/mdx.jj:783:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$776$5$() {
+    private final boolean check$mdx_jj$783$5$() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:776:5
-            // NonTerminal parseNameSegment at cc21/mdx.jj:776:5
-            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 776, 5);
-            boolean prevScanToEnd1610= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:783:5
+            // NonTerminal parseNameSegment at cc21/mdx.jj:783:5
+            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 783, 5);
+            boolean prevScanToEnd1616= scanToEnd;
             currentLookaheadProduction= "parseNameSegment";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -3609,7 +3614,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1610;
+                scanToEnd= prevScanToEnd1616;
                 --nonTerminalNesting;
             }
             return true;
@@ -3620,18 +3625,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:778:5
+    // cc21/mdx.jj:785:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$778$5() {
+    private final boolean check$mdx_jj$785$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:778:5
-            // NonTerminal parseKeyIdentifier at cc21/mdx.jj:778:5
-            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 778, 5);
-            boolean prevScanToEnd1611= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:785:5
+            // NonTerminal parseKeyIdentifier at cc21/mdx.jj:785:5
+            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 785, 5);
+            boolean prevScanToEnd1617= scanToEnd;
             currentLookaheadProduction= "parseKeyIdentifier";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -3640,7 +3645,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1611;
+                scanToEnd= prevScanToEnd1617;
                 --nonTerminalNesting;
             }
             return true;
@@ -3651,93 +3656,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:800:3
+    // cc21/mdx.jj:807:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$800$3() {
+    private final boolean check$mdx_jj$807$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:800:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:807:3
             if (!scanToken(ATSIGN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:800:14
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:807:14
             if (!scanToken(ID)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:801:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:897:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$897$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:897:5
-            Token token1613= currentLookaheadToken;
-            int remainingLookahead1613= remainingLookahead;
-            boolean hitFailure1613= hitFailure;
-            if (!check$mdx_jj$897$5$()) {
-                currentLookaheadToken= token1613;
-                remainingLookahead= remainingLookahead1613;
-                hitFailure= hitFailure1613;
-                if (!check$mdx_jj$904$5()) {
-                    currentLookaheadToken= token1613;
-                    remainingLookahead= remainingLookahead1613;
-                    hitFailure= hitFailure1613;
-                    if (!check$mdx_jj$913$5()) {
-                        currentLookaheadToken= token1613;
-                        remainingLookahead= remainingLookahead1613;
-                        hitFailure= hitFailure1613;
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:897:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$897$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:897:5
-            if (!scanToken(OR)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:897:12
-            // NonTerminal term5 at cc21/mdx.jj:897:12
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 897, 12);
-            boolean prevScanToEnd1614= scanToEnd;
-            currentLookaheadProduction= "term5";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term5()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1614;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:898:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:808:3
             return true;
         }
         finally {
@@ -3754,13 +3687,49 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:904:5
-            if (!scanToken(XOR)) return false;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:904:5
+            Token token1619= currentLookaheadToken;
+            int remainingLookahead1619= remainingLookahead;
+            boolean hitFailure1619= hitFailure;
+            if (!check$mdx_jj$904$5$()) {
+                currentLookaheadToken= token1619;
+                remainingLookahead= remainingLookahead1619;
+                hitFailure= hitFailure1619;
+                if (!check$mdx_jj$911$5()) {
+                    currentLookaheadToken= token1619;
+                    remainingLookahead= remainingLookahead1619;
+                    hitFailure= hitFailure1619;
+                    if (!check$mdx_jj$920$5()) {
+                        currentLookaheadToken= token1619;
+                        remainingLookahead= remainingLookahead1619;
+                        hitFailure= hitFailure1619;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:904:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$904$5$() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:904:13
-            // NonTerminal term5 at cc21/mdx.jj:904:13
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 904, 13);
-            boolean prevScanToEnd1615= scanToEnd;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:904:5
+            if (!scanToken(OR)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:904:12
+            // NonTerminal term5 at cc21/mdx.jj:904:12
+            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 904, 12);
+            boolean prevScanToEnd1620= scanToEnd;
             currentLookaheadProduction= "term5";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3769,7 +3738,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1615;
+                scanToEnd= prevScanToEnd1620;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -3782,21 +3751,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:913:5
+    // cc21/mdx.jj:911:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$913$5() {
+    private final boolean check$mdx_jj$911$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:913:5
-            if (!scanToken(COLON)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:911:5
+            if (!scanToken(XOR)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:913:15
-            // NonTerminal term5 at cc21/mdx.jj:913:15
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 913, 15);
-            boolean prevScanToEnd1616= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:911:13
+            // NonTerminal term5 at cc21/mdx.jj:911:13
+            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 911, 13);
+            boolean prevScanToEnd1621= scanToEnd;
             currentLookaheadProduction= "term5";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3805,11 +3774,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1616;
+                scanToEnd= prevScanToEnd1621;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:914:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:912:5
             return true;
         }
         finally {
@@ -3818,21 +3787,57 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:933:5
+    // cc21/mdx.jj:920:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$933$5() {
+    private final boolean check$mdx_jj$920$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:933:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:920:5
+            if (!scanToken(COLON)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:920:15
+            // NonTerminal term5 at cc21/mdx.jj:920:15
+            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 920, 15);
+            boolean prevScanToEnd1622= scanToEnd;
+            currentLookaheadProduction= "term5";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$term5()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1622;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:921:5
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:940:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$940$5() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:940:5
             if (!scanToken(AND)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:933:13
-            // NonTerminal term4 at cc21/mdx.jj:933:13
-            pushOntoLookaheadStack("term5", "cc21/mdx.jj", 933, 13);
-            boolean prevScanToEnd1617= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:940:13
+            // NonTerminal term4 at cc21/mdx.jj:940:13
+            pushOntoLookaheadStack("term5", "cc21/mdx.jj", 940, 13);
+            boolean prevScanToEnd1623= scanToEnd;
             currentLookaheadProduction= "term4";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3841,11 +3846,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1617;
+                scanToEnd= prevScanToEnd1623;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:934:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:941:5
             return true;
         }
         finally {
@@ -3854,18 +3859,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:951:3
+    // cc21/mdx.jj:958:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$951$3() {
+    private final boolean check$mdx_jj$958$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:951:3
-            // NonTerminal term3 at cc21/mdx.jj:951:3
-            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 951, 3);
-            boolean prevScanToEnd1618= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:958:3
+            // NonTerminal term3 at cc21/mdx.jj:958:3
+            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 958, 3);
+            boolean prevScanToEnd1624= scanToEnd;
             currentLookaheadProduction= "term3";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -3874,11 +3879,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1618;
+                scanToEnd= prevScanToEnd1624;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:952:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:959:3
             return true;
         }
         finally {
@@ -3887,21 +3892,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:955:3
+    // cc21/mdx.jj:962:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$955$3() {
+    private final boolean check$mdx_jj$962$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:955:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:962:3
             if (!scanToken(NOT)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:955:11
-            // NonTerminal term4 at cc21/mdx.jj:955:11
-            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 955, 11);
-            boolean prevScanToEnd1619= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:962:11
+            // NonTerminal term4 at cc21/mdx.jj:962:11
+            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 962, 11);
+            boolean prevScanToEnd1625= scanToEnd;
             currentLookaheadProduction= "term4";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -3910,11 +3915,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1619;
+                scanToEnd= prevScanToEnd1625;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:956:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:963:3
             return true;
         }
         finally {
@@ -3923,50 +3928,50 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:973:5
+    // cc21/mdx.jj:980:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$973$5() {
+    private final boolean check$mdx_jj$980$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:973:5
-            Token token1620= currentLookaheadToken;
-            int remainingLookahead1620= remainingLookahead;
-            boolean hitFailure1620= hitFailure;
-            if (!check$mdx_jj$973$5$()) {
-                currentLookaheadToken= token1620;
-                remainingLookahead= remainingLookahead1620;
-                hitFailure= hitFailure1620;
-                if (!check$mdx_jj$1009$5()) {
-                    currentLookaheadToken= token1620;
-                    remainingLookahead= remainingLookahead1620;
-                    hitFailure= hitFailure1620;
-                    if (!check$mdx_jj$1019$5()) {
-                        currentLookaheadToken= token1620;
-                        remainingLookahead= remainingLookahead1620;
-                        hitFailure= hitFailure1620;
-                        if (!check$mdx_jj$1027$5()) {
-                            currentLookaheadToken= token1620;
-                            remainingLookahead= remainingLookahead1620;
-                            hitFailure= hitFailure1620;
-                            if (!check$mdx_jj$1032$5()) {
-                                currentLookaheadToken= token1620;
-                                remainingLookahead= remainingLookahead1620;
-                                hitFailure= hitFailure1620;
-                                if (!check$mdx_jj$1039$5()) {
-                                    currentLookaheadToken= token1620;
-                                    remainingLookahead= remainingLookahead1620;
-                                    hitFailure= hitFailure1620;
-                                    if (!check$mdx_jj$1052$5()) {
-                                        currentLookaheadToken= token1620;
-                                        remainingLookahead= remainingLookahead1620;
-                                        hitFailure= hitFailure1620;
-                                        if (!check$mdx_jj$1059$5()) {
-                                            currentLookaheadToken= token1620;
-                                            remainingLookahead= remainingLookahead1620;
-                                            hitFailure= hitFailure1620;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:980:5
+            Token token1626= currentLookaheadToken;
+            int remainingLookahead1626= remainingLookahead;
+            boolean hitFailure1626= hitFailure;
+            if (!check$mdx_jj$980$5$()) {
+                currentLookaheadToken= token1626;
+                remainingLookahead= remainingLookahead1626;
+                hitFailure= hitFailure1626;
+                if (!check$mdx_jj$1016$5()) {
+                    currentLookaheadToken= token1626;
+                    remainingLookahead= remainingLookahead1626;
+                    hitFailure= hitFailure1626;
+                    if (!check$mdx_jj$1026$5()) {
+                        currentLookaheadToken= token1626;
+                        remainingLookahead= remainingLookahead1626;
+                        hitFailure= hitFailure1626;
+                        if (!check$mdx_jj$1034$5()) {
+                            currentLookaheadToken= token1626;
+                            remainingLookahead= remainingLookahead1626;
+                            hitFailure= hitFailure1626;
+                            if (!check$mdx_jj$1039$5()) {
+                                currentLookaheadToken= token1626;
+                                remainingLookahead= remainingLookahead1626;
+                                hitFailure= hitFailure1626;
+                                if (!check$mdx_jj$1046$5()) {
+                                    currentLookaheadToken= token1626;
+                                    remainingLookahead= remainingLookahead1626;
+                                    hitFailure= hitFailure1626;
+                                    if (!check$mdx_jj$1059$5()) {
+                                        currentLookaheadToken= token1626;
+                                        remainingLookahead= remainingLookahead1626;
+                                        hitFailure= hitFailure1626;
+                                        if (!check$mdx_jj$1066$5()) {
+                                            currentLookaheadToken= token1626;
+                                            remainingLookahead= remainingLookahead1626;
+                                            hitFailure= hitFailure1626;
                                             return false;
                                         }
                                     }
@@ -3984,23 +3989,23 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:973:5
+    // cc21/mdx.jj:980:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$973$5$() {
+    private final boolean check$mdx_jj$980$5$() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:974:7
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:981:7
             // Applying single-token optimization for expansion of type ExpansionChoice
-            // cc21/mdx.jj:974:7
-            if (!scanToken(first_set$mdx_jj$974$7)) return false;
+            // cc21/mdx.jj:981:7
+            if (!scanToken(first_set$mdx_jj$981$7)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:999:5
-            // NonTerminal term2 at cc21/mdx.jj:999:5
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 999, 5);
-            boolean prevScanToEnd1621= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1006:5
+            // NonTerminal term2 at cc21/mdx.jj:1006:5
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1006, 5);
+            boolean prevScanToEnd1627= scanToEnd;
             currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4009,11 +4014,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1621;
+                scanToEnd= prevScanToEnd1627;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1000:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1007:5
             return true;
         }
         finally {
@@ -4022,21 +4027,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1009:5
+    // cc21/mdx.jj:1016:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1009$5() {
+    private final boolean check$mdx_jj$1016$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1010:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1017:5
             if (!scanToken(IS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1010:12
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1017:12
             if (!scanToken(NULL)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1011:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1018:5
             return true;
         }
         finally {
@@ -4045,45 +4050,9 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1019:5
+    // cc21/mdx.jj:1026:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1019$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1020:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1020:12
-            // NonTerminal term2 at cc21/mdx.jj:1020:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1020, 12);
-            boolean prevScanToEnd1622= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1622;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1021:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1027:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1027$5() {
+    private final boolean check$mdx_jj$1026$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
@@ -4092,8 +4061,21 @@ public class MDXParser implements mdxConstants {
             // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1027:5
             if (!scanToken(IS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1027:12
-            if (!scanToken(EMPTY)) return false;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1027:12
+            // NonTerminal term2 at cc21/mdx.jj:1027:12
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1027, 12);
+            boolean prevScanToEnd1628= scanToEnd;
+            currentLookaheadProduction= "term2";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$term2()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1628;
+                --nonTerminalNesting;
+            }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1028:5
             return true;
@@ -4104,34 +4086,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1032:5
+    // cc21/mdx.jj:1034:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1032$5() {
+    private final boolean check$mdx_jj$1034$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1032:5
-            if (!scanToken(MATCHES)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1034:5
+            if (!scanToken(IS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1032:17
-            // NonTerminal term2 at cc21/mdx.jj:1032:17
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1032, 17);
-            boolean prevScanToEnd1623= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1623;
-                --nonTerminalNesting;
-            }
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1034:12
+            if (!scanToken(EMPTY)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1033:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1035:5
             return true;
         }
         finally {
@@ -4148,16 +4117,13 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1040:5
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1040:13
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1039:5
             if (!scanToken(MATCHES)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1040:25
-            // NonTerminal term2 at cc21/mdx.jj:1040:25
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1040, 25);
-            boolean prevScanToEnd1624= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1039:17
+            // NonTerminal term2 at cc21/mdx.jj:1039:17
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1039, 17);
+            boolean prevScanToEnd1629= scanToEnd;
             currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4166,11 +4132,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1624;
+                scanToEnd= prevScanToEnd1629;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1041:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1040:5
             return true;
         }
         finally {
@@ -4179,21 +4145,24 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1052:5
+    // cc21/mdx.jj:1046:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1052$5() {
+    private final boolean check$mdx_jj$1046$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1052:5
-            if (!scanToken(IN)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1047:5
+            if (!scanToken(NOT)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1052:12
-            // NonTerminal term2 at cc21/mdx.jj:1052:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1052, 12);
-            boolean prevScanToEnd1625= scanToEnd;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1047:13
+            if (!scanToken(MATCHES)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1047:25
+            // NonTerminal term2 at cc21/mdx.jj:1047:25
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1047, 25);
+            boolean prevScanToEnd1630= scanToEnd;
             currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4202,11 +4171,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1625;
+                scanToEnd= prevScanToEnd1630;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1053:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1048:5
             return true;
         }
         finally {
@@ -4224,15 +4193,12 @@ public class MDXParser implements mdxConstants {
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1059:5
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1059:13
             if (!scanToken(IN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1059:20
-            // NonTerminal term2 at cc21/mdx.jj:1059:20
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1059, 20);
-            boolean prevScanToEnd1626= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1059:12
+            // NonTerminal term2 at cc21/mdx.jj:1059:12
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1059, 12);
+            boolean prevScanToEnd1631= scanToEnd;
             currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4241,7 +4207,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1626;
+                scanToEnd= prevScanToEnd1631;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -4254,70 +4220,37 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1084:5
+    // cc21/mdx.jj:1066:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1084$5() {
+    private final boolean check$mdx_jj$1066$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1084:5
-            Token token1627= currentLookaheadToken;
-            int remainingLookahead1627= remainingLookahead;
-            boolean hitFailure1627= hitFailure;
-            if (!check$mdx_jj$1084$5$()) {
-                currentLookaheadToken= token1627;
-                remainingLookahead= remainingLookahead1627;
-                hitFailure= hitFailure1627;
-                if (!check$mdx_jj$1091$5()) {
-                    currentLookaheadToken= token1627;
-                    remainingLookahead= remainingLookahead1627;
-                    hitFailure= hitFailure1627;
-                    if (!check$mdx_jj$1098$5()) {
-                        currentLookaheadToken= token1627;
-                        remainingLookahead= remainingLookahead1627;
-                        hitFailure= hitFailure1627;
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1084:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1084$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:5
+            if (!scanToken(NOT)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1084:5
-            if (!scanToken(PLUS)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:13
+            if (!scanToken(IN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1084:14
-            // NonTerminal term at cc21/mdx.jj:1084:14
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1084, 14);
-            boolean prevScanToEnd1628= scanToEnd;
-            currentLookaheadProduction= "term";
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1066:20
+            // NonTerminal term2 at cc21/mdx.jj:1066:20
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1066, 20);
+            boolean prevScanToEnd1632= scanToEnd;
+            currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
             try {
-                if (!check$term()) return false;
+                if (!check$term2()) return false;
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1628;
+                scanToEnd= prevScanToEnd1632;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1085:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1067:5
             return true;
         }
         finally {
@@ -4334,13 +4267,49 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1091:5
-            if (!scanToken(MINUS)) return false;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1091:5
+            Token token1633= currentLookaheadToken;
+            int remainingLookahead1633= remainingLookahead;
+            boolean hitFailure1633= hitFailure;
+            if (!check$mdx_jj$1091$5$()) {
+                currentLookaheadToken= token1633;
+                remainingLookahead= remainingLookahead1633;
+                hitFailure= hitFailure1633;
+                if (!check$mdx_jj$1098$5()) {
+                    currentLookaheadToken= token1633;
+                    remainingLookahead= remainingLookahead1633;
+                    hitFailure= hitFailure1633;
+                    if (!check$mdx_jj$1105$5()) {
+                        currentLookaheadToken= token1633;
+                        remainingLookahead= remainingLookahead1633;
+                        hitFailure= hitFailure1633;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1091:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1091$5$() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1091:15
-            // NonTerminal term at cc21/mdx.jj:1091:15
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1091, 15);
-            boolean prevScanToEnd1629= scanToEnd;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1091:5
+            if (!scanToken(PLUS)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1091:14
+            // NonTerminal term at cc21/mdx.jj:1091:14
+            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1091, 14);
+            boolean prevScanToEnd1634= scanToEnd;
             currentLookaheadProduction= "term";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4349,7 +4318,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1629;
+                scanToEnd= prevScanToEnd1634;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -4371,12 +4340,12 @@ public class MDXParser implements mdxConstants {
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1098:5
-            if (!scanToken(CONCAT)) return false;
+            if (!scanToken(MINUS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1098:16
-            // NonTerminal term at cc21/mdx.jj:1098:16
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1098, 16);
-            boolean prevScanToEnd1630= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1098:15
+            // NonTerminal term at cc21/mdx.jj:1098:15
+            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1098, 15);
+            boolean prevScanToEnd1635= scanToEnd;
             currentLookaheadProduction= "term";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4385,7 +4354,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1630;
+                scanToEnd= prevScanToEnd1635;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -4398,65 +4367,34 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1118:5
+    // cc21/mdx.jj:1105:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1118$5() {
+    private final boolean check$mdx_jj$1105$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1118:5
-            Token token1631= currentLookaheadToken;
-            int remainingLookahead1631= remainingLookahead;
-            boolean hitFailure1631= hitFailure;
-            if (!check$mdx_jj$1118$5$()) {
-                currentLookaheadToken= token1631;
-                remainingLookahead= remainingLookahead1631;
-                hitFailure= hitFailure1631;
-                if (!check$mdx_jj$1125$5()) {
-                    currentLookaheadToken= token1631;
-                    remainingLookahead= remainingLookahead1631;
-                    hitFailure= hitFailure1631;
-                    return false;
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1118:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1118$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1105:5
+            if (!scanToken(CONCAT)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1118:5
-            if (!scanToken(ASTERISK)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1118:18
-            // NonTerminal factor at cc21/mdx.jj:1118:18
-            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1118, 18);
-            boolean prevScanToEnd1632= scanToEnd;
-            currentLookaheadProduction= "factor";
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1105:16
+            // NonTerminal term at cc21/mdx.jj:1105:16
+            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1105, 16);
+            boolean prevScanToEnd1636= scanToEnd;
+            currentLookaheadProduction= "term";
             scanToEnd= true;
             ++nonTerminalNesting;
             try {
-                if (!check$factor()) return false;
+                if (!check$term()) return false;
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1632;
+                scanToEnd= prevScanToEnd1636;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1119:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1106:5
             return true;
         }
         finally {
@@ -4473,13 +4411,44 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1125:5
-            if (!scanToken(SOLIDUS)) return false;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1125:5
+            Token token1637= currentLookaheadToken;
+            int remainingLookahead1637= remainingLookahead;
+            boolean hitFailure1637= hitFailure;
+            if (!check$mdx_jj$1125$5$()) {
+                currentLookaheadToken= token1637;
+                remainingLookahead= remainingLookahead1637;
+                hitFailure= hitFailure1637;
+                if (!check$mdx_jj$1132$5()) {
+                    currentLookaheadToken= token1637;
+                    remainingLookahead= remainingLookahead1637;
+                    hitFailure= hitFailure1637;
+                    return false;
+                }
+            }
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1125:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1125$5$() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1125:17
-            // NonTerminal factor at cc21/mdx.jj:1125:17
-            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1125, 17);
-            boolean prevScanToEnd1633= scanToEnd;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1125:5
+            if (!scanToken(ASTERISK)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1125:18
+            // NonTerminal factor at cc21/mdx.jj:1125:18
+            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1125, 18);
+            boolean prevScanToEnd1638= scanToEnd;
             currentLookaheadProduction= "factor";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4488,7 +4457,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1633;
+                scanToEnd= prevScanToEnd1638;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -4501,18 +4470,54 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1143:3
+    // cc21/mdx.jj:1132:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1143$3() {
+    private final boolean check$mdx_jj$1132$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1143:3
-            // NonTerminal primary at cc21/mdx.jj:1143:3
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1143, 3);
-            boolean prevScanToEnd1634= scanToEnd;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1132:5
+            if (!scanToken(SOLIDUS)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1132:17
+            // NonTerminal factor at cc21/mdx.jj:1132:17
+            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1132, 17);
+            boolean prevScanToEnd1639= scanToEnd;
+            currentLookaheadProduction= "factor";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$factor()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1639;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1133:5
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1150:3
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1150$3() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1150:3
+            // NonTerminal primary at cc21/mdx.jj:1150:3
+            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1150, 3);
+            boolean prevScanToEnd1640= scanToEnd;
             currentLookaheadProduction= "primary";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -4521,11 +4526,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1634;
+                scanToEnd= prevScanToEnd1640;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1144:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1151:3
             return true;
         }
         finally {
@@ -4534,21 +4539,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1147:3
+    // cc21/mdx.jj:1154:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1147$3() {
+    private final boolean check$mdx_jj$1154$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1147:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1154:3
             if (!scanToken(PLUS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1147:12
-            // NonTerminal primary at cc21/mdx.jj:1147:12
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1147, 12);
-            boolean prevScanToEnd1635= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1154:12
+            // NonTerminal primary at cc21/mdx.jj:1154:12
+            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1154, 12);
+            boolean prevScanToEnd1641= scanToEnd;
             currentLookaheadProduction= "primary";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4557,47 +4562,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1635;
+                scanToEnd= prevScanToEnd1641;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1148:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1151:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1151$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1151:3
-            if (!scanToken(MINUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1151:13
-            // NonTerminal primary at cc21/mdx.jj:1151:13
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1151, 13);
-            boolean prevScanToEnd1636= scanToEnd;
-            currentLookaheadProduction= "primary";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$primary()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1636;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1152:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1155:3
             return true;
         }
         finally {
@@ -4615,12 +4584,12 @@ public class MDXParser implements mdxConstants {
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1158:3
-            if (!scanToken(EXISTING)) return false;
+            if (!scanToken(MINUS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1158:16
-            // NonTerminal primary at cc21/mdx.jj:1158:16
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1158, 16);
-            boolean prevScanToEnd1637= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1158:13
+            // NonTerminal primary at cc21/mdx.jj:1158:13
+            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1158, 13);
+            boolean prevScanToEnd1642= scanToEnd;
             currentLookaheadProduction= "primary";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4629,7 +4598,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1637;
+                scanToEnd= prevScanToEnd1642;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -4642,21 +4611,57 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1174:5
+    // cc21/mdx.jj:1165:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1174$5() {
+    private final boolean check$mdx_jj$1165$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1174:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1165:3
+            if (!scanToken(EXISTING)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1165:16
+            // NonTerminal primary at cc21/mdx.jj:1165:16
+            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1165, 16);
+            boolean prevScanToEnd1643= scanToEnd;
+            currentLookaheadProduction= "primary";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$primary()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1643;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1166:3
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1181:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1181$5() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1181:5
             if (!scanToken(DOT)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1174:13
-            // NonTerminal segmentOrFuncall at cc21/mdx.jj:1174:13
-            pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1174, 13);
-            boolean prevScanToEnd1638= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1181:13
+            // NonTerminal segmentOrFuncall at cc21/mdx.jj:1181:13
+            pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1181, 13);
+            boolean prevScanToEnd1644= scanToEnd;
             currentLookaheadProduction= "segmentOrFuncall";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4665,7 +4670,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1638;
+                scanToEnd= prevScanToEnd1644;
                 --nonTerminalNesting;
             }
             return true;
@@ -4676,34 +4681,34 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1189:5
+    // cc21/mdx.jj:1196:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1189$5() {
+    private final boolean check$mdx_jj$1196$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1189:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1196:5
             if (!scanToken(LPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1191:7
-            Token token1639= currentLookaheadToken;
-            int remainingLookahead1639= remainingLookahead;
-            boolean hitFailure1639= hitFailure;
-            if (!check$mdx_jj$1191$7()) {
-                currentLookaheadToken= token1639;
-                remainingLookahead= remainingLookahead1639;
-                hitFailure= hitFailure1639;
-                if (!check$mdx_jj$1196$7()) {
-                    currentLookaheadToken= token1639;
-                    remainingLookahead= remainingLookahead1639;
-                    hitFailure= hitFailure1639;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1198:7
+            Token token1645= currentLookaheadToken;
+            int remainingLookahead1645= remainingLookahead;
+            boolean hitFailure1645= hitFailure;
+            if (!check$mdx_jj$1198$7()) {
+                currentLookaheadToken= token1645;
+                remainingLookahead= remainingLookahead1645;
+                hitFailure= hitFailure1645;
+                if (!check$mdx_jj$1203$7()) {
+                    currentLookaheadToken= token1645;
+                    remainingLookahead= remainingLookahead1645;
+                    hitFailure= hitFailure1645;
                     return false;
                 }
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1198:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1205:5
             if (!scanToken(RPAREN)) return false;
             return true;
         }
@@ -4713,16 +4718,16 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1191:7
+    // cc21/mdx.jj:1198:7
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1191$7() {
+    private final boolean check$mdx_jj$1198$7() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1191$17()) return false;
+            if (!check$mdx_jj$1198$17()) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1192:7
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1199:7
             return true;
         }
         finally {
@@ -4731,18 +4736,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1196:7
+    // cc21/mdx.jj:1203:7
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1196$7() {
+    private final boolean check$mdx_jj$1203$7() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1196:7
-            // NonTerminal expOrEmptyList at cc21/mdx.jj:1196:7
-            pushOntoLookaheadStack("segmentOrFuncall", "cc21/mdx.jj", 1196, 7);
-            boolean prevScanToEnd1640= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1203:7
+            // NonTerminal expOrEmptyList at cc21/mdx.jj:1203:7
+            pushOntoLookaheadStack("segmentOrFuncall", "cc21/mdx.jj", 1203, 7);
+            boolean prevScanToEnd1646= scanToEnd;
             currentLookaheadProduction= "expOrEmptyList";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4751,7 +4756,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1640;
+                scanToEnd= prevScanToEnd1646;
                 --nonTerminalNesting;
             }
             return true;
@@ -4762,24 +4767,24 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1246:3
+    // cc21/mdx.jj:1253:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1246$3() {
+    private final boolean check$mdx_jj$1253$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1246:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1253:3
             if (!scanToken(CAST)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1246:12
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1253:12
             if (!scanToken(LPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1246:23
-            // NonTerminal unaliasedExpression at cc21/mdx.jj:1246:23
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1246, 23);
-            boolean prevScanToEnd1641= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1253:23
+            // NonTerminal unaliasedExpression at cc21/mdx.jj:1253:23
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1253, 23);
+            boolean prevScanToEnd1647= scanToEnd;
             currentLookaheadProduction= "unaliasedExpression";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4788,17 +4793,17 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1641;
+                scanToEnd= prevScanToEnd1647;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1247:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1254:3
             if (!scanToken(AS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1247:10
-            // NonTerminal parseNameSegment at cc21/mdx.jj:1247:10
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1247, 10);
-            boolean prevScanToEnd1642= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1254:10
+            // NonTerminal parseNameSegment at cc21/mdx.jj:1254:10
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1254, 10);
+            boolean prevScanToEnd1648= scanToEnd;
             currentLookaheadProduction= "parseNameSegment";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4807,14 +4812,14 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1642;
+                scanToEnd= prevScanToEnd1648;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1247:39
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1254:39
             if (!scanToken(RPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1248:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1255:3
             return true;
         }
         finally {
@@ -4823,21 +4828,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1256:3
+    // cc21/mdx.jj:1263:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1256$3() {
+    private final boolean check$mdx_jj$1263$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1256:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1263:3
             if (!scanToken(LPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1256:14
-            // NonTerminal expList at cc21/mdx.jj:1256:14
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1256, 14);
-            boolean prevScanToEnd1643= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1263:14
+            // NonTerminal expList at cc21/mdx.jj:1263:14
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1263, 14);
+            boolean prevScanToEnd1649= scanToEnd;
             currentLookaheadProduction= "expList";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -4846,14 +4851,14 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1643;
+                scanToEnd= prevScanToEnd1649;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1256:38
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1263:38
             if (!scanToken(RPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1257:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1264:3
             return true;
         }
         finally {
@@ -4862,37 +4867,37 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1265:3
+    // cc21/mdx.jj:1272:3
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1265$3() {
+    private final boolean check$mdx_jj$1272$3() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1265:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1272:3
             if (!scanToken(LBRACE)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1267:5
-            Token token1644= currentLookaheadToken;
-            int remainingLookahead1644= remainingLookahead;
-            boolean hitFailure1644= hitFailure;
-            if (!check$mdx_jj$1267$5()) {
-                currentLookaheadToken= token1644;
-                remainingLookahead= remainingLookahead1644;
-                hitFailure= hitFailure1644;
-                if (!check$mdx_jj$1272$5()) {
-                    currentLookaheadToken= token1644;
-                    remainingLookahead= remainingLookahead1644;
-                    hitFailure= hitFailure1644;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1274:5
+            Token token1650= currentLookaheadToken;
+            int remainingLookahead1650= remainingLookahead;
+            boolean hitFailure1650= hitFailure;
+            if (!check$mdx_jj$1274$5()) {
+                currentLookaheadToken= token1650;
+                remainingLookahead= remainingLookahead1650;
+                hitFailure= hitFailure1650;
+                if (!check$mdx_jj$1279$5()) {
+                    currentLookaheadToken= token1650;
+                    remainingLookahead= remainingLookahead1650;
+                    hitFailure= hitFailure1650;
                     return false;
                 }
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1274:3
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1281:3
             if (!scanToken(RBRACE)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1275:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1282:3
             return true;
         }
         finally {
@@ -4901,16 +4906,16 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1267:5
+    // cc21/mdx.jj:1274:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1267$5() {
+    private final boolean check$mdx_jj$1274$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1267$15()) return false;
+            if (!check$mdx_jj$1274$15()) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1268:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1275:5
             return true;
         }
         finally {
@@ -4919,18 +4924,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1272:5
+    // cc21/mdx.jj:1279:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1272$5() {
+    private final boolean check$mdx_jj$1279$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1272:5
-            // NonTerminal expList at cc21/mdx.jj:1272:5
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1272, 5);
-            boolean prevScanToEnd1645= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1279:5
+            // NonTerminal expList at cc21/mdx.jj:1279:5
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1279, 5);
+            boolean prevScanToEnd1651= scanToEnd;
             currentLookaheadProduction= "expList";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -4939,42 +4944,9 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1645;
+                scanToEnd= prevScanToEnd1651;
                 --nonTerminalNesting;
             }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1279:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1279$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1279:3
-            // NonTerminal caseExpression at cc21/mdx.jj:1279:3
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1279, 3);
-            boolean prevScanToEnd1646= scanToEnd;
-            currentLookaheadProduction= "caseExpression";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$caseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1646;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1280:3
             return true;
         }
         finally {
@@ -4992,9 +4964,42 @@ public class MDXParser implements mdxConstants {
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1286:3
-            // NonTerminal parseNameSegment at cc21/mdx.jj:1286:3
+            // NonTerminal caseExpression at cc21/mdx.jj:1286:3
             pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1286, 3);
-            boolean prevScanToEnd1647= scanToEnd;
+            boolean prevScanToEnd1652= scanToEnd;
+            currentLookaheadProduction= "caseExpression";
+            scanToEnd= false;
+            ++nonTerminalNesting;
+            try {
+                if (!check$caseExpression()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1652;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1287:3
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1293:3
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1293$3() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1293:3
+            // NonTerminal parseNameSegment at cc21/mdx.jj:1293:3
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1293, 3);
+            boolean prevScanToEnd1653= scanToEnd;
             currentLookaheadProduction= "parseNameSegment";
             scanToEnd= false;
             ++nonTerminalNesting;
@@ -5003,37 +5008,37 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1647;
+                scanToEnd= prevScanToEnd1653;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1287:3
+            // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1294:3
             while (remainingLookahead> 0&&!hitFailure) {
-                Token token1648= currentLookaheadToken;
-                if (!check$mdx_jj$1288$5()) {
-                    currentLookaheadToken= token1648;
+                Token token1654= currentLookaheadToken;
+                if (!check$mdx_jj$1295$5()) {
+                    currentLookaheadToken= token1654;
                     break;
                 }
             }
             hitFailure= false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1297:5
-            Token token1649= currentLookaheadToken;
-            int remainingLookahead1649= remainingLookahead;
-            boolean hitFailure1649= hitFailure;
-            if (!check$mdx_jj$1297$5()) {
-                currentLookaheadToken= token1649;
-                remainingLookahead= remainingLookahead1649;
-                hitFailure= hitFailure1649;
-                if (!check$mdx_jj$1308$16()) {
-                    currentLookaheadToken= token1649;
-                    remainingLookahead= remainingLookahead1649;
-                    hitFailure= hitFailure1649;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1304:5
+            Token token1655= currentLookaheadToken;
+            int remainingLookahead1655= remainingLookahead;
+            boolean hitFailure1655= hitFailure;
+            if (!check$mdx_jj$1304$5()) {
+                currentLookaheadToken= token1655;
+                remainingLookahead= remainingLookahead1655;
+                hitFailure= hitFailure1655;
+                if (!check$mdx_jj$1315$16()) {
+                    currentLookaheadToken= token1655;
+                    remainingLookahead= remainingLookahead1655;
+                    hitFailure= hitFailure1655;
                     return false;
                 }
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1312:3
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1319:3
             return true;
         }
         finally {
@@ -5042,21 +5047,21 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1288:5
+    // cc21/mdx.jj:1295:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1288$5() {
+    private final boolean check$mdx_jj$1295$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1288:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1295:5
             if (!scanToken(BANG)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1288:14
-            // NonTerminal parseNameSegment at cc21/mdx.jj:1288:14
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1288, 14);
-            boolean prevScanToEnd1650= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1295:14
+            // NonTerminal parseNameSegment at cc21/mdx.jj:1295:14
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1295, 14);
+            boolean prevScanToEnd1656= scanToEnd;
             currentLookaheadProduction= "parseNameSegment";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -5065,11 +5070,11 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1650;
+                scanToEnd= prevScanToEnd1656;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1289:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1296:5
             return true;
         }
         finally {
@@ -5078,34 +5083,34 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1297:5
+    // cc21/mdx.jj:1304:5
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1297$5() {
+    private final boolean check$mdx_jj$1304$5() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1297:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1304:5
             if (!scanToken(LPAREN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1299:7
-            Token token1651= currentLookaheadToken;
-            int remainingLookahead1651= remainingLookahead;
-            boolean hitFailure1651= hitFailure;
-            if (!check$mdx_jj$1299$7()) {
-                currentLookaheadToken= token1651;
-                remainingLookahead= remainingLookahead1651;
-                hitFailure= hitFailure1651;
-                if (!check$mdx_jj$1304$7()) {
-                    currentLookaheadToken= token1651;
-                    remainingLookahead= remainingLookahead1651;
-                    hitFailure= hitFailure1651;
+            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1306:7
+            Token token1657= currentLookaheadToken;
+            int remainingLookahead1657= remainingLookahead;
+            boolean hitFailure1657= hitFailure;
+            if (!check$mdx_jj$1306$7()) {
+                currentLookaheadToken= token1657;
+                remainingLookahead= remainingLookahead1657;
+                hitFailure= hitFailure1657;
+                if (!check$mdx_jj$1311$7()) {
+                    currentLookaheadToken= token1657;
+                    remainingLookahead= remainingLookahead1657;
+                    hitFailure= hitFailure1657;
                     return false;
                 }
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1306:5
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1313:5
             if (!scanToken(RPAREN)) return false;
             return true;
         }
@@ -5115,16 +5120,16 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1299:7
+    // cc21/mdx.jj:1306:7
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1299$7() {
+    private final boolean check$mdx_jj$1306$7() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1299$17()) return false;
+            if (!check$mdx_jj$1306$17()) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1300:7
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1307:7
             return true;
         }
         finally {
@@ -5133,18 +5138,18 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1304:7
+    // cc21/mdx.jj:1311:7
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1304$7() {
+    private final boolean check$mdx_jj$1311$7() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1304:7
-            // NonTerminal expOrEmptyList at cc21/mdx.jj:1304:7
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1304, 7);
-            boolean prevScanToEnd1652= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1311:7
+            // NonTerminal expOrEmptyList at cc21/mdx.jj:1311:7
+            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1311, 7);
+            boolean prevScanToEnd1658= scanToEnd;
             currentLookaheadProduction= "expOrEmptyList";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -5153,7 +5158,7 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1652;
+                scanToEnd= prevScanToEnd1658;
                 --nonTerminalNesting;
             }
             return true;
@@ -5164,48 +5169,15 @@ public class MDXParser implements mdxConstants {
     }
 
     // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1308:16
+    // cc21/mdx.jj:1315:16
     // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1308$16() {
+    private final boolean check$mdx_jj$1315$16() {
         try {
             lookaheadRoutineNesting++;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1308:16
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1326:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1326$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1326:5
-            // NonTerminal parseExpression at cc21/mdx.jj:1326:5
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1326, 5);
-            boolean prevScanToEnd1653= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1653;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1327:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1315:16
             return true;
         }
         finally {
@@ -5222,41 +5194,19 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1333:5
-            if (!scanToken(WHEN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1333:14
-            // NonTerminal parseExpression at cc21/mdx.jj:1333:14
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1333, 14);
-            boolean prevScanToEnd1654= scanToEnd;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1333:5
+            // NonTerminal parseExpression at cc21/mdx.jj:1333:5
+            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1333, 5);
+            boolean prevScanToEnd1659= scanToEnd;
             currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
+            scanToEnd= false;
             ++nonTerminalNesting;
             try {
                 if (!check$parseExpression()) return false;
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1654;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1333:45
-            if (!scanToken(THEN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1333:54
-            // NonTerminal parseExpression at cc21/mdx.jj:1333:54
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1333, 54);
-            boolean prevScanToEnd1655= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1655;
+                scanToEnd= prevScanToEnd1659;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -5278,12 +5228,12 @@ public class MDXParser implements mdxConstants {
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1340:5
-            if (!scanToken(ELSE)) return false;
+            if (!scanToken(WHEN)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
             // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1340:14
             // NonTerminal parseExpression at cc21/mdx.jj:1340:14
             pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1340, 14);
-            boolean prevScanToEnd1656= scanToEnd;
+            boolean prevScanToEnd1660= scanToEnd;
             currentLookaheadProduction= "parseExpression";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -5292,7 +5242,26 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1656;
+                scanToEnd= prevScanToEnd1660;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1340:45
+            if (!scanToken(THEN)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1340:54
+            // NonTerminal parseExpression at cc21/mdx.jj:1340:54
+            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1340, 54);
+            boolean prevScanToEnd1661= scanToEnd;
+            currentLookaheadProduction= "parseExpression";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$parseExpression()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1661;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
@@ -5304,11 +5273,47 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:877:5
-    private final boolean scan$mdx_jj$877$5() {
-        int nonTerminalNesting1671= nonTerminalNesting;
-        int lookaheadRoutineNesting1673= lookaheadRoutineNesting;
-        Token currentLookaheadToken1672= currentLookaheadToken;
+    // scanahead routine for expansion at: 
+    // cc21/mdx.jj:1347:5
+    // BuildScanRoutine macro
+    private final boolean check$mdx_jj$1347$5() {
+        try {
+            lookaheadRoutineNesting++;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1347:5
+            if (!scanToken(ELSE)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1347:14
+            // NonTerminal parseExpression at cc21/mdx.jj:1347:14
+            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1347, 14);
+            boolean prevScanToEnd1662= scanToEnd;
+            currentLookaheadProduction= "parseExpression";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$parseExpression()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1662;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1348:5
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting--;
+        }
+    }
+
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:884:5
+    private final boolean scan$mdx_jj$884$5() {
+        int nonTerminalNesting1677= nonTerminalNesting;
+        int lookaheadRoutineNesting1679= lookaheadRoutineNesting;
+        Token currentLookaheadToken1678= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             remainingLookahead= UNLIMITED;
@@ -5317,80 +5322,7 @@ public class MDXParser implements mdxConstants {
             scanToEnd= false;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$877$15()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1673;
-            currentLookaheadToken= currentLookaheadToken1672;
-            nonTerminalNesting= nonTerminalNesting1671;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1009:5
-    private final boolean scan$mdx_jj$1009$5() {
-        int nonTerminalNesting1674= nonTerminalNesting;
-        int lookaheadRoutineNesting1676= lookaheadRoutineNesting;
-        Token currentLookaheadToken1675= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= 2;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1010:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1010:12
-            if (!scanToken(NULL)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1011:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1676;
-            currentLookaheadToken= currentLookaheadToken1675;
-            nonTerminalNesting= nonTerminalNesting1674;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1019:5
-    private final boolean scan$mdx_jj$1019$5() {
-        int nonTerminalNesting1677= nonTerminalNesting;
-        int lookaheadRoutineNesting1679= lookaheadRoutineNesting;
-        Token currentLookaheadToken1678= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= 2;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1020:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1020:12
-            // NonTerminal term2 at cc21/mdx.jj:1020:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1020, 12);
-            boolean prevScanToEnd1680= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1680;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1021:5
+            if (!check$mdx_jj$884$15()) return false;
             return true;
         }
         finally {
@@ -5400,11 +5332,11 @@ public class MDXParser implements mdxConstants {
         }
     }
 
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1039:5
-    private final boolean scan$mdx_jj$1039$5() {
-        int nonTerminalNesting1681= nonTerminalNesting;
-        int lookaheadRoutineNesting1683= lookaheadRoutineNesting;
-        Token currentLookaheadToken1682= currentLookaheadToken;
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1016:5
+    private final boolean scan$mdx_jj$1016$5() {
+        int nonTerminalNesting1680= nonTerminalNesting;
+        int lookaheadRoutineNesting1682= lookaheadRoutineNesting;
+        Token currentLookaheadToken1681= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             remainingLookahead= 2;
@@ -5414,16 +5346,43 @@ public class MDXParser implements mdxConstants {
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1040:5
-            if (!scanToken(NOT)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1017:5
+            if (!scanToken(IS)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1040:13
-            if (!scanToken(MATCHES)) return false;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1017:12
+            if (!scanToken(NULL)) return false;
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1040:25
-            // NonTerminal term2 at cc21/mdx.jj:1040:25
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1040, 25);
-            boolean prevScanToEnd1684= scanToEnd;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1018:5
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting= lookaheadRoutineNesting1682;
+            currentLookaheadToken= currentLookaheadToken1681;
+            nonTerminalNesting= nonTerminalNesting1680;
+        }
+    }
+
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1026:5
+    private final boolean scan$mdx_jj$1026$5() {
+        int nonTerminalNesting1683= nonTerminalNesting;
+        int lookaheadRoutineNesting1685= lookaheadRoutineNesting;
+        Token currentLookaheadToken1684= currentLookaheadToken;
+        try {
+            lookaheadRoutineNesting++;
+            remainingLookahead= 2;
+            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
+            hitFailure= false;
+            scanToEnd= false;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1027:5
+            if (!scanToken(IS)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1027:12
+            // NonTerminal term2 at cc21/mdx.jj:1027:12
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1027, 12);
+            boolean prevScanToEnd1686= scanToEnd;
             currentLookaheadProduction= "term2";
             scanToEnd= true;
             ++nonTerminalNesting;
@@ -5432,68 +5391,68 @@ public class MDXParser implements mdxConstants {
             }
             finally {
                 popLookaheadStack();
-                scanToEnd= prevScanToEnd1684;
+                scanToEnd= prevScanToEnd1686;
                 --nonTerminalNesting;
             }
             if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1041:5
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1028:5
             return true;
         }
         finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1683;
-            currentLookaheadToken= currentLookaheadToken1682;
-            nonTerminalNesting= nonTerminalNesting1681;
+            lookaheadRoutineNesting= lookaheadRoutineNesting1685;
+            currentLookaheadToken= currentLookaheadToken1684;
+            nonTerminalNesting= nonTerminalNesting1683;
         }
     }
 
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1191:7
-    private final boolean scan$mdx_jj$1191$7() {
-        int nonTerminalNesting1685= nonTerminalNesting;
-        int lookaheadRoutineNesting1687= lookaheadRoutineNesting;
-        Token currentLookaheadToken1686= currentLookaheadToken;
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1046:5
+    private final boolean scan$mdx_jj$1046$5() {
+        int nonTerminalNesting1687= nonTerminalNesting;
+        int lookaheadRoutineNesting1689= lookaheadRoutineNesting;
+        Token currentLookaheadToken1688= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
+            remainingLookahead= 2;
             if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
             hitFailure= false;
             scanToEnd= false;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1191$17()) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1047:5
+            if (!scanToken(NOT)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1047:13
+            if (!scanToken(MATCHES)) return false;
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1047:25
+            // NonTerminal term2 at cc21/mdx.jj:1047:25
+            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1047, 25);
+            boolean prevScanToEnd1690= scanToEnd;
+            currentLookaheadProduction= "term2";
+            scanToEnd= true;
+            ++nonTerminalNesting;
+            try {
+                if (!check$term2()) return false;
+            }
+            finally {
+                popLookaheadStack();
+                scanToEnd= prevScanToEnd1690;
+                --nonTerminalNesting;
+            }
+            if (hitFailure||remainingLookahead<=0) return!hitFailure;
+            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1048:5
             return true;
         }
         finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1687;
-            currentLookaheadToken= currentLookaheadToken1686;
-            nonTerminalNesting= nonTerminalNesting1685;
+            lookaheadRoutineNesting= lookaheadRoutineNesting1689;
+            currentLookaheadToken= currentLookaheadToken1688;
+            nonTerminalNesting= nonTerminalNesting1687;
         }
     }
 
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1267:5
-    private final boolean scan$mdx_jj$1267$5() {
-        int nonTerminalNesting1688= nonTerminalNesting;
-        int lookaheadRoutineNesting1690= lookaheadRoutineNesting;
-        Token currentLookaheadToken1689= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1267$15()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1690;
-            currentLookaheadToken= currentLookaheadToken1689;
-            nonTerminalNesting= nonTerminalNesting1688;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1299:7
-    private final boolean scan$mdx_jj$1299$7() {
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1198:7
+    private final boolean scan$mdx_jj$1198$7() {
         int nonTerminalNesting1691= nonTerminalNesting;
         int lookaheadRoutineNesting1693= lookaheadRoutineNesting;
         Token currentLookaheadToken1692= currentLookaheadToken;
@@ -5505,7 +5464,7 @@ public class MDXParser implements mdxConstants {
             scanToEnd= false;
             // BuildPredicateCode macro
             if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1299$17()) return false;
+            if (!check$mdx_jj$1198$17()) return false;
             return true;
         }
         finally {
@@ -5515,16 +5474,62 @@ public class MDXParser implements mdxConstants {
         }
     }
 
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1274:5
+    private final boolean scan$mdx_jj$1274$5() {
+        int nonTerminalNesting1694= nonTerminalNesting;
+        int lookaheadRoutineNesting1696= lookaheadRoutineNesting;
+        Token currentLookaheadToken1695= currentLookaheadToken;
+        try {
+            lookaheadRoutineNesting++;
+            remainingLookahead= UNLIMITED;
+            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
+            hitFailure= false;
+            scanToEnd= false;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (!check$mdx_jj$1274$15()) return false;
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting= lookaheadRoutineNesting1696;
+            currentLookaheadToken= currentLookaheadToken1695;
+            nonTerminalNesting= nonTerminalNesting1694;
+        }
+    }
+
+    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1306:7
+    private final boolean scan$mdx_jj$1306$7() {
+        int nonTerminalNesting1697= nonTerminalNesting;
+        int lookaheadRoutineNesting1699= lookaheadRoutineNesting;
+        Token currentLookaheadToken1698= currentLookaheadToken;
+        try {
+            lookaheadRoutineNesting++;
+            remainingLookahead= UNLIMITED;
+            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
+            hitFailure= false;
+            scanToEnd= false;
+            // BuildPredicateCode macro
+            if (remainingLookahead<=0) return true;
+            if (!check$mdx_jj$1306$17()) return false;
+            return true;
+        }
+        finally {
+            lookaheadRoutineNesting= lookaheadRoutineNesting1699;
+            currentLookaheadToken= currentLookaheadToken1698;
+            nonTerminalNesting= nonTerminalNesting1697;
+        }
+    }
+
     // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:877:5
-    private final boolean check$mdx_jj$877$15() {
+    // cc21/mdx.jj:884:5
+    private final boolean check$mdx_jj$884$15() {
         int prevRemainingLookahead= remainingLookahead;
         boolean prevHitFailure= hitFailure;
         Token prevScanAheadToken= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:877:15
+            // cc21/mdx.jj:884:15
             if (!scanToken(DOT)) return false;
             return!hitFailure;
         }
@@ -5537,15 +5542,15 @@ public class MDXParser implements mdxConstants {
     }
 
     // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1191:7
-    private final boolean check$mdx_jj$1191$17() {
+    // cc21/mdx.jj:1198:7
+    private final boolean check$mdx_jj$1198$17() {
         int prevRemainingLookahead= remainingLookahead;
         boolean prevHitFailure= hitFailure;
         Token prevScanAheadToken= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1191:17
+            // cc21/mdx.jj:1198:17
             if (!scanToken(RPAREN)) return false;
             return!hitFailure;
         }
@@ -5558,15 +5563,15 @@ public class MDXParser implements mdxConstants {
     }
 
     // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1267:5
-    private final boolean check$mdx_jj$1267$15() {
+    // cc21/mdx.jj:1274:5
+    private final boolean check$mdx_jj$1274$15() {
         int prevRemainingLookahead= remainingLookahead;
         boolean prevHitFailure= hitFailure;
         Token prevScanAheadToken= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1267:15
+            // cc21/mdx.jj:1274:15
             if (!scanToken(RBRACE)) return false;
             return!hitFailure;
         }
@@ -5579,15 +5584,15 @@ public class MDXParser implements mdxConstants {
     }
 
     // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1299:7
-    private final boolean check$mdx_jj$1299$17() {
+    // cc21/mdx.jj:1306:7
+    private final boolean check$mdx_jj$1306$17() {
         int prevRemainingLookahead= remainingLookahead;
         boolean prevHitFailure= hitFailure;
         Token prevScanAheadToken= currentLookaheadToken;
         try {
             lookaheadRoutineNesting++;
             // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1299:17
+            // cc21/mdx.jj:1306:17
             if (!scanToken(RPAREN)) return false;
             return!hitFailure;
         }
@@ -5602,10 +5607,10 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$parseExpression() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:675:3
-        // NonTerminal unaliasedExpression at cc21/mdx.jj:675:3
-        pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 675, 3);
-        boolean prevScanToEnd1721= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:682:3
+        // NonTerminal unaliasedExpression at cc21/mdx.jj:682:3
+        pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 682, 3);
+        boolean prevScanToEnd1727= scanToEnd;
         currentLookaheadProduction= "unaliasedExpression";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5614,39 +5619,39 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1721;
+            scanToEnd= prevScanToEnd1727;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:676:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:683:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1722= currentLookaheadToken;
-            if (!check$mdx_jj$677$5()) {
-                currentLookaheadToken= token1722;
+            Token token1728= currentLookaheadToken;
+            if (!check$mdx_jj$684$5()) {
+                currentLookaheadToken= token1728;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:686:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:693:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$expressionOrEmpty() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:696:3
-        Token token1723= currentLookaheadToken;
-        int remainingLookahead1723= remainingLookahead;
-        boolean hitFailure1723= hitFailure;
-        if (!check$mdx_jj$696$3()) {
-            currentLookaheadToken= token1723;
-            remainingLookahead= remainingLookahead1723;
-            hitFailure= hitFailure1723;
-            if (!check$mdx_jj$701$3()) {
-                currentLookaheadToken= token1723;
-                remainingLookahead= remainingLookahead1723;
-                hitFailure= hitFailure1723;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:703:3
+        Token token1729= currentLookaheadToken;
+        int remainingLookahead1729= remainingLookahead;
+        boolean hitFailure1729= hitFailure;
+        if (!check$mdx_jj$703$3()) {
+            currentLookaheadToken= token1729;
+            remainingLookahead= remainingLookahead1729;
+            hitFailure= hitFailure1729;
+            if (!check$mdx_jj$708$3()) {
+                currentLookaheadToken= token1729;
+                remainingLookahead= remainingLookahead1729;
+                hitFailure= hitFailure1729;
                 return false;
             }
         }
@@ -5656,10 +5661,10 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$expOrEmptyList() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:715:3
-        // NonTerminal expressionOrEmpty at cc21/mdx.jj:715:3
-        pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 715, 3);
-        boolean prevScanToEnd1724= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:722:3
+        // NonTerminal expressionOrEmpty at cc21/mdx.jj:722:3
+        pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 722, 3);
+        boolean prevScanToEnd1730= scanToEnd;
         currentLookaheadProduction= "expressionOrEmpty";
         scanToEnd= true;
         ++nonTerminalNesting;
@@ -5668,33 +5673,33 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1724;
+            scanToEnd= prevScanToEnd1730;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:716:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:723:3
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:719:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:726:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1725= currentLookaheadToken;
-            if (!check$mdx_jj$720$5()) {
-                currentLookaheadToken= token1725;
+            Token token1731= currentLookaheadToken;
+            if (!check$mdx_jj$727$5()) {
+                currentLookaheadToken= token1731;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:726:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:733:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$expList() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:738:3
-        // NonTerminal parseExpression at cc21/mdx.jj:738:3
-        pushOntoLookaheadStack("expList", "cc21/mdx.jj", 738, 3);
-        boolean prevScanToEnd1726= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:745:3
+        // NonTerminal parseExpression at cc21/mdx.jj:745:3
+        pushOntoLookaheadStack("expList", "cc21/mdx.jj", 745, 3);
+        boolean prevScanToEnd1732= scanToEnd;
         currentLookaheadProduction= "parseExpression";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5703,72 +5708,72 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1726;
+            scanToEnd= prevScanToEnd1732;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:739:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:746:3
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:742:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:749:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1727= currentLookaheadToken;
-            if (!check$mdx_jj$743$5()) {
-                currentLookaheadToken= token1727;
+            Token token1733= currentLookaheadToken;
+            if (!check$mdx_jj$750$5()) {
+                currentLookaheadToken= token1733;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:749:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:756:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$parseIdentifier() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:776:5
-        Token token1729= currentLookaheadToken;
-        int remainingLookahead1729= remainingLookahead;
-        boolean hitFailure1729= hitFailure;
-        if (!check$mdx_jj$776$5$()) {
-            currentLookaheadToken= token1729;
-            remainingLookahead= remainingLookahead1729;
-            hitFailure= hitFailure1729;
-            if (!check$mdx_jj$778$5()) {
-                currentLookaheadToken= token1729;
-                remainingLookahead= remainingLookahead1729;
-                hitFailure= hitFailure1729;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:783:5
+        Token token1735= currentLookaheadToken;
+        int remainingLookahead1735= remainingLookahead;
+        boolean hitFailure1735= hitFailure;
+        if (!check$mdx_jj$783$5$()) {
+            currentLookaheadToken= token1735;
+            remainingLookahead= remainingLookahead1735;
+            hitFailure= hitFailure1735;
+            if (!check$mdx_jj$785$5()) {
+                currentLookaheadToken= token1735;
+                remainingLookahead= remainingLookahead1735;
+                hitFailure= hitFailure1735;
                 return false;
             }
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:780:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:787:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$parseNameSegment() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:790:3
-        Token token1730= currentLookaheadToken;
-        int remainingLookahead1730= remainingLookahead;
-        boolean hitFailure1730= hitFailure;
-        if (!scanToken(first_set$mdx_jj$790$3)) {
-            currentLookaheadToken= token1730;
-            remainingLookahead= remainingLookahead1730;
-            hitFailure= hitFailure1730;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:797:3
+        Token token1736= currentLookaheadToken;
+        int remainingLookahead1736= remainingLookahead;
+        boolean hitFailure1736= hitFailure;
+        if (!scanToken(first_set$mdx_jj$797$3)) {
+            currentLookaheadToken= token1736;
+            remainingLookahead= remainingLookahead1736;
+            hitFailure= hitFailure1736;
             if (!scanToken(ID)) {
-                currentLookaheadToken= token1730;
-                remainingLookahead= remainingLookahead1730;
-                hitFailure= hitFailure1730;
-                if (!check$mdx_jj$800$3()) {
-                    currentLookaheadToken= token1730;
-                    remainingLookahead= remainingLookahead1730;
-                    hitFailure= hitFailure1730;
+                currentLookaheadToken= token1736;
+                remainingLookahead= remainingLookahead1736;
+                hitFailure= hitFailure1736;
+                if (!check$mdx_jj$807$3()) {
+                    currentLookaheadToken= token1736;
+                    remainingLookahead= remainingLookahead1736;
+                    hitFailure= hitFailure1736;
                     if (!scanToken(QUOTED_ID)) {
-                        currentLookaheadToken= token1730;
-                        remainingLookahead= remainingLookahead1730;
-                        hitFailure= hitFailure1730;
+                        currentLookaheadToken= token1736;
+                        remainingLookahead= remainingLookahead1736;
+                        hitFailure= hitFailure1736;
                         return false;
                     }
                 }
@@ -5780,30 +5785,30 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$parseKeyIdentifier() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for OneOrMore specified at cc21/mdx.jj:819:3
-        if (!scanToken(first_set$mdx_jj$820$5)) {
+        // Lookahead Code for OneOrMore specified at cc21/mdx.jj:826:3
+        if (!scanToken(first_set$mdx_jj$827$5)) {
             return false;
         }
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1731= currentLookaheadToken;
-            if (!scanToken(first_set$mdx_jj$820$5)) {
-                currentLookaheadToken= token1731;
+            Token token1737= currentLookaheadToken;
+            if (!scanToken(first_set$mdx_jj$827$5)) {
+                currentLookaheadToken= token1737;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:825:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:832:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$unaliasedExpression() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:895:3
-        // NonTerminal term5 at cc21/mdx.jj:895:3
-        pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 895, 3);
-        boolean prevScanToEnd1734= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:902:3
+        // NonTerminal term5 at cc21/mdx.jj:902:3
+        pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 902, 3);
+        boolean prevScanToEnd1740= scanToEnd;
         currentLookaheadProduction= "term5";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5812,31 +5817,31 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1734;
+            scanToEnd= prevScanToEnd1740;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:896:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:903:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1735= currentLookaheadToken;
-            if (!check$mdx_jj$897$5()) {
-                currentLookaheadToken= token1735;
+            Token token1741= currentLookaheadToken;
+            if (!check$mdx_jj$904$5()) {
+                currentLookaheadToken= token1741;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:921:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:928:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$term5() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:931:3
-        // NonTerminal term4 at cc21/mdx.jj:931:3
-        pushOntoLookaheadStack("term5", "cc21/mdx.jj", 931, 3);
-        boolean prevScanToEnd1736= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:938:3
+        // NonTerminal term4 at cc21/mdx.jj:938:3
+        pushOntoLookaheadStack("term5", "cc21/mdx.jj", 938, 3);
+        boolean prevScanToEnd1742= scanToEnd;
         currentLookaheadProduction= "term4";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5845,39 +5850,39 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1736;
+            scanToEnd= prevScanToEnd1742;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:932:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:939:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1737= currentLookaheadToken;
-            if (!check$mdx_jj$933$5()) {
-                currentLookaheadToken= token1737;
+            Token token1743= currentLookaheadToken;
+            if (!check$mdx_jj$940$5()) {
+                currentLookaheadToken= token1743;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:941:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:948:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$term4() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:951:3
-        Token token1738= currentLookaheadToken;
-        int remainingLookahead1738= remainingLookahead;
-        boolean hitFailure1738= hitFailure;
-        if (!check$mdx_jj$951$3()) {
-            currentLookaheadToken= token1738;
-            remainingLookahead= remainingLookahead1738;
-            hitFailure= hitFailure1738;
-            if (!check$mdx_jj$955$3()) {
-                currentLookaheadToken= token1738;
-                remainingLookahead= remainingLookahead1738;
-                hitFailure= hitFailure1738;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:958:3
+        Token token1744= currentLookaheadToken;
+        int remainingLookahead1744= remainingLookahead;
+        boolean hitFailure1744= hitFailure;
+        if (!check$mdx_jj$958$3()) {
+            currentLookaheadToken= token1744;
+            remainingLookahead= remainingLookahead1744;
+            hitFailure= hitFailure1744;
+            if (!check$mdx_jj$962$3()) {
+                currentLookaheadToken= token1744;
+                remainingLookahead= remainingLookahead1744;
+                hitFailure= hitFailure1744;
                 return false;
             }
         }
@@ -5887,10 +5892,10 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$term3() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:970:3
-        // NonTerminal term2 at cc21/mdx.jj:970:3
-        pushOntoLookaheadStack("term3", "cc21/mdx.jj", 970, 3);
-        boolean prevScanToEnd1739= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:977:3
+        // NonTerminal term2 at cc21/mdx.jj:977:3
+        pushOntoLookaheadStack("term3", "cc21/mdx.jj", 977, 3);
+        boolean prevScanToEnd1745= scanToEnd;
         currentLookaheadProduction= "term2";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5899,31 +5904,31 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1739;
+            scanToEnd= prevScanToEnd1745;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:971:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:978:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1740= currentLookaheadToken;
-            if (!check$mdx_jj$973$5()) {
-                currentLookaheadToken= token1740;
+            Token token1746= currentLookaheadToken;
+            if (!check$mdx_jj$980$5()) {
+                currentLookaheadToken= token1746;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1072:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1079:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$term2() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1082:3
-        // NonTerminal term at cc21/mdx.jj:1082:3
-        pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1082, 3);
-        boolean prevScanToEnd1741= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1089:3
+        // NonTerminal term at cc21/mdx.jj:1089:3
+        pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1089, 3);
+        boolean prevScanToEnd1747= scanToEnd;
         currentLookaheadProduction= "term";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5932,31 +5937,31 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1741;
+            scanToEnd= prevScanToEnd1747;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1083:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1090:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1742= currentLookaheadToken;
-            if (!check$mdx_jj$1084$5()) {
-                currentLookaheadToken= token1742;
+            Token token1748= currentLookaheadToken;
+            if (!check$mdx_jj$1091$5()) {
+                currentLookaheadToken= token1748;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1106:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1113:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$term() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1116:3
-        // NonTerminal factor at cc21/mdx.jj:1116:3
-        pushOntoLookaheadStack("term", "cc21/mdx.jj", 1116, 3);
-        boolean prevScanToEnd1743= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1123:3
+        // NonTerminal factor at cc21/mdx.jj:1123:3
+        pushOntoLookaheadStack("term", "cc21/mdx.jj", 1123, 3);
+        boolean prevScanToEnd1749= scanToEnd;
         currentLookaheadProduction= "factor";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -5965,47 +5970,47 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1743;
+            scanToEnd= prevScanToEnd1749;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1117:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1124:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1744= currentLookaheadToken;
-            if (!check$mdx_jj$1118$5()) {
-                currentLookaheadToken= token1744;
+            Token token1750= currentLookaheadToken;
+            if (!check$mdx_jj$1125$5()) {
+                currentLookaheadToken= token1750;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1133:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1140:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$factor() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1143:3
-        Token token1745= currentLookaheadToken;
-        int remainingLookahead1745= remainingLookahead;
-        boolean hitFailure1745= hitFailure;
-        if (!check$mdx_jj$1143$3()) {
-            currentLookaheadToken= token1745;
-            remainingLookahead= remainingLookahead1745;
-            hitFailure= hitFailure1745;
-            if (!check$mdx_jj$1147$3()) {
-                currentLookaheadToken= token1745;
-                remainingLookahead= remainingLookahead1745;
-                hitFailure= hitFailure1745;
-                if (!check$mdx_jj$1151$3()) {
-                    currentLookaheadToken= token1745;
-                    remainingLookahead= remainingLookahead1745;
-                    hitFailure= hitFailure1745;
-                    if (!check$mdx_jj$1158$3()) {
-                        currentLookaheadToken= token1745;
-                        remainingLookahead= remainingLookahead1745;
-                        hitFailure= hitFailure1745;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1150:3
+        Token token1751= currentLookaheadToken;
+        int remainingLookahead1751= remainingLookahead;
+        boolean hitFailure1751= hitFailure;
+        if (!check$mdx_jj$1150$3()) {
+            currentLookaheadToken= token1751;
+            remainingLookahead= remainingLookahead1751;
+            hitFailure= hitFailure1751;
+            if (!check$mdx_jj$1154$3()) {
+                currentLookaheadToken= token1751;
+                remainingLookahead= remainingLookahead1751;
+                hitFailure= hitFailure1751;
+                if (!check$mdx_jj$1158$3()) {
+                    currentLookaheadToken= token1751;
+                    remainingLookahead= remainingLookahead1751;
+                    hitFailure= hitFailure1751;
+                    if (!check$mdx_jj$1165$3()) {
+                        currentLookaheadToken= token1751;
+                        remainingLookahead= remainingLookahead1751;
+                        hitFailure= hitFailure1751;
                         return false;
                     }
                 }
@@ -6017,10 +6022,10 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$primary() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1172:3
-        // NonTerminal atom at cc21/mdx.jj:1172:3
-        pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1172, 3);
-        boolean prevScanToEnd1746= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1179:3
+        // NonTerminal atom at cc21/mdx.jj:1179:3
+        pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1179, 3);
+        boolean prevScanToEnd1752= scanToEnd;
         currentLookaheadProduction= "atom";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -6029,31 +6034,31 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1746;
+            scanToEnd= prevScanToEnd1752;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1180:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1747= currentLookaheadToken;
-            if (!check$mdx_jj$1174$5()) {
-                currentLookaheadToken= token1747;
+            Token token1753= currentLookaheadToken;
+            if (!check$mdx_jj$1181$5()) {
+                currentLookaheadToken= token1753;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1176:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1183:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$segmentOrFuncall() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1187:3
-        // NonTerminal parseIdentifier at cc21/mdx.jj:1187:3
-        pushOntoLookaheadStack("segmentOrFuncall", "cc21/mdx.jj", 1187, 3);
-        boolean prevScanToEnd1748= scanToEnd;
+        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1194:3
+        // NonTerminal parseIdentifier at cc21/mdx.jj:1194:3
+        pushOntoLookaheadStack("segmentOrFuncall", "cc21/mdx.jj", 1194, 3);
+        boolean prevScanToEnd1754= scanToEnd;
         currentLookaheadProduction= "parseIdentifier";
         scanToEnd= false;
         ++nonTerminalNesting;
@@ -6062,64 +6067,64 @@ public class MDXParser implements mdxConstants {
         }
         finally {
             popLookaheadStack();
-            scanToEnd= prevScanToEnd1748;
+            scanToEnd= prevScanToEnd1754;
             --nonTerminalNesting;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1188:3
-        Token token1749= currentLookaheadToken;
-        if (!check$mdx_jj$1189$5()) {
-            currentLookaheadToken= token1749;
+        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1195:3
+        Token token1755= currentLookaheadToken;
+        if (!check$mdx_jj$1196$5()) {
+            currentLookaheadToken= token1755;
             hitFailure= false;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1200:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1207:3
         return true;
     }
 
     // BuildProductionLookaheadMethod macro
     private final boolean check$atom() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1230:3
-        Token token1750= currentLookaheadToken;
-        int remainingLookahead1750= remainingLookahead;
-        boolean hitFailure1750= hitFailure;
+        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1237:3
+        Token token1756= currentLookaheadToken;
+        int remainingLookahead1756= remainingLookahead;
+        boolean hitFailure1756= hitFailure;
         if (!scanToken(SINGLE_QUOTED_STRING)) {
-            currentLookaheadToken= token1750;
-            remainingLookahead= remainingLookahead1750;
-            hitFailure= hitFailure1750;
+            currentLookaheadToken= token1756;
+            remainingLookahead= remainingLookahead1756;
+            hitFailure= hitFailure1756;
             if (!scanToken(DOUBLE_QUOTED_STRING)) {
-                currentLookaheadToken= token1750;
-                remainingLookahead= remainingLookahead1750;
-                hitFailure= hitFailure1750;
-                if (!scanToken(first_set$mdx_jj$1238$3)) {
-                    currentLookaheadToken= token1750;
-                    remainingLookahead= remainingLookahead1750;
-                    hitFailure= hitFailure1750;
+                currentLookaheadToken= token1756;
+                remainingLookahead= remainingLookahead1756;
+                hitFailure= hitFailure1756;
+                if (!scanToken(first_set$mdx_jj$1245$3)) {
+                    currentLookaheadToken= token1756;
+                    remainingLookahead= remainingLookahead1756;
+                    hitFailure= hitFailure1756;
                     if (!scanToken(NULL)) {
-                        currentLookaheadToken= token1750;
-                        remainingLookahead= remainingLookahead1750;
-                        hitFailure= hitFailure1750;
-                        if (!check$mdx_jj$1246$3()) {
-                            currentLookaheadToken= token1750;
-                            remainingLookahead= remainingLookahead1750;
-                            hitFailure= hitFailure1750;
-                            if (!check$mdx_jj$1256$3()) {
-                                currentLookaheadToken= token1750;
-                                remainingLookahead= remainingLookahead1750;
-                                hitFailure= hitFailure1750;
-                                if (!check$mdx_jj$1265$3()) {
-                                    currentLookaheadToken= token1750;
-                                    remainingLookahead= remainingLookahead1750;
-                                    hitFailure= hitFailure1750;
-                                    if (!check$mdx_jj$1279$3()) {
-                                        currentLookaheadToken= token1750;
-                                        remainingLookahead= remainingLookahead1750;
-                                        hitFailure= hitFailure1750;
-                                        if (!check$mdx_jj$1286$3()) {
-                                            currentLookaheadToken= token1750;
-                                            remainingLookahead= remainingLookahead1750;
-                                            hitFailure= hitFailure1750;
+                        currentLookaheadToken= token1756;
+                        remainingLookahead= remainingLookahead1756;
+                        hitFailure= hitFailure1756;
+                        if (!check$mdx_jj$1253$3()) {
+                            currentLookaheadToken= token1756;
+                            remainingLookahead= remainingLookahead1756;
+                            hitFailure= hitFailure1756;
+                            if (!check$mdx_jj$1263$3()) {
+                                currentLookaheadToken= token1756;
+                                remainingLookahead= remainingLookahead1756;
+                                hitFailure= hitFailure1756;
+                                if (!check$mdx_jj$1272$3()) {
+                                    currentLookaheadToken= token1756;
+                                    remainingLookahead= remainingLookahead1756;
+                                    hitFailure= hitFailure1756;
+                                    if (!check$mdx_jj$1286$3()) {
+                                        currentLookaheadToken= token1756;
+                                        remainingLookahead= remainingLookahead1756;
+                                        hitFailure= hitFailure1756;
+                                        if (!check$mdx_jj$1293$3()) {
+                                            currentLookaheadToken= token1756;
+                                            remainingLookahead= remainingLookahead1756;
+                                            hitFailure= hitFailure1756;
                                             return false;
                                         }
                                     }
@@ -6136,37 +6141,37 @@ public class MDXParser implements mdxConstants {
     // BuildProductionLookaheadMethod macro
     private final boolean check$caseExpression() {
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1324:3
+        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1331:3
         if (!scanToken(CASE)) return false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1325:3
-        Token token1751= currentLookaheadToken;
-        if (!check$mdx_jj$1326$5()) {
-            currentLookaheadToken= token1751;
+        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1332:3
+        Token token1757= currentLookaheadToken;
+        if (!check$mdx_jj$1333$5()) {
+            currentLookaheadToken= token1757;
             hitFailure= false;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1332:3
+        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1339:3
         while (remainingLookahead> 0&&!hitFailure) {
-            Token token1752= currentLookaheadToken;
-            if (!check$mdx_jj$1333$5()) {
-                currentLookaheadToken= token1752;
+            Token token1758= currentLookaheadToken;
+            if (!check$mdx_jj$1340$5()) {
+                currentLookaheadToken= token1758;
                 break;
             }
         }
         hitFailure= false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1339:3
-        Token token1753= currentLookaheadToken;
-        if (!check$mdx_jj$1340$5()) {
-            currentLookaheadToken= token1753;
+        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1346:3
+        Token token1759= currentLookaheadToken;
+        if (!check$mdx_jj$1347$5()) {
+            currentLookaheadToken= token1759;
             hitFailure= false;
         }
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1345:3
+        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1352:3
         if (!scanToken(END)) return false;
         if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1346:3
+        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1353:3
         return true;
     }
 
