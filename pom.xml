@@ -70,7 +70,6 @@
 		<url>https://github.com/xmla-services/org.eclipse.daanse/issues</url>
 	</issueManagement>
 
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -295,6 +294,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -374,7 +374,12 @@
 				<version>1.0.9</version>
 				<scope>compile</scope>
 			</dependency>
-
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.service.http.whiteboard</artifactId>
+				<version>1.1.1</version>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
@@ -400,7 +405,11 @@
 				<version>4.13.2_1</version>
 				<scope>test</scope>
 			</dependency>
-
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.framework</artifactId>
+				<version>7.0.5</version>
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.platform</groupId>
 				<artifactId>org.eclipse.osgi</artifactId>
@@ -739,8 +748,10 @@
 		</profile>
 	</profiles>
 	<modules>
-		<module>org.eclipse.daanse.xmla</module>
-		<module>org.eclipse.daanse.core</module>
+		<module>org.eclipse.daanse.repackage</module>
 		<module>org.eclipse.daanse.mdx</module>
+		<module>org.eclipse.daanse.core</module>
+		<module>org.eclipse.daanse.xmla</module>
+		<module>org.eclipse.daanse.webres</module>
 	</modules>
 </project>

@@ -1,0 +1,14 @@
+
+location_in_jar=swagger-api
+archive_remote_path=https://github.com/swagger-api/swagger-ui/archive/refs/tags/v3.52.3.zip
+archive_content_path=/swagger-ui-3.52.3/dist/
+content_select_pattern=(*)
+content_rename_mask=$1
+	
+-includeresource.generic: \
+	${location_in_jar}=@${archive_remote_path}!${archive_content_path}${content_select_pattern};rename:=${content_rename_mask}
+	
+#	loads files from ${archive_remote_path}
+#	unrolles ${archive_content_path}
+#   selects usind ${content_select_pattern} and renames using ${content_rename_mask}
+#	copys content to location in jar ${location_in_jar}

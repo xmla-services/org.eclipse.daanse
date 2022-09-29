@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -5,14 +6,11 @@
 		<artifactId>org.eclipse.daanse.parent</artifactId>
 		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
-
 	</parent>
-	<artifactId>org.eclipse.daanse.mdx</artifactId>
 	<packaging>pom</packaging>
+	<artifactId>org.eclipse.daanse.webres</artifactId>
 	<modules>
-		<module>org.eclipse.daanse.mdx.xtext.parent</module>
-		<module>org.eclipse.daanse.mdx.parser.api</module>
-		<module>org.eclipse.daanse.mdx.parser.javacc21</module>
-		<module>org.eclipse.daanse.mdx.parser.itest</module>
-	</modules>
+		<module>org.eclipse.daanse.webres.core</module>
+    <module>org.eclipse.daanse.webres.res</module>
+  </modules>
 </project>

@@ -5,14 +5,10 @@
 		<artifactId>org.eclipse.daanse.parent</artifactId>
 		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
-
 	</parent>
-	<artifactId>org.eclipse.daanse.mdx</artifactId>
+	<artifactId>org.eclipse.daanse.repackage</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.eclipse.daanse.mdx.xtext.parent</module>
-		<module>org.eclipse.daanse.mdx.parser.api</module>
-		<module>org.eclipse.daanse.mdx.parser.javacc21</module>
-		<module>org.eclipse.daanse.mdx.parser.itest</module>
+		<module>org.eclipse.daanse.repackage.antlr-runtime</module>
 	</modules>
 </project>
