@@ -10,6 +10,7 @@ import org.eclipse.daanse.mdx.xtext.mdx.SelectStatement;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -115,6 +116,17 @@ public class MdxPackageImpl extends EPackageImpl implements MdxPackage
    * @generated
    */
   @Override
+  public EReference getMdxStatement_Statement()
+  {
+    return (EReference)mdxStatementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getSelectStatement()
   {
     return selectStatementEClass;
@@ -152,6 +164,7 @@ public class MdxPackageImpl extends EPackageImpl implements MdxPackage
 
     // Create classes and their features
     mdxStatementEClass = createEClass(MDX_STATEMENT);
+    createEReference(mdxStatementEClass, MDX_STATEMENT__STATEMENT);
 
     selectStatementEClass = createEClass(SELECT_STATEMENT);
   }
@@ -185,10 +198,10 @@ public class MdxPackageImpl extends EPackageImpl implements MdxPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    selectStatementEClass.getESuperTypes().add(this.getMdxStatement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mdxStatementEClass, MdxStatement.class, "MdxStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMdxStatement_Statement(), this.getSelectStatement(), null, "statement", null, 0, 1, MdxStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(selectStatementEClass, SelectStatement.class, "SelectStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

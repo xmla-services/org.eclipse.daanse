@@ -21,38 +21,68 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class MdxSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected MdxGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_SelectStatement_Axis_specification_listParserRuleCall_3_q;
-	protected AbstractElementAlias match_SelectStatement_Cell_propsParserRuleCall_7_q;
-	protected AbstractElementAlias match_SelectStatement___WHEREKeyword_6_0_Slicer_specificationParserRuleCall_6_1__q;
+	protected AbstractElementAlias match_SelectStatement_AxisSpecificationListParserRuleCall_3_q;
+	protected AbstractElementAlias match_SelectStatement_CellPropetiesParserRuleCall_7_q;
+	protected AbstractElementAlias match_SelectStatement___WHEREKeyword_6_0_SlicerSpecificationParserRuleCall_6_1__q;
 	protected AbstractElementAlias match_SelectStatement___WITHKeyword_1_0_FormulaSpecificationParserRuleCall_1_1__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MdxGrammarAccess) access;
-		match_SelectStatement_Axis_specification_listParserRuleCall_3_q = new TokenAlias(false, true, grammarAccess.getSelectStatementAccess().getAxis_specification_listParserRuleCall_3());
-		match_SelectStatement_Cell_propsParserRuleCall_7_q = new TokenAlias(false, true, grammarAccess.getSelectStatementAccess().getCell_propsParserRuleCall_7());
-		match_SelectStatement___WHEREKeyword_6_0_Slicer_specificationParserRuleCall_6_1__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getWHEREKeyword_6_0()), new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getSlicer_specificationParserRuleCall_6_1()));
+		match_SelectStatement_AxisSpecificationListParserRuleCall_3_q = new TokenAlias(false, true, grammarAccess.getSelectStatementAccess().getAxisSpecificationListParserRuleCall_3());
+		match_SelectStatement_CellPropetiesParserRuleCall_7_q = new TokenAlias(false, true, grammarAccess.getSelectStatementAccess().getCellPropetiesParserRuleCall_7());
+		match_SelectStatement___WHEREKeyword_6_0_SlicerSpecificationParserRuleCall_6_1__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getWHEREKeyword_6_0()), new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getSlicerSpecificationParserRuleCall_6_1()));
 		match_SelectStatement___WITHKeyword_1_0_FormulaSpecificationParserRuleCall_1_1__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getWITHKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getSelectStatementAccess().getFormulaSpecificationParserRuleCall_1_1()));
 	}
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (ruleCall.getRule() == grammarAccess.getFormulaSpecificationRule())
+		if (ruleCall.getRule() == grammarAccess.getAxisSpecificationListRule())
+			return getAxisSpecificationListToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getCellPropetiesRule())
+			return getCellPropetiesToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getCubeSpecificationRule())
+			return getCubeSpecificationToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getFormulaSpecificationRule())
 			return getFormulaSpecificationToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getAxis_specification_listRule())
-			return getaxis_specification_listToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getCell_propsRule())
-			return getcell_propsToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getCube_specificationRule())
-			return getcube_specificationToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getSlicer_specificationRule())
-			return getslicer_specificationToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getSlicerSpecificationRule())
+			return getSlicerSpecificationToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
 	/**
+	 * AxisSpecificationList:
+	 * 	AxisSpecification (COMMA AxisSpecification)*;
+	 */
+	protected String getAxisSpecificationListToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "NOT ON DIMENSION";
+	}
+	
+	/**
+	 * CellPropeties:
+	 * 	'CELL'? 'PROPERTIES' CellPropertyList;
+	 */
+	protected String getCellPropetiesToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "PROPERTIES CELL_ORDINAL ,";
+	}
+	
+	/**
+	 * CubeSpecification:
+	 * 	CubeName;
+	 */
+	protected String getCubeSpecificationToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "DIMENSION";
+	}
+	
+	/**
 	 * FormulaSpecification:
-	 * 	single_formula_specification+;
+	 * 	SingleFormulaSpecification+;
 	 */
 	protected String getFormulaSpecificationToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
@@ -61,40 +91,10 @@ public class MdxSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
-	 * axis_specification_list:
-	 * 	axis_specification (COMMA axis_specification)*;
+	 * SlicerSpecification:
+	 * 	Expression;
 	 */
-	protected String getaxis_specification_listToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "NOT ON DIMENSION";
-	}
-	
-	/**
-	 * cell_props:
-	 * 	'CELL'? 'PROPERTIES' cell_property_list;
-	 */
-	protected String getcell_propsToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "PROPERTIES CELL_ORDINAL ,";
-	}
-	
-	/**
-	 * cube_specification:
-	 * 	cube_name;
-	 */
-	protected String getcube_specificationToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "DIMENSION";
-	}
-	
-	/**
-	 * slicer_specification:
-	 * 	expression;
-	 */
-	protected String getslicer_specificationToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+	protected String getSlicerSpecificationToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
 		return "NOT";
@@ -106,12 +106,12 @@ public class MdxSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_SelectStatement_Axis_specification_listParserRuleCall_3_q.equals(syntax))
-				emit_SelectStatement_Axis_specification_listParserRuleCall_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_SelectStatement_Cell_propsParserRuleCall_7_q.equals(syntax))
-				emit_SelectStatement_Cell_propsParserRuleCall_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_SelectStatement___WHEREKeyword_6_0_Slicer_specificationParserRuleCall_6_1__q.equals(syntax))
-				emit_SelectStatement___WHEREKeyword_6_0_Slicer_specificationParserRuleCall_6_1__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if (match_SelectStatement_AxisSpecificationListParserRuleCall_3_q.equals(syntax))
+				emit_SelectStatement_AxisSpecificationListParserRuleCall_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_SelectStatement_CellPropetiesParserRuleCall_7_q.equals(syntax))
+				emit_SelectStatement_CellPropetiesParserRuleCall_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_SelectStatement___WHEREKeyword_6_0_SlicerSpecificationParserRuleCall_6_1__q.equals(syntax))
+				emit_SelectStatement___WHEREKeyword_6_0_SlicerSpecificationParserRuleCall_6_1__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_SelectStatement___WITHKeyword_1_0_FormulaSpecificationParserRuleCall_1_1__q.equals(syntax))
 				emit_SelectStatement___WITHKeyword_1_0_FormulaSpecificationParserRuleCall_1_1__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -121,42 +121,42 @@ public class MdxSyntacticSequencer extends AbstractSyntacticSequencer {
 	/**
 	 * <pre>
 	 * Ambiguous syntax:
-	 *     axis_specification_list?
+	 *     AxisSpecificationList?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' (ambiguity) 'FROM' cube_specification ('WHERE' slicer_specification)? cell_props? (rule start)
+	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' (ambiguity) 'FROM' CubeSpecification ('WHERE' SlicerSpecification)? CellPropeties? (rule start)
 	 
 	 * </pre>
 	 */
-	protected void emit_SelectStatement_Axis_specification_listParserRuleCall_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_SelectStatement_AxisSpecificationListParserRuleCall_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * <pre>
 	 * Ambiguous syntax:
-	 *     cell_props?
+	 *     CellPropeties?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' axis_specification_list? 'FROM' cube_specification ('WHERE' slicer_specification)? (ambiguity) (rule start)
+	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' AxisSpecificationList? 'FROM' CubeSpecification ('WHERE' SlicerSpecification)? (ambiguity) (rule start)
 	 
 	 * </pre>
 	 */
-	protected void emit_SelectStatement_Cell_propsParserRuleCall_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_SelectStatement_CellPropetiesParserRuleCall_7_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * <pre>
 	 * Ambiguous syntax:
-	 *     ('WHERE' slicer_specification)?
+	 *     ('WHERE' SlicerSpecification)?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' axis_specification_list? 'FROM' cube_specification (ambiguity) cell_props? (rule start)
+	 *     (rule start) ('WITH' FormulaSpecification)? 'SELECT' AxisSpecificationList? 'FROM' CubeSpecification (ambiguity) CellPropeties? (rule start)
 	 
 	 * </pre>
 	 */
-	protected void emit_SelectStatement___WHEREKeyword_6_0_Slicer_specificationParserRuleCall_6_1__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_SelectStatement___WHEREKeyword_6_0_SlicerSpecificationParserRuleCall_6_1__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -166,7 +166,7 @@ public class MdxSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ('WITH' FormulaSpecification)?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) 'SELECT' axis_specification_list? 'FROM' cube_specification ('WHERE' slicer_specification)? cell_props? (rule start)
+	 *     (rule start) (ambiguity) 'SELECT' AxisSpecificationList? 'FROM' CubeSpecification ('WHERE' SlicerSpecification)? CellPropeties? (rule start)
 	 
 	 * </pre>
 	 */

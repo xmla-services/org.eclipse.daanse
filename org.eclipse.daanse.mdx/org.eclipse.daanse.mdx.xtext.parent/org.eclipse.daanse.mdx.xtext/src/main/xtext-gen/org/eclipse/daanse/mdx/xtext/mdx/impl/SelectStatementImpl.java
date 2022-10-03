@@ -8,6 +8,8 @@ import org.eclipse.daanse.mdx.xtext.mdx.SelectStatement;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Select Statement</b></em>'.
@@ -15,7 +17,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class SelectStatementImpl extends MdxStatementImpl implements SelectStatement
+public class SelectStatementImpl extends MinimalEObjectImpl.Container implements SelectStatement
 {
   /**
    * <!-- begin-user-doc -->

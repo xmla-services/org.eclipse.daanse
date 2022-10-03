@@ -16,5 +16,8 @@ public class MdxParserException extends Exception {
 	public MdxParserException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
+	public MdxParserException( Throwable throwable) {
+		super( throwable);
+	}
 
 }

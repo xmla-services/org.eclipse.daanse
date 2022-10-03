@@ -1,0 +1,28 @@
+
+res_version=1.5.0
+location_in_jar=ace
+archive_remote_path=https://github.com/ajaxorg/ace-builds/archive/refs/tags/v${res_version}.zip
+archive_content_path=/ace-builds-${res_version}/
+content_select_pattern=(*)
+content_rename_mask=$1
+
+#	loads files from ${archive_remote_path}
+#	unrolles ${archive_content_path}
+#   selects usind ${content_select_pattern} and renames using ${content_rename_mask}
+#	copys content to location in jar ${location_in_jar}
+	
+-includeresource.generic: \
+	${location_in_jar}=@${archive_remote_path}!${archive_content_path}${content_select_pattern};rename:=${content_rename_mask}
+	
+
+
+Provide-Capability:\
+	org.eclipse.daanse.webres;\
+		webres.name="ace";\
+		webres.path="${location_in_jar}";\
+		path="/src";\
+		path.all="";\
+		path.min="/src-min";\
+		path.min-noconflict="/src-min-noconflict";\
+		path.noconflict="/src-noconflict";\
+		version:=${res_version}

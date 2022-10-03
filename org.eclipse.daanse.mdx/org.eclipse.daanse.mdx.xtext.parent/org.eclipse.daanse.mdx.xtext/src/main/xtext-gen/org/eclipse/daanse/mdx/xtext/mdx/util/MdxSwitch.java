@@ -84,7 +84,6 @@ public class MdxSwitch<T> extends Switch<T>
       {
         SelectStatement selectStatement = (SelectStatement)theEObject;
         T result = caseSelectStatement(selectStatement);
-        if (result == null) result = caseMdxStatement(selectStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }

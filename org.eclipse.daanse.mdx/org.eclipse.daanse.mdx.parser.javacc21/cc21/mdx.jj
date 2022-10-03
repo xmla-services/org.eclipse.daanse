@@ -56,36 +56,38 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CancellationException;
-import org.eclipse.daanse.mdx.parser.api.model.Axis;
-import org.eclipse.daanse.mdx.parser.api.model.CallExpression;
-import org.eclipse.daanse.mdx.parser.api.model.CellProperty;
-import org.eclipse.daanse.mdx.parser.api.model.CompoundId;
-import org.eclipse.daanse.mdx.parser.api.model.DrillthroughStatement;
-import org.eclipse.daanse.mdx.parser.api.model.Expression;
-import org.eclipse.daanse.mdx.parser.api.model.FormulaExpression;
-import org.eclipse.daanse.mdx.parser.api.model.KeySegment;
-import org.eclipse.daanse.mdx.parser.api.model.Literal;
-import org.eclipse.daanse.mdx.parser.api.model.MdxStatement;
-import org.eclipse.daanse.mdx.parser.api.model.MemberPropertyDefinition;
-import org.eclipse.daanse.mdx.parser.api.model.NameSegment;
-import org.eclipse.daanse.mdx.parser.api.model.NullLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.NumericLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.ReturnItem;
-import org.eclipse.daanse.mdx.parser.api.model.Segment;
-import org.eclipse.daanse.mdx.parser.api.model.SelectStatement;
-import org.eclipse.daanse.mdx.parser.api.model.StringLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.SymbolLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.select.CreateMemberBodyClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.CreateSetBodyClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectCellPropertyListClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectDimensionPropertyListClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAsteriskClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAxesClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAxisClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectSlicerAxisClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectSubcubeClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectWithClause;
+import org.eclipse.daanse.mdx.model.Axis;
+import org.eclipse.daanse.mdx.model.CallExpression;
+import org.eclipse.daanse.mdx.model.CellProperty;
+import org.eclipse.daanse.mdx.model.CompoundId;
+import org.eclipse.daanse.mdx.model.DrillthroughStatement;
+import org.eclipse.daanse.mdx.model.Expression;
+import org.eclipse.daanse.mdx.model.FormulaExpression;
+import org.eclipse.daanse.mdx.model.KeyObjectIdentifier;
+import org.eclipse.daanse.mdx.model.MdxStatement;
+import org.eclipse.daanse.mdx.model.MemberPropertyDefinition;
+import org.eclipse.daanse.mdx.model.NameObjectIdentifier;
+import org.eclipse.daanse.mdx.model.NullLiteral;
+import org.eclipse.daanse.mdx.model.NumericLiteral;
+import org.eclipse.daanse.mdx.model.ObjectIdentifier;
+import org.eclipse.daanse.mdx.model.ReturnItem;
+import org.eclipse.daanse.mdx.model.SelectStatement;
+import org.eclipse.daanse.mdx.model.StringLiteral;
+import org.eclipse.daanse.mdx.model.SymbolLiteral;
+import org.eclipse.daanse.mdx.model.select.CreateMemberBodyClause;
+import org.eclipse.daanse.mdx.model.select.CreateSetBodyClause;
+import org.eclipse.daanse.mdx.model.select.SelectCellPropertyListClause;
+import org.eclipse.daanse.mdx.model.select.SelectDimensionPropertyListClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAsteriskClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAxesClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAxisClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryEmptyClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryClause;
+import org.eclipse.daanse.mdx.model.select.SelectSlicerAxisClause;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClause;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClauseName;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClauseStatement;
+import org.eclipse.daanse.mdx.model.select.SelectWithClause;
 
 public class MDXParser
 {
@@ -98,9 +100,9 @@ public class MDXParser
     return s;
   }
 
-  private Expression createCall(Expression left, Segment segment, List < Expression > expressions)
+  private Expression createCall(Expression left, ObjectIdentifier objectIdentifier, List < Expression > expressions)
   {
-    final String name = segment instanceof NameSegment ? ((NameSegment) segment).name() : 
+    final String name = objectIdentifier instanceof NameObjectIdentifier ? ((NameObjectIdentifier) objectIdentifier).name() : 
     null;
     if (expressions != null)
     {
@@ -122,7 +124,7 @@ public class MDXParser
       // or property syntax: "foo.RESERVED_WORD"
       CallExpression.Type type;
       boolean call = false;
-      switch (segment.quoting())
+      switch (objectIdentifier.quoting())
       {
         case UNQUOTED : 
         type = CallExpression.Type.Property;
@@ -137,13 +139,13 @@ public class MDXParser
       }
       if (left instanceof CompoundId && !call)
       {
-        List < Segment > newSegments = new ArrayList < Segment > (((CompoundId) left).segments());
-        newSegments.add(segment);
-        return new CompoundId(newSegments);
+        List < ObjectIdentifier > newObjectIdentifiers = new ArrayList < ObjectIdentifier > (((CompoundId) left).objectIdentifiers());
+        newObjectIdentifiers.add(objectIdentifier);
+        return new CompoundId(newObjectIdentifiers);
       }
       else if (left == null)
       {
-        return new CompoundId(List.of(segment));
+        return new CompoundId(List.of(objectIdentifier));
       }
       else
       {
@@ -171,6 +173,7 @@ TOKEN :
 | < COLUMNS : "COLUMNS" >
 | < COMMIT : "COMMIT" >
 | < CUBE : "CUBE" >
+| < CURRENTCUBE : "CURRENTCUBE" >
 | < DIMENSION : "DIMENSION" >
 | < DRILLTHROUGH : "DRILLTHROUGH" >
 | < ELSE : "ELSE" >
@@ -570,7 +573,11 @@ SelectStatement parseSelectStatement() :
     selectQueryClause = parseSelectQueryAsteriskClause()
   | 
     selectQueryClause = parseSelectQueryAxesClause()
-  )?
+  | /* empty */
+    {
+      selectQueryClause = new SelectQueryEmptyClause();
+    }
+  )
   < FROM > selectSubcubeClause = parseSelectSubcubeClause()
   (
     selectSlicerAxisClause = parseSelectSlicerAxisClause()
@@ -579,12 +586,62 @@ SelectStatement parseSelectStatement() :
     selectCellPropertyListClause = parseSelectCellPropertyListClause()
   )?
   {
-    return new SelectStatement(null, selectQueryClause, null, null);
-    //    return new SelectStatement(selectWithClause, selectQueryClause, selectSubcubeClause, selectCellPropertyListClause);
+    return new SelectStatement(selectWithClause, selectQueryClause, selectSubcubeClause, selectSlicerAxisClause, selectCellPropertyListClause);
   }
 }
 
-SelectQueryClause parseSelectQueryAsteriskClause() :
+SelectSubcubeClause parseSelectSubcubeClause() :
+{
+  SelectSubcubeClause selectSubcubeClause = null;
+}
+{
+  (
+    selectSubcubeClause = parseSelectSubcubeClauseName()
+  | 
+    selectSubcubeClause = parseSelectSubcubeClauseStatement()
+  )
+  {
+    return selectSubcubeClause;
+  }
+}
+
+SelectSubcubeClauseName parseSelectSubcubeClauseName() :
+{
+  NameObjectIdentifier nameObjectIdentifier;
+}
+{
+  nameObjectIdentifier = parseNameObjectIdentifier()
+  {
+    return new SelectSubcubeClauseName(nameObjectIdentifier);
+  }
+}
+
+SelectSubcubeClauseStatement parseSelectSubcubeClauseStatement() :
+{
+  SelectSlicerAxisClause selectSlicerAxisClause = null;
+  SelectQueryClause selectQueryClause = null;
+  SelectSubcubeClause selectSubcubeClause = null;
+}
+{
+  (
+    < LPAREN > < SELECT >
+    (
+      selectQueryClause = parseSelectQueryAsteriskClause()
+    | 
+      selectQueryClause = parseSelectQueryAxesClause()
+    )?
+    < FROM > selectSubcubeClause = parseSelectSubcubeClause()
+    (
+      selectSlicerAxisClause = parseSelectSlicerAxisClause()
+    )?
+    < RPAREN >
+  )
+  {
+    return new SelectSubcubeClauseStatement(selectQueryClause, selectSubcubeClause, selectSlicerAxisClause);
+  }
+}
+
+SelectQueryAsteriskClause parseSelectQueryAsteriskClause() :
 {
 }
 {
@@ -594,7 +651,7 @@ SelectQueryClause parseSelectQueryAsteriskClause() :
   }
 }
 
-SelectQueryClause parseSelectQueryAxesClause() :
+SelectQueryAxesClause parseSelectQueryAxesClause() :
 {
   List < SelectQueryAxisClause > selectQueryAxisClauses = new LinkedList < SelectQueryAxisClause > ();
   SelectQueryAxisClause selectQueryAxisClause;
@@ -676,14 +733,14 @@ FormulaExpression parseFormulaExpression() :
 Expression parseExpression() :
 {
   Expression expression;
-  Segment segment;
+  ObjectIdentifier objectIdentifier;
 }
 {
   expression = unaliasedExpression()
   (
-    < AS > segment = parseIdentifier()
+    < AS > objectIdentifier = parseIdentifier()
     {
-      CompoundId compundId = new CompoundId(List.of(segment));
+      CompoundId compundId = new CompoundId(List.of(objectIdentifier));
       expression = new CallExpression("AS", CallExpression.Type.Term_Infix, List.of(
       expression, compundId
       )
@@ -769,58 +826,52 @@ Expression expressionEof() :
   }
 }
 
-// ----------------------------------------------------------------------------
-// Elements
-//
-//
-// <identifier> ::= <regularIdentifier> | <delimitedIdentifier>
-Segment parseIdentifier() :
+ObjectIdentifier parseIdentifier() :
 {
-  Segment segment;
+  ObjectIdentifier objectIdentifier;
 }
 {
   (
-    segment = parseNameSegment()
+    objectIdentifier = parseNameObjectIdentifier()
   | 
-    segment = parseKeyIdentifier()
+    objectIdentifier = parseKeyIdentifier()
   )
   {
-    return segment;
+    return objectIdentifier;
   }
 }
 
-NameSegment parseNameSegment() :
+NameObjectIdentifier parseNameObjectIdentifier() :
 {
   String id;
 }
 {
   id = parseKeyword()
   {
-    // Allow a non-reserved keyword to be converted back into an identifier
-    // if it is not in a context where it is meaningful.
-    return new NameSegment(id, Segment.Quoting.UNQUOTED);
+    // Keywords that are  not Reserved could be used
+    return new NameObjectIdentifier(id, ObjectIdentifier.Quoting.UNQUOTED);
   }
 | < ID >
   {
-    return new NameSegment(getToken(0).getImage(), Segment.Quoting.UNQUOTED);
+    return new NameObjectIdentifier(getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
   }
 | < ATSIGN > < ID >
   {
-    return new NameSegment("@" + getToken(0).getImage(), Segment.Quoting.UNQUOTED);
+    return new NameObjectIdentifier("@" + getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
   }
 | < QUOTED_ID >
   {
-    return new NameSegment(
+    return new NameObjectIdentifier(
     stripQuotes(getToken(0).getImage(), "[", "]", "]]"), 
-    Segment.Quoting.QUOTED);
+    ObjectIdentifier.Quoting.QUOTED);
   }
 }
 
 // for example '&foo&[1]&bar' in '[x].&foo&[1]&bar.[y]'
-KeySegment parseKeyIdentifier() :
+KeyObjectIdentifier parseKeyIdentifier() :
 {
-  List < NameSegment > list = new ArrayList < NameSegment > ();
-  NameSegment key;
+  List < NameObjectIdentifier > list = new ArrayList < NameObjectIdentifier > ();
+  NameObjectIdentifier key;
 }
 {
   (
@@ -830,50 +881,48 @@ KeySegment parseKeyIdentifier() :
     }
   )+
   {
-    return new KeySegment(list);
+    return new KeyObjectIdentifier(list);
   }
 }
 
-NameSegment parseAmpId() :
+NameObjectIdentifier parseAmpId() :
 {
 }
 {
   < AMP_QUOTED_ID >
   {
-    return new NameSegment(
+    return new NameObjectIdentifier(
     stripQuotes(getToken(0).getImage(), "&[", "]", "]]"), 
-    Segment.Quoting.QUOTED);
+    ObjectIdentifier.Quoting.QUOTED);
   }
 | 
   < AMP_UNQUOTED_ID >
   {
-    return new NameSegment(
+    return new NameObjectIdentifier(
     getToken(0).getImage().substring(1), 
-    Segment.Quoting.UNQUOTED);
+    ObjectIdentifier.Quoting.UNQUOTED);
   }
 }
 
-// a keyword (unlike a reserved word) can be converted back into an
-// identifier in some contexts
+// a keyword that is not a RESERVED_WORD could be used as identifier
 String parseKeyword() :
 {
 }
 {
-  < DIMENSION >
+  (
+    < DIMENSION >
+  | < PROPERTIES >
+  )
   {
-    return "Dimension";
-  }
-| < PROPERTIES >
-  {
-    return "Properties";
+    return getToken(0).getImage();
   }
 }
 
 CompoundId parseCompoundId() :
 {
   CompoundId compoundId;
-  List < Segment > list = new ArrayList < Segment > ();
-  Segment s;
+  List < ObjectIdentifier > list = new ArrayList < ObjectIdentifier > ();
+  ObjectIdentifier s;
 }
 {
   s = parseIdentifier()
@@ -1178,20 +1227,20 @@ Expression primary() :
 {
   expression = atom()
   (
-    < DOT > expression = segmentOrFuncall(expression)
+    < DOT > expression = objectIdentifierOrFuncall(expression)
   )*
   {
     return expression;
   }
 }
 
-Expression segmentOrFuncall(Expression left) :
+Expression objectIdentifierOrFuncall(Expression left) :
 {
-  Segment segment;
+  ObjectIdentifier objectIdentifier;
   List < Expression > argList = null;
 }
 {
-  segment = parseIdentifier()
+  objectIdentifier = parseIdentifier()
   (
     < LPAREN >
     (
@@ -1205,7 +1254,7 @@ Expression segmentOrFuncall(Expression left) :
     < RPAREN >
   )?
   {
-    return createCall(left, segment, argList);
+    return createCall(left, objectIdentifier, argList);
   }
 }
 
@@ -1230,7 +1279,7 @@ NumericLiteral parseNumericLiteral() :
 Expression atom() :
 {
   Expression expression;
-  NameSegment segment;
+  NameObjectIdentifier nameObjectIdentifier;
   List < Expression > expressions;
 }
 {
@@ -1251,12 +1300,12 @@ Expression atom() :
     return NullLiteral.SINGLETON;
   }
 | < CAST > < LPAREN > expression = unaliasedExpression() 
-  < AS > segment = parseNameSegment() < RPAREN >
+  < AS > nameObjectIdentifier = parseNameObjectIdentifier() < RPAREN >
   {
     return new CallExpression(
     "CAST", CallExpression.Type.Cast, List.of(
     expression, 
-    new SymbolLiteral(segment.name())
+    new SymbolLiteral(nameObjectIdentifier.name())
     )
     );
   }
@@ -1290,9 +1339,9 @@ Expression atom() :
 | 
   // Function call "foo(a, b)" or "whiz!bang!foo(a, b)".
   // Properties "x.PROP" and methods "exp.meth(a)" are in primary().
-  segment = parseNameSegment()
+  nameObjectIdentifier = parseNameObjectIdentifier()
   (
-    < BANG > segment = parseNameSegment()
+    < BANG > nameObjectIdentifier = parseNameObjectIdentifier()
     {
     // We support the syntax for qualifying function names with package
     // names separated by bang ('!'), e.g. 'whiz!bang!foo(a, b)'
@@ -1317,7 +1366,7 @@ Expression atom() :
     }
   )
   {
-    return createCall(null, segment, expressions);
+    return createCall(null, nameObjectIdentifier, expressions);
   }
 }
 
@@ -1463,30 +1512,5 @@ SelectQueryAxisClause parseSelectQueryAxisClause() :
   )
   {
     return new SelectQueryAxisClause(nonEmpty, expression, axis, selectDimensionPropertyListClause);
-  }
-}
-
-SelectSubcubeClause parseSelectSubcubeClause() :
-{
-}
-{
-  (
-    parseIdentifier()
-  | < LPAREN > < SELECT >
-    (
-      parseSelectQueryAxisClause()
-      (
-        < COMMA > parseSelectQueryAxisClause()
-      )*
-    )?
-  | (< ASTERISK >)? 
-    < FROM > parseSelectSubcubeClause()
-    (
-      < WHERE > parseExpression()
-    )?
-    < RPAREN >
-  )
-  {
-    return new SelectSubcubeClause();
   }
 }

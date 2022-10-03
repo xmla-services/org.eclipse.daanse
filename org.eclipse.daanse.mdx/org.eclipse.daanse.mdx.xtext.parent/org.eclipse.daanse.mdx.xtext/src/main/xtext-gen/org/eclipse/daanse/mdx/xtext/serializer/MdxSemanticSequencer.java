@@ -6,6 +6,7 @@ package org.eclipse.daanse.mdx.xtext.serializer;
 import com.google.inject.Inject;
 import java.util.Set;
 import org.eclipse.daanse.mdx.xtext.mdx.MdxPackage;
+import org.eclipse.daanse.mdx.xtext.mdx.MdxStatement;
 import org.eclipse.daanse.mdx.xtext.mdx.SelectStatement;
 import org.eclipse.daanse.mdx.xtext.services.MdxGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
@@ -14,7 +15,9 @@ import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Parameter;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.serializer.ISerializationContext;
+import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
+import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
 public class MdxSemanticSequencer extends AbstractDelegatingSemanticSequencer {
@@ -30,6 +33,9 @@ public class MdxSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == MdxPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MdxPackage.MDX_STATEMENT:
+				sequence_MdxStatement(context, (MdxStatement) semanticObject); 
+				return; 
 			case MdxPackage.SELECT_STATEMENT:
 				sequence_SelectStatement(context, (SelectStatement) semanticObject); 
 				return; 
@@ -41,7 +47,26 @@ public class MdxSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
-	 *     MdxStatement returns SelectStatement
+	 *     MdxStatement returns MdxStatement
+	 *
+	 * Constraint:
+	 *     statement=SelectStatement
+	 * </pre>
+	 */
+	protected void sequence_MdxStatement(ISerializationContext context, MdxStatement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MdxPackage.Literals.MDX_STATEMENT__STATEMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MdxPackage.Literals.MDX_STATEMENT__STATEMENT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getMdxStatementAccess().getStatementSelectStatementParserRuleCall_0(), semanticObject.getStatement());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
 	 *     SelectStatement returns SelectStatement
 	 *
 	 * Constraint:

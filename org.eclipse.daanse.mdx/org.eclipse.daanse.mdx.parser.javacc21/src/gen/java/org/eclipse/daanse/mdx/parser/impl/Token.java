@@ -358,6 +358,8 @@ public class Token implements mdxConstants, Node {
             return new ASTCOMMIT(TokenType.COMMIT, tokenSource, beginOffset, endOffset);
             case CUBE:
             return new ASTCUBE(TokenType.CUBE, tokenSource, beginOffset, endOffset);
+            case CURRENTCUBE:
+            return new ASTCURRENTCUBE(TokenType.CURRENTCUBE, tokenSource, beginOffset, endOffset);
             case DIMENSION:
             return new ASTDIMENSION(TokenType.DIMENSION, tokenSource, beginOffset, endOffset);
             case DRILLTHROUGH:

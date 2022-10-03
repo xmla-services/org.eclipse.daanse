@@ -10,6 +10,12 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>Statement</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement <em>Statement</em>}</li>
+ * </ul>
  *
  * @see org.eclipse.daanse.mdx.xtext.mdx.MdxPackage#getMdxStatement()
  * @model
@@ -17,4 +23,26 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface MdxStatement extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Statement</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Statement</em>' containment reference.
+   * @see #setStatement(SelectStatement)
+   * @see org.eclipse.daanse.mdx.xtext.mdx.MdxPackage#getMdxStatement_Statement()
+   * @model containment="true"
+   * @generated
+   */
+  SelectStatement getStatement();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement <em>Statement</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Statement</em>' containment reference.
+   * @see #getStatement()
+   * @generated
+   */
+  void setStatement(SelectStatement value);
+
 } // MdxStatement

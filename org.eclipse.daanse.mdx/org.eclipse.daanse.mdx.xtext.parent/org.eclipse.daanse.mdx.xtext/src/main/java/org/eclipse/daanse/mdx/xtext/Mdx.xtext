@@ -3,165 +3,163 @@ grammar org.eclipse.daanse.mdx.xtext.Mdx with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mdx "http://www.eclipse.org/daanse/mdx/xtext/Mdx"
 
-
 MdxStatement:
-	(SelectStatement);
+	(statement=SelectStatement);
 
 SelectStatement:
 	{SelectStatement} ('WITH' FormulaSpecification)?
-	'SELECT' axis_specification_list?
-	'FROM' cube_specification
-	('WHERE' slicer_specification)?
-	cell_props?;
+	'SELECT' AxisSpecificationList?
+	'FROM' CubeSpecification
+	('WHERE' SlicerSpecification)?
+	CellPropeties?;
 
 FormulaSpecification:
-	single_formula_specification+;
+	SingleFormulaSpecification+;
 
-single_formula_specification:
-	member_specification
-	| set_specification;
+SingleFormulaSpecification:
+	MemberSpecification
+	| SetSpecification;
 
-set_specification:
-	'SET' set_name 'AS'
-	(QUOTE expression QUOTE | expression);
+SetSpecification:
+	'SET' SetName 'AS'
+	(QUOTE Expression QUOTE | Expression);
 
-member_specification:
-	'MEMBER' member_name 'AS'
-	((QUOTE value_expression QUOTE | value_expression)
-	COMMA member_property_def_list?);
+MemberSpecification:
+	'MEMBER' MemberName 'AS'
+	((QUOTE ValueExpression QUOTE | ValueExpression)
+	COMMA MemberPropertyDefList?);
 
-axis_specification_list:
-	axis_specification (COMMA axis_specification)*;
+AxisSpecificationList:
+	AxisSpecification (COMMA AxisSpecification)*;
 
-member_property_def_list:
-	member_property_definition (COMMA member_property_definition)*;
+MemberPropertyDefList:
+	MemberPropertyDefinition (COMMA MemberPropertyDefinition)*;
 
-member_name:
-	compound_id;
+MemberName:
+	CompoundId;
 
-member_property_definition:
-	identifier EQ value_expression;
+MemberPropertyDefinition:
+	Identifier EQ ValueExpression;
 
-set_name:
-	compound_id;
+SetName:
+	CompoundId;
 
-compound_id:
-identifier (DOT identifier)*
-;
+CompoundId:
+	Identifier (DOT Identifier)*;
 
-axis_specification:
-	('NON' 'EMPTY')? expression dim_props? 'ON' axis_name;
+AxisSpecification:
+	('NON' 'EMPTY')? Expression DimProperties? 'ON' AxisName;
 
-axis_name:
-	identifier;
+AxisName:
+	Identifier;
 
-dim_props:
-	'DIMENSION'? 'PROPERTIES' property_list;
+DimProperties:
+	'DIMENSION'? 'PROPERTIES' PropertyList;
 
-property_list:
-	property (COMMA property)*;
+PropertyList:
+	Property (COMMA Property)*;
 
-property:
-	compound_id;
+Property:
+	CompoundId;
 
-cube_specification:
-	cube_name;
+CubeSpecification:
+	CubeName;
 
-cube_name:
-	compound_id;
+CubeName:
+	CompoundId;
 
-slicer_specification:
-	expression;
+SlicerSpecification:
+	Expression;
 
-cell_props:
-	'CELL'? 'PROPERTIES' cell_property_list;
+CellPropeties:
+	'CELL'? 'PROPERTIES' CellPropertyList;
 
-cell_property_list:
-	cell_property COMMA cell_property*;
+CellPropertyList:
+	CellProperty COMMA CellProperty*;
 
-cell_property:
-	mandatory_cell_property
-	| provider_specific_cell_property;
+CellProperty:
+	MandatoryCellProperty
+	| ProviderSpecificCellProperty;
 
-mandatory_cell_property:
+MandatoryCellProperty:
 	'CELL_ORDINAL'
 	| 'VALUE'
 	| 'FORMATTED_VALUE';
 
-provider_specific_cell_property:
-	identifier;
+ProviderSpecificCellProperty:
+	Identifier;
 
-expression:
-	value_expression (COLON value_expression)*;
+Expression:
+	ValueExpression (COLON ValueExpression)*;
 
-value_expression:
-	term5
-	(value_xor_expression | value_or_expression)*;
+ValueExpression:
+	Term5
+	(ValueXorExpression | ValueOrExpression)*;
 
-value_xor_expression:
-	'XOR' term5;
+ValueXorExpression:
+	'XOR' Term5;
 
-value_or_expression:
-	'OR' term5;
+ValueOrExpression:
+	'OR' Term5;
 
-term5:
-	term4
-	('AND' term4)*;
+Term5:
+	Term4
+	('AND' Term4)*;
 
-term4:
-	'NOT' term4
-	| term3;
+Term4:
+	'NOT' Term4
+	| Term3;
 
-term3:
-	term2 (comp_op term2)*;
+Term3:
+	Term2 (CompatingOperator Term2)*;
 
-term2:
-	term ((CONCAT | PLUS | MINUS) term)*;
+Term2:
+	Term ((CONCAT | PLUS | MINUS) Term)*;
 
-term:
-	factor ((SOLIDUS | ASTERISK) factor)*;
+Term:
+	Factor ((SOLIDUS | ASTERISK) Factor)*;
 
-factor:
-	MINUS value_expression_primary
-	| PLUS value_expression_primary
-	| value_expression_primary;
+Factor:
+	MINUS ValueExpressionPrimary
+	| PLUS ValueExpressionPrimary
+	| ValueExpressionPrimary;
 
-function:
-	identifier LPAREN (exp_list)? RPAREN;
+Function:
+	Identifier LPAREN (ExpressionList)? RPAREN;
 
-value_expression_primary:
-	value_expression_primary0
+ValueExpressionPrimary:
+	ValueExpressionPrimary0
 	(DOT
-	(unquoted_identifier
-	| quoted_identifier
-	| amp_quoted_identifier
-	| function))*;
+	(UnquotedIdentifier
+	| QuotedIdentifier
+	| AmpQuotedIdentifier
+	| Function))*;
 
-value_expression_primary0:
-	function
-	| (LPAREN exp_list RPAREN)
-	| (LBRACE (exp_list)? RBRACE)
-	| case_expression
+ValueExpressionPrimary0:
+	Function
+	| (LPAREN ExpressionList RPAREN)
+	| (LBRACE (ExpressionList)? RBRACE)
+	| CaseExpression
 	| STRING
 	| INT
-	| identifier;
+	| Identifier;
 
-exp_list:
-	expression (COMMA expression)*;
+ExpressionList:
+	Expression (COMMA Expression)*;
 
-case_expression:
-	'CASE' (value_expression)?
-	(when_list)?
-	('ELSE' value_expression)?
+CaseExpression:
+	'CASE' (ValueExpression)?
+	(WhenList)?
+	('ELSE' ValueExpression)?
 	'END';
 
-when_list:
-	when_clause (when_clause)*;
+WhenList:
+	WhenClause (WhenClause)*;
 
-when_clause:
-	'WHEN' value_expression 'THEN' value_expression;
+WhenClause:
+	'WHEN' ValueExpression 'THEN' ValueExpression;
 
-comp_op:
+CompatingOperator:
 	EQ
 	| NE
 	| LT
@@ -169,21 +167,21 @@ comp_op:
 	| LE
 	| GE;
 
-identifier:
-	(unquoted_identifier
-	| quoted_identifier);
+Identifier:
+	(UnquotedIdentifier
+	| QuotedIdentifier);
 
-unquoted_identifier:
-	keyword
+UnquotedIdentifier:
+	Keyword
 	| ID;
 
-amp_quoted_identifier:
+AmpQuotedIdentifier:
 	AMP_QUOTED_ID;
 
-quoted_identifier:
+QuotedIdentifier:
 	QUOTED_ID;
 
-keyword:
+Keyword:
 	'DIMENSION'
 	| 'PROPERTIES';
 

@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import java.util.List;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Alternatives;
+import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.Group;
@@ -24,14 +25,18 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 	
 	public class MdxStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MdxStatement");
-		private final RuleCall cSelectStatementParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final Assignment cStatementAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cStatementSelectStatementParserRuleCall_0 = (RuleCall)cStatementAssignment.eContents().get(0);
 		
 		//MdxStatement:
-		//    (SelectStatement);
+		//    (statement=SelectStatement);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(SelectStatement)
-		public RuleCall getSelectStatementParserRuleCall() { return cSelectStatementParserRuleCall; }
+		//(statement=SelectStatement)
+		public Assignment getStatementAssignment() { return cStatementAssignment; }
+		
+		//SelectStatement
+		public RuleCall getStatementSelectStatementParserRuleCall_0() { return cStatementSelectStatementParserRuleCall_0; }
 	}
 	public class SelectStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.SelectStatement");
@@ -41,27 +46,27 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		private final Keyword cWITHKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final RuleCall cFormulaSpecificationParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		private final Keyword cSELECTKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final RuleCall cAxis_specification_listParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
+		private final RuleCall cAxisSpecificationListParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
 		private final Keyword cFROMKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final RuleCall cCube_specificationParserRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
+		private final RuleCall cCubeSpecificationParserRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
 		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
 		private final Keyword cWHEREKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final RuleCall cSlicer_specificationParserRuleCall_6_1 = (RuleCall)cGroup_6.eContents().get(1);
-		private final RuleCall cCell_propsParserRuleCall_7 = (RuleCall)cGroup.eContents().get(7);
+		private final RuleCall cSlicerSpecificationParserRuleCall_6_1 = (RuleCall)cGroup_6.eContents().get(1);
+		private final RuleCall cCellPropetiesParserRuleCall_7 = (RuleCall)cGroup.eContents().get(7);
 		
 		//SelectStatement:
 		//    {SelectStatement} ('WITH' FormulaSpecification)?
-		//    'SELECT' axis_specification_list?
-		//    'FROM' cube_specification
-		//    ('WHERE' slicer_specification)?
-		//    cell_props?;
+		//    'SELECT' AxisSpecificationList?
+		//    'FROM' CubeSpecification
+		//    ('WHERE' SlicerSpecification)?
+		//    CellPropeties?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SelectStatement} ('WITH' FormulaSpecification)?
-		//'SELECT' axis_specification_list?
-		//'FROM' cube_specification
-		//('WHERE' slicer_specification)?
-		//cell_props?
+		//'SELECT' AxisSpecificationList?
+		//'FROM' CubeSpecification
+		//('WHERE' SlicerSpecification)?
+		//CellPropeties?
 		public Group getGroup() { return cGroup; }
 		
 		//{SelectStatement}
@@ -79,64 +84,64 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//'SELECT'
 		public Keyword getSELECTKeyword_2() { return cSELECTKeyword_2; }
 		
-		//axis_specification_list?
-		public RuleCall getAxis_specification_listParserRuleCall_3() { return cAxis_specification_listParserRuleCall_3; }
+		//AxisSpecificationList?
+		public RuleCall getAxisSpecificationListParserRuleCall_3() { return cAxisSpecificationListParserRuleCall_3; }
 		
 		//'FROM'
 		public Keyword getFROMKeyword_4() { return cFROMKeyword_4; }
 		
-		//cube_specification
-		public RuleCall getCube_specificationParserRuleCall_5() { return cCube_specificationParserRuleCall_5; }
+		//CubeSpecification
+		public RuleCall getCubeSpecificationParserRuleCall_5() { return cCubeSpecificationParserRuleCall_5; }
 		
-		//('WHERE' slicer_specification)?
+		//('WHERE' SlicerSpecification)?
 		public Group getGroup_6() { return cGroup_6; }
 		
 		//'WHERE'
 		public Keyword getWHEREKeyword_6_0() { return cWHEREKeyword_6_0; }
 		
-		//slicer_specification
-		public RuleCall getSlicer_specificationParserRuleCall_6_1() { return cSlicer_specificationParserRuleCall_6_1; }
+		//SlicerSpecification
+		public RuleCall getSlicerSpecificationParserRuleCall_6_1() { return cSlicerSpecificationParserRuleCall_6_1; }
 		
-		//cell_props?
-		public RuleCall getCell_propsParserRuleCall_7() { return cCell_propsParserRuleCall_7; }
+		//CellPropeties?
+		public RuleCall getCellPropetiesParserRuleCall_7() { return cCellPropetiesParserRuleCall_7; }
 	}
 	public class FormulaSpecificationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.FormulaSpecification");
-		private final RuleCall cSingle_formula_specificationParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cSingleFormulaSpecificationParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//FormulaSpecification:
-		//    single_formula_specification+;
+		//    SingleFormulaSpecification+;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//single_formula_specification+
-		public RuleCall getSingle_formula_specificationParserRuleCall() { return cSingle_formula_specificationParserRuleCall; }
+		//SingleFormulaSpecification+
+		public RuleCall getSingleFormulaSpecificationParserRuleCall() { return cSingleFormulaSpecificationParserRuleCall; }
 	}
-	public class Single_formula_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.single_formula_specification");
+	public class SingleFormulaSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.SingleFormulaSpecification");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cMember_specificationParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cSet_specificationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cMemberSpecificationParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cSetSpecificationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//single_formula_specification:
-		//    member_specification
-		//    | set_specification;
+		//SingleFormulaSpecification:
+		//    MemberSpecification
+		//    | SetSpecification;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//member_specification
-		//| set_specification
+		//MemberSpecification
+		//| SetSpecification
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//member_specification
-		public RuleCall getMember_specificationParserRuleCall_0() { return cMember_specificationParserRuleCall_0; }
+		//MemberSpecification
+		public RuleCall getMemberSpecificationParserRuleCall_0() { return cMemberSpecificationParserRuleCall_0; }
 		
-		//set_specification
-		public RuleCall getSet_specificationParserRuleCall_1() { return cSet_specificationParserRuleCall_1; }
+		//SetSpecification
+		public RuleCall getSetSpecificationParserRuleCall_1() { return cSetSpecificationParserRuleCall_1; }
 	}
-	public class Set_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.set_specification");
+	public class SetSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.SetSpecification");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cSETKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cSet_nameParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cSetNameParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		private final Keyword cASKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
 		private final Group cGroup_3_0 = (Group)cAlternatives_3.eContents().get(0);
@@ -145,249 +150,248 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		private final RuleCall cQUOTEParserRuleCall_3_0_2 = (RuleCall)cGroup_3_0.eContents().get(2);
 		private final RuleCall cExpressionParserRuleCall_3_1 = (RuleCall)cAlternatives_3.eContents().get(1);
 		
-		//set_specification:
-		//    'SET' set_name 'AS'
-		//    (QUOTE expression QUOTE | expression);
+		//SetSpecification:
+		//    'SET' SetName 'AS'
+		//    (QUOTE Expression QUOTE | Expression);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'SET' set_name 'AS'
-		//(QUOTE expression QUOTE | expression)
+		//'SET' SetName 'AS'
+		//(QUOTE Expression QUOTE | Expression)
 		public Group getGroup() { return cGroup; }
 		
 		//'SET'
 		public Keyword getSETKeyword_0() { return cSETKeyword_0; }
 		
-		//set_name
-		public RuleCall getSet_nameParserRuleCall_1() { return cSet_nameParserRuleCall_1; }
+		//SetName
+		public RuleCall getSetNameParserRuleCall_1() { return cSetNameParserRuleCall_1; }
 		
 		//'AS'
 		public Keyword getASKeyword_2() { return cASKeyword_2; }
 		
-		//(QUOTE expression QUOTE | expression)
+		//(QUOTE Expression QUOTE | Expression)
 		public Alternatives getAlternatives_3() { return cAlternatives_3; }
 		
-		//QUOTE expression QUOTE
+		//QUOTE Expression QUOTE
 		public Group getGroup_3_0() { return cGroup_3_0; }
 		
 		//QUOTE
 		public RuleCall getQUOTEParserRuleCall_3_0_0() { return cQUOTEParserRuleCall_3_0_0; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall_3_0_1() { return cExpressionParserRuleCall_3_0_1; }
 		
 		//QUOTE
 		public RuleCall getQUOTEParserRuleCall_3_0_2() { return cQUOTEParserRuleCall_3_0_2; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall_3_1() { return cExpressionParserRuleCall_3_1; }
 	}
-	public class Member_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.member_specification");
+	public class MemberSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MemberSpecification");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cMEMBERKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cMember_nameParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cMemberNameParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		private final Keyword cASKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Alternatives cAlternatives_3_0 = (Alternatives)cGroup_3.eContents().get(0);
 		private final Group cGroup_3_0_0 = (Group)cAlternatives_3_0.eContents().get(0);
 		private final RuleCall cQUOTEParserRuleCall_3_0_0_0 = (RuleCall)cGroup_3_0_0.eContents().get(0);
-		private final RuleCall cValue_expressionParserRuleCall_3_0_0_1 = (RuleCall)cGroup_3_0_0.eContents().get(1);
+		private final RuleCall cValueExpressionParserRuleCall_3_0_0_1 = (RuleCall)cGroup_3_0_0.eContents().get(1);
 		private final RuleCall cQUOTEParserRuleCall_3_0_0_2 = (RuleCall)cGroup_3_0_0.eContents().get(2);
-		private final RuleCall cValue_expressionParserRuleCall_3_0_1 = (RuleCall)cAlternatives_3_0.eContents().get(1);
+		private final RuleCall cValueExpressionParserRuleCall_3_0_1 = (RuleCall)cAlternatives_3_0.eContents().get(1);
 		private final RuleCall cCOMMAParserRuleCall_3_1 = (RuleCall)cGroup_3.eContents().get(1);
-		private final RuleCall cMember_property_def_listParserRuleCall_3_2 = (RuleCall)cGroup_3.eContents().get(2);
+		private final RuleCall cMemberPropertyDefListParserRuleCall_3_2 = (RuleCall)cGroup_3.eContents().get(2);
 		
-		//member_specification:
-		//    'MEMBER' member_name 'AS'
-		//    ((QUOTE value_expression QUOTE | value_expression)
-		//    COMMA member_property_def_list?);
+		//MemberSpecification:
+		//    'MEMBER' MemberName 'AS'
+		//    ((QUOTE ValueExpression QUOTE | ValueExpression)
+		//    COMMA MemberPropertyDefList?);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'MEMBER' member_name 'AS'
-		//((QUOTE value_expression QUOTE | value_expression)
-		//COMMA member_property_def_list?)
+		//'MEMBER' MemberName 'AS'
+		//((QUOTE ValueExpression QUOTE | ValueExpression)
+		//COMMA MemberPropertyDefList?)
 		public Group getGroup() { return cGroup; }
 		
 		//'MEMBER'
 		public Keyword getMEMBERKeyword_0() { return cMEMBERKeyword_0; }
 		
-		//member_name
-		public RuleCall getMember_nameParserRuleCall_1() { return cMember_nameParserRuleCall_1; }
+		//MemberName
+		public RuleCall getMemberNameParserRuleCall_1() { return cMemberNameParserRuleCall_1; }
 		
 		//'AS'
 		public Keyword getASKeyword_2() { return cASKeyword_2; }
 		
-		//((QUOTE value_expression QUOTE | value_expression)
-		//COMMA member_property_def_list?)
+		//((QUOTE ValueExpression QUOTE | ValueExpression)
+		//COMMA MemberPropertyDefList?)
 		public Group getGroup_3() { return cGroup_3; }
 		
-		//(QUOTE value_expression QUOTE | value_expression)
+		//(QUOTE ValueExpression QUOTE | ValueExpression)
 		public Alternatives getAlternatives_3_0() { return cAlternatives_3_0; }
 		
-		//QUOTE value_expression QUOTE
+		//QUOTE ValueExpression QUOTE
 		public Group getGroup_3_0_0() { return cGroup_3_0_0; }
 		
 		//QUOTE
 		public RuleCall getQUOTEParserRuleCall_3_0_0_0() { return cQUOTEParserRuleCall_3_0_0_0; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_3_0_0_1() { return cValue_expressionParserRuleCall_3_0_0_1; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_3_0_0_1() { return cValueExpressionParserRuleCall_3_0_0_1; }
 		
 		//QUOTE
 		public RuleCall getQUOTEParserRuleCall_3_0_0_2() { return cQUOTEParserRuleCall_3_0_0_2; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_3_0_1() { return cValue_expressionParserRuleCall_3_0_1; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_3_0_1() { return cValueExpressionParserRuleCall_3_0_1; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_3_1() { return cCOMMAParserRuleCall_3_1; }
 		
-		//member_property_def_list?
-		public RuleCall getMember_property_def_listParserRuleCall_3_2() { return cMember_property_def_listParserRuleCall_3_2; }
+		//MemberPropertyDefList?
+		public RuleCall getMemberPropertyDefListParserRuleCall_3_2() { return cMemberPropertyDefListParserRuleCall_3_2; }
 	}
-	public class Axis_specification_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.axis_specification_list");
+	public class AxisSpecificationListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.AxisSpecificationList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cAxis_specificationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cAxisSpecificationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cCOMMAParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
-		private final RuleCall cAxis_specificationParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final RuleCall cAxisSpecificationParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//axis_specification_list:
-		//    axis_specification (COMMA axis_specification)*;
+		//AxisSpecificationList:
+		//    AxisSpecification (COMMA AxisSpecification)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//axis_specification (COMMA axis_specification)*
+		//AxisSpecification (COMMA AxisSpecification)*
 		public Group getGroup() { return cGroup; }
 		
-		//axis_specification
-		public RuleCall getAxis_specificationParserRuleCall_0() { return cAxis_specificationParserRuleCall_0; }
+		//AxisSpecification
+		public RuleCall getAxisSpecificationParserRuleCall_0() { return cAxisSpecificationParserRuleCall_0; }
 		
-		//(COMMA axis_specification)*
+		//(COMMA AxisSpecification)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_1_0() { return cCOMMAParserRuleCall_1_0; }
 		
-		//axis_specification
-		public RuleCall getAxis_specificationParserRuleCall_1_1() { return cAxis_specificationParserRuleCall_1_1; }
+		//AxisSpecification
+		public RuleCall getAxisSpecificationParserRuleCall_1_1() { return cAxisSpecificationParserRuleCall_1_1; }
 	}
-	public class Member_property_def_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.member_property_def_list");
+	public class MemberPropertyDefListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MemberPropertyDefList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cMember_property_definitionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cMemberPropertyDefinitionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cCOMMAParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
-		private final RuleCall cMember_property_definitionParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final RuleCall cMemberPropertyDefinitionParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//member_property_def_list:
-		//    member_property_definition (COMMA member_property_definition)*;
+		//MemberPropertyDefList:
+		//    MemberPropertyDefinition (COMMA MemberPropertyDefinition)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//member_property_definition (COMMA member_property_definition)*
+		//MemberPropertyDefinition (COMMA MemberPropertyDefinition)*
 		public Group getGroup() { return cGroup; }
 		
-		//member_property_definition
-		public RuleCall getMember_property_definitionParserRuleCall_0() { return cMember_property_definitionParserRuleCall_0; }
+		//MemberPropertyDefinition
+		public RuleCall getMemberPropertyDefinitionParserRuleCall_0() { return cMemberPropertyDefinitionParserRuleCall_0; }
 		
-		//(COMMA member_property_definition)*
+		//(COMMA MemberPropertyDefinition)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_1_0() { return cCOMMAParserRuleCall_1_0; }
 		
-		//member_property_definition
-		public RuleCall getMember_property_definitionParserRuleCall_1_1() { return cMember_property_definitionParserRuleCall_1_1; }
+		//MemberPropertyDefinition
+		public RuleCall getMemberPropertyDefinitionParserRuleCall_1_1() { return cMemberPropertyDefinitionParserRuleCall_1_1; }
 	}
-	public class Member_nameElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.member_name");
-		private final RuleCall cCompound_idParserRuleCall = (RuleCall)rule.eContents().get(1);
+	public class MemberNameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MemberName");
+		private final RuleCall cCompoundIdParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//member_name:
-		//    compound_id;
+		//MemberName:
+		//    CompoundId;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//compound_id
-		public RuleCall getCompound_idParserRuleCall() { return cCompound_idParserRuleCall; }
+		//CompoundId
+		public RuleCall getCompoundIdParserRuleCall() { return cCompoundIdParserRuleCall; }
 	}
-	public class Member_property_definitionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.member_property_definition");
+	public class MemberPropertyDefinitionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MemberPropertyDefinition");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cIdentifierParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final RuleCall cEQParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final RuleCall cValue_expressionParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cValueExpressionParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		
-		//member_property_definition:
-		//    identifier EQ value_expression;
+		//MemberPropertyDefinition:
+		//    Identifier EQ ValueExpression;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//identifier EQ value_expression
+		//Identifier EQ ValueExpression
 		public Group getGroup() { return cGroup; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall_0() { return cIdentifierParserRuleCall_0; }
 		
 		//EQ
 		public RuleCall getEQParserRuleCall_1() { return cEQParserRuleCall_1; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_2() { return cValue_expressionParserRuleCall_2; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_2() { return cValueExpressionParserRuleCall_2; }
 	}
-	public class Set_nameElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.set_name");
-		private final RuleCall cCompound_idParserRuleCall = (RuleCall)rule.eContents().get(1);
+	public class SetNameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.SetName");
+		private final RuleCall cCompoundIdParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//set_name:
-		//    compound_id;
+		//SetName:
+		//    CompoundId;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//compound_id
-		public RuleCall getCompound_idParserRuleCall() { return cCompound_idParserRuleCall; }
+		//CompoundId
+		public RuleCall getCompoundIdParserRuleCall() { return cCompoundIdParserRuleCall; }
 	}
-	public class Compound_idElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.compound_id");
+	public class CompoundIdElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CompoundId");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cIdentifierParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cDOTParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
 		private final RuleCall cIdentifierParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//compound_id:
-		//identifier (DOT identifier)*
-		//;
+		//CompoundId:
+		//    Identifier (DOT Identifier)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//identifier (DOT identifier)*
+		//Identifier (DOT Identifier)*
 		public Group getGroup() { return cGroup; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall_0() { return cIdentifierParserRuleCall_0; }
 		
-		//(DOT identifier)*
+		//(DOT Identifier)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//DOT
 		public RuleCall getDOTParserRuleCall_1_0() { return cDOTParserRuleCall_1_0; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall_1_1() { return cIdentifierParserRuleCall_1_1; }
 	}
-	public class Axis_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.axis_specification");
+	public class AxisSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.AxisSpecification");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
 		private final Keyword cNONKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
 		private final Keyword cEMPTYKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
 		private final RuleCall cExpressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final RuleCall cDim_propsParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cDimPropertiesParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final Keyword cONKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final RuleCall cAxis_nameParserRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
+		private final RuleCall cAxisNameParserRuleCall_4 = (RuleCall)cGroup.eContents().get(4);
 		
-		//axis_specification:
-		//    ('NON' 'EMPTY')? expression dim_props? 'ON' axis_name;
+		//AxisSpecification:
+		//    ('NON' 'EMPTY')? Expression DimProperties? 'ON' AxisName;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//('NON' 'EMPTY')? expression dim_props? 'ON' axis_name
+		//('NON' 'EMPTY')? Expression DimProperties? 'ON' AxisName
 		public Group getGroup() { return cGroup; }
 		
 		//('NON' 'EMPTY')?
@@ -399,41 +403,41 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//'EMPTY'
 		public Keyword getEMPTYKeyword_0_1() { return cEMPTYKeyword_0_1; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall_1() { return cExpressionParserRuleCall_1; }
 		
-		//dim_props?
-		public RuleCall getDim_propsParserRuleCall_2() { return cDim_propsParserRuleCall_2; }
+		//DimProperties?
+		public RuleCall getDimPropertiesParserRuleCall_2() { return cDimPropertiesParserRuleCall_2; }
 		
 		//'ON'
 		public Keyword getONKeyword_3() { return cONKeyword_3; }
 		
-		//axis_name
-		public RuleCall getAxis_nameParserRuleCall_4() { return cAxis_nameParserRuleCall_4; }
+		//AxisName
+		public RuleCall getAxisNameParserRuleCall_4() { return cAxisNameParserRuleCall_4; }
 	}
-	public class Axis_nameElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.axis_name");
+	public class AxisNameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.AxisName");
 		private final RuleCall cIdentifierParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//axis_name:
-		//    identifier;
+		//AxisName:
+		//    Identifier;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall() { return cIdentifierParserRuleCall; }
 	}
-	public class Dim_propsElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.dim_props");
+	public class DimPropertiesElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.DimProperties");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cDIMENSIONKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cPROPERTIESKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final RuleCall cProperty_listParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cPropertyListParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		
-		//dim_props:
-		//    'DIMENSION'? 'PROPERTIES' property_list;
+		//DimProperties:
+		//    'DIMENSION'? 'PROPERTIES' PropertyList;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'DIMENSION'? 'PROPERTIES' property_list
+		//'DIMENSION'? 'PROPERTIES' PropertyList
 		public Group getGroup() { return cGroup; }
 		
 		//'DIMENSION'?
@@ -442,92 +446,92 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//'PROPERTIES'
 		public Keyword getPROPERTIESKeyword_1() { return cPROPERTIESKeyword_1; }
 		
-		//property_list
-		public RuleCall getProperty_listParserRuleCall_2() { return cProperty_listParserRuleCall_2; }
+		//PropertyList
+		public RuleCall getPropertyListParserRuleCall_2() { return cPropertyListParserRuleCall_2; }
 	}
-	public class Property_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.property_list");
+	public class PropertyListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.PropertyList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cPropertyParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cCOMMAParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
 		private final RuleCall cPropertyParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//property_list:
-		//    property (COMMA property)*;
+		//PropertyList:
+		//    Property (COMMA Property)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//property (COMMA property)*
+		//Property (COMMA Property)*
 		public Group getGroup() { return cGroup; }
 		
-		//property
+		//Property
 		public RuleCall getPropertyParserRuleCall_0() { return cPropertyParserRuleCall_0; }
 		
-		//(COMMA property)*
+		//(COMMA Property)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_1_0() { return cCOMMAParserRuleCall_1_0; }
 		
-		//property
+		//Property
 		public RuleCall getPropertyParserRuleCall_1_1() { return cPropertyParserRuleCall_1_1; }
 	}
 	public class PropertyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.property");
-		private final RuleCall cCompound_idParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Property");
+		private final RuleCall cCompoundIdParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//property:
-		//    compound_id;
+		//Property:
+		//    CompoundId;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//compound_id
-		public RuleCall getCompound_idParserRuleCall() { return cCompound_idParserRuleCall; }
+		//CompoundId
+		public RuleCall getCompoundIdParserRuleCall() { return cCompoundIdParserRuleCall; }
 	}
-	public class Cube_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.cube_specification");
-		private final RuleCall cCube_nameParserRuleCall = (RuleCall)rule.eContents().get(1);
+	public class CubeSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CubeSpecification");
+		private final RuleCall cCubeNameParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//cube_specification:
-		//    cube_name;
+		//CubeSpecification:
+		//    CubeName;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//cube_name
-		public RuleCall getCube_nameParserRuleCall() { return cCube_nameParserRuleCall; }
+		//CubeName
+		public RuleCall getCubeNameParserRuleCall() { return cCubeNameParserRuleCall; }
 	}
-	public class Cube_nameElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.cube_name");
-		private final RuleCall cCompound_idParserRuleCall = (RuleCall)rule.eContents().get(1);
+	public class CubeNameElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CubeName");
+		private final RuleCall cCompoundIdParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//cube_name:
-		//    compound_id;
+		//CubeName:
+		//    CompoundId;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//compound_id
-		public RuleCall getCompound_idParserRuleCall() { return cCompound_idParserRuleCall; }
+		//CompoundId
+		public RuleCall getCompoundIdParserRuleCall() { return cCompoundIdParserRuleCall; }
 	}
-	public class Slicer_specificationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.slicer_specification");
+	public class SlicerSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.SlicerSpecification");
 		private final RuleCall cExpressionParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//slicer_specification:
-		//    expression;
+		//SlicerSpecification:
+		//    Expression;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall() { return cExpressionParserRuleCall; }
 	}
-	public class Cell_propsElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.cell_props");
+	public class CellPropetiesElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CellPropeties");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cCELLKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cPROPERTIESKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final RuleCall cCell_property_listParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cCellPropertyListParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		
-		//cell_props:
-		//    'CELL'? 'PROPERTIES' cell_property_list;
+		//CellPropeties:
+		//    'CELL'? 'PROPERTIES' CellPropertyList;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'CELL'? 'PROPERTIES' cell_property_list
+		//'CELL'? 'PROPERTIES' CellPropertyList
 		public Group getGroup() { return cGroup; }
 		
 		//'CELL'?
@@ -536,61 +540,61 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//'PROPERTIES'
 		public Keyword getPROPERTIESKeyword_1() { return cPROPERTIESKeyword_1; }
 		
-		//cell_property_list
-		public RuleCall getCell_property_listParserRuleCall_2() { return cCell_property_listParserRuleCall_2; }
+		//CellPropertyList
+		public RuleCall getCellPropertyListParserRuleCall_2() { return cCellPropertyListParserRuleCall_2; }
 	}
-	public class Cell_property_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.cell_property_list");
+	public class CellPropertyListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CellPropertyList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cCell_propertyParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cCellPropertyParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final RuleCall cCOMMAParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final RuleCall cCell_propertyParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cCellPropertyParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		
-		//cell_property_list:
-		//    cell_property COMMA cell_property*;
+		//CellPropertyList:
+		//    CellProperty COMMA CellProperty*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//cell_property COMMA cell_property*
+		//CellProperty COMMA CellProperty*
 		public Group getGroup() { return cGroup; }
 		
-		//cell_property
-		public RuleCall getCell_propertyParserRuleCall_0() { return cCell_propertyParserRuleCall_0; }
+		//CellProperty
+		public RuleCall getCellPropertyParserRuleCall_0() { return cCellPropertyParserRuleCall_0; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_1() { return cCOMMAParserRuleCall_1; }
 		
-		//cell_property*
-		public RuleCall getCell_propertyParserRuleCall_2() { return cCell_propertyParserRuleCall_2; }
+		//CellProperty*
+		public RuleCall getCellPropertyParserRuleCall_2() { return cCellPropertyParserRuleCall_2; }
 	}
-	public class Cell_propertyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.cell_property");
+	public class CellPropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CellProperty");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cMandatory_cell_propertyParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cProvider_specific_cell_propertyParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cMandatoryCellPropertyParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProviderSpecificCellPropertyParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//cell_property:
-		//    mandatory_cell_property
-		//    | provider_specific_cell_property;
+		//CellProperty:
+		//    MandatoryCellProperty
+		//    | ProviderSpecificCellProperty;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//mandatory_cell_property
-		//| provider_specific_cell_property
+		//MandatoryCellProperty
+		//| ProviderSpecificCellProperty
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//mandatory_cell_property
-		public RuleCall getMandatory_cell_propertyParserRuleCall_0() { return cMandatory_cell_propertyParserRuleCall_0; }
+		//MandatoryCellProperty
+		public RuleCall getMandatoryCellPropertyParserRuleCall_0() { return cMandatoryCellPropertyParserRuleCall_0; }
 		
-		//provider_specific_cell_property
-		public RuleCall getProvider_specific_cell_propertyParserRuleCall_1() { return cProvider_specific_cell_propertyParserRuleCall_1; }
+		//ProviderSpecificCellProperty
+		public RuleCall getProviderSpecificCellPropertyParserRuleCall_1() { return cProviderSpecificCellPropertyParserRuleCall_1; }
 	}
-	public class Mandatory_cell_propertyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.mandatory_cell_property");
+	public class MandatoryCellPropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.MandatoryCellProperty");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Keyword cCELL_ORDINALKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
 		private final Keyword cVALUEKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
 		private final Keyword cFORMATTED_VALUEKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
 		
-		//mandatory_cell_property:
+		//MandatoryCellProperty:
 		//    'CELL_ORDINAL'
 		//    | 'VALUE'
 		//    | 'FORMATTED_VALUE';
@@ -610,198 +614,198 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//'FORMATTED_VALUE'
 		public Keyword getFORMATTED_VALUEKeyword_2() { return cFORMATTED_VALUEKeyword_2; }
 	}
-	public class Provider_specific_cell_propertyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.provider_specific_cell_property");
+	public class ProviderSpecificCellPropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ProviderSpecificCellProperty");
 		private final RuleCall cIdentifierParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//provider_specific_cell_property:
-		//    identifier;
+		//ProviderSpecificCellProperty:
+		//    Identifier;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall() { return cIdentifierParserRuleCall; }
 	}
 	public class ExpressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.expression");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Expression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cValue_expressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cValueExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cCOLONParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
-		private final RuleCall cValue_expressionParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final RuleCall cValueExpressionParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//expression:
-		//    value_expression (COLON value_expression)*;
+		//Expression:
+		//    ValueExpression (COLON ValueExpression)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//value_expression (COLON value_expression)*
+		//ValueExpression (COLON ValueExpression)*
 		public Group getGroup() { return cGroup; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_0() { return cValue_expressionParserRuleCall_0; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_0() { return cValueExpressionParserRuleCall_0; }
 		
-		//(COLON value_expression)*
+		//(COLON ValueExpression)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//COLON
 		public RuleCall getCOLONParserRuleCall_1_0() { return cCOLONParserRuleCall_1_0; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_1_1() { return cValue_expressionParserRuleCall_1_1; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_1_1() { return cValueExpressionParserRuleCall_1_1; }
 	}
-	public class Value_expressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.value_expression");
+	public class ValueExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ValueExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cTerm5ParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final RuleCall cValue_xor_expressionParserRuleCall_1_0 = (RuleCall)cAlternatives_1.eContents().get(0);
-		private final RuleCall cValue_or_expressionParserRuleCall_1_1 = (RuleCall)cAlternatives_1.eContents().get(1);
+		private final RuleCall cValueXorExpressionParserRuleCall_1_0 = (RuleCall)cAlternatives_1.eContents().get(0);
+		private final RuleCall cValueOrExpressionParserRuleCall_1_1 = (RuleCall)cAlternatives_1.eContents().get(1);
 		
-		//value_expression:
-		//    term5
-		//    (value_xor_expression | value_or_expression)*;
+		//ValueExpression:
+		//    Term5
+		//    (ValueXorExpression | ValueOrExpression)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//term5
-		//(value_xor_expression | value_or_expression)*
+		//Term5
+		//(ValueXorExpression | ValueOrExpression)*
 		public Group getGroup() { return cGroup; }
 		
-		//term5
+		//Term5
 		public RuleCall getTerm5ParserRuleCall_0() { return cTerm5ParserRuleCall_0; }
 		
-		//(value_xor_expression | value_or_expression)*
+		//(ValueXorExpression | ValueOrExpression)*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//value_xor_expression
-		public RuleCall getValue_xor_expressionParserRuleCall_1_0() { return cValue_xor_expressionParserRuleCall_1_0; }
+		//ValueXorExpression
+		public RuleCall getValueXorExpressionParserRuleCall_1_0() { return cValueXorExpressionParserRuleCall_1_0; }
 		
-		//value_or_expression
-		public RuleCall getValue_or_expressionParserRuleCall_1_1() { return cValue_or_expressionParserRuleCall_1_1; }
+		//ValueOrExpression
+		public RuleCall getValueOrExpressionParserRuleCall_1_1() { return cValueOrExpressionParserRuleCall_1_1; }
 	}
-	public class Value_xor_expressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.value_xor_expression");
+	public class ValueXorExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ValueXorExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cXORKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cTerm5ParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//value_xor_expression:
-		//    'XOR' term5;
+		//ValueXorExpression:
+		//    'XOR' Term5;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'XOR' term5
+		//'XOR' Term5
 		public Group getGroup() { return cGroup; }
 		
 		//'XOR'
 		public Keyword getXORKeyword_0() { return cXORKeyword_0; }
 		
-		//term5
+		//Term5
 		public RuleCall getTerm5ParserRuleCall_1() { return cTerm5ParserRuleCall_1; }
 	}
-	public class Value_or_expressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.value_or_expression");
+	public class ValueOrExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ValueOrExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cORKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cTerm5ParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//value_or_expression:
-		//    'OR' term5;
+		//ValueOrExpression:
+		//    'OR' Term5;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'OR' term5
+		//'OR' Term5
 		public Group getGroup() { return cGroup; }
 		
 		//'OR'
 		public Keyword getORKeyword_0() { return cORKeyword_0; }
 		
-		//term5
+		//Term5
 		public RuleCall getTerm5ParserRuleCall_1() { return cTerm5ParserRuleCall_1; }
 	}
 	public class Term5Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.term5");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Term5");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cTerm4ParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Keyword cANDKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final RuleCall cTerm4ParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//term5:
-		//    term4
-		//    ('AND' term4)*;
+		//Term5:
+		//    Term4
+		//    ('AND' Term4)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//term4
-		//('AND' term4)*
+		//Term4
+		//('AND' Term4)*
 		public Group getGroup() { return cGroup; }
 		
-		//term4
+		//Term4
 		public RuleCall getTerm4ParserRuleCall_0() { return cTerm4ParserRuleCall_0; }
 		
-		//('AND' term4)*
+		//('AND' Term4)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//'AND'
 		public Keyword getANDKeyword_1_0() { return cANDKeyword_1_0; }
 		
-		//term4
+		//Term4
 		public RuleCall getTerm4ParserRuleCall_1_1() { return cTerm4ParserRuleCall_1_1; }
 	}
 	public class Term4Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.term4");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Term4");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Keyword cNOTKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
 		private final RuleCall cTerm4ParserRuleCall_0_1 = (RuleCall)cGroup_0.eContents().get(1);
 		private final RuleCall cTerm3ParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//term4:
-		//    'NOT' term4
-		//    | term3;
+		//Term4:
+		//    'NOT' Term4
+		//    | Term3;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'NOT' term4
-		//| term3
+		//'NOT' Term4
+		//| Term3
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//'NOT' term4
+		//'NOT' Term4
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//'NOT'
 		public Keyword getNOTKeyword_0_0() { return cNOTKeyword_0_0; }
 		
-		//term4
+		//Term4
 		public RuleCall getTerm4ParserRuleCall_0_1() { return cTerm4ParserRuleCall_0_1; }
 		
-		//term3
+		//Term3
 		public RuleCall getTerm3ParserRuleCall_1() { return cTerm3ParserRuleCall_1; }
 	}
 	public class Term3Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.term3");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Term3");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cTerm2ParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final RuleCall cComp_opParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
+		private final RuleCall cCompatingOperatorParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
 		private final RuleCall cTerm2ParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//term3:
-		//    term2 (comp_op term2)*;
+		//Term3:
+		//    Term2 (CompatingOperator Term2)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//term2 (comp_op term2)*
+		//Term2 (CompatingOperator Term2)*
 		public Group getGroup() { return cGroup; }
 		
-		//term2
+		//Term2
 		public RuleCall getTerm2ParserRuleCall_0() { return cTerm2ParserRuleCall_0; }
 		
-		//(comp_op term2)*
+		//(CompatingOperator Term2)*
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//comp_op
-		public RuleCall getComp_opParserRuleCall_1_0() { return cComp_opParserRuleCall_1_0; }
+		//CompatingOperator
+		public RuleCall getCompatingOperatorParserRuleCall_1_0() { return cCompatingOperatorParserRuleCall_1_0; }
 		
-		//term2
+		//Term2
 		public RuleCall getTerm2ParserRuleCall_1_1() { return cTerm2ParserRuleCall_1_1; }
 	}
 	public class Term2Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.term2");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Term2");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cTermParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
@@ -811,17 +815,17 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		private final RuleCall cMINUSParserRuleCall_1_0_2 = (RuleCall)cAlternatives_1_0.eContents().get(2);
 		private final RuleCall cTermParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//term2:
-		//    term ((CONCAT | PLUS | MINUS) term)*;
+		//Term2:
+		//    Term ((CONCAT | PLUS | MINUS) Term)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//term ((CONCAT | PLUS | MINUS) term)*
+		//Term ((CONCAT | PLUS | MINUS) Term)*
 		public Group getGroup() { return cGroup; }
 		
-		//term
+		//Term
 		public RuleCall getTermParserRuleCall_0() { return cTermParserRuleCall_0; }
 		
-		//((CONCAT | PLUS | MINUS) term)*
+		//((CONCAT | PLUS | MINUS) Term)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//(CONCAT | PLUS | MINUS)
@@ -836,11 +840,11 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//MINUS
 		public RuleCall getMINUSParserRuleCall_1_0_2() { return cMINUSParserRuleCall_1_0_2; }
 		
-		//term
+		//Term
 		public RuleCall getTermParserRuleCall_1_1() { return cTermParserRuleCall_1_1; }
 	}
 	public class TermElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.term");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Term");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cFactorParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
@@ -849,17 +853,17 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		private final RuleCall cASTERISKParserRuleCall_1_0_1 = (RuleCall)cAlternatives_1_0.eContents().get(1);
 		private final RuleCall cFactorParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//term:
-		//    factor ((SOLIDUS | ASTERISK) factor)*;
+		//Term:
+		//    Factor ((SOLIDUS | ASTERISK) Factor)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//factor ((SOLIDUS | ASTERISK) factor)*
+		//Factor ((SOLIDUS | ASTERISK) Factor)*
 		public Group getGroup() { return cGroup; }
 		
-		//factor
+		//Factor
 		public RuleCall getFactorParserRuleCall_0() { return cFactorParserRuleCall_0; }
 		
-		//((SOLIDUS | ASTERISK) factor)*
+		//((SOLIDUS | ASTERISK) Factor)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//(SOLIDUS | ASTERISK)
@@ -871,204 +875,204 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//ASTERISK
 		public RuleCall getASTERISKParserRuleCall_1_0_1() { return cASTERISKParserRuleCall_1_0_1; }
 		
-		//factor
+		//Factor
 		public RuleCall getFactorParserRuleCall_1_1() { return cFactorParserRuleCall_1_1; }
 	}
 	public class FactorElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.factor");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Factor");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final RuleCall cMINUSParserRuleCall_0_0 = (RuleCall)cGroup_0.eContents().get(0);
-		private final RuleCall cValue_expression_primaryParserRuleCall_0_1 = (RuleCall)cGroup_0.eContents().get(1);
+		private final RuleCall cValueExpressionPrimaryParserRuleCall_0_1 = (RuleCall)cGroup_0.eContents().get(1);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final RuleCall cPLUSParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
-		private final RuleCall cValue_expression_primaryParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
-		private final RuleCall cValue_expression_primaryParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cValueExpressionPrimaryParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final RuleCall cValueExpressionPrimaryParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
-		//factor:
-		//    MINUS value_expression_primary
-		//    | PLUS value_expression_primary
-		//    | value_expression_primary;
+		//Factor:
+		//    MINUS ValueExpressionPrimary
+		//    | PLUS ValueExpressionPrimary
+		//    | ValueExpressionPrimary;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//MINUS value_expression_primary
-		//| PLUS value_expression_primary
-		//| value_expression_primary
+		//MINUS ValueExpressionPrimary
+		//| PLUS ValueExpressionPrimary
+		//| ValueExpressionPrimary
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//MINUS value_expression_primary
+		//MINUS ValueExpressionPrimary
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//MINUS
 		public RuleCall getMINUSParserRuleCall_0_0() { return cMINUSParserRuleCall_0_0; }
 		
-		//value_expression_primary
-		public RuleCall getValue_expression_primaryParserRuleCall_0_1() { return cValue_expression_primaryParserRuleCall_0_1; }
+		//ValueExpressionPrimary
+		public RuleCall getValueExpressionPrimaryParserRuleCall_0_1() { return cValueExpressionPrimaryParserRuleCall_0_1; }
 		
-		//PLUS value_expression_primary
+		//PLUS ValueExpressionPrimary
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//PLUS
 		public RuleCall getPLUSParserRuleCall_1_0() { return cPLUSParserRuleCall_1_0; }
 		
-		//value_expression_primary
-		public RuleCall getValue_expression_primaryParserRuleCall_1_1() { return cValue_expression_primaryParserRuleCall_1_1; }
+		//ValueExpressionPrimary
+		public RuleCall getValueExpressionPrimaryParserRuleCall_1_1() { return cValueExpressionPrimaryParserRuleCall_1_1; }
 		
-		//value_expression_primary
-		public RuleCall getValue_expression_primaryParserRuleCall_2() { return cValue_expression_primaryParserRuleCall_2; }
+		//ValueExpressionPrimary
+		public RuleCall getValueExpressionPrimaryParserRuleCall_2() { return cValueExpressionPrimaryParserRuleCall_2; }
 	}
 	public class FunctionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.function");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Function");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cIdentifierParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final RuleCall cLPARENParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final RuleCall cExp_listParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cExpressionListParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final RuleCall cRPARENParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
 		
-		//function:
-		//    identifier LPAREN (exp_list)? RPAREN;
+		//Function:
+		//    Identifier LPAREN (ExpressionList)? RPAREN;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//identifier LPAREN (exp_list)? RPAREN
+		//Identifier LPAREN (ExpressionList)? RPAREN
 		public Group getGroup() { return cGroup; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall_0() { return cIdentifierParserRuleCall_0; }
 		
 		//LPAREN
 		public RuleCall getLPARENParserRuleCall_1() { return cLPARENParserRuleCall_1; }
 		
-		//(exp_list)?
-		public RuleCall getExp_listParserRuleCall_2() { return cExp_listParserRuleCall_2; }
+		//(ExpressionList)?
+		public RuleCall getExpressionListParserRuleCall_2() { return cExpressionListParserRuleCall_2; }
 		
 		//RPAREN
 		public RuleCall getRPARENParserRuleCall_3() { return cRPARENParserRuleCall_3; }
 	}
-	public class Value_expression_primaryElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.value_expression_primary");
+	public class ValueExpressionPrimaryElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ValueExpressionPrimary");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cValue_expression_primary0ParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cValueExpressionPrimary0ParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cDOTParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
 		private final Alternatives cAlternatives_1_1 = (Alternatives)cGroup_1.eContents().get(1);
-		private final RuleCall cUnquoted_identifierParserRuleCall_1_1_0 = (RuleCall)cAlternatives_1_1.eContents().get(0);
-		private final RuleCall cQuoted_identifierParserRuleCall_1_1_1 = (RuleCall)cAlternatives_1_1.eContents().get(1);
-		private final RuleCall cAmp_quoted_identifierParserRuleCall_1_1_2 = (RuleCall)cAlternatives_1_1.eContents().get(2);
+		private final RuleCall cUnquotedIdentifierParserRuleCall_1_1_0 = (RuleCall)cAlternatives_1_1.eContents().get(0);
+		private final RuleCall cQuotedIdentifierParserRuleCall_1_1_1 = (RuleCall)cAlternatives_1_1.eContents().get(1);
+		private final RuleCall cAmpQuotedIdentifierParserRuleCall_1_1_2 = (RuleCall)cAlternatives_1_1.eContents().get(2);
 		private final RuleCall cFunctionParserRuleCall_1_1_3 = (RuleCall)cAlternatives_1_1.eContents().get(3);
 		
-		//value_expression_primary:
-		//    value_expression_primary0
+		//ValueExpressionPrimary:
+		//    ValueExpressionPrimary0
 		//    (DOT
-		//    (unquoted_identifier
-		//    | quoted_identifier
-		//    | amp_quoted_identifier
-		//    | function))*;
+		//    (UnquotedIdentifier
+		//    | QuotedIdentifier
+		//    | AmpQuotedIdentifier
+		//    | Function))*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//value_expression_primary0
+		//ValueExpressionPrimary0
 		//(DOT
-		//(unquoted_identifier
-		//| quoted_identifier
-		//| amp_quoted_identifier
-		//| function))*
+		//(UnquotedIdentifier
+		//| QuotedIdentifier
+		//| AmpQuotedIdentifier
+		//| Function))*
 		public Group getGroup() { return cGroup; }
 		
-		//value_expression_primary0
-		public RuleCall getValue_expression_primary0ParserRuleCall_0() { return cValue_expression_primary0ParserRuleCall_0; }
+		//ValueExpressionPrimary0
+		public RuleCall getValueExpressionPrimary0ParserRuleCall_0() { return cValueExpressionPrimary0ParserRuleCall_0; }
 		
 		//(DOT
-		//(unquoted_identifier
-		//| quoted_identifier
-		//| amp_quoted_identifier
-		//| function))*
+		//(UnquotedIdentifier
+		//| QuotedIdentifier
+		//| AmpQuotedIdentifier
+		//| Function))*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//DOT
 		public RuleCall getDOTParserRuleCall_1_0() { return cDOTParserRuleCall_1_0; }
 		
-		//(unquoted_identifier
-		//| quoted_identifier
-		//| amp_quoted_identifier
-		//| function)
+		//(UnquotedIdentifier
+		//| QuotedIdentifier
+		//| AmpQuotedIdentifier
+		//| Function)
 		public Alternatives getAlternatives_1_1() { return cAlternatives_1_1; }
 		
-		//unquoted_identifier
-		public RuleCall getUnquoted_identifierParserRuleCall_1_1_0() { return cUnquoted_identifierParserRuleCall_1_1_0; }
+		//UnquotedIdentifier
+		public RuleCall getUnquotedIdentifierParserRuleCall_1_1_0() { return cUnquotedIdentifierParserRuleCall_1_1_0; }
 		
-		//quoted_identifier
-		public RuleCall getQuoted_identifierParserRuleCall_1_1_1() { return cQuoted_identifierParserRuleCall_1_1_1; }
+		//QuotedIdentifier
+		public RuleCall getQuotedIdentifierParserRuleCall_1_1_1() { return cQuotedIdentifierParserRuleCall_1_1_1; }
 		
-		//amp_quoted_identifier
-		public RuleCall getAmp_quoted_identifierParserRuleCall_1_1_2() { return cAmp_quoted_identifierParserRuleCall_1_1_2; }
+		//AmpQuotedIdentifier
+		public RuleCall getAmpQuotedIdentifierParserRuleCall_1_1_2() { return cAmpQuotedIdentifierParserRuleCall_1_1_2; }
 		
-		//function
+		//Function
 		public RuleCall getFunctionParserRuleCall_1_1_3() { return cFunctionParserRuleCall_1_1_3; }
 	}
-	public class Value_expression_primary0Elements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.value_expression_primary0");
+	public class ValueExpressionPrimary0Elements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ValueExpressionPrimary0");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cFunctionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final RuleCall cLPARENParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
-		private final RuleCall cExp_listParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final RuleCall cExpressionListParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		private final RuleCall cRPARENParserRuleCall_1_2 = (RuleCall)cGroup_1.eContents().get(2);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final RuleCall cLBRACEParserRuleCall_2_0 = (RuleCall)cGroup_2.eContents().get(0);
-		private final RuleCall cExp_listParserRuleCall_2_1 = (RuleCall)cGroup_2.eContents().get(1);
+		private final RuleCall cExpressionListParserRuleCall_2_1 = (RuleCall)cGroup_2.eContents().get(1);
 		private final RuleCall cRBRACEParserRuleCall_2_2 = (RuleCall)cGroup_2.eContents().get(2);
-		private final RuleCall cCase_expressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cCaseExpressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cSTRINGTerminalRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cINTTerminalRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		private final RuleCall cIdentifierParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
 		
-		//value_expression_primary0:
-		//    function
-		//    | (LPAREN exp_list RPAREN)
-		//    | (LBRACE (exp_list)? RBRACE)
-		//    | case_expression
+		//ValueExpressionPrimary0:
+		//    Function
+		//    | (LPAREN ExpressionList RPAREN)
+		//    | (LBRACE (ExpressionList)? RBRACE)
+		//    | CaseExpression
 		//    | STRING
 		//    | INT
-		//    | identifier;
+		//    | Identifier;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//function
-		//| (LPAREN exp_list RPAREN)
-		//| (LBRACE (exp_list)? RBRACE)
-		//| case_expression
+		//Function
+		//| (LPAREN ExpressionList RPAREN)
+		//| (LBRACE (ExpressionList)? RBRACE)
+		//| CaseExpression
 		//| STRING
 		//| INT
-		//| identifier
+		//| Identifier
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//function
+		//Function
 		public RuleCall getFunctionParserRuleCall_0() { return cFunctionParserRuleCall_0; }
 		
-		//(LPAREN exp_list RPAREN)
+		//(LPAREN ExpressionList RPAREN)
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//LPAREN
 		public RuleCall getLPARENParserRuleCall_1_0() { return cLPARENParserRuleCall_1_0; }
 		
-		//exp_list
-		public RuleCall getExp_listParserRuleCall_1_1() { return cExp_listParserRuleCall_1_1; }
+		//ExpressionList
+		public RuleCall getExpressionListParserRuleCall_1_1() { return cExpressionListParserRuleCall_1_1; }
 		
 		//RPAREN
 		public RuleCall getRPARENParserRuleCall_1_2() { return cRPARENParserRuleCall_1_2; }
 		
-		//(LBRACE (exp_list)? RBRACE)
+		//(LBRACE (ExpressionList)? RBRACE)
 		public Group getGroup_2() { return cGroup_2; }
 		
 		//LBRACE
 		public RuleCall getLBRACEParserRuleCall_2_0() { return cLBRACEParserRuleCall_2_0; }
 		
-		//(exp_list)?
-		public RuleCall getExp_listParserRuleCall_2_1() { return cExp_listParserRuleCall_2_1; }
+		//(ExpressionList)?
+		public RuleCall getExpressionListParserRuleCall_2_1() { return cExpressionListParserRuleCall_2_1; }
 		
 		//RBRACE
 		public RuleCall getRBRACEParserRuleCall_2_2() { return cRBRACEParserRuleCall_2_2; }
 		
-		//case_expression
-		public RuleCall getCase_expressionParserRuleCall_3() { return cCase_expressionParserRuleCall_3; }
+		//CaseExpression
+		public RuleCall getCaseExpressionParserRuleCall_3() { return cCaseExpressionParserRuleCall_3; }
 		
 		//STRING
 		public RuleCall getSTRINGTerminalRuleCall_4() { return cSTRINGTerminalRuleCall_4; }
@@ -1076,129 +1080,129 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		//INT
 		public RuleCall getINTTerminalRuleCall_5() { return cINTTerminalRuleCall_5; }
 		
-		//identifier
+		//Identifier
 		public RuleCall getIdentifierParserRuleCall_6() { return cIdentifierParserRuleCall_6; }
 	}
-	public class Exp_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.exp_list");
+	public class ExpressionListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.ExpressionList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final RuleCall cExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final RuleCall cCOMMAParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
 		private final RuleCall cExpressionParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//exp_list:
-		//    expression (COMMA expression)*;
+		//ExpressionList:
+		//    Expression (COMMA Expression)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//expression (COMMA expression)*
+		//Expression (COMMA Expression)*
 		public Group getGroup() { return cGroup; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall_0() { return cExpressionParserRuleCall_0; }
 		
-		//(COMMA expression)*
+		//(COMMA Expression)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//COMMA
 		public RuleCall getCOMMAParserRuleCall_1_0() { return cCOMMAParserRuleCall_1_0; }
 		
-		//expression
+		//Expression
 		public RuleCall getExpressionParserRuleCall_1_1() { return cExpressionParserRuleCall_1_1; }
 	}
-	public class Case_expressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.case_expression");
+	public class CaseExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CaseExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cCASEKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cValue_expressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final RuleCall cWhen_listParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cValueExpressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cWhenListParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cELSEKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final RuleCall cValue_expressionParserRuleCall_3_1 = (RuleCall)cGroup_3.eContents().get(1);
+		private final RuleCall cValueExpressionParserRuleCall_3_1 = (RuleCall)cGroup_3.eContents().get(1);
 		private final Keyword cENDKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//case_expression:
-		//    'CASE' (value_expression)?
-		//    (when_list)?
-		//    ('ELSE' value_expression)?
+		//CaseExpression:
+		//    'CASE' (ValueExpression)?
+		//    (WhenList)?
+		//    ('ELSE' ValueExpression)?
 		//    'END';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'CASE' (value_expression)?
-		//(when_list)?
-		//('ELSE' value_expression)?
+		//'CASE' (ValueExpression)?
+		//(WhenList)?
+		//('ELSE' ValueExpression)?
 		//'END'
 		public Group getGroup() { return cGroup; }
 		
 		//'CASE'
 		public Keyword getCASEKeyword_0() { return cCASEKeyword_0; }
 		
-		//(value_expression)?
-		public RuleCall getValue_expressionParserRuleCall_1() { return cValue_expressionParserRuleCall_1; }
+		//(ValueExpression)?
+		public RuleCall getValueExpressionParserRuleCall_1() { return cValueExpressionParserRuleCall_1; }
 		
-		//(when_list)?
-		public RuleCall getWhen_listParserRuleCall_2() { return cWhen_listParserRuleCall_2; }
+		//(WhenList)?
+		public RuleCall getWhenListParserRuleCall_2() { return cWhenListParserRuleCall_2; }
 		
-		//('ELSE' value_expression)?
+		//('ELSE' ValueExpression)?
 		public Group getGroup_3() { return cGroup_3; }
 		
 		//'ELSE'
 		public Keyword getELSEKeyword_3_0() { return cELSEKeyword_3_0; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_3_1() { return cValue_expressionParserRuleCall_3_1; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_3_1() { return cValueExpressionParserRuleCall_3_1; }
 		
 		//'END'
 		public Keyword getENDKeyword_4() { return cENDKeyword_4; }
 	}
-	public class When_listElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.when_list");
+	public class WhenListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.WhenList");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cWhen_clauseParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
-		private final RuleCall cWhen_clauseParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cWhenClauseParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cWhenClauseParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//when_list:
-		//    when_clause (when_clause)*;
+		//WhenList:
+		//    WhenClause (WhenClause)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//when_clause (when_clause)*
+		//WhenClause (WhenClause)*
 		public Group getGroup() { return cGroup; }
 		
-		//when_clause
-		public RuleCall getWhen_clauseParserRuleCall_0() { return cWhen_clauseParserRuleCall_0; }
+		//WhenClause
+		public RuleCall getWhenClauseParserRuleCall_0() { return cWhenClauseParserRuleCall_0; }
 		
-		//(when_clause)*
-		public RuleCall getWhen_clauseParserRuleCall_1() { return cWhen_clauseParserRuleCall_1; }
+		//(WhenClause)*
+		public RuleCall getWhenClauseParserRuleCall_1() { return cWhenClauseParserRuleCall_1; }
 	}
-	public class When_clauseElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.when_clause");
+	public class WhenClauseElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.WhenClause");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cWHENKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cValue_expressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cValueExpressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		private final Keyword cTHENKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final RuleCall cValue_expressionParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
+		private final RuleCall cValueExpressionParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
 		
-		//when_clause:
-		//    'WHEN' value_expression 'THEN' value_expression;
+		//WhenClause:
+		//    'WHEN' ValueExpression 'THEN' ValueExpression;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'WHEN' value_expression 'THEN' value_expression
+		//'WHEN' ValueExpression 'THEN' ValueExpression
 		public Group getGroup() { return cGroup; }
 		
 		//'WHEN'
 		public Keyword getWHENKeyword_0() { return cWHENKeyword_0; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_1() { return cValue_expressionParserRuleCall_1; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_1() { return cValueExpressionParserRuleCall_1; }
 		
 		//'THEN'
 		public Keyword getTHENKeyword_2() { return cTHENKeyword_2; }
 		
-		//value_expression
-		public RuleCall getValue_expressionParserRuleCall_3() { return cValue_expressionParserRuleCall_3; }
+		//ValueExpression
+		public RuleCall getValueExpressionParserRuleCall_3() { return cValueExpressionParserRuleCall_3; }
 	}
-	public class Comp_opElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.comp_op");
+	public class CompatingOperatorElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.CompatingOperator");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cEQParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cNEParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
@@ -1207,7 +1211,7 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		private final RuleCall cLEParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cGEParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		
-		//comp_op:
+		//CompatingOperator:
 		//    EQ
 		//    | NE
 		//    | LT
@@ -1243,63 +1247,63 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		public RuleCall getGEParserRuleCall_5() { return cGEParserRuleCall_5; }
 	}
 	public class IdentifierElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.identifier");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Identifier");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cUnquoted_identifierParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cQuoted_identifierParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cUnquotedIdentifierParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cQuotedIdentifierParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//identifier:
-		//    (unquoted_identifier
-		//    | quoted_identifier);
+		//Identifier:
+		//    (UnquotedIdentifier
+		//    | QuotedIdentifier);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(unquoted_identifier
-		//| quoted_identifier)
+		//(UnquotedIdentifier
+		//| QuotedIdentifier)
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//unquoted_identifier
-		public RuleCall getUnquoted_identifierParserRuleCall_0() { return cUnquoted_identifierParserRuleCall_0; }
+		//UnquotedIdentifier
+		public RuleCall getUnquotedIdentifierParserRuleCall_0() { return cUnquotedIdentifierParserRuleCall_0; }
 		
-		//quoted_identifier
-		public RuleCall getQuoted_identifierParserRuleCall_1() { return cQuoted_identifierParserRuleCall_1; }
+		//QuotedIdentifier
+		public RuleCall getQuotedIdentifierParserRuleCall_1() { return cQuotedIdentifierParserRuleCall_1; }
 	}
-	public class Unquoted_identifierElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.unquoted_identifier");
+	public class UnquotedIdentifierElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.UnquotedIdentifier");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cKeywordParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cIDTerminalRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//unquoted_identifier:
-		//    keyword
+		//UnquotedIdentifier:
+		//    Keyword
 		//    | ID;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword
+		//Keyword
 		//| ID
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//keyword
+		//Keyword
 		public RuleCall getKeywordParserRuleCall_0() { return cKeywordParserRuleCall_0; }
 		
 		//ID
 		public RuleCall getIDTerminalRuleCall_1() { return cIDTerminalRuleCall_1; }
 	}
-	public class Amp_quoted_identifierElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.amp_quoted_identifier");
+	public class AmpQuotedIdentifierElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.AmpQuotedIdentifier");
 		private final RuleCall cAMP_QUOTED_IDTerminalRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//amp_quoted_identifier:
+		//AmpQuotedIdentifier:
 		//    AMP_QUOTED_ID;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//AMP_QUOTED_ID
 		public RuleCall getAMP_QUOTED_IDTerminalRuleCall() { return cAMP_QUOTED_IDTerminalRuleCall; }
 	}
-	public class Quoted_identifierElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.quoted_identifier");
+	public class QuotedIdentifierElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.QuotedIdentifier");
 		private final RuleCall cQUOTED_IDTerminalRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//quoted_identifier:
+		//QuotedIdentifier:
 		//    QUOTED_ID;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1307,12 +1311,12 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		public RuleCall getQUOTED_IDTerminalRuleCall() { return cQUOTED_IDTerminalRuleCall; }
 	}
 	public class KeywordElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.keyword");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.eclipse.daanse.mdx.xtext.Mdx.Keyword");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Keyword cDIMENSIONKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
 		private final Keyword cPROPERTIESKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
 		
-		//keyword:
+		//Keyword:
 		//    'DIMENSION'
 		//    | 'PROPERTIES';
 		@Override public ParserRule getRule() { return rule; }
@@ -1577,32 +1581,32 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 	private final MdxStatementElements pMdxStatement;
 	private final SelectStatementElements pSelectStatement;
 	private final FormulaSpecificationElements pFormulaSpecification;
-	private final Single_formula_specificationElements pSingle_formula_specification;
-	private final Set_specificationElements pSet_specification;
-	private final Member_specificationElements pMember_specification;
-	private final Axis_specification_listElements pAxis_specification_list;
-	private final Member_property_def_listElements pMember_property_def_list;
-	private final Member_nameElements pMember_name;
-	private final Member_property_definitionElements pMember_property_definition;
-	private final Set_nameElements pSet_name;
-	private final Compound_idElements pCompound_id;
-	private final Axis_specificationElements pAxis_specification;
-	private final Axis_nameElements pAxis_name;
-	private final Dim_propsElements pDim_props;
-	private final Property_listElements pProperty_list;
+	private final SingleFormulaSpecificationElements pSingleFormulaSpecification;
+	private final SetSpecificationElements pSetSpecification;
+	private final MemberSpecificationElements pMemberSpecification;
+	private final AxisSpecificationListElements pAxisSpecificationList;
+	private final MemberPropertyDefListElements pMemberPropertyDefList;
+	private final MemberNameElements pMemberName;
+	private final MemberPropertyDefinitionElements pMemberPropertyDefinition;
+	private final SetNameElements pSetName;
+	private final CompoundIdElements pCompoundId;
+	private final AxisSpecificationElements pAxisSpecification;
+	private final AxisNameElements pAxisName;
+	private final DimPropertiesElements pDimProperties;
+	private final PropertyListElements pPropertyList;
 	private final PropertyElements pProperty;
-	private final Cube_specificationElements pCube_specification;
-	private final Cube_nameElements pCube_name;
-	private final Slicer_specificationElements pSlicer_specification;
-	private final Cell_propsElements pCell_props;
-	private final Cell_property_listElements pCell_property_list;
-	private final Cell_propertyElements pCell_property;
-	private final Mandatory_cell_propertyElements pMandatory_cell_property;
-	private final Provider_specific_cell_propertyElements pProvider_specific_cell_property;
+	private final CubeSpecificationElements pCubeSpecification;
+	private final CubeNameElements pCubeName;
+	private final SlicerSpecificationElements pSlicerSpecification;
+	private final CellPropetiesElements pCellPropeties;
+	private final CellPropertyListElements pCellPropertyList;
+	private final CellPropertyElements pCellProperty;
+	private final MandatoryCellPropertyElements pMandatoryCellProperty;
+	private final ProviderSpecificCellPropertyElements pProviderSpecificCellProperty;
 	private final ExpressionElements pExpression;
-	private final Value_expressionElements pValue_expression;
-	private final Value_xor_expressionElements pValue_xor_expression;
-	private final Value_or_expressionElements pValue_or_expression;
+	private final ValueExpressionElements pValueExpression;
+	private final ValueXorExpressionElements pValueXorExpression;
+	private final ValueOrExpressionElements pValueOrExpression;
 	private final Term5Elements pTerm5;
 	private final Term4Elements pTerm4;
 	private final Term3Elements pTerm3;
@@ -1610,17 +1614,17 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 	private final TermElements pTerm;
 	private final FactorElements pFactor;
 	private final FunctionElements pFunction;
-	private final Value_expression_primaryElements pValue_expression_primary;
-	private final Value_expression_primary0Elements pValue_expression_primary0;
-	private final Exp_listElements pExp_list;
-	private final Case_expressionElements pCase_expression;
-	private final When_listElements pWhen_list;
-	private final When_clauseElements pWhen_clause;
-	private final Comp_opElements pComp_op;
+	private final ValueExpressionPrimaryElements pValueExpressionPrimary;
+	private final ValueExpressionPrimary0Elements pValueExpressionPrimary0;
+	private final ExpressionListElements pExpressionList;
+	private final CaseExpressionElements pCaseExpression;
+	private final WhenListElements pWhenList;
+	private final WhenClauseElements pWhenClause;
+	private final CompatingOperatorElements pCompatingOperator;
 	private final IdentifierElements pIdentifier;
-	private final Unquoted_identifierElements pUnquoted_identifier;
-	private final Amp_quoted_identifierElements pAmp_quoted_identifier;
-	private final Quoted_identifierElements pQuoted_identifier;
+	private final UnquotedIdentifierElements pUnquotedIdentifier;
+	private final AmpQuotedIdentifierElements pAmpQuotedIdentifier;
+	private final QuotedIdentifierElements pQuotedIdentifier;
 	private final KeywordElements pKeyword;
 	private final DECIMALElements pDECIMAL;
 	private final QUOTEElements pQUOTE;
@@ -1661,32 +1665,32 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		this.pMdxStatement = new MdxStatementElements();
 		this.pSelectStatement = new SelectStatementElements();
 		this.pFormulaSpecification = new FormulaSpecificationElements();
-		this.pSingle_formula_specification = new Single_formula_specificationElements();
-		this.pSet_specification = new Set_specificationElements();
-		this.pMember_specification = new Member_specificationElements();
-		this.pAxis_specification_list = new Axis_specification_listElements();
-		this.pMember_property_def_list = new Member_property_def_listElements();
-		this.pMember_name = new Member_nameElements();
-		this.pMember_property_definition = new Member_property_definitionElements();
-		this.pSet_name = new Set_nameElements();
-		this.pCompound_id = new Compound_idElements();
-		this.pAxis_specification = new Axis_specificationElements();
-		this.pAxis_name = new Axis_nameElements();
-		this.pDim_props = new Dim_propsElements();
-		this.pProperty_list = new Property_listElements();
+		this.pSingleFormulaSpecification = new SingleFormulaSpecificationElements();
+		this.pSetSpecification = new SetSpecificationElements();
+		this.pMemberSpecification = new MemberSpecificationElements();
+		this.pAxisSpecificationList = new AxisSpecificationListElements();
+		this.pMemberPropertyDefList = new MemberPropertyDefListElements();
+		this.pMemberName = new MemberNameElements();
+		this.pMemberPropertyDefinition = new MemberPropertyDefinitionElements();
+		this.pSetName = new SetNameElements();
+		this.pCompoundId = new CompoundIdElements();
+		this.pAxisSpecification = new AxisSpecificationElements();
+		this.pAxisName = new AxisNameElements();
+		this.pDimProperties = new DimPropertiesElements();
+		this.pPropertyList = new PropertyListElements();
 		this.pProperty = new PropertyElements();
-		this.pCube_specification = new Cube_specificationElements();
-		this.pCube_name = new Cube_nameElements();
-		this.pSlicer_specification = new Slicer_specificationElements();
-		this.pCell_props = new Cell_propsElements();
-		this.pCell_property_list = new Cell_property_listElements();
-		this.pCell_property = new Cell_propertyElements();
-		this.pMandatory_cell_property = new Mandatory_cell_propertyElements();
-		this.pProvider_specific_cell_property = new Provider_specific_cell_propertyElements();
+		this.pCubeSpecification = new CubeSpecificationElements();
+		this.pCubeName = new CubeNameElements();
+		this.pSlicerSpecification = new SlicerSpecificationElements();
+		this.pCellPropeties = new CellPropetiesElements();
+		this.pCellPropertyList = new CellPropertyListElements();
+		this.pCellProperty = new CellPropertyElements();
+		this.pMandatoryCellProperty = new MandatoryCellPropertyElements();
+		this.pProviderSpecificCellProperty = new ProviderSpecificCellPropertyElements();
 		this.pExpression = new ExpressionElements();
-		this.pValue_expression = new Value_expressionElements();
-		this.pValue_xor_expression = new Value_xor_expressionElements();
-		this.pValue_or_expression = new Value_or_expressionElements();
+		this.pValueExpression = new ValueExpressionElements();
+		this.pValueXorExpression = new ValueXorExpressionElements();
+		this.pValueOrExpression = new ValueOrExpressionElements();
 		this.pTerm5 = new Term5Elements();
 		this.pTerm4 = new Term4Elements();
 		this.pTerm3 = new Term3Elements();
@@ -1694,17 +1698,17 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		this.pTerm = new TermElements();
 		this.pFactor = new FactorElements();
 		this.pFunction = new FunctionElements();
-		this.pValue_expression_primary = new Value_expression_primaryElements();
-		this.pValue_expression_primary0 = new Value_expression_primary0Elements();
-		this.pExp_list = new Exp_listElements();
-		this.pCase_expression = new Case_expressionElements();
-		this.pWhen_list = new When_listElements();
-		this.pWhen_clause = new When_clauseElements();
-		this.pComp_op = new Comp_opElements();
+		this.pValueExpressionPrimary = new ValueExpressionPrimaryElements();
+		this.pValueExpressionPrimary0 = new ValueExpressionPrimary0Elements();
+		this.pExpressionList = new ExpressionListElements();
+		this.pCaseExpression = new CaseExpressionElements();
+		this.pWhenList = new WhenListElements();
+		this.pWhenClause = new WhenClauseElements();
+		this.pCompatingOperator = new CompatingOperatorElements();
 		this.pIdentifier = new IdentifierElements();
-		this.pUnquoted_identifier = new Unquoted_identifierElements();
-		this.pAmp_quoted_identifier = new Amp_quoted_identifierElements();
-		this.pQuoted_identifier = new Quoted_identifierElements();
+		this.pUnquotedIdentifier = new UnquotedIdentifierElements();
+		this.pAmpQuotedIdentifier = new AmpQuotedIdentifierElements();
+		this.pQuotedIdentifier = new QuotedIdentifierElements();
 		this.pKeyword = new KeywordElements();
 		this.pDECIMAL = new DECIMALElements();
 		this.pQUOTE = new QUOTEElements();
@@ -1762,7 +1766,7 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 
 	
 	//MdxStatement:
-	//    (SelectStatement);
+	//    (statement=SelectStatement);
 	public MdxStatementElements getMdxStatementAccess() {
 		return pMdxStatement;
 	}
@@ -1773,10 +1777,10 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 	
 	//SelectStatement:
 	//    {SelectStatement} ('WITH' FormulaSpecification)?
-	//    'SELECT' axis_specification_list?
-	//    'FROM' cube_specification
-	//    ('WHERE' slicer_specification)?
-	//    cell_props?;
+	//    'SELECT' AxisSpecificationList?
+	//    'FROM' CubeSpecification
+	//    ('WHERE' SlicerSpecification)?
+	//    CellPropeties?;
 	public SelectStatementElements getSelectStatementAccess() {
 		return pSelectStatement;
 	}
@@ -1786,7 +1790,7 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 	}
 	
 	//FormulaSpecification:
-	//    single_formula_specification+;
+	//    SingleFormulaSpecification+;
 	public FormulaSpecificationElements getFormulaSpecificationAccess() {
 		return pFormulaSpecification;
 	}
@@ -1795,143 +1799,142 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getFormulaSpecificationAccess().getRule();
 	}
 	
-	//single_formula_specification:
-	//    member_specification
-	//    | set_specification;
-	public Single_formula_specificationElements getSingle_formula_specificationAccess() {
-		return pSingle_formula_specification;
+	//SingleFormulaSpecification:
+	//    MemberSpecification
+	//    | SetSpecification;
+	public SingleFormulaSpecificationElements getSingleFormulaSpecificationAccess() {
+		return pSingleFormulaSpecification;
 	}
 	
-	public ParserRule getSingle_formula_specificationRule() {
-		return getSingle_formula_specificationAccess().getRule();
+	public ParserRule getSingleFormulaSpecificationRule() {
+		return getSingleFormulaSpecificationAccess().getRule();
 	}
 	
-	//set_specification:
-	//    'SET' set_name 'AS'
-	//    (QUOTE expression QUOTE | expression);
-	public Set_specificationElements getSet_specificationAccess() {
-		return pSet_specification;
+	//SetSpecification:
+	//    'SET' SetName 'AS'
+	//    (QUOTE Expression QUOTE | Expression);
+	public SetSpecificationElements getSetSpecificationAccess() {
+		return pSetSpecification;
 	}
 	
-	public ParserRule getSet_specificationRule() {
-		return getSet_specificationAccess().getRule();
+	public ParserRule getSetSpecificationRule() {
+		return getSetSpecificationAccess().getRule();
 	}
 	
-	//member_specification:
-	//    'MEMBER' member_name 'AS'
-	//    ((QUOTE value_expression QUOTE | value_expression)
-	//    COMMA member_property_def_list?);
-	public Member_specificationElements getMember_specificationAccess() {
-		return pMember_specification;
+	//MemberSpecification:
+	//    'MEMBER' MemberName 'AS'
+	//    ((QUOTE ValueExpression QUOTE | ValueExpression)
+	//    COMMA MemberPropertyDefList?);
+	public MemberSpecificationElements getMemberSpecificationAccess() {
+		return pMemberSpecification;
 	}
 	
-	public ParserRule getMember_specificationRule() {
-		return getMember_specificationAccess().getRule();
+	public ParserRule getMemberSpecificationRule() {
+		return getMemberSpecificationAccess().getRule();
 	}
 	
-	//axis_specification_list:
-	//    axis_specification (COMMA axis_specification)*;
-	public Axis_specification_listElements getAxis_specification_listAccess() {
-		return pAxis_specification_list;
+	//AxisSpecificationList:
+	//    AxisSpecification (COMMA AxisSpecification)*;
+	public AxisSpecificationListElements getAxisSpecificationListAccess() {
+		return pAxisSpecificationList;
 	}
 	
-	public ParserRule getAxis_specification_listRule() {
-		return getAxis_specification_listAccess().getRule();
+	public ParserRule getAxisSpecificationListRule() {
+		return getAxisSpecificationListAccess().getRule();
 	}
 	
-	//member_property_def_list:
-	//    member_property_definition (COMMA member_property_definition)*;
-	public Member_property_def_listElements getMember_property_def_listAccess() {
-		return pMember_property_def_list;
+	//MemberPropertyDefList:
+	//    MemberPropertyDefinition (COMMA MemberPropertyDefinition)*;
+	public MemberPropertyDefListElements getMemberPropertyDefListAccess() {
+		return pMemberPropertyDefList;
 	}
 	
-	public ParserRule getMember_property_def_listRule() {
-		return getMember_property_def_listAccess().getRule();
+	public ParserRule getMemberPropertyDefListRule() {
+		return getMemberPropertyDefListAccess().getRule();
 	}
 	
-	//member_name:
-	//    compound_id;
-	public Member_nameElements getMember_nameAccess() {
-		return pMember_name;
+	//MemberName:
+	//    CompoundId;
+	public MemberNameElements getMemberNameAccess() {
+		return pMemberName;
 	}
 	
-	public ParserRule getMember_nameRule() {
-		return getMember_nameAccess().getRule();
+	public ParserRule getMemberNameRule() {
+		return getMemberNameAccess().getRule();
 	}
 	
-	//member_property_definition:
-	//    identifier EQ value_expression;
-	public Member_property_definitionElements getMember_property_definitionAccess() {
-		return pMember_property_definition;
+	//MemberPropertyDefinition:
+	//    Identifier EQ ValueExpression;
+	public MemberPropertyDefinitionElements getMemberPropertyDefinitionAccess() {
+		return pMemberPropertyDefinition;
 	}
 	
-	public ParserRule getMember_property_definitionRule() {
-		return getMember_property_definitionAccess().getRule();
+	public ParserRule getMemberPropertyDefinitionRule() {
+		return getMemberPropertyDefinitionAccess().getRule();
 	}
 	
-	//set_name:
-	//    compound_id;
-	public Set_nameElements getSet_nameAccess() {
-		return pSet_name;
+	//SetName:
+	//    CompoundId;
+	public SetNameElements getSetNameAccess() {
+		return pSetName;
 	}
 	
-	public ParserRule getSet_nameRule() {
-		return getSet_nameAccess().getRule();
+	public ParserRule getSetNameRule() {
+		return getSetNameAccess().getRule();
 	}
 	
-	//compound_id:
-	//identifier (DOT identifier)*
-	//;
-	public Compound_idElements getCompound_idAccess() {
-		return pCompound_id;
+	//CompoundId:
+	//    Identifier (DOT Identifier)*;
+	public CompoundIdElements getCompoundIdAccess() {
+		return pCompoundId;
 	}
 	
-	public ParserRule getCompound_idRule() {
-		return getCompound_idAccess().getRule();
+	public ParserRule getCompoundIdRule() {
+		return getCompoundIdAccess().getRule();
 	}
 	
-	//axis_specification:
-	//    ('NON' 'EMPTY')? expression dim_props? 'ON' axis_name;
-	public Axis_specificationElements getAxis_specificationAccess() {
-		return pAxis_specification;
+	//AxisSpecification:
+	//    ('NON' 'EMPTY')? Expression DimProperties? 'ON' AxisName;
+	public AxisSpecificationElements getAxisSpecificationAccess() {
+		return pAxisSpecification;
 	}
 	
-	public ParserRule getAxis_specificationRule() {
-		return getAxis_specificationAccess().getRule();
+	public ParserRule getAxisSpecificationRule() {
+		return getAxisSpecificationAccess().getRule();
 	}
 	
-	//axis_name:
-	//    identifier;
-	public Axis_nameElements getAxis_nameAccess() {
-		return pAxis_name;
+	//AxisName:
+	//    Identifier;
+	public AxisNameElements getAxisNameAccess() {
+		return pAxisName;
 	}
 	
-	public ParserRule getAxis_nameRule() {
-		return getAxis_nameAccess().getRule();
+	public ParserRule getAxisNameRule() {
+		return getAxisNameAccess().getRule();
 	}
 	
-	//dim_props:
-	//    'DIMENSION'? 'PROPERTIES' property_list;
-	public Dim_propsElements getDim_propsAccess() {
-		return pDim_props;
+	//DimProperties:
+	//    'DIMENSION'? 'PROPERTIES' PropertyList;
+	public DimPropertiesElements getDimPropertiesAccess() {
+		return pDimProperties;
 	}
 	
-	public ParserRule getDim_propsRule() {
-		return getDim_propsAccess().getRule();
+	public ParserRule getDimPropertiesRule() {
+		return getDimPropertiesAccess().getRule();
 	}
 	
-	//property_list:
-	//    property (COMMA property)*;
-	public Property_listElements getProperty_listAccess() {
-		return pProperty_list;
+	//PropertyList:
+	//    Property (COMMA Property)*;
+	public PropertyListElements getPropertyListAccess() {
+		return pPropertyList;
 	}
 	
-	public ParserRule getProperty_listRule() {
-		return getProperty_listAccess().getRule();
+	public ParserRule getPropertyListRule() {
+		return getPropertyListAccess().getRule();
 	}
 	
-	//property:
-	//    compound_id;
+	//Property:
+	//    CompoundId;
 	public PropertyElements getPropertyAccess() {
 		return pProperty;
 	}
@@ -1940,91 +1943,91 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getPropertyAccess().getRule();
 	}
 	
-	//cube_specification:
-	//    cube_name;
-	public Cube_specificationElements getCube_specificationAccess() {
-		return pCube_specification;
+	//CubeSpecification:
+	//    CubeName;
+	public CubeSpecificationElements getCubeSpecificationAccess() {
+		return pCubeSpecification;
 	}
 	
-	public ParserRule getCube_specificationRule() {
-		return getCube_specificationAccess().getRule();
+	public ParserRule getCubeSpecificationRule() {
+		return getCubeSpecificationAccess().getRule();
 	}
 	
-	//cube_name:
-	//    compound_id;
-	public Cube_nameElements getCube_nameAccess() {
-		return pCube_name;
+	//CubeName:
+	//    CompoundId;
+	public CubeNameElements getCubeNameAccess() {
+		return pCubeName;
 	}
 	
-	public ParserRule getCube_nameRule() {
-		return getCube_nameAccess().getRule();
+	public ParserRule getCubeNameRule() {
+		return getCubeNameAccess().getRule();
 	}
 	
-	//slicer_specification:
-	//    expression;
-	public Slicer_specificationElements getSlicer_specificationAccess() {
-		return pSlicer_specification;
+	//SlicerSpecification:
+	//    Expression;
+	public SlicerSpecificationElements getSlicerSpecificationAccess() {
+		return pSlicerSpecification;
 	}
 	
-	public ParserRule getSlicer_specificationRule() {
-		return getSlicer_specificationAccess().getRule();
+	public ParserRule getSlicerSpecificationRule() {
+		return getSlicerSpecificationAccess().getRule();
 	}
 	
-	//cell_props:
-	//    'CELL'? 'PROPERTIES' cell_property_list;
-	public Cell_propsElements getCell_propsAccess() {
-		return pCell_props;
+	//CellPropeties:
+	//    'CELL'? 'PROPERTIES' CellPropertyList;
+	public CellPropetiesElements getCellPropetiesAccess() {
+		return pCellPropeties;
 	}
 	
-	public ParserRule getCell_propsRule() {
-		return getCell_propsAccess().getRule();
+	public ParserRule getCellPropetiesRule() {
+		return getCellPropetiesAccess().getRule();
 	}
 	
-	//cell_property_list:
-	//    cell_property COMMA cell_property*;
-	public Cell_property_listElements getCell_property_listAccess() {
-		return pCell_property_list;
+	//CellPropertyList:
+	//    CellProperty COMMA CellProperty*;
+	public CellPropertyListElements getCellPropertyListAccess() {
+		return pCellPropertyList;
 	}
 	
-	public ParserRule getCell_property_listRule() {
-		return getCell_property_listAccess().getRule();
+	public ParserRule getCellPropertyListRule() {
+		return getCellPropertyListAccess().getRule();
 	}
 	
-	//cell_property:
-	//    mandatory_cell_property
-	//    | provider_specific_cell_property;
-	public Cell_propertyElements getCell_propertyAccess() {
-		return pCell_property;
+	//CellProperty:
+	//    MandatoryCellProperty
+	//    | ProviderSpecificCellProperty;
+	public CellPropertyElements getCellPropertyAccess() {
+		return pCellProperty;
 	}
 	
-	public ParserRule getCell_propertyRule() {
-		return getCell_propertyAccess().getRule();
+	public ParserRule getCellPropertyRule() {
+		return getCellPropertyAccess().getRule();
 	}
 	
-	//mandatory_cell_property:
+	//MandatoryCellProperty:
 	//    'CELL_ORDINAL'
 	//    | 'VALUE'
 	//    | 'FORMATTED_VALUE';
-	public Mandatory_cell_propertyElements getMandatory_cell_propertyAccess() {
-		return pMandatory_cell_property;
+	public MandatoryCellPropertyElements getMandatoryCellPropertyAccess() {
+		return pMandatoryCellProperty;
 	}
 	
-	public ParserRule getMandatory_cell_propertyRule() {
-		return getMandatory_cell_propertyAccess().getRule();
+	public ParserRule getMandatoryCellPropertyRule() {
+		return getMandatoryCellPropertyAccess().getRule();
 	}
 	
-	//provider_specific_cell_property:
-	//    identifier;
-	public Provider_specific_cell_propertyElements getProvider_specific_cell_propertyAccess() {
-		return pProvider_specific_cell_property;
+	//ProviderSpecificCellProperty:
+	//    Identifier;
+	public ProviderSpecificCellPropertyElements getProviderSpecificCellPropertyAccess() {
+		return pProviderSpecificCellProperty;
 	}
 	
-	public ParserRule getProvider_specific_cell_propertyRule() {
-		return getProvider_specific_cell_propertyAccess().getRule();
+	public ParserRule getProviderSpecificCellPropertyRule() {
+		return getProviderSpecificCellPropertyAccess().getRule();
 	}
 	
-	//expression:
-	//    value_expression (COLON value_expression)*;
+	//Expression:
+	//    ValueExpression (COLON ValueExpression)*;
 	public ExpressionElements getExpressionAccess() {
 		return pExpression;
 	}
@@ -2033,40 +2036,40 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getExpressionAccess().getRule();
 	}
 	
-	//value_expression:
-	//    term5
-	//    (value_xor_expression | value_or_expression)*;
-	public Value_expressionElements getValue_expressionAccess() {
-		return pValue_expression;
+	//ValueExpression:
+	//    Term5
+	//    (ValueXorExpression | ValueOrExpression)*;
+	public ValueExpressionElements getValueExpressionAccess() {
+		return pValueExpression;
 	}
 	
-	public ParserRule getValue_expressionRule() {
-		return getValue_expressionAccess().getRule();
+	public ParserRule getValueExpressionRule() {
+		return getValueExpressionAccess().getRule();
 	}
 	
-	//value_xor_expression:
-	//    'XOR' term5;
-	public Value_xor_expressionElements getValue_xor_expressionAccess() {
-		return pValue_xor_expression;
+	//ValueXorExpression:
+	//    'XOR' Term5;
+	public ValueXorExpressionElements getValueXorExpressionAccess() {
+		return pValueXorExpression;
 	}
 	
-	public ParserRule getValue_xor_expressionRule() {
-		return getValue_xor_expressionAccess().getRule();
+	public ParserRule getValueXorExpressionRule() {
+		return getValueXorExpressionAccess().getRule();
 	}
 	
-	//value_or_expression:
-	//    'OR' term5;
-	public Value_or_expressionElements getValue_or_expressionAccess() {
-		return pValue_or_expression;
+	//ValueOrExpression:
+	//    'OR' Term5;
+	public ValueOrExpressionElements getValueOrExpressionAccess() {
+		return pValueOrExpression;
 	}
 	
-	public ParserRule getValue_or_expressionRule() {
-		return getValue_or_expressionAccess().getRule();
+	public ParserRule getValueOrExpressionRule() {
+		return getValueOrExpressionAccess().getRule();
 	}
 	
-	//term5:
-	//    term4
-	//    ('AND' term4)*;
+	//Term5:
+	//    Term4
+	//    ('AND' Term4)*;
 	public Term5Elements getTerm5Access() {
 		return pTerm5;
 	}
@@ -2075,9 +2078,9 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getTerm5Access().getRule();
 	}
 	
-	//term4:
-	//    'NOT' term4
-	//    | term3;
+	//Term4:
+	//    'NOT' Term4
+	//    | Term3;
 	public Term4Elements getTerm4Access() {
 		return pTerm4;
 	}
@@ -2086,8 +2089,8 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getTerm4Access().getRule();
 	}
 	
-	//term3:
-	//    term2 (comp_op term2)*;
+	//Term3:
+	//    Term2 (CompatingOperator Term2)*;
 	public Term3Elements getTerm3Access() {
 		return pTerm3;
 	}
@@ -2096,8 +2099,8 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getTerm3Access().getRule();
 	}
 	
-	//term2:
-	//    term ((CONCAT | PLUS | MINUS) term)*;
+	//Term2:
+	//    Term ((CONCAT | PLUS | MINUS) Term)*;
 	public Term2Elements getTerm2Access() {
 		return pTerm2;
 	}
@@ -2106,8 +2109,8 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getTerm2Access().getRule();
 	}
 	
-	//term:
-	//    factor ((SOLIDUS | ASTERISK) factor)*;
+	//Term:
+	//    Factor ((SOLIDUS | ASTERISK) Factor)*;
 	public TermElements getTermAccess() {
 		return pTerm;
 	}
@@ -2116,10 +2119,10 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getTermAccess().getRule();
 	}
 	
-	//factor:
-	//    MINUS value_expression_primary
-	//    | PLUS value_expression_primary
-	//    | value_expression_primary;
+	//Factor:
+	//    MINUS ValueExpressionPrimary
+	//    | PLUS ValueExpressionPrimary
+	//    | ValueExpressionPrimary;
 	public FactorElements getFactorAccess() {
 		return pFactor;
 	}
@@ -2128,8 +2131,8 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getFactorAccess().getRule();
 	}
 	
-	//function:
-	//    identifier LPAREN (exp_list)? RPAREN;
+	//Function:
+	//    Identifier LPAREN (ExpressionList)? RPAREN;
 	public FunctionElements getFunctionAccess() {
 		return pFunction;
 	}
@@ -2138,98 +2141,98 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getFunctionAccess().getRule();
 	}
 	
-	//value_expression_primary:
-	//    value_expression_primary0
+	//ValueExpressionPrimary:
+	//    ValueExpressionPrimary0
 	//    (DOT
-	//    (unquoted_identifier
-	//    | quoted_identifier
-	//    | amp_quoted_identifier
-	//    | function))*;
-	public Value_expression_primaryElements getValue_expression_primaryAccess() {
-		return pValue_expression_primary;
+	//    (UnquotedIdentifier
+	//    | QuotedIdentifier
+	//    | AmpQuotedIdentifier
+	//    | Function))*;
+	public ValueExpressionPrimaryElements getValueExpressionPrimaryAccess() {
+		return pValueExpressionPrimary;
 	}
 	
-	public ParserRule getValue_expression_primaryRule() {
-		return getValue_expression_primaryAccess().getRule();
+	public ParserRule getValueExpressionPrimaryRule() {
+		return getValueExpressionPrimaryAccess().getRule();
 	}
 	
-	//value_expression_primary0:
-	//    function
-	//    | (LPAREN exp_list RPAREN)
-	//    | (LBRACE (exp_list)? RBRACE)
-	//    | case_expression
+	//ValueExpressionPrimary0:
+	//    Function
+	//    | (LPAREN ExpressionList RPAREN)
+	//    | (LBRACE (ExpressionList)? RBRACE)
+	//    | CaseExpression
 	//    | STRING
 	//    | INT
-	//    | identifier;
-	public Value_expression_primary0Elements getValue_expression_primary0Access() {
-		return pValue_expression_primary0;
+	//    | Identifier;
+	public ValueExpressionPrimary0Elements getValueExpressionPrimary0Access() {
+		return pValueExpressionPrimary0;
 	}
 	
-	public ParserRule getValue_expression_primary0Rule() {
-		return getValue_expression_primary0Access().getRule();
+	public ParserRule getValueExpressionPrimary0Rule() {
+		return getValueExpressionPrimary0Access().getRule();
 	}
 	
-	//exp_list:
-	//    expression (COMMA expression)*;
-	public Exp_listElements getExp_listAccess() {
-		return pExp_list;
+	//ExpressionList:
+	//    Expression (COMMA Expression)*;
+	public ExpressionListElements getExpressionListAccess() {
+		return pExpressionList;
 	}
 	
-	public ParserRule getExp_listRule() {
-		return getExp_listAccess().getRule();
+	public ParserRule getExpressionListRule() {
+		return getExpressionListAccess().getRule();
 	}
 	
-	//case_expression:
-	//    'CASE' (value_expression)?
-	//    (when_list)?
-	//    ('ELSE' value_expression)?
+	//CaseExpression:
+	//    'CASE' (ValueExpression)?
+	//    (WhenList)?
+	//    ('ELSE' ValueExpression)?
 	//    'END';
-	public Case_expressionElements getCase_expressionAccess() {
-		return pCase_expression;
+	public CaseExpressionElements getCaseExpressionAccess() {
+		return pCaseExpression;
 	}
 	
-	public ParserRule getCase_expressionRule() {
-		return getCase_expressionAccess().getRule();
+	public ParserRule getCaseExpressionRule() {
+		return getCaseExpressionAccess().getRule();
 	}
 	
-	//when_list:
-	//    when_clause (when_clause)*;
-	public When_listElements getWhen_listAccess() {
-		return pWhen_list;
+	//WhenList:
+	//    WhenClause (WhenClause)*;
+	public WhenListElements getWhenListAccess() {
+		return pWhenList;
 	}
 	
-	public ParserRule getWhen_listRule() {
-		return getWhen_listAccess().getRule();
+	public ParserRule getWhenListRule() {
+		return getWhenListAccess().getRule();
 	}
 	
-	//when_clause:
-	//    'WHEN' value_expression 'THEN' value_expression;
-	public When_clauseElements getWhen_clauseAccess() {
-		return pWhen_clause;
+	//WhenClause:
+	//    'WHEN' ValueExpression 'THEN' ValueExpression;
+	public WhenClauseElements getWhenClauseAccess() {
+		return pWhenClause;
 	}
 	
-	public ParserRule getWhen_clauseRule() {
-		return getWhen_clauseAccess().getRule();
+	public ParserRule getWhenClauseRule() {
+		return getWhenClauseAccess().getRule();
 	}
 	
-	//comp_op:
+	//CompatingOperator:
 	//    EQ
 	//    | NE
 	//    | LT
 	//    | GT
 	//    | LE
 	//    | GE;
-	public Comp_opElements getComp_opAccess() {
-		return pComp_op;
+	public CompatingOperatorElements getCompatingOperatorAccess() {
+		return pCompatingOperator;
 	}
 	
-	public ParserRule getComp_opRule() {
-		return getComp_opAccess().getRule();
+	public ParserRule getCompatingOperatorRule() {
+		return getCompatingOperatorAccess().getRule();
 	}
 	
-	//identifier:
-	//    (unquoted_identifier
-	//    | quoted_identifier);
+	//Identifier:
+	//    (UnquotedIdentifier
+	//    | QuotedIdentifier);
 	public IdentifierElements getIdentifierAccess() {
 		return pIdentifier;
 	}
@@ -2238,38 +2241,38 @@ public class MdxGrammarAccess extends AbstractElementFinder.AbstractGrammarEleme
 		return getIdentifierAccess().getRule();
 	}
 	
-	//unquoted_identifier:
-	//    keyword
+	//UnquotedIdentifier:
+	//    Keyword
 	//    | ID;
-	public Unquoted_identifierElements getUnquoted_identifierAccess() {
-		return pUnquoted_identifier;
+	public UnquotedIdentifierElements getUnquotedIdentifierAccess() {
+		return pUnquotedIdentifier;
 	}
 	
-	public ParserRule getUnquoted_identifierRule() {
-		return getUnquoted_identifierAccess().getRule();
+	public ParserRule getUnquotedIdentifierRule() {
+		return getUnquotedIdentifierAccess().getRule();
 	}
 	
-	//amp_quoted_identifier:
+	//AmpQuotedIdentifier:
 	//    AMP_QUOTED_ID;
-	public Amp_quoted_identifierElements getAmp_quoted_identifierAccess() {
-		return pAmp_quoted_identifier;
+	public AmpQuotedIdentifierElements getAmpQuotedIdentifierAccess() {
+		return pAmpQuotedIdentifier;
 	}
 	
-	public ParserRule getAmp_quoted_identifierRule() {
-		return getAmp_quoted_identifierAccess().getRule();
+	public ParserRule getAmpQuotedIdentifierRule() {
+		return getAmpQuotedIdentifierAccess().getRule();
 	}
 	
-	//quoted_identifier:
+	//QuotedIdentifier:
 	//    QUOTED_ID;
-	public Quoted_identifierElements getQuoted_identifierAccess() {
-		return pQuoted_identifier;
+	public QuotedIdentifierElements getQuotedIdentifierAccess() {
+		return pQuotedIdentifier;
 	}
 	
-	public ParserRule getQuoted_identifierRule() {
-		return getQuoted_identifierAccess().getRule();
+	public ParserRule getQuotedIdentifierRule() {
+		return getQuotedIdentifierAccess().getRule();
 	}
 	
-	//keyword:
+	//Keyword:
 	//    'DIMENSION'
 	//    | 'PROPERTIES';
 	public KeywordElements getKeywordAccess() {

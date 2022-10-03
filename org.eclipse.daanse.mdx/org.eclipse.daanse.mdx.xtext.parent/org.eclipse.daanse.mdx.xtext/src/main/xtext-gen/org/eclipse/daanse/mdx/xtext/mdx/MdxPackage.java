@@ -5,6 +5,7 @@ package org.eclipse.daanse.mdx.xtext.mdx;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -66,13 +67,22 @@ public interface MdxPackage extends EPackage
   int MDX_STATEMENT = 0;
 
   /**
+   * The feature id for the '<em><b>Statement</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MDX_STATEMENT__STATEMENT = 0;
+
+  /**
    * The number of structural features of the '<em>Statement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MDX_STATEMENT_FEATURE_COUNT = 0;
+  int MDX_STATEMENT_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select Statement</em>}' class.
@@ -91,7 +101,7 @@ public interface MdxPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SELECT_STATEMENT_FEATURE_COUNT = MDX_STATEMENT_FEATURE_COUNT + 0;
+  int SELECT_STATEMENT_FEATURE_COUNT = 0;
 
 
   /**
@@ -103,6 +113,17 @@ public interface MdxPackage extends EPackage
    * @generated
    */
   EClass getMdxStatement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement <em>Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Statement</em>'.
+   * @see org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement()
+   * @see #getMdxStatement()
+   * @generated
+   */
+  EReference getMdxStatement_Statement();
 
   /**
    * Returns the meta object for class '{@link org.eclipse.daanse.mdx.xtext.mdx.SelectStatement <em>Select Statement</em>}'.
@@ -146,6 +167,14 @@ public interface MdxPackage extends EPackage
      * @generated
      */
     EClass MDX_STATEMENT = eINSTANCE.getMdxStatement();
+
+    /**
+     * The meta object literal for the '<em><b>Statement</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MDX_STATEMENT__STATEMENT = eINSTANCE.getMdxStatement_Statement();
 
     /**
      * The meta object literal for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select Statement</em>}' class.

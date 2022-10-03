@@ -19,36 +19,38 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CancellationException;
-import org.eclipse.daanse.mdx.parser.api.model.Axis;
-import org.eclipse.daanse.mdx.parser.api.model.CallExpression;
-import org.eclipse.daanse.mdx.parser.api.model.CellProperty;
-import org.eclipse.daanse.mdx.parser.api.model.CompoundId;
-import org.eclipse.daanse.mdx.parser.api.model.DrillthroughStatement;
-import org.eclipse.daanse.mdx.parser.api.model.Expression;
-import org.eclipse.daanse.mdx.parser.api.model.FormulaExpression;
-import org.eclipse.daanse.mdx.parser.api.model.KeySegment;
-import org.eclipse.daanse.mdx.parser.api.model.Literal;
-import org.eclipse.daanse.mdx.parser.api.model.MdxStatement;
-import org.eclipse.daanse.mdx.parser.api.model.MemberPropertyDefinition;
-import org.eclipse.daanse.mdx.parser.api.model.NameSegment;
-import org.eclipse.daanse.mdx.parser.api.model.NullLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.NumericLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.ReturnItem;
-import org.eclipse.daanse.mdx.parser.api.model.Segment;
-import org.eclipse.daanse.mdx.parser.api.model.SelectStatement;
-import org.eclipse.daanse.mdx.parser.api.model.StringLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.SymbolLiteral;
-import org.eclipse.daanse.mdx.parser.api.model.select.CreateMemberBodyClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.CreateSetBodyClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectCellPropertyListClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectDimensionPropertyListClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAsteriskClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAxesClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryAxisClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectQueryClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectSlicerAxisClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectSubcubeClause;
-import org.eclipse.daanse.mdx.parser.api.model.select.SelectWithClause;
+import org.eclipse.daanse.mdx.model.Axis;
+import org.eclipse.daanse.mdx.model.CallExpression;
+import org.eclipse.daanse.mdx.model.CellProperty;
+import org.eclipse.daanse.mdx.model.CompoundId;
+import org.eclipse.daanse.mdx.model.DrillthroughStatement;
+import org.eclipse.daanse.mdx.model.Expression;
+import org.eclipse.daanse.mdx.model.FormulaExpression;
+import org.eclipse.daanse.mdx.model.KeyObjectIdentifier;
+import org.eclipse.daanse.mdx.model.MdxStatement;
+import org.eclipse.daanse.mdx.model.MemberPropertyDefinition;
+import org.eclipse.daanse.mdx.model.NameObjectIdentifier;
+import org.eclipse.daanse.mdx.model.NullLiteral;
+import org.eclipse.daanse.mdx.model.NumericLiteral;
+import org.eclipse.daanse.mdx.model.ObjectIdentifier;
+import org.eclipse.daanse.mdx.model.ReturnItem;
+import org.eclipse.daanse.mdx.model.SelectStatement;
+import org.eclipse.daanse.mdx.model.StringLiteral;
+import org.eclipse.daanse.mdx.model.SymbolLiteral;
+import org.eclipse.daanse.mdx.model.select.CreateMemberBodyClause;
+import org.eclipse.daanse.mdx.model.select.CreateSetBodyClause;
+import org.eclipse.daanse.mdx.model.select.SelectCellPropertyListClause;
+import org.eclipse.daanse.mdx.model.select.SelectDimensionPropertyListClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAsteriskClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAxesClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryAxisClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryEmptyClause;
+import org.eclipse.daanse.mdx.model.select.SelectQueryClause;
+import org.eclipse.daanse.mdx.model.select.SelectSlicerAxisClause;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClause;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClauseName;
+import org.eclipse.daanse.mdx.model.select.SelectSubcubeClauseStatement;
+import org.eclipse.daanse.mdx.model.select.SelectWithClause;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
@@ -99,7 +101,7 @@ public class mdxLexer implements mdxConstants {
     private Token[] tokenLocationTable;
     // The following two BitSets are used to store 
     // the current active NFA states in the core tokenization loop
-    private BitSet nextStates= new BitSet(553), currentStates= new BitSet(553);
+    private BitSet nextStates= new BitSet(564), currentStates= new BitSet(564);
     EnumSet<TokenType> activeTokenTypes= EnumSet.allOf(TokenType.class);
      {
     }
@@ -107,15 +109,15 @@ public class mdxLexer implements mdxConstants {
     private static EnumMap<TokenType, LexicalState> tokenTypeToLexicalStateMap= new EnumMap<> (TokenType.class);
     // Token types that are "regular" tokens that participate in parsing,
     // i.e. declared as TOKEN
-    static final EnumSet<TokenType> regularTokens= EnumSet.of(EOF, AND, AS, AXIS, BEGIN, BY, CASE, CALCULATION, CAST, CELL, CHAPTERS, CREATE, COLUMNS, COMMIT, CUBE, DIMENSION, DRILLTHROUGH, ELSE, EMPTY, END, EXPLAIN, FIRSTROWSET, FOR, FROM, IN, IS, MATCHES, MAXROWS, MEMBER, MEASURE, NON, NOT, NULL, ON, OR, PAGES, PLAN, PROPERTIES, REFRESH, RETURN, ROLLBACK, ROWS, SECTIONS, SELECT, SESSION, SET, THEN, TRAN, TRANSACTION, UPDATE, USE_EQUAL_ALLOCATION, USE_EQUAL_INCREMENT, USE_WEIGHTED_ALLOCATION, USE_WEIGHTED_INCREMENT, WHEN, WHERE, XOR, WITH, EXISTING, $SYSTEM, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, COMMA, SEMICOLON, DOT, ASTERISK, BANG, COLON, CONCAT, EQ, GE, GT, LE, LT, MINUS, NE, PLUS, SOLIDUS, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, FLOATING_POINT_LITERAL, STRING, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING, CALCULATED);
+    static final EnumSet<TokenType> regularTokens= EnumSet.of(EOF, AND, AS, AXIS, BEGIN, BY, CASE, CALCULATION, CAST, CELL, CHAPTERS, CREATE, COLUMNS, COMMIT, CUBE, CURRENTCUBE, DIMENSION, DRILLTHROUGH, ELSE, EMPTY, END, EXPLAIN, FIRSTROWSET, FOR, FROM, IN, IS, MATCHES, MAXROWS, MEMBER, MEASURE, NON, NOT, NULL, ON, OR, PAGES, PLAN, PROPERTIES, REFRESH, RETURN, ROLLBACK, ROWS, SECTIONS, SELECT, SESSION, SET, THEN, TRAN, TRANSACTION, UPDATE, USE_EQUAL_ALLOCATION, USE_EQUAL_INCREMENT, USE_WEIGHTED_ALLOCATION, USE_WEIGHTED_INCREMENT, WHEN, WHERE, XOR, WITH, EXISTING, $SYSTEM, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, COMMA, SEMICOLON, DOT, ASTERISK, BANG, COLON, CONCAT, EQ, GE, GT, LE, LT, MINUS, NE, PLUS, SOLIDUS, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, FLOATING_POINT_LITERAL, STRING, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING, CALCULATED);
     // Token types that do not participate in parsing, a.k.a. "special" tokens in legacy JavaCC,
     // i.e. declared as UNPARSED (or SPECIAL_TOKEN)
     static final EnumSet<TokenType> unparsedTokens= EnumSet.of(SINGLE_LINE_COMMENT, FORMAL_COMMENT, MULTI_LINE_COMMENT);
     // Tokens that are skipped, i.e. SKIP 
-    static final EnumSet<TokenType> skippedTokens= EnumSet.of(_TOKEN_60, _TOKEN_61, _TOKEN_62, _TOKEN_63, _TOKEN_64);
+    static final EnumSet<TokenType> skippedTokens= EnumSet.of(_TOKEN_61, _TOKEN_62, _TOKEN_63, _TOKEN_64, _TOKEN_65);
     // Tokens that correspond to a MORE, i.e. that are pending 
     // additional input
-    static final EnumSet<TokenType> moreTokens= EnumSet.of(_TOKEN_65, _TOKEN_66, _TOKEN_67, _TOKEN_68, _TOKEN_72);
+    static final EnumSet<TokenType> moreTokens= EnumSet.of(_TOKEN_66, _TOKEN_67, _TOKEN_68, _TOKEN_69, _TOKEN_73);
     // The source of the raw characters that we are scanning  
     public String getInputSource() {
         return inputSource;
@@ -330,10 +332,10 @@ public class mdxLexer implements mdxConstants {
     LexicalState lexicalState= LexicalState.values()[0];
     // Generate the map for lexical state transitions from the various token types
     static {
-        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_65, LexicalState.IN_SINGLE_LINE_COMMENT);
-        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_66, LexicalState.IN_FORMAL_COMMENT);
-        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_67, LexicalState.IN_SINGLE_LINE_COMMENT);
-        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_68, LexicalState.IN_MULTI_LINE_COMMENT);
+        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_66, LexicalState.IN_SINGLE_LINE_COMMENT);
+        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_67, LexicalState.IN_FORMAL_COMMENT);
+        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_68, LexicalState.IN_SINGLE_LINE_COMMENT);
+        tokenTypeToLexicalStateMap.put(TokenType._TOKEN_69, LexicalState.IN_MULTI_LINE_COMMENT);
         tokenTypeToLexicalStateMap.put(TokenType.SINGLE_LINE_COMMENT, LexicalState.DEFAULT);
         tokenTypeToLexicalStateMap.put(TokenType.FORMAL_COMMENT, LexicalState.DEFAULT);
         tokenTypeToLexicalStateMap.put(TokenType.MULTI_LINE_COMMENT, LexicalState.DEFAULT);

@@ -3,6 +3,7 @@
  */
 package org.eclipse.daanse.mdx.xtext.mdx;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +15,6 @@ package org.eclipse.daanse.mdx.xtext.mdx;
  * @model
  * @generated
  */
-public interface SelectStatement extends MdxStatement
+public interface SelectStatement extends EObject
 {
 } // SelectStatement

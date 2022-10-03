@@ -3,13 +3,10 @@ package org.eclipse.daanse.mdx.parser.itest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
+import org.eclipse.daanse.mdx.model.SelectStatement;
 import org.eclipse.daanse.mdx.parser.api.MdxParser;
 import org.eclipse.daanse.mdx.parser.api.MdxParserException;
 import org.eclipse.daanse.mdx.parser.api.MdxParserProvider;
-import org.eclipse.daanse.mdx.parser.api.model.SelectStatement;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.osgi.test.junit5.service.ServiceSource;
 
