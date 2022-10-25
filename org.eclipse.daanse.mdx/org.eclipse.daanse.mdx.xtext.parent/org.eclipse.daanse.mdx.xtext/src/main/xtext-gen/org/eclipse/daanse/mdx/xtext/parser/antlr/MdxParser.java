@@ -11,30 +11,29 @@ import org.eclipse.xtext.parser.antlr.XtextTokenStream;
 
 public class MdxParser extends AbstractAntlrParser {
 
-	@Inject
-	private MdxGrammarAccess grammarAccess;
+  @Inject
+  private MdxGrammarAccess grammarAccess;
 
-	@Override
-	protected void setInitialHiddenTokens(XtextTokenStream tokenStream) {
-		tokenStream.setInitialHiddenTokens("RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT");
-	}
-	
+  @Override
+  protected void setInitialHiddenTokens(XtextTokenStream tokenStream) {
+    tokenStream.setInitialHiddenTokens("RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT");
+  }
 
-	@Override
-	protected InternalMdxParser createParser(XtextTokenStream stream) {
-		return new InternalMdxParser(stream, getGrammarAccess());
-	}
+  @Override
+  protected InternalMdxParser createParser(XtextTokenStream stream) {
+    return new InternalMdxParser(stream, getGrammarAccess());
+  }
 
-	@Override 
-	protected String getDefaultRuleName() {
-		return "MdxStatement";
-	}
+  @Override
+  protected String getDefaultRuleName() {
+    return "MdxStatement";
+  }
 
-	public MdxGrammarAccess getGrammarAccess() {
-		return this.grammarAccess;
-	}
+  public MdxGrammarAccess getGrammarAccess() {
+    return this.grammarAccess;
+  }
 
-	public void setGrammarAccess(MdxGrammarAccess grammarAccess) {
-		this.grammarAccess = grammarAccess;
-	}
+  public void setGrammarAccess(MdxGrammarAccess grammarAccess) {
+    this.grammarAccess = grammarAccess;
+  }
 }

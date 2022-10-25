@@ -15,10 +15,11 @@ Workflow {
 				runtimeTest = {
 					enabled = true
 				}
-				web = {
-					enabled = true
+				genericIde = {
+					enabled = true					
 				}
 				mavenLayout = true
+				
 			}
 
 			code = {
@@ -80,22 +81,6 @@ Workflow {
 			//			}
 			//			qualifiedNamesProvider = {}
 			//			quickOutline = {}
-			webSupport = {
-				generateJettyLauncher = false
-				generateHtmlExample = true
-				framework = "ACE"
-				
-				
-			}
-//			webSupport = {
-//				generateHtmlExample = true
-//				framework = "CODEMIRROR"
-//			}
-//			webSupport = {
-//				generateJettyLauncher = false
-//				generateHtmlExample = true
-//				framework = "ORION"
-//			}
 		}
 	}
 }

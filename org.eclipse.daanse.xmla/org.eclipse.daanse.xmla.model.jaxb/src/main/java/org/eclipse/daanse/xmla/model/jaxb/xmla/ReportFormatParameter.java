@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ReportFormatParameter complex type.
+ * <p>
+ * Java class for ReportFormatParameter complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ReportFormatParameter"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ReportFormatParameter {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "Value", required = true)
-    protected String value;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "Value", required = true)
+  protected String value;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the value property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the value property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+  public boolean isSetValue() {
+    return (this.value != null);
+  }
 
 }

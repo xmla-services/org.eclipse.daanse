@@ -15,32 +15,30 @@ import jakarta.xml.ws.handler.Handler;
 @Component(immediate = true)
 public class Server {
 
-	private Endpoint endpoint;	
+  private Endpoint endpoint;
 
-	@Reference(cardinality = ReferenceCardinality.MANDATORY)
-	XmlaService xmlaService;
-	
+  @Reference(cardinality = ReferenceCardinality.MANDATORY)
+  XmlaService xmlaService;
 
-	@Activate
-	public void activate() {
-		
-		int port = 8081;
-		String address = "http://localhost:" + port + "/xmla";
-		MsXmlAnalysisSoap s=	new MsXmlAnalysisSoap(xmlaService);
-		endpoint = Endpoint.create(s);
-		List<Handler> handlerChain = endpoint.getBinding().getHandlerChain();
-		handlerChain.add(new SOAPLoggingHandler());
-		endpoint.getBinding().setHandlerChain(handlerChain);
-		endpoint.publish(address);
-		
-				
-		// TODO: may register with as a servlet
-	}
+  @Activate
+  public void activate() {
 
-	@Deactivate
-	public void deactivate() {
-		endpoint.stop();
-		endpoint = null;
+    int port = 8081;
+    String address = "http://localhost:" + port + "/xmla";
+    MsXmlAnalysisSoap s = new MsXmlAnalysisSoap(xmlaService);
+    endpoint = Endpoint.create(s);
+    List<Handler> handlerChain = endpoint.getBinding().getHandlerChain();
+    handlerChain.add(new SOAPLoggingHandler());
+    endpoint.getBinding().setHandlerChain(handlerChain);
+    endpoint.publish(address);
 
-	}
+    // TODO: may register with as a servlet
+  }
+
+  @Deactivate
+  public void deactivate() {
+    endpoint.stop();
+    endpoint = null;
+
+  }
 }

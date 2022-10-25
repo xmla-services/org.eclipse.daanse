@@ -5,11 +5,13 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for InheritedBinding complex type.
+ * <p>
+ * Java class for InheritedBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="InheritedBinding"&gt;
@@ -24,9 +26,6 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InheritedBinding")
-public class InheritedBinding
-    extends Binding
-{
-
+public class InheritedBinding extends Binding {
 
 }

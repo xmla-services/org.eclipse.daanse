@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CommitTransaction complex type.
+ * <p>
+ * Java class for CommitTransaction complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CommitTransaction"&gt;
@@ -39,35 +41,31 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class CommitTransaction {
 
-    @XmlElement(name = "DurabilityGuarantee")
-    protected String durabilityGuarantee;
+  @XmlElement(name = "DurabilityGuarantee")
+  protected String durabilityGuarantee;
 
-    /**
-     * Gets the value of the durabilityGuarantee property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDurabilityGuarantee() {
-        return durabilityGuarantee;
-    }
+  /**
+   * Gets the value of the durabilityGuarantee property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDurabilityGuarantee() {
+    return durabilityGuarantee;
+  }
 
-    /**
-     * Sets the value of the durabilityGuarantee property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDurabilityGuarantee(String value) {
-        this.durabilityGuarantee = value;
-    }
+  /**
+   * Sets the value of the durabilityGuarantee property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDurabilityGuarantee(String value) {
+    this.durabilityGuarantee = value;
+  }
 
-    public boolean isSetDurabilityGuarantee() {
-        return (this.durabilityGuarantee!= null);
-    }
+  public boolean isSetDurabilityGuarantee() {
+    return (this.durabilityGuarantee != null);
+  }
 
 }

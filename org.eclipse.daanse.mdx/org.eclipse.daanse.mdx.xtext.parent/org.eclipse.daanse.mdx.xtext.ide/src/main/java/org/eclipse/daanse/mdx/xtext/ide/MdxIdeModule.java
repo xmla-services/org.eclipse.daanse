@@ -3,7 +3,6 @@
  */
 package org.eclipse.daanse.mdx.xtext.ide;
 
-
 /**
  * Use this class to register ide components.
  */

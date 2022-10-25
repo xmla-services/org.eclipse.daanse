@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Annotation complex type.
+ * <p>
+ * Java class for Annotation complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Annotation"&gt;
@@ -41,95 +43,83 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Annotation {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "Visibility")
-    protected String visibility;
-    @XmlElement(name = "Value")
-    protected java.lang.Object value;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "Visibility")
+  protected String visibility;
+  @XmlElement(name = "Value")
+  protected java.lang.Object value;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the visibility property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getVisibility() {
-        return visibility;
-    }
+  /**
+   * Gets the value of the visibility property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getVisibility() {
+    return visibility;
+  }
 
-    /**
-     * Sets the value of the visibility property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setVisibility(String value) {
-        this.visibility = value;
-    }
+  /**
+   * Sets the value of the visibility property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setVisibility(String value) {
+    this.visibility = value;
+  }
 
-    public boolean isSetVisibility() {
-        return (this.visibility!= null);
-    }
+  public boolean isSetVisibility() {
+    return (this.visibility != null);
+  }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public java.lang.Object getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the value property.
+   * 
+   * @return possible object is {@link java.lang.Object }
+   * 
+   */
+  public java.lang.Object getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public void setValue(java.lang.Object value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the value property.
+   * 
+   * @param value allowed object is {@link java.lang.Object }
+   * 
+   */
+  public void setValue(java.lang.Object value) {
+    this.value = value;
+  }
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+  public boolean isSetValue() {
+    return (this.value != null);
+  }
 
 }

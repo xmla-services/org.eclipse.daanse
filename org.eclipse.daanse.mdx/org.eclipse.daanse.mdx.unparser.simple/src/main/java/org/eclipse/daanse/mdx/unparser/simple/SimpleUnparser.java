@@ -27,111 +27,111 @@ import org.osgi.util.converter.Converters;
 @Designate(ocd = SimpleUnparser.Config.class)
 public class SimpleUnparser implements UnParser {
 
-	@ObjectClassDefinition()
-	public interface Config {
+  @ObjectClassDefinition()
+  public interface Config {
 
-		@AttributeDefinition(defaultValue = "false")
-		default boolean commentUnusedElements() {
-			return true;
-		}
-	}
+    @AttributeDefinition(defaultValue = "false")
+    default boolean commentUnusedElements() {
+      return true;
+    }
+  }
 
-	int indent = 0;
+  int indent = 0;
 
-	private Config config = null;
+  private Config config = null;
 
-	@Activate
-	public void activate(Map<String, Object> configMap) {
-		modifies(configMap);
+  @Activate
+  public void activate(Map<String, Object> configMap) {
+    modifies(configMap);
 
-	}
+  }
 
-	@Deactivate
-	public void deActivate(Map<String, Object> configMap) {
-		this.config = null;
+  @Deactivate
+  public void deActivate(Map<String, Object> configMap) {
+    this.config = null;
 
-	}
+  }
 
-	@Modified
-	public void modifies(Map<String, Object> configMap) {
-		this.config = Converters.standardConverter().convert(configMap).to(Config.class);
+  @Modified
+  public void modifies(Map<String, Object> configMap) {
+    this.config = Converters.standardConverter().convert(configMap).to(Config.class);
 
-	}
+  }
 
-	public StringBuffer unparse(SelectStatement selectStatement) {
-		StringBuffer buf = new StringBuffer();
+  public StringBuffer unparse(SelectStatement selectStatement) {
+    StringBuffer buf = new StringBuffer();
 
-		buf.append(unparse(selectStatement.selectWithClause()));
-		buf.append(unparse(selectStatement.selectQueryClause()));
-		buf.append(unparse(selectStatement.selectSubcubeClause()));
-		buf.append(unparse(selectStatement.selectSlicerAxisClause()));
-		buf.append(unparse(selectStatement.selectCellPropertyListClause()));
+    buf.append(unparse(selectStatement.selectWithClause()));
+    buf.append(unparse(selectStatement.selectQueryClause()));
+    buf.append(unparse(selectStatement.selectSubcubeClause()));
+    buf.append(unparse(selectStatement.selectSlicerAxisClause()));
+    buf.append(unparse(selectStatement.selectCellPropertyListClause()));
 
-		return buf;
+    return buf;
 
-	}
+  }
 
-	private StringBuffer unparse(SelectCellPropertyListClause selectCellPropertyListClause) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private StringBuffer unparse(SelectCellPropertyListClause selectCellPropertyListClause) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	private StringBuffer unparse(SelectSlicerAxisClause selectSlicerAxisClause) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private StringBuffer unparse(SelectSlicerAxisClause selectSlicerAxisClause) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	private StringBuffer unparse(SelectSubcubeClause selectSubcubeClause) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private StringBuffer unparse(SelectSubcubeClause selectSubcubeClause) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	private StringBuffer unparse(SelectQueryClause selectQueryClause) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private StringBuffer unparse(SelectQueryClause selectQueryClause) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	private StringBuffer unparse(SelectWithClause selectWithClause) {
-		return null;
-		// TODO Auto-generated method stub
+  private StringBuffer unparse(SelectWithClause selectWithClause) {
+    return null;
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	public StringBuffer unparse(DrillthroughStatement selectStatement) {
-		return null;
+  public StringBuffer unparse(DrillthroughStatement selectStatement) {
+    return null;
 
-	}
+  }
 
-	public StringBuffer unparse(ExplainStatement selectStatement) {
-		return null;
+  public StringBuffer unparse(ExplainStatement selectStatement) {
+    return null;
 
-	}
+  }
 
-	public StringBuffer unparse(DMVStatement selectStatement) {
-		return null;
+  public StringBuffer unparse(DMVStatement selectStatement) {
+    return null;
 
-	}
+  }
 
-	public StringBuffer unparse(MdxRefreshStatement selectStatement) {
-		return null;
+  public StringBuffer unparse(MdxRefreshStatement selectStatement) {
+    return null;
 
-	}
+  }
 
-	@Override
-	public StringBuffer unparse(MdxStatement mdxStatement) {
-		if (mdxStatement instanceof SelectStatement) {
-			return unparse((SelectStatement) mdxStatement);
-		} else if (mdxStatement instanceof DrillthroughStatement) {
-			return unparse((DrillthroughStatement) mdxStatement);
-		} else if (mdxStatement instanceof ExplainStatement) {
-			return unparse((ExplainStatement) mdxStatement);
-		} else if (mdxStatement instanceof DMVStatement) {
-			return unparse((DMVStatement) mdxStatement);
-		} else if (mdxStatement instanceof SelectStatement) {
-			return unparse((SelectStatement) mdxStatement);
-		}
+  @Override
+  public StringBuffer unparse(MdxStatement mdxStatement) {
+    if (mdxStatement instanceof SelectStatement) {
+      return unparse((SelectStatement) mdxStatement);
+    } else if (mdxStatement instanceof DrillthroughStatement) {
+      return unparse((DrillthroughStatement) mdxStatement);
+    } else if (mdxStatement instanceof ExplainStatement) {
+      return unparse((ExplainStatement) mdxStatement);
+    } else if (mdxStatement instanceof DMVStatement) {
+      return unparse((DMVStatement) mdxStatement);
+    } else if (mdxStatement instanceof SelectStatement) {
+      return unparse((SelectStatement) mdxStatement);
+    }
 
-		return new StringBuffer();
-	}
+    return new StringBuffer();
+  }
 
 }

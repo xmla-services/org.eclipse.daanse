@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DataBlock complex type.
+ * <p>
+ * Java class for DataBlock complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DataBlock"&gt;
@@ -30,48 +32,46 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DataBlock", propOrder = {
-    "block"
-})
+@XmlType(name = "DataBlock", propOrder = { "block" })
 public class DataBlock {
 
-    @XmlElement(name = "Block")
-    protected List<byte[]> block;
+  @XmlElement(name = "Block")
+  protected List<byte[]> block;
 
-    /**
-     * Gets the value of the block property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the block property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getBlock().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * byte[]
-     * 
-     */
-    public List<byte[]> getBlock() {
-        if (block == null) {
-            block = new ArrayList<byte[]>();
-        }
-        return this.block;
+  /**
+   * Gets the value of the block property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the block property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getBlock().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list byte[]
+   * 
+   */
+  public List<byte[]> getBlock() {
+    if (block == null) {
+      block = new ArrayList<byte[]>();
     }
+    return this.block;
+  }
 
-    public boolean isSetBlock() {
-        return ((this.block!= null)&&(!this.block.isEmpty()));
-    }
+  public boolean isSetBlock() {
+    return ((this.block != null) && (!this.block.isEmpty()));
+  }
 
-    public void unsetBlock() {
-        this.block = null;
-    }
+  public void unsetBlock() {
+    this.block = null;
+  }
 
 }

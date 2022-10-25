@@ -14,11 +14,13 @@ import jakarta.xml.bind.annotation.XmlElements;
 import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for SetListType complex type.
+ * <p>
+ * Java class for SetListType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="SetListType"&gt;
@@ -34,95 +36,84 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "SetListType", propOrder = {
-    "setType"
-})
+@XmlType(name = "SetListType", propOrder = { "setType" })
 public class SetListType {
 
-    @XmlElements({
-        @XmlElement(name = "Members", type = MembersType.class),
-        @XmlElement(name = "Tuples", type = TuplesType.class),
-        @XmlElement(name = "CrossProduct", type = SetListType.class),
-        @XmlElement(name = "NormTupleSet", namespace = "http://schemas.microsoft.com/analysisservices/2003/xmla", type = NormTupleSet.class),
-        @XmlElement(name = "Union", type = Union.class)
-    })
-    protected List<Object> setType;
-    @XmlAttribute(name = "Size")
-    @XmlSchemaType(name = "unsignedInt")
-    protected Long size;
+  @XmlElements({ @XmlElement(name = "Members", type = MembersType.class),
+      @XmlElement(name = "Tuples", type = TuplesType.class),
+      @XmlElement(name = "CrossProduct", type = SetListType.class),
+      @XmlElement(name = "NormTupleSet", namespace = "http://schemas.microsoft.com/analysisservices/2003/xmla", type = NormTupleSet.class),
+      @XmlElement(name = "Union", type = Union.class) })
+  protected List<Object> setType;
+  @XmlAttribute(name = "Size")
+  @XmlSchemaType(name = "unsignedInt")
+  protected Long size;
 
-    /**
-     * Gets the value of the setType property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the setType property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getSetType().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link NormTupleSet }
-     * {@link MembersType }
-     * {@link SetListType }
-     * {@link SetListType.Union }
-     * {@link TuplesType }
-     * 
-     * 
-     */
-    public List<Object> getSetType() {
-        if (setType == null) {
-            setType = new ArrayList<Object>();
-        }
-        return this.setType;
+  /**
+   * Gets the value of the setType property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the setType property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getSetType().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link NormTupleSet
+   * } {@link MembersType } {@link SetListType } {@link SetListType.Union }
+   * {@link TuplesType }
+   * 
+   * 
+   */
+  public List<Object> getSetType() {
+    if (setType == null) {
+      setType = new ArrayList<Object>();
     }
+    return this.setType;
+  }
 
-    public boolean isSetSetType() {
-        return ((this.setType!= null)&&(!this.setType.isEmpty()));
-    }
+  public boolean isSetSetType() {
+    return ((this.setType != null) && (!this.setType.isEmpty()));
+  }
 
-    public void unsetSetType() {
-        this.setType = null;
-    }
+  public void unsetSetType() {
+    this.setType = null;
+  }
 
-    /**
-     * Gets the value of the size property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public long getSize() {
-        return size;
-    }
+  /**
+   * Gets the value of the size property.
+   * 
+   * @return possible object is {@link Long }
+   * 
+   */
+  public long getSize() {
+    return size;
+  }
 
-    /**
-     * Sets the value of the size property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
-     */
-    public void setSize(long value) {
-        this.size = value;
-    }
+  /**
+   * Sets the value of the size property.
+   * 
+   * @param value allowed object is {@link Long }
+   * 
+   */
+  public void setSize(long value) {
+    this.size = value;
+  }
 
-    public boolean isSetSize() {
-        return (this.size!= null);
-    }
+  public boolean isSetSize() {
+    return (this.size != null);
+  }
 
-    public void unsetSize() {
-        this.size = null;
-    }
-
+  public void unsetSize() {
+    this.size = null;
+  }
 
 }

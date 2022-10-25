@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DBCC complex type.
+ * <p>
+ * Java class for DBCC complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DBCC"&gt;
@@ -32,35 +34,31 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class DBCC {
 
-    @XmlElement(name = "Object")
-    protected ObjectReference object;
+  @XmlElement(name = "Object")
+  protected ObjectReference object;
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
 }

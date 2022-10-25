@@ -5,11 +5,13 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for unary_expr complex type.
+ * <p>
+ * Java class for unary_expr complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="unary_expr"&gt;
@@ -29,129 +31,108 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "unary_expr", propOrder = {
-    "not",
-    "and",
-    "or",
-    "leaf"
-})
+@XmlType(name = "unary_expr", propOrder = { "not", "and", "or", "leaf" })
 public class UnaryExpr {
 
-    protected UnaryExpr not;
-    protected BooleanExpr and;
-    protected BooleanExpr or;
-    protected PredLeaf leaf;
+  protected UnaryExpr not;
+  protected BooleanExpr and;
+  protected BooleanExpr or;
+  protected PredLeaf leaf;
 
-    /**
-     * Gets the value of the not property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link UnaryExpr }
-     *     
-     */
-    public UnaryExpr getNot() {
-        return not;
-    }
+  /**
+   * Gets the value of the not property.
+   * 
+   * @return possible object is {@link UnaryExpr }
+   * 
+   */
+  public UnaryExpr getNot() {
+    return not;
+  }
 
-    /**
-     * Sets the value of the not property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link UnaryExpr }
-     *     
-     */
-    public void setNot(UnaryExpr value) {
-        this.not = value;
-    }
+  /**
+   * Sets the value of the not property.
+   * 
+   * @param value allowed object is {@link UnaryExpr }
+   * 
+   */
+  public void setNot(UnaryExpr value) {
+    this.not = value;
+  }
 
-    public boolean isSetNot() {
-        return (this.not!= null);
-    }
+  public boolean isSetNot() {
+    return (this.not != null);
+  }
 
-    /**
-     * Gets the value of the and property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BooleanExpr }
-     *     
-     */
-    public BooleanExpr getAnd() {
-        return and;
-    }
+  /**
+   * Gets the value of the and property.
+   * 
+   * @return possible object is {@link BooleanExpr }
+   * 
+   */
+  public BooleanExpr getAnd() {
+    return and;
+  }
 
-    /**
-     * Sets the value of the and property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BooleanExpr }
-     *     
-     */
-    public void setAnd(BooleanExpr value) {
-        this.and = value;
-    }
+  /**
+   * Sets the value of the and property.
+   * 
+   * @param value allowed object is {@link BooleanExpr }
+   * 
+   */
+  public void setAnd(BooleanExpr value) {
+    this.and = value;
+  }
 
-    public boolean isSetAnd() {
-        return (this.and!= null);
-    }
+  public boolean isSetAnd() {
+    return (this.and != null);
+  }
 
-    /**
-     * Gets the value of the or property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BooleanExpr }
-     *     
-     */
-    public BooleanExpr getOr() {
-        return or;
-    }
+  /**
+   * Gets the value of the or property.
+   * 
+   * @return possible object is {@link BooleanExpr }
+   * 
+   */
+  public BooleanExpr getOr() {
+    return or;
+  }
 
-    /**
-     * Sets the value of the or property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BooleanExpr }
-     *     
-     */
-    public void setOr(BooleanExpr value) {
-        this.or = value;
-    }
+  /**
+   * Sets the value of the or property.
+   * 
+   * @param value allowed object is {@link BooleanExpr }
+   * 
+   */
+  public void setOr(BooleanExpr value) {
+    this.or = value;
+  }
 
-    public boolean isSetOr() {
-        return (this.or!= null);
-    }
+  public boolean isSetOr() {
+    return (this.or != null);
+  }
 
-    /**
-     * Gets the value of the leaf property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PredLeaf }
-     *     
-     */
-    public PredLeaf getLeaf() {
-        return leaf;
-    }
+  /**
+   * Gets the value of the leaf property.
+   * 
+   * @return possible object is {@link PredLeaf }
+   * 
+   */
+  public PredLeaf getLeaf() {
+    return leaf;
+  }
 
-    /**
-     * Sets the value of the leaf property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PredLeaf }
-     *     
-     */
-    public void setLeaf(PredLeaf value) {
-        this.leaf = value;
-    }
+  /**
+   * Sets the value of the leaf property.
+   * 
+   * @param value allowed object is {@link PredLeaf }
+   * 
+   */
+  public void setLeaf(PredLeaf value) {
+    this.leaf = value;
+  }
 
-    public boolean isSetLeaf() {
-        return (this.leaf!= null);
-    }
+  public boolean isSetLeaf() {
+    return (this.leaf != null);
+  }
 
 }

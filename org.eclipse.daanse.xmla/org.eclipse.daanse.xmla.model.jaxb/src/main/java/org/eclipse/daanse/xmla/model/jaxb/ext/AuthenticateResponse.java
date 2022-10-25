@@ -12,15 +12,15 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "AuthenticateResponse")
 public class AuthenticateResponse {
 
-	@XmlElement(name = "return", required = true)
-	protected ReturnValue returnValue;
+  @XmlElement(name = "return", required = true)
+  protected ReturnValue returnValue;
 
-	public ReturnValue getReturn() {
-		return returnValue;
-	}
+  public ReturnValue getReturn() {
+    return returnValue;
+  }
 
-	public void setReturn(ReturnValue value) {
-		this.returnValue = value;
-	}
+  public void setReturn(ReturnValue value) {
+    this.returnValue = value;
+  }
 
 }

@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for OlapInfo complex type.
+ * <p>
+ * Java class for OlapInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="OlapInfo"&gt;
@@ -29,102 +31,86 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OlapInfo", propOrder = {
-    "cubeInfo",
-    "axesInfo",
-    "cellInfo"
-})
+@XmlType(name = "OlapInfo", propOrder = { "cubeInfo", "axesInfo", "cellInfo" })
 public class OlapInfo {
 
-    @XmlElement(name = "CubeInfo", required = true)
-    protected CubeInfo cubeInfo;
-    @XmlElement(name = "AxesInfo", required = true)
-    protected AxesInfo axesInfo;
-    @XmlElement(name = "CellInfo", required = true)
-    protected CellInfo cellInfo;
+  @XmlElement(name = "CubeInfo", required = true)
+  protected CubeInfo cubeInfo;
+  @XmlElement(name = "AxesInfo", required = true)
+  protected AxesInfo axesInfo;
+  @XmlElement(name = "CellInfo", required = true)
+  protected CellInfo cellInfo;
 
-    /**
-     * Gets the value of the cubeInfo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CubeInfo }
-     *     
-     */
-    public CubeInfo getCubeInfo() {
-        return cubeInfo;
-    }
+  /**
+   * Gets the value of the cubeInfo property.
+   * 
+   * @return possible object is {@link CubeInfo }
+   * 
+   */
+  public CubeInfo getCubeInfo() {
+    return cubeInfo;
+  }
 
-    /**
-     * Sets the value of the cubeInfo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CubeInfo }
-     *     
-     */
-    public void setCubeInfo(CubeInfo value) {
-        this.cubeInfo = value;
-    }
+  /**
+   * Sets the value of the cubeInfo property.
+   * 
+   * @param value allowed object is {@link CubeInfo }
+   * 
+   */
+  public void setCubeInfo(CubeInfo value) {
+    this.cubeInfo = value;
+  }
 
-    public boolean isSetCubeInfo() {
-        return (this.cubeInfo!= null);
-    }
+  public boolean isSetCubeInfo() {
+    return (this.cubeInfo != null);
+  }
 
-    /**
-     * Gets the value of the axesInfo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link AxesInfo }
-     *     
-     */
-    public AxesInfo getAxesInfo() {
-        return axesInfo;
-    }
+  /**
+   * Gets the value of the axesInfo property.
+   * 
+   * @return possible object is {@link AxesInfo }
+   * 
+   */
+  public AxesInfo getAxesInfo() {
+    return axesInfo;
+  }
 
-    /**
-     * Sets the value of the axesInfo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link AxesInfo }
-     *     
-     */
-    public void setAxesInfo(AxesInfo value) {
-        this.axesInfo = value;
-    }
+  /**
+   * Sets the value of the axesInfo property.
+   * 
+   * @param value allowed object is {@link AxesInfo }
+   * 
+   */
+  public void setAxesInfo(AxesInfo value) {
+    this.axesInfo = value;
+  }
 
-    public boolean isSetAxesInfo() {
-        return (this.axesInfo!= null);
-    }
+  public boolean isSetAxesInfo() {
+    return (this.axesInfo != null);
+  }
 
-    /**
-     * Gets the value of the cellInfo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CellInfo }
-     *     
-     */
-    public CellInfo getCellInfo() {
-        return cellInfo;
-    }
+  /**
+   * Gets the value of the cellInfo property.
+   * 
+   * @return possible object is {@link CellInfo }
+   * 
+   */
+  public CellInfo getCellInfo() {
+    return cellInfo;
+  }
 
-    /**
-     * Sets the value of the cellInfo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CellInfo }
-     *     
-     */
-    public void setCellInfo(CellInfo value) {
-        this.cellInfo = value;
-    }
+  /**
+   * Sets the value of the cellInfo property.
+   * 
+   * @param value allowed object is {@link CellInfo }
+   * 
+   */
+  public void setCellInfo(CellInfo value) {
+    this.cellInfo = value;
+  }
 
-    public boolean isSetCellInfo() {
-        return (this.cellInfo!= null);
-    }
+  public boolean isSetCellInfo() {
+    return (this.cellInfo != null);
+  }
 
 }

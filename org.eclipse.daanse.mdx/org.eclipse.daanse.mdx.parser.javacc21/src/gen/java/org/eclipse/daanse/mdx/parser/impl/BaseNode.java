@@ -2,172 +2,178 @@
 package org.eclipse.daanse.mdx.parser.impl;
 
 import java.util.*;
+
 /**
  * The base concrete class for non-terminal Nodes
  */
 @SuppressWarnings("rawtypes")
 public class BaseNode implements Node {
-    private mdxLexer tokenSource;
-    public mdxLexer getTokenSource() {
-        if (tokenSource== null) {
-            for (Node child : children()) {
-                tokenSource= child.getTokenSource();
-                if (tokenSource!=null) break;
-            }
-        }
-        return tokenSource;
-    }
+  private mdxLexer tokenSource;
 
-    public void setTokenSource(mdxLexer tokenSource) {
-        this.tokenSource= tokenSource;
+  public mdxLexer getTokenSource() {
+    if (tokenSource == null) {
+      for (Node child : children()) {
+        tokenSource = child.getTokenSource();
+        if (tokenSource != null)
+          break;
+      }
     }
+    return tokenSource;
+  }
 
-    static private Class listClass= ArrayList.class;
-    /**
-     * Sets the List class that is used to store child nodes. By default,
-     * this is java.util.ArrayList. There is probably very little reason
-     * to ever use anything else, though you could use this method 
-     * to replace this with LinkedList or your own java.util.List implementation even.
-     * @param listClass the #java.util.List implementation to use internally 
-     * for the child nodes. By default #java.util.ArrayList is used.
-     */
-    static public void setListClass(Class<?extends List> listClass) {
-        BaseNode.listClass= listClass;
-    }
+  public void setTokenSource(mdxLexer tokenSource) {
+    this.tokenSource = tokenSource;
+  }
 
-    @SuppressWarnings("unchecked")
-    private List<Node> newList() {
-        try {
-            return(List<Node> ) listClass.getDeclaredConstructor().newInstance();
-        }
-        catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+  static private Class listClass = ArrayList.class;
 
-    /**
-     * the parent node
-     */
-    protected Node parent;
-    /**
-     * the child nodes
-     */
-    protected List<Node> children= newList();
-    private int beginOffset, endOffset;
-    private boolean unparsed;
-    public boolean isUnparsed() {
-        return this.unparsed;
-    }
+  /**
+   * Sets the List class that is used to store child nodes. By default, this is
+   * java.util.ArrayList. There is probably very little reason to ever use
+   * anything else, though you could use this method to replace this with
+   * LinkedList or your own java.util.List implementation even.
+   * 
+   * @param listClass the #java.util.List implementation to use internally for the
+   *                  child nodes. By default #java.util.ArrayList is used.
+   */
+  static public void setListClass(Class<? extends List> listClass) {
+    BaseNode.listClass = listClass;
+  }
 
-    public void setUnparsed(boolean unparsed) {
-        this.unparsed= unparsed;
+  @SuppressWarnings("unchecked")
+  private List<Node> newList() {
+    try {
+      return (List<Node>) listClass.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public void setParent(Node n) {
-        parent= n;
-    }
+  /**
+   * the parent node
+   */
+  protected Node parent;
+  /**
+   * the child nodes
+   */
+  protected List<Node> children = newList();
+  private int beginOffset, endOffset;
+  private boolean unparsed;
 
-    public Node getParent() {
-        return parent;
-    }
+  public boolean isUnparsed() {
+    return this.unparsed;
+  }
 
-    public void addChild(Node n) {
-        children.add(n);
-        n.setParent(this);
-    }
+  public void setUnparsed(boolean unparsed) {
+    this.unparsed = unparsed;
+  }
 
-    public void addChild(int i, Node n) {
-        children.add(i, n);
-        n.setParent(this);
-    }
+  public void setParent(Node n) {
+    parent = n;
+  }
 
-    public Node getChild(int i) {
-        return children.get(i);
-    }
+  public Node getParent() {
+    return parent;
+  }
 
-    public void setChild(int i, Node n) {
-        children.set(i, n);
-        n.setParent(this);
-    }
+  public void addChild(Node n) {
+    children.add(n);
+    n.setParent(this);
+  }
 
-    public Node removeChild(int i) {
-        return children.remove(i);
-    }
+  public void addChild(int i, Node n) {
+    children.add(i, n);
+    n.setParent(this);
+  }
 
-    public void clearChildren() {
-        children.clear();
-    }
+  public Node getChild(int i) {
+    return children.get(i);
+  }
 
-    public int getChildCount() {
-        return children.size();
-    }
+  public void setChild(int i, Node n) {
+    children.set(i, n);
+    n.setParent(this);
+  }
 
-    public List<Node> children() {
-        return Collections.unmodifiableList(children);
-    }
+  public Node removeChild(int i) {
+    return children.remove(i);
+  }
 
-    public int getBeginOffset() {
-        return beginOffset;
-    }
+  public void clearChildren() {
+    children.clear();
+  }
 
-    public void setBeginOffset(int beginOffset) {
-        this.beginOffset= beginOffset;
-    }
+  public int getChildCount() {
+    return children.size();
+  }
 
-    public int getEndOffset() {
-        return endOffset;
-    }
+  public List<Node> children() {
+    return Collections.unmodifiableList(children);
+  }
 
-    public void setEndOffset(int endOffset) {
-        this.endOffset= endOffset;
-    }
+  public int getBeginOffset() {
+    return beginOffset;
+  }
 
-    public String toString() {
-        StringBuilder buf= new StringBuilder();
-        for (Token t : getRealTokens()) {
-            buf.append(t);
-        }
-        return buf.toString();
-    }
+  public void setBeginOffset(int beginOffset) {
+    this.beginOffset = beginOffset;
+  }
 
-    protected Map<String, Node> namedChildMap;
-    protected Map<String, List<Node> > namedChildListMap;
-    public Node getNamedChild(String name) {
-        if (namedChildMap== null) {
-            return null;
-        }
-        return namedChildMap.get(name);
-    }
+  public int getEndOffset() {
+    return endOffset;
+  }
 
-    public void setNamedChild(String name, Node node) {
-        if (namedChildMap== null) {
-            namedChildMap= new HashMap<> ();
-        }
-        if (namedChildMap.containsKey(name)) {
-            // Can't have duplicates
-            String msg= String.format("Duplicate named child not allowed: {0}", name);
-            throw new RuntimeException(msg);
-        }
-        namedChildMap.put(name, node);
-    }
+  public void setEndOffset(int endOffset) {
+    this.endOffset = endOffset;
+  }
 
-    public List<Node> getNamedChildList(String name) {
-        if (namedChildListMap== null) {
-            return null;
-        }
-        return namedChildListMap.get(name);
+  public String toString() {
+    StringBuilder buf = new StringBuilder();
+    for (Token t : getRealTokens()) {
+      buf.append(t);
     }
+    return buf.toString();
+  }
 
-    public void addToNamedChildList(String name, Node node) {
-        if (namedChildListMap== null) {
-            namedChildListMap= new HashMap<> ();
-        }
-        List<Node> nodeList= namedChildListMap.get(name);
-        if (nodeList== null) {
-            nodeList= new ArrayList<> ();
-            namedChildListMap.put(name, nodeList);
-        }
-        nodeList.add(node);
+  protected Map<String, Node> namedChildMap;
+  protected Map<String, List<Node>> namedChildListMap;
+
+  public Node getNamedChild(String name) {
+    if (namedChildMap == null) {
+      return null;
     }
+    return namedChildMap.get(name);
+  }
+
+  public void setNamedChild(String name, Node node) {
+    if (namedChildMap == null) {
+      namedChildMap = new HashMap<>();
+    }
+    if (namedChildMap.containsKey(name)) {
+      // Can't have duplicates
+      String msg = String.format("Duplicate named child not allowed: {0}", name);
+      throw new RuntimeException(msg);
+    }
+    namedChildMap.put(name, node);
+  }
+
+  public List<Node> getNamedChildList(String name) {
+    if (namedChildListMap == null) {
+      return null;
+    }
+    return namedChildListMap.get(name);
+  }
+
+  public void addToNamedChildList(String name, Node node) {
+    if (namedChildListMap == null) {
+      namedChildListMap = new HashMap<>();
+    }
+    List<Node> nodeList = namedChildListMap.get(name);
+    if (nodeList == null) {
+      nodeList = new ArrayList<>();
+      namedChildListMap.put(name, nodeList);
+    }
+    nodeList.add(node);
+  }
 
 }

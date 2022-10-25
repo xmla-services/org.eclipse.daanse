@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TabularBinding complex type.
+ * <p>
+ * Java class for TabularBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="TabularBinding"&gt;
@@ -25,12 +27,7 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TabularBinding")
-@XmlSeeAlso({
-    TableBinding.class,
-    QueryBinding.class,
-    DSVTableBinding.class
-})
+@XmlSeeAlso({ TableBinding.class, QueryBinding.class, DSVTableBinding.class })
 public abstract class TabularBinding {
-
 
 }

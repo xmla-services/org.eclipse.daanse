@@ -7,10 +7,11 @@ package org.eclipse.daanse.mdx.parser.impl.tree;
 import org.eclipse.daanse.mdx.parser.impl.*;
 import org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType;
 import static org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType.*;
+
 @SuppressWarnings("unused")
 public class ASTUSE_EQUAL_ALLOCATION extends Token {
-    public ASTUSE_EQUAL_ALLOCATION(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
-        super(type, tokenSource, beginOffset, endOffset);
-    }
+  public ASTUSE_EQUAL_ALLOCATION(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
+    super(type, tokenSource, beginOffset, endOffset);
+  }
 
 }

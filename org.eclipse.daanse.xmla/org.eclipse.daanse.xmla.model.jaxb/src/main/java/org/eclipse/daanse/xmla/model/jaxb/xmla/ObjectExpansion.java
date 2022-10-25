@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ObjectExpansion.
+ * <p>
+ * Java class for ObjectExpansion.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="ObjectExpansion"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -24,27 +27,27 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum ObjectExpansion {
 
-    @XmlEnumValue("ObjectProperties")
-    OBJECT_PROPERTIES("ObjectProperties"),
-    @XmlEnumValue("ExpandFull")
-    EXPAND_FULL("ExpandFull");
-    private final String value;
+  @XmlEnumValue("ObjectProperties")
+  OBJECT_PROPERTIES("ObjectProperties"), @XmlEnumValue("ExpandFull")
+  EXPAND_FULL("ExpandFull");
 
-    ObjectExpansion(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  ObjectExpansion(String v) {
+    value = v;
+  }
 
-    public static ObjectExpansion fromValue(String v) {
-        for (ObjectExpansion c: ObjectExpansion.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static ObjectExpansion fromValue(String v) {
+    for (ObjectExpansion c : ObjectExpansion.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

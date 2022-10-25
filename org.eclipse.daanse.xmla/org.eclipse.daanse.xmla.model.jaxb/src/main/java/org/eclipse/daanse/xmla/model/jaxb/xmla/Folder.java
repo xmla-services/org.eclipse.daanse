@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Folder complex type.
+ * <p>
+ * Java class for Folder complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Folder"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Folder {
 
-    @XmlElement(name = "Original", required = true)
-    protected String original;
-    @XmlElement(name = "New", required = true)
-    protected String _new;
+  @XmlElement(name = "Original", required = true)
+  protected String original;
+  @XmlElement(name = "New", required = true)
+  protected String _new;
 
-    /**
-     * Gets the value of the original property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getOriginal() {
-        return original;
-    }
+  /**
+   * Gets the value of the original property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getOriginal() {
+    return original;
+  }
 
-    /**
-     * Sets the value of the original property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setOriginal(String value) {
-        this.original = value;
-    }
+  /**
+   * Sets the value of the original property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setOriginal(String value) {
+    this.original = value;
+  }
 
-    public boolean isSetOriginal() {
-        return (this.original!= null);
-    }
+  public boolean isSetOriginal() {
+    return (this.original != null);
+  }
 
-    /**
-     * Gets the value of the new property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getNew() {
-        return _new;
-    }
+  /**
+   * Gets the value of the new property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getNew() {
+    return _new;
+  }
 
-    /**
-     * Sets the value of the new property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setNew(String value) {
-        this._new = value;
-    }
+  /**
+   * Sets the value of the new property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setNew(String value) {
+    this._new = value;
+  }
 
-    public boolean isSetNew() {
-        return (this._new!= null);
-    }
+  public boolean isSetNew() {
+    return (this._new != null);
+  }
 
 }

@@ -11,12 +11,13 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 /**
  * Generates code from your model files on save.
  * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
+ * See
+ * https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 public class MdxGenerator extends AbstractGenerator {
 
-	@Override
-	public void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+  @Override
+  public void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 //		Iterator<Greeting> filtered = Iterators.filter(resource.getAllContents(), Greeting.class);
 //		Iterator<String> names = Iterators.transform(filtered, new Function<Greeting, String>() {
 //
@@ -26,5 +27,5 @@ public class MdxGenerator extends AbstractGenerator {
 //			}
 //		});
 //		fsa.generateFile("greetings.txt", "People to greet: " + IteratorExtensions.join(names, ", "));
-	}
+  }
 }

@@ -1,4 +1,5 @@
 package org.eclipse.daanse.xmla.ws.jakarta.basic.internal;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -50,8 +51,7 @@ public class MyMessageNamespaceMapper implements SOAPHandler<SOAPMessageContext>
 
         // IMPORTANT! "Save" the changes
         soapMessage.saveChanges();
-      }
-      catch (SOAPException e) {
+      } catch (SOAPException e) {
         // handle the error
       }
     }
@@ -73,7 +73,6 @@ public class MyMessageNamespaceMapper implements SOAPHandler<SOAPMessageContext>
       }
     }
   }
-
 
   private Set<String> getNamespacePrefixList(Iterator namespacePrefixIter) {
     Set<String> namespacePrefixesSet = new HashSet<>();

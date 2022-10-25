@@ -10,11 +10,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElements;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Messages complex type.
+ * <p>
+ * Java class for Messages complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Messages"&gt;
@@ -32,56 +34,50 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Messages", propOrder = {
-    "warningOrError"
-})
-public class Messages
-    implements Serializable
-{
+@XmlType(name = "Messages", propOrder = { "warningOrError" })
+public class Messages implements Serializable {
 
-    private final static long serialVersionUID = 1L;
-    @XmlElements({
-        @XmlElement(name = "Warning", type = WarningType.class),
-        @XmlElement(name = "Error", type = ErrorType.class)
-    })
-    protected List<Serializable> warningOrError;
+  private final static long serialVersionUID = 1L;
+  @XmlElements({ @XmlElement(name = "Warning", type = WarningType.class),
+      @XmlElement(name = "Error", type = ErrorType.class) })
+  protected List<Serializable> warningOrError;
 
-    /**
-     * Gets the value of the warningOrError property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the warningOrError property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getWarningOrError().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ErrorType }
-     * {@link WarningType }
-     * 
-     * 
-     */
-    public List<Serializable> getWarningOrError() {
-        if (warningOrError == null) {
-            warningOrError = new ArrayList<Serializable>();
-        }
-        return this.warningOrError;
+  /**
+   * Gets the value of the warningOrError property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the warningOrError property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getWarningOrError().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link ErrorType }
+   * {@link WarningType }
+   * 
+   * 
+   */
+  public List<Serializable> getWarningOrError() {
+    if (warningOrError == null) {
+      warningOrError = new ArrayList<Serializable>();
     }
+    return this.warningOrError;
+  }
 
-    public boolean isSetWarningOrError() {
-        return ((this.warningOrError!= null)&&(!this.warningOrError.isEmpty()));
-    }
+  public boolean isSetWarningOrError() {
+    return ((this.warningOrError != null) && (!this.warningOrError.isEmpty()));
+  }
 
-    public void unsetWarningOrError() {
-        this.warningOrError = null;
-    }
+  public void unsetWarningOrError() {
+    this.warningOrError = null;
+  }
 
 }

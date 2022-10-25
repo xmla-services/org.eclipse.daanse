@@ -17,24 +17,23 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Statement</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl#getStatement <em>Statement</em>}</li>
+ * <li>{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl#getStatement
+ * <em>Statement</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class MdxStatementImpl extends MinimalEObjectImpl.Container implements MdxStatement
-{
+public class MdxStatementImpl extends MinimalEObjectImpl.Container implements MdxStatement {
   /**
-   * The cached value of the '{@link #getStatement() <em>Statement</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * The cached value of the '{@link #getStatement() <em>Statement</em>}'
+   * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @see #getStatement()
    * @generated
    * @ordered
@@ -42,156 +41,146 @@ public class MdxStatementImpl extends MinimalEObjectImpl.Container implements Md
   protected SelectStatement statement;
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
-  protected MdxStatementImpl()
-  {
+  protected MdxStatementImpl() {
     super();
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  protected EClass eStaticClass()
-  {
+  protected EClass eStaticClass() {
     return MdxPackage.Literals.MDX_STATEMENT;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public SelectStatement getStatement()
-  {
+  public SelectStatement getStatement() {
     return statement;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
-  public NotificationChain basicSetStatement(SelectStatement newStatement, NotificationChain msgs)
-  {
+  public NotificationChain basicSetStatement(SelectStatement newStatement, NotificationChain msgs) {
     SelectStatement oldStatement = statement;
     statement = newStatement;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MdxPackage.MDX_STATEMENT__STATEMENT, oldStatement, newStatement);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+          MdxPackage.MDX_STATEMENT__STATEMENT, oldStatement, newStatement);
+      if (msgs == null)
+        msgs = notification;
+      else
+        msgs.add(notification);
     }
     return msgs;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public void setStatement(SelectStatement newStatement)
-  {
-    if (newStatement != statement)
-    {
+  public void setStatement(SelectStatement newStatement) {
+    if (newStatement != statement) {
       NotificationChain msgs = null;
       if (statement != null)
-        msgs = ((InternalEObject)statement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MdxPackage.MDX_STATEMENT__STATEMENT, null, msgs);
+        msgs = ((InternalEObject) statement).eInverseRemove(this,
+            EOPPOSITE_FEATURE_BASE - MdxPackage.MDX_STATEMENT__STATEMENT, null, msgs);
       if (newStatement != null)
-        msgs = ((InternalEObject)newStatement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MdxPackage.MDX_STATEMENT__STATEMENT, null, msgs);
+        msgs = ((InternalEObject) newStatement).eInverseAdd(this,
+            EOPPOSITE_FEATURE_BASE - MdxPackage.MDX_STATEMENT__STATEMENT, null, msgs);
       msgs = basicSetStatement(newStatement, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MdxPackage.MDX_STATEMENT__STATEMENT, newStatement, newStatement));
+      if (msgs != null)
+        msgs.dispatch();
+    } else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MdxPackage.MDX_STATEMENT__STATEMENT, newStatement,
+          newStatement));
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-  {
-    switch (featureID)
-    {
-      case MdxPackage.MDX_STATEMENT__STATEMENT:
-        return basicSetStatement(null, msgs);
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    switch (featureID) {
+    case MdxPackage.MDX_STATEMENT__STATEMENT:
+      return basicSetStatement(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public Object eGet(int featureID, boolean resolve, boolean coreType)
-  {
-    switch (featureID)
-    {
-      case MdxPackage.MDX_STATEMENT__STATEMENT:
-        return getStatement();
+  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    switch (featureID) {
+    case MdxPackage.MDX_STATEMENT__STATEMENT:
+      return getStatement();
     }
     return super.eGet(featureID, resolve, coreType);
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public void eSet(int featureID, Object newValue)
-  {
-    switch (featureID)
-    {
-      case MdxPackage.MDX_STATEMENT__STATEMENT:
-        setStatement((SelectStatement)newValue);
-        return;
+  public void eSet(int featureID, Object newValue) {
+    switch (featureID) {
+    case MdxPackage.MDX_STATEMENT__STATEMENT:
+      setStatement((SelectStatement) newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public void eUnset(int featureID)
-  {
-    switch (featureID)
-    {
-      case MdxPackage.MDX_STATEMENT__STATEMENT:
-        setStatement((SelectStatement)null);
-        return;
+  public void eUnset(int featureID) {
+    switch (featureID) {
+    case MdxPackage.MDX_STATEMENT__STATEMENT:
+      setStatement((SelectStatement) null);
+      return;
     }
     super.eUnset(featureID);
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public boolean eIsSet(int featureID)
-  {
-    switch (featureID)
-    {
-      case MdxPackage.MDX_STATEMENT__STATEMENT:
-        return statement != null;
+  public boolean eIsSet(int featureID) {
+    switch (featureID) {
+    case MdxPackage.MDX_STATEMENT__STATEMENT:
+      return statement != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //MdxStatementImpl
+} // MdxStatementImpl

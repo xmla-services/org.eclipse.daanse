@@ -9,14 +9,14 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = { "sspiHandshake" })
 public class ReturnValue {
 
-	@XmlElement(name = "SspiHandshake", required = true)
-	protected byte[] sspiHandshake;
+  @XmlElement(name = "SspiHandshake", required = true)
+  protected byte[] sspiHandshake;
 
-	public byte[] getSspiHandshake() {
-		return sspiHandshake;
-	}
+  public byte[] getSspiHandshake() {
+    return sspiHandshake;
+  }
 
-	public void setSspiHandshake(byte[] value) {
-		this.sspiHandshake = value;
-	}
+  public void setSspiHandshake(byte[] value) {
+    this.sspiHandshake = value;
+  }
 }

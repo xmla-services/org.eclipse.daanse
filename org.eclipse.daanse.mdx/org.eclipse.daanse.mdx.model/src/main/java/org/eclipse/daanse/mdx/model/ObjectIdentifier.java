@@ -2,12 +2,10 @@ package org.eclipse.daanse.mdx.model;
 
 public sealed interface ObjectIdentifier extends Expression permits KeyObjectIdentifier, NameObjectIdentifier {
 
-	public enum Quoting {
+  public enum Quoting {
 
-		UNQUOTED,
-		QUOTED,
-		KEY
-	}
+    UNQUOTED, QUOTED, KEY
+  }
 
-	public Quoting quoting();
+  public Quoting quoting();
 }

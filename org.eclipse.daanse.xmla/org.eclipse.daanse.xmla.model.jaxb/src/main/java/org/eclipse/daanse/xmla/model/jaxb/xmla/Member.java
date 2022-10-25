@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Member complex type.
+ * <p>
+ * Java class for Member complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Member"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Member {
 
-    @XmlElement(name = "Name")
-    protected String name;
-    @XmlElement(name = "Sid")
-    protected String sid;
+  @XmlElement(name = "Name")
+  protected String name;
+  @XmlElement(name = "Sid")
+  protected String sid;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the sid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSid() {
-        return sid;
-    }
+  /**
+   * Gets the value of the sid property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getSid() {
+    return sid;
+  }
 
-    /**
-     * Sets the value of the sid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSid(String value) {
-        this.sid = value;
-    }
+  /**
+   * Sets the value of the sid property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setSid(String value) {
+    this.sid = value;
+  }
 
-    public boolean isSetSid() {
-        return (this.sid!= null);
-    }
+  public boolean isSetSid() {
+    return (this.sid != null);
+  }
 
 }

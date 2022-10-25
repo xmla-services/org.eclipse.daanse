@@ -108,6473 +108,6561 @@ import org.eclipse.daanse.mdx.model.select.CreateSetBodyClause;
 import org.eclipse.daanse.mdx.model.select.SelectSubcubeClauseStatement;
 import org.eclipse.daanse.mdx.model.SymbolLiteral;
 import java.io.InputStreamReader;
+
 @SuppressWarnings("unused")
 public class MDXParser implements mdxConstants {
-    private static String stripQuotes(String s, String prefix, String suffix, String quoted) {
-        assert s.startsWith(prefix)&&s.endsWith(suffix);
-        s= s.substring(prefix.length(), s.length()-suffix.length());
-        s= s.replace(quoted, suffix);
-        return s;
-    }
+  private static String stripQuotes(String s, String prefix, String suffix, String quoted) {
+    assert s.startsWith(prefix) && s.endsWith(suffix);
+    s = s.substring(prefix.length(), s.length() - suffix.length());
+    s = s.replace(quoted, suffix);
+    return s;
+  }
 
-    private Expression createCall(Expression left, ObjectIdentifier objectIdentifier, List<Expression> expressions) {
-        final String name= objectIdentifier instanceof NameObjectIdentifier?((NameObjectIdentifier) objectIdentifier).name():
-        null;
-        if (expressions!=null) {
-            if (left!=null) {
-                // Method syntax: "x.foo(arg1, arg2)" or "x.foo()"
-                expressions.add(0, left);
-                return new CallExpression(name, CallExpression.Type.Method, expressions);
-            }
-            else  {
-                // Function syntax: "foo(arg1, arg2)" or "foo()"
-                return new CallExpression(name, CallExpression.Type.Function, expressions);
-            }
-        }
-        else  {
-            // Member syntax: "foo.bar"
-            // or property syntax: "foo.RESERVED_WORD"
-            CallExpression.Type type;
-            boolean call= false;
-            switch(objectIdentifier.quoting()) {
-                case UNQUOTED:
-                type= CallExpression.Type.Property;
-                call= true;
-                //funTable.isProperty(name); TODO: all is call
-                break;
-                case QUOTED:
-                type= CallExpression.Type.PropertyQuoted;
-                break;
-                default:
-                type= CallExpression.Type.PropertyAmpersAndQuoted;
-                break;
-            }
-            if (left instanceof CompoundId&&!call) {
-                List<ObjectIdentifier> newObjectIdentifiers= new ArrayList<ObjectIdentifier> (((CompoundId) left).objectIdentifiers());
-                newObjectIdentifiers.add(objectIdentifier);
-                return new CompoundId(newObjectIdentifiers);
-            }
-            else if (left== null) {
-                return new CompoundId(List.of(objectIdentifier));
-            }
-            else  {
-                return new CallExpression(name, type, List.of(left));
-            }
-        }
+  private Expression createCall(Expression left, ObjectIdentifier objectIdentifier, List<Expression> expressions) {
+    final String name = objectIdentifier instanceof NameObjectIdentifier
+        ? ((NameObjectIdentifier) objectIdentifier).name()
+        : null;
+    if (expressions != null) {
+      if (left != null) {
+        // Method syntax: "x.foo(arg1, arg2)" or "x.foo()"
+        expressions.add(0, left);
+        return new CallExpression(name, CallExpression.Type.Method, expressions);
+      } else {
+        // Function syntax: "foo(arg1, arg2)" or "foo()"
+        return new CallExpression(name, CallExpression.Type.Function, expressions);
+      }
+    } else {
+      // Member syntax: "foo.bar"
+      // or property syntax: "foo.RESERVED_WORD"
+      CallExpression.Type type;
+      boolean call = false;
+      switch (objectIdentifier.quoting()) {
+      case UNQUOTED:
+        type = CallExpression.Type.Property;
+        call = true;
+        // funTable.isProperty(name); TODO: all is call
+        break;
+      case QUOTED:
+        type = CallExpression.Type.PropertyQuoted;
+        break;
+      default:
+        type = CallExpression.Type.PropertyAmpersAndQuoted;
+        break;
+      }
+      if (left instanceof CompoundId && !call) {
+        List<ObjectIdentifier> newObjectIdentifiers = new ArrayList<ObjectIdentifier>(
+            ((CompoundId) left).objectIdentifiers());
+        newObjectIdentifiers.add(objectIdentifier);
+        return new CompoundId(newObjectIdentifiers);
+      } else if (left == null) {
+        return new CompoundId(List.of(objectIdentifier));
+      } else {
+        return new CallExpression(name, type, List.of(left));
+      }
     }
+  }
 
-    static final int UNLIMITED= Integer.MAX_VALUE;
-    // The last token successfully "consumed"
-    Token lastConsumedToken;
-    private TokenType nextTokenType;
-    private Token currentLookaheadToken;
-    private int remainingLookahead;
-    private boolean scanToEnd, hitFailure;
-    private String currentlyParsedProduction, currentLookaheadProduction;
-    private int lookaheadRoutineNesting, nonTerminalNesting;
-    private boolean cancelled;
-    public void cancel() {
-        cancelled= true;
-    }
+  static final int UNLIMITED = Integer.MAX_VALUE;
+  // The last token successfully "consumed"
+  Token lastConsumedToken;
+  private TokenType nextTokenType;
+  private Token currentLookaheadToken;
+  private int remainingLookahead;
+  private boolean scanToEnd, hitFailure;
+  private String currentlyParsedProduction, currentLookaheadProduction;
+  private int lookaheadRoutineNesting, nonTerminalNesting;
+  private boolean cancelled;
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+  public void cancel() {
+    cancelled = true;
+  }
 
-    /** Generated Lexer. */
-    public mdxLexer token_source;
-    public void setInputSource(String inputSource) {
-        token_source.setInputSource(inputSource);
-    }
+  public boolean isCancelled() {
+    return cancelled;
+  }
 
-    String getInputSource() {
-        return token_source.getInputSource();
-    }
+  /** Generated Lexer. */
+  public mdxLexer token_source;
 
-    //=================================
-    // Generated constructors
-    //=================================
-    public MDXParser(String inputSource, CharSequence content) {
-        this(new mdxLexer(inputSource, content));
-    }
+  public void setInputSource(String inputSource) {
+    token_source.setInputSource(inputSource);
+  }
 
-    public MDXParser(CharSequence content) {
-        this("input", content);
-    }
+  String getInputSource() {
+    return token_source.getInputSource();
+  }
 
-    /**
-   * @param inputSource just the name of the input source (typically the filename) that 
-   * will be used in error messages and so on.
-   * @param path The location (typically the filename) from which to get the input to parse
+  // =================================
+  // Generated constructors
+  // =================================
+  public MDXParser(String inputSource, CharSequence content) {
+    this(new mdxLexer(inputSource, content));
+  }
+
+  public MDXParser(CharSequence content) {
+    this("input", content);
+  }
+
+  /**
+   * @param inputSource just the name of the input source (typically the filename)
+   *                    that will be used in error messages and so on.
+   * @param path        The location (typically the filename) from which to get
+   *                    the input to parse
    */
-    public MDXParser(String inputSource, Path path) throws IOException {
-        this(inputSource, mdxLexer.stringFromBytes(Files.readAllBytes(path)));
-    }
+  public MDXParser(String inputSource, Path path) throws IOException {
+    this(inputSource, mdxLexer.stringFromBytes(Files.readAllBytes(path)));
+  }
 
-    public MDXParser(String inputSource, Path path, Charset charset) throws IOException {
-        this(inputSource, mdxLexer.stringFromBytes(Files.readAllBytes(path), charset));
-    }
+  public MDXParser(String inputSource, Path path, Charset charset) throws IOException {
+    this(inputSource, mdxLexer.stringFromBytes(Files.readAllBytes(path), charset));
+  }
 
-    /**
-   * @param path The location (typically the filename) from which to get the input to parse
+  /**
+   * @param path The location (typically the filename) from which to get the input
+   *             to parse
    */
-    public MDXParser(Path path) throws IOException {
-        this(path.toString(), path);
-    }
+  public MDXParser(Path path) throws IOException {
+    this(path.toString(), path);
+  }
 
-    /**
-   * @Deprecated Use the constructor that takes a #java.nio.files.Path or just 
-   * a String (i.e. CharSequence) directly.
+  /**
+   * @Deprecated Use the constructor that takes a #java.nio.files.Path or just a
+   *             String (i.e. CharSequence) directly.
    */
-    public MDXParser(java.io.InputStream stream) {
-        this(new InputStreamReader(stream));
-    }
+  public MDXParser(java.io.InputStream stream) {
+    this(new InputStreamReader(stream));
+  }
 
-    /**
-   * @Deprecated Use the constructor that takes a #java.nio.files.Path or just 
-   * a String (i.e. CharSequence) directly.
+  /**
+   * @Deprecated Use the constructor that takes a #java.nio.files.Path or just a
+   *             String (i.e. CharSequence) directly.
    */
-    public MDXParser(Reader reader) {
-        this(new mdxLexer("input", reader));
-    }
+  public MDXParser(Reader reader) {
+    this(new mdxLexer("input", reader));
+  }
 
-    /** Constructor with user supplied Lexer. */
-    public MDXParser(mdxLexer lexer) {
-        token_source= lexer;
-        lastConsumedToken= lexer.DUMMY_START_TOKEN;
-        lastConsumedToken.setTokenSource(lexer);
-    }
+  /** Constructor with user supplied Lexer. */
+  public MDXParser(mdxLexer lexer) {
+    token_source = lexer;
+    lastConsumedToken = lexer.DUMMY_START_TOKEN;
+    lastConsumedToken.setTokenSource(lexer);
+  }
 
-    // If the next token is cached, it returns that
-    // Otherwise, it goes to the token_source, i.e. the Lexer.
-    final private Token nextToken(final Token tok) {
-        Token result= token_source.getNextToken(tok);
-        while (result.isUnparsed()) {
-            result= token_source.getNextToken(result);
-        }
-        nextTokenType= null;
-        return result;
+  // If the next token is cached, it returns that
+  // Otherwise, it goes to the token_source, i.e. the Lexer.
+  final private Token nextToken(final Token tok) {
+    Token result = token_source.getNextToken(tok);
+    while (result.isUnparsed()) {
+      result = token_source.getNextToken(result);
     }
+    nextTokenType = null;
+    return result;
+  }
 
-    /**
+  /**
    * @return the next Token off the stream. This is the same as #getToken(1)
    */
-    final public Token getNextToken() {
-        return getToken(1);
-    }
-
-    /**
- * @param index how many tokens to look ahead
- * @return the specific regular (i.e. parsed) Token index ahead/behind in the stream. 
- * If we are in a lookahead, it looks ahead from the currentLookaheadToken
- * Otherwise, it is the lastConsumedToken. If you pass in a negative
- * number it goes backward.
- */
-    final public Token getToken(final int index) {
-        Token t= currentLookaheadToken== null?lastConsumedToken:
-        currentLookaheadToken;
-        for (int i= 0; i<index; i++) {
-            t= nextToken(t);
-        }
-        for (int i= 0; i> index; i--) {
-            t= t.getPrevious();
-            if (t== null) break;
-        }
-        return t;
-    }
-
-    private final TokenType nextTokenType() {
-        if (nextTokenType== null) {
-            nextTokenType= nextToken(lastConsumedToken).getType();
-        }
-        return nextTokenType;
-    }
-
-    boolean activateTokenTypes(TokenType...types) {
-        boolean result= false;
-        for (TokenType tt : types) {
-            result|=token_source.activeTokenTypes.add(tt);
-        }
-        token_source.reset(getToken(0));
-        nextTokenType= null;
-        return result;
-    }
-
-    boolean deactivateTokenTypes(TokenType...types) {
-        boolean result= false;
-        for (TokenType tt : types) {
-            result|=token_source.activeTokenTypes.remove(tt);
-        }
-        token_source.reset(getToken(0));
-        nextTokenType= null;
-        return result;
-    }
-
-    private static HashMap<TokenType[], EnumSet<TokenType> > enumSetCache= new HashMap<> ();
-    private static EnumSet<TokenType> tokenTypeSet(TokenType first, TokenType...rest) {
-        TokenType[] key= new TokenType[1+rest.length];
-        key[0]= first;
-        if (rest.length> 0) {
-            System.arraycopy(rest, 0, key, 1, rest.length);
-        }
-        Arrays.sort(key);
-        if (enumSetCache.containsKey(key)) {
-            return enumSetCache.get(key);
-        }
-        EnumSet<TokenType> result= (rest.length== 0)?EnumSet.of(first):
-        EnumSet.of(first, rest);
-        enumSetCache.put(key, result);
-        return result;
-    }
-
-    // cc21/mdx.jj:461:1
-    final public// ----------------------------------------------------------------------------
-    // MDX Statement
-    //
-    // <statement> ::= <selectStatement>
-    //                   | <drillthroughStatement>
-    //                   | <explainStatement>
-    //
-    // <selectStatement> ::= [WITH <formulaSpecification>]
-    //                         SELECT [<SelectQueryAxisClause>
-    //                                [, <SelectQueryAxisClause>...]]
-    //                         FROM [<cubeSpecification>]
-    //                         [WHERE <slicerSpecification>]
-    //                         [<cellProps>]
-    //
-    // <drillthroughStatment> ::=
-    //     DRILLTHROUGH
-    //     [ MAXROWS <count> ]
-    //     [ FIRSTROWSET <count> ]
-    //     <selectStatement>
-    //     [ RETURN <memberOrAttribute> [, <memberOrAttribute>...] ]
-    //
-    // <explainStatement> ::=
-    //     EXPLAIN PLAN FOR ( <selectStatement> | <drillthroughStatement> )
-    //
-    MdxStatement parseMdxStatement() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseMdxStatement";
-        ASTparseMdxStatement parseMdxStatement1= null;
-        if (buildTree) {
-            parseMdxStatement1= new ASTparseMdxStatement();
-            openNodeScope(parseMdxStatement1);
-        }
-        MdxStatement mdxStatement= null;
-        ParseException parseException1= null;
-        int callStackSize2= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:466:3
-            pushOntoCallStack("parseMdxStatement", "cc21/mdx.jj", 466, 3);
-            try {
-                mdxStatement= parseSelectStatement();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for EndOfFile specified at cc21/mdx.jj:479:3
-            consumeToken(EOF);
-            // Code for CodeBlock specified at cc21/mdx.jj:480:3
-            return mdxStatement;
-        }
-        catch(ParseException e) {
-            parseException1= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize2);
-            if (parseMdxStatement1!=null) {
-                if (parseException1== null) {
-                    closeNodeScope(parseMdxStatement1, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:485:1
-    final public DrillthroughStatement parseDrillthroughStatement() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseDrillthroughStatement";
-        ASTparseDrillthroughStatement parseDrillthroughStatement2= null;
-        if (buildTree) {
-            parseDrillthroughStatement2= new ASTparseDrillthroughStatement();
-            openNodeScope(parseDrillthroughStatement2);
-        }
-        SelectStatement selectStatement= null;
-        List<ReturnItem> returnItems= null;
-        ParseException parseException13= null;
-        int callStackSize14= parsingStack.size();
-        try {
-            // Code for RegexpRef specified at cc21/mdx.jj:491:3
-            consumeToken(DRILLTHROUGH);
-            // Code for ZeroOrOne specified at cc21/mdx.jj:492:3
-            if (nextTokenType()== MAXROWS) {
-                // Code for RegexpRef specified at cc21/mdx.jj:492:4
-                consumeToken(MAXROWS);
-                // Code for RegexpRef specified at cc21/mdx.jj:492:16
-                consumeToken(UNSIGNED_INTEGER_LITERAL);
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:493:3
-            if (nextTokenType()== FIRSTROWSET) {
-                // Code for RegexpRef specified at cc21/mdx.jj:493:4
-                consumeToken(FIRSTROWSET);
-                // Code for RegexpRef specified at cc21/mdx.jj:493:20
-                consumeToken(UNSIGNED_INTEGER_LITERAL);
-            }
-            // Code for NonTerminal specified at cc21/mdx.jj:494:3
-            pushOntoCallStack("parseDrillthroughStatement", "cc21/mdx.jj", 494, 3);
-            try {
-                selectStatement= parseSelectStatement();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:495:3
-            if (nextTokenType()== RETURN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:496:5
-                consumeToken(RETURN);
-                // Code for NonTerminal specified at cc21/mdx.jj:496:16
-                pushOntoCallStack("parseDrillthroughStatement", "cc21/mdx.jj", 496, 16);
-                try {
-                    returnItems= parseReturnItems();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:498:3
-            return new DrillthroughStatement();
-        }
-        catch(ParseException e) {
-            parseException13= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize14);
-            if (parseDrillthroughStatement2!=null) {
-                if (parseException13== null) {
-                    closeNodeScope(parseDrillthroughStatement2, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:503:1
-    final public List<ReturnItem> parseReturnItems() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseReturnItems";
-        ASTparseReturnItems parseReturnItems3= null;
-        if (buildTree) {
-            parseReturnItems3= new ASTparseReturnItems();
-            openNodeScope(parseReturnItems3);
-        }
-        List<ReturnItem> returnItems= new LinkedList<ReturnItem> ();
-        ReturnItem item;
-        ParseException parseException61= null;
-        int callStackSize62= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:509:3
-            pushOntoCallStack("parseReturnItems", "cc21/mdx.jj", 509, 3);
-            try {
-                item= parseReturnItem();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:510:3
-            returnItems.add(item);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:513:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:514:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:514:15
-                pushOntoCallStack("parseReturnItems", "cc21/mdx.jj", 514, 15);
-                try {
-                    item= parseReturnItem();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:515:5
-                returnItems.add(item);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:519:3
-            return returnItems;
-        }
-        catch(ParseException e) {
-            parseException61= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize62);
-            if (parseReturnItems3!=null) {
-                if (parseException61== null) {
-                    closeNodeScope(parseReturnItems3, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:524:1
-    final public ReturnItem parseReturnItem() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseReturnItem";
-        ASTparseReturnItem parseReturnItem4= null;
-        if (buildTree) {
-            parseReturnItem4= new ASTparseReturnItem();
-            openNodeScope(parseReturnItem4);
-        }
-        CompoundId compoundId;
-        ParseException parseException88= null;
-        int callStackSize89= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:529:3
-            pushOntoCallStack("parseReturnItem", "cc21/mdx.jj", 529, 3);
-            try {
-                compoundId= parseCompoundId();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:530:3
-            return new ReturnItem(compoundId);
-        }
-        catch(ParseException e) {
-            parseException88= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize89);
-            if (parseReturnItem4!=null) {
-                if (parseException88== null) {
-                    closeNodeScope(parseReturnItem4, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:540:1
-    final public//CreateCellCalculationBodyClause:
-    //;
-    //MeasureBodyClause:
-    //  <APPROX_NUMERIC_LITERAL>
-    //;
-    SelectWithClause parseSelectWithClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectWithClause";
-        ASTparseSelectWithClause parseSelectWithClause5= null;
-        if (buildTree) {
-            parseSelectWithClause5= new ASTparseSelectWithClause();
-            openNodeScope(parseSelectWithClause5);
-        }
-        CreateMemberBodyClause createMemberBodyClause= null;
-        CreateSetBodyClause createSetBodyClause= null;
-        ParseException parseException97= null;
-        int callStackSize98= parsingStack.size();
-        try {
-            if (nextTokenType()== MEMBER||nextTokenType== CALCULATED) {
-                // Code for ZeroOrOne specified at cc21/mdx.jj:547:5
-                if (nextTokenType()== CALCULATED) {
-                    // Code for RegexpStringLiteral specified at cc21/mdx.jj:547:6
-                    consumeToken(CALCULATED);
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:547:21
-                consumeToken(MEMBER);
-                // Code for NonTerminal specified at cc21/mdx.jj:547:32
-                pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 547, 32);
-                try {
-                    createMemberBodyClause= parseCreateMemberBodyClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else if (nextTokenType()== SET) {
-                // Code for RegexpRef specified at cc21/mdx.jj:548:5
-                consumeToken(SET);
-                // Code for NonTerminal specified at cc21/mdx.jj:548:13
-                pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 548, 13);
-                try {
-                    createSetBodyClause= parseCreateSetBodyClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else  {
-                pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 547, 5);
-                throw new ParseException(this, first_set$mdx_jj$547$5, parsingStack);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:551:3
-            return new SelectWithClause();
-        }
-        catch(ParseException e) {
-            parseException97= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize98);
-            if (parseSelectWithClause5!=null) {
-                if (parseException97== null) {
-                    closeNodeScope(parseSelectWithClause5, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:556:1
-    final public SelectStatement parseSelectStatement() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectStatement";
-        ASTparseSelectStatement parseSelectStatement6= null;
-        if (buildTree) {
-            parseSelectStatement6= new ASTparseSelectStatement();
-            openNodeScope(parseSelectStatement6);
-        }
-        SelectWithClause selectWithClause= null;
-        SelectSlicerAxisClause selectSlicerAxisClause= null;
-        SelectQueryClause selectQueryClause= null;
-        SelectSubcubeClause selectSubcubeClause= null;
-        SelectCellPropertyListClause selectCellPropertyListClause= null;
-        ParseException parseException134= null;
-        int callStackSize135= parsingStack.size();
-        try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:565:3
-            if (nextTokenType()== WITH) {
-                // Code for RegexpRef specified at cc21/mdx.jj:566:5
-                consumeToken(WITH);
-                // Code for OneOrMore specified at cc21/mdx.jj:567:5
-                while (true) {
-                    // Code for NonTerminal specified at cc21/mdx.jj:568:7
-                    pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 568, 7);
-                    try {
-                        selectWithClause= parseSelectWithClause();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    if (!(nextTokenType()== MEMBER||nextTokenType== SET||nextTokenType== CALCULATED)) break;
-                }
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:571:3
-            consumeToken(SELECT);
-            if (nextTokenType()== ASTERISK) {
-                // Code for NonTerminal specified at cc21/mdx.jj:573:5
-                pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 573, 5);
-                try {
-                    selectQueryClause= parseSelectQueryAsteriskClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else if (first_set$mdx_jj$575$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:575:5
-                pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 575, 5);
-                try {
-                    selectQueryClause= parseSelectQueryAxesClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else  {
-                // Code for CodeBlock specified at cc21/mdx.jj:577:5
-                selectQueryClause= new SelectQueryEmptyClause();
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:581:3
-            consumeToken(FROM);
-            // Code for NonTerminal specified at cc21/mdx.jj:581:12
-            pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 581, 12);
-            try {
-                selectSubcubeClause= parseSelectSubcubeClause();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:582:3
-            if (nextTokenType()== WHERE) {
-                // Code for NonTerminal specified at cc21/mdx.jj:583:5
-                pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 583, 5);
-                try {
-                    selectSlicerAxisClause= parseSelectSlicerAxisClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:585:3
-            if (nextTokenType()== CELL||nextTokenType== PROPERTIES) {
-                // Code for NonTerminal specified at cc21/mdx.jj:586:5
-                pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 586, 5);
-                try {
-                    selectCellPropertyListClause= parseSelectCellPropertyListClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:588:3
-            return new SelectStatement(selectWithClause, selectQueryClause, selectSubcubeClause, selectSlicerAxisClause, selectCellPropertyListClause);
-        }
-        catch(ParseException e) {
-            parseException134= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize135);
-            if (parseSelectStatement6!=null) {
-                if (parseException134== null) {
-                    closeNodeScope(parseSelectStatement6, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:593:1
-    final public SelectSubcubeClause parseSelectSubcubeClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectSubcubeClause";
-        ASTparseSelectSubcubeClause parseSelectSubcubeClause7= null;
-        if (buildTree) {
-            parseSelectSubcubeClause7= new ASTparseSelectSubcubeClause();
-            openNodeScope(parseSelectSubcubeClause7);
-        }
-        SelectSubcubeClause selectSubcubeClause= null;
-        ParseException parseException207= null;
-        int callStackSize208= parsingStack.size();
-        try {
-            if (first_set$mdx_jj$599$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:599:5
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 599, 5);
-                try {
-                    selectSubcubeClause= parseSelectSubcubeClauseName();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else if (nextTokenType()== LPAREN) {
-                // Code for NonTerminal specified at cc21/mdx.jj:601:5
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 601, 5);
-                try {
-                    selectSubcubeClause= parseSelectSubcubeClauseStatement();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else  {
-                pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 599, 5);
-                throw new ParseException(this, first_set$mdx_jj$599$5$, parsingStack);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:603:3
-            return selectSubcubeClause;
-        }
-        catch(ParseException e) {
-            parseException207= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize208);
-            if (parseSelectSubcubeClause7!=null) {
-                if (parseException207== null) {
-                    closeNodeScope(parseSelectSubcubeClause7, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:608:1
-    final public SelectSubcubeClauseName parseSelectSubcubeClauseName() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectSubcubeClauseName";
-        ASTparseSelectSubcubeClauseName parseSelectSubcubeClauseName8= null;
-        if (buildTree) {
-            parseSelectSubcubeClauseName8= new ASTparseSelectSubcubeClauseName();
-            openNodeScope(parseSelectSubcubeClauseName8);
-        }
-        NameObjectIdentifier nameObjectIdentifier;
-        ParseException parseException229= null;
-        int callStackSize230= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:613:3
-            pushOntoCallStack("parseSelectSubcubeClauseName", "cc21/mdx.jj", 613, 3);
-            try {
-                nameObjectIdentifier= parseNameObjectIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:614:3
-            return new SelectSubcubeClauseName(nameObjectIdentifier);
-        }
-        catch(ParseException e) {
-            parseException229= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize230);
-            if (parseSelectSubcubeClauseName8!=null) {
-                if (parseException229== null) {
-                    closeNodeScope(parseSelectSubcubeClauseName8, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:619:1
-    final public SelectSubcubeClauseStatement parseSelectSubcubeClauseStatement() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectSubcubeClauseStatement";
-        ASTparseSelectSubcubeClauseStatement parseSelectSubcubeClauseStatement9= null;
-        if (buildTree) {
-            parseSelectSubcubeClauseStatement9= new ASTparseSelectSubcubeClauseStatement();
-            openNodeScope(parseSelectSubcubeClauseStatement9);
-        }
-        SelectSlicerAxisClause selectSlicerAxisClause= null;
-        SelectQueryClause selectQueryClause= null;
-        SelectSubcubeClause selectSubcubeClause= null;
-        ParseException parseException238= null;
-        int callStackSize239= parsingStack.size();
-        try {
-            // Code for RegexpRef specified at cc21/mdx.jj:627:5
-            consumeToken(LPAREN);
-            // Code for RegexpRef specified at cc21/mdx.jj:627:16
-            consumeToken(SELECT);
-            // Code for ZeroOrOne specified at cc21/mdx.jj:628:5
-            // Code for ExpansionChoice specified at cc21/mdx.jj:629:7
-            if (nextTokenType()== ASTERISK) {
-                // Code for NonTerminal specified at cc21/mdx.jj:629:7
-                pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 629, 7);
-                try {
-                    selectQueryClause= parseSelectQueryAsteriskClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else if (first_set$mdx_jj$631$7.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:631:7
-                pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 631, 7);
-                try {
-                    selectQueryClause= parseSelectQueryAxesClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:633:5
-            consumeToken(FROM);
-            // Code for NonTerminal specified at cc21/mdx.jj:633:14
-            pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 633, 14);
-            try {
-                selectSubcubeClause= parseSelectSubcubeClause();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:634:5
-            if (nextTokenType()== WHERE) {
-                // Code for NonTerminal specified at cc21/mdx.jj:635:7
-                pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 635, 7);
-                try {
-                    selectSlicerAxisClause= parseSelectSlicerAxisClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:637:5
-            consumeToken(RPAREN);
-            // Code for CodeBlock specified at cc21/mdx.jj:639:3
-            return new SelectSubcubeClauseStatement(selectQueryClause, selectSubcubeClause, selectSlicerAxisClause);
-        }
-        catch(ParseException e) {
-            parseException238= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize239);
-            if (parseSelectSubcubeClauseStatement9!=null) {
-                if (parseException238== null) {
-                    closeNodeScope(parseSelectSubcubeClauseStatement9, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:644:1
-    final public SelectQueryAsteriskClause parseSelectQueryAsteriskClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectQueryAsteriskClause";
-        ASTparseSelectQueryAsteriskClause parseSelectQueryAsteriskClause10= null;
-        if (buildTree) {
-            parseSelectQueryAsteriskClause10= new ASTparseSelectQueryAsteriskClause();
-            openNodeScope(parseSelectQueryAsteriskClause10);
-        }
-        ParseException parseException290= null;
-        int callStackSize291= parsingStack.size();
-        try {
-            // Code for RegexpRef specified at cc21/mdx.jj:648:3
-            consumeToken(ASTERISK);
-            // Code for CodeBlock specified at cc21/mdx.jj:649:3
-            return new SelectQueryAsteriskClause();
-        }
-        catch(ParseException e) {
-            parseException290= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize291);
-            if (parseSelectQueryAsteriskClause10!=null) {
-                if (parseException290== null) {
-                    closeNodeScope(parseSelectQueryAsteriskClause10, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:654:1
-    final public SelectQueryAxesClause parseSelectQueryAxesClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectQueryAxesClause";
-        ASTparseSelectQueryAxesClause parseSelectQueryAxesClause11= null;
-        if (buildTree) {
-            parseSelectQueryAxesClause11= new ASTparseSelectQueryAxesClause();
-            openNodeScope(parseSelectQueryAxesClause11);
-        }
-        List<SelectQueryAxisClause> selectQueryAxisClauses= new LinkedList<SelectQueryAxisClause> ();
-        SelectQueryAxisClause selectQueryAxisClause;
-        ParseException parseException299= null;
-        int callStackSize300= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:660:3
-            pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 660, 3);
-            try {
-                selectQueryAxisClause= parseSelectQueryAxisClause();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:661:3
-            selectQueryAxisClauses.add(selectQueryAxisClause);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:664:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:665:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:665:15
-                pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 665, 15);
-                try {
-                    selectQueryAxisClause= parseSelectQueryAxisClause();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:666:5
-                selectQueryAxisClauses.add(selectQueryAxisClause);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:670:3
-            return new SelectQueryAxesClause(selectQueryAxisClauses);
-        }
-        catch(ParseException e) {
-            parseException299= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize300);
-            if (parseSelectQueryAxesClause11!=null) {
-                if (parseException299== null) {
-                    closeNodeScope(parseSelectQueryAxesClause11, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:675:1
-    final public SelectSlicerAxisClause parseSelectSlicerAxisClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectSlicerAxisClause";
-        ASTparseSelectSlicerAxisClause parseSelectSlicerAxisClause12= null;
-        if (buildTree) {
-            parseSelectSlicerAxisClause12= new ASTparseSelectSlicerAxisClause();
-            openNodeScope(parseSelectSlicerAxisClause12);
-        }
-        Expression expression= null;
-        ParseException parseException326= null;
-        int callStackSize327= parsingStack.size();
-        try {
-            // Code for RegexpRef specified at cc21/mdx.jj:680:3
-            consumeToken(WHERE);
-            // Code for NonTerminal specified at cc21/mdx.jj:680:13
-            pushOntoCallStack("parseSelectSlicerAxisClause", "cc21/mdx.jj", 680, 13);
-            try {
-                expression= parseExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:681:3
-            return new SelectSlicerAxisClause();
-        }
-        catch(ParseException e) {
-            parseException326= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize327);
-            if (parseSelectSlicerAxisClause12!=null) {
-                if (parseException326== null) {
-                    closeNodeScope(parseSelectSlicerAxisClause12, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:686:1
-    final public SelectCellPropertyListClause parseSelectCellPropertyListClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectCellPropertyListClause";
-        ASTparseSelectCellPropertyListClause parseSelectCellPropertyListClause13= null;
-        if (buildTree) {
-            parseSelectCellPropertyListClause13= new ASTparseSelectCellPropertyListClause();
-            openNodeScope(parseSelectCellPropertyListClause13);
-        }
-        List<CellProperty> cellPropertys= new LinkedList<CellProperty> ();
-        ParseException parseException338= null;
-        int callStackSize339= parsingStack.size();
-        try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:691:3
-            if (nextTokenType()== CELL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:691:4
-                consumeToken(CELL);
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:691:15
-            consumeToken(PROPERTIES);
-            // Code for NonTerminal specified at cc21/mdx.jj:691:30
-            pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 691, 30);
-            try {
-                parseCellProperty();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:692:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:693:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:693:15
-                pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 693, 15);
-                try {
-                    parseCellProperty();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:695:3
-            return new SelectCellPropertyListClause();
-        }
-        catch(ParseException e) {
-            parseException338= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize339);
-            if (parseSelectCellPropertyListClause13!=null) {
-                if (parseException338== null) {
-                    closeNodeScope(parseSelectCellPropertyListClause13, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:700:1
-    final public CreateMemberBodyClause parseCreateMemberBodyClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseCreateMemberBodyClause";
-        ASTparseCreateMemberBodyClause parseCreateMemberBodyClause14= null;
-        if (buildTree) {
-            parseCreateMemberBodyClause14= new ASTparseCreateMemberBodyClause();
-            openNodeScope(parseCreateMemberBodyClause14);
-        }
-        ParseException parseException371= null;
-        int callStackSize372= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:704:3
-            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 704, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:704:21
-            consumeToken(AS);
-            // Code for NonTerminal specified at cc21/mdx.jj:704:28
-            pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 704, 28);
-            try {
-                parseFormulaExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:705:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:706:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:706:15
-                pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 706, 15);
-                try {
-                    parseMemberPropertyDefinition();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:708:3
-            return new CreateMemberBodyClause();
-        }
-        catch(ParseException e) {
-            parseException371= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize372);
-            if (parseCreateMemberBodyClause14!=null) {
-                if (parseException371== null) {
-                    closeNodeScope(parseCreateMemberBodyClause14, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:713:1
-    final public MemberPropertyDefinition parseMemberPropertyDefinition() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseMemberPropertyDefinition";
-        ASTparseMemberPropertyDefinition parseMemberPropertyDefinition15= null;
-        if (buildTree) {
-            parseMemberPropertyDefinition15= new ASTparseMemberPropertyDefinition();
-            openNodeScope(parseMemberPropertyDefinition15);
-        }
-        ParseException parseException398= null;
-        int callStackSize399= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:717:3
-            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 717, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:717:21
-            consumeToken(EQ);
-            // Code for NonTerminal specified at cc21/mdx.jj:717:28
-            pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 717, 28);
-            try {
-                parseExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:718:3
-            return new MemberPropertyDefinition();
-        }
-        catch(ParseException e) {
-            parseException398= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize399);
-            if (parseMemberPropertyDefinition15!=null) {
-                if (parseException398== null) {
-                    closeNodeScope(parseMemberPropertyDefinition15, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:723:1
-    final public FormulaExpression parseFormulaExpression() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseFormulaExpression";
-        ASTparseFormulaExpression parseFormulaExpression16= null;
-        if (buildTree) {
-            parseFormulaExpression16= new ASTparseFormulaExpression();
-            openNodeScope(parseFormulaExpression16);
-        }
-        ParseException parseException413= null;
-        int callStackSize414= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:727:3
-            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 727, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:727:21
-            consumeToken(EQ);
-            // Code for NonTerminal specified at cc21/mdx.jj:727:28
-            pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 727, 28);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:728:3
-            return new FormulaExpression();
-        }
-        catch(ParseException e) {
-            parseException413= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize414);
-            if (parseFormulaExpression16!=null) {
-                if (parseException413== null) {
-                    closeNodeScope(parseFormulaExpression16, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:733:1
-    final public Expression parseExpression() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseExpression";
-        ASTparseExpression parseExpression17= null;
-        if (buildTree) {
-            parseExpression17= new ASTparseExpression();
-            openNodeScope(parseExpression17);
-        }
-        Expression expression;
-        ObjectIdentifier objectIdentifier;
-        ParseException parseException428= null;
-        int callStackSize429= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:739:3
-            pushOntoCallStack("parseExpression", "cc21/mdx.jj", 739, 3);
-            try {
-                expression= unaliasedExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:740:3
-            while (true) {
-                if (!(nextTokenType()== AS)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:741:5
-                consumeToken(AS);
-                // Code for NonTerminal specified at cc21/mdx.jj:741:12
-                pushOntoCallStack("parseExpression", "cc21/mdx.jj", 741, 12);
-                try {
-                    objectIdentifier= parseIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:742:5
-                CompoundId compundId= new CompoundId(List.of(objectIdentifier));
-                expression= new CallExpression("AS", CallExpression.Type.Term_Infix, List.of(expression, compundId));
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:750:3
-            return expression;
-        }
-        catch(ParseException e) {
-            parseException428= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize429);
-            if (parseExpression17!=null) {
-                if (parseException428== null) {
-                    closeNodeScope(parseExpression17, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:755:1
-    final public Expression expressionOrEmpty() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "expressionOrEmpty";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:760:3
-        ASTexpressionOrEmpty expressionOrEmpty18= null;
-        if (buildTree) {
-            expressionOrEmpty18= new ASTexpressionOrEmpty();
-            openNodeScope(expressionOrEmpty18);
-        }
-        Expression expression;
-        ParseException parseException452= null;
-        int callStackSize453= parsingStack.size();
-        try {
-            if (first_set$mdx_jj$760$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:760:3
-                pushOntoCallStack("expressionOrEmpty", "cc21/mdx.jj", 760, 3);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:761:3
-                return expression;
-            }
-            else  {
-                // Code for CodeBlock specified at cc21/mdx.jj:765:3
-                return new CallExpression("", CallExpression.Type.Empty, List.of());
-            }
-        }
-        catch(ParseException e) {
-            parseException452= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize453);
-            if (expressionOrEmpty18!=null) {
-                if (parseException452== null) {
-                    closeNodeScope(expressionOrEmpty18, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:773:1
-    final public// Comma-separated list of expressions, some of which may be empty. Used
-    // for functions.
-    List<Expression> expOrEmptyList() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "expOrEmptyList";
-        ASTexpOrEmptyList expOrEmptyList19= null;
-        if (buildTree) {
-            expOrEmptyList19= new ASTexpOrEmptyList();
-            openNodeScope(expOrEmptyList19);
-        }
-        Expression expression;
-        List<Expression> list= new LinkedList<Expression> ();
-        ParseException parseException470= null;
-        int callStackSize471= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:779:3
-            pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 779, 3);
-            try {
-                expression= expressionOrEmpty();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:780:3
-            list.add(expression);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:783:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:784:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:785:5
-                pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 785, 5);
-                try {
-                    expression= expressionOrEmpty();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:786:5
-                list.add(expression);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:790:3
-            return list;
-        }
-        catch(ParseException e) {
-            parseException470= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize471);
-            if (expOrEmptyList19!=null) {
-                if (parseException470== null) {
-                    closeNodeScope(expOrEmptyList19, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:796:1
-    final public// List of expressions, none of which may be empty.
-    List<Expression> expList() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "expList";
-        ASTexpList expList20= null;
-        if (buildTree) {
-            expList20= new ASTexpList();
-            openNodeScope(expList20);
-        }
-        Expression expression;
-        List<Expression> list= new LinkedList<Expression> ();
-        ParseException parseException497= null;
-        int callStackSize498= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:802:3
-            pushOntoCallStack("expList", "cc21/mdx.jj", 802, 3);
-            try {
-                expression= parseExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:803:3
-            list.add(expression);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:806:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:807:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:808:5
-                pushOntoCallStack("expList", "cc21/mdx.jj", 808, 5);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:809:5
-                list.add(expression);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:813:3
-            return list;
-        }
-        catch(ParseException e) {
-            parseException497= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize498);
-            if (expList20!=null) {
-                if (parseException497== null) {
-                    closeNodeScope(expList20, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:818:1
-    final public Expression expressionEof() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "expressionEof";
-        ASTexpressionEof expressionEof21= null;
-        if (buildTree) {
-            expressionEof21= new ASTexpressionEof();
-            openNodeScope(expressionEof21);
-        }
-        Expression expression;
-        ParseException parseException524= null;
-        int callStackSize525= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:823:3
-            pushOntoCallStack("expressionEof", "cc21/mdx.jj", 823, 3);
-            try {
-                expression= parseExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for EndOfFile specified at cc21/mdx.jj:823:34
-            consumeToken(EOF);
-            // Code for CodeBlock specified at cc21/mdx.jj:824:3
-            return expression;
-        }
-        catch(ParseException e) {
-            parseException524= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize525);
-            if (expressionEof21!=null) {
-                if (parseException524== null) {
-                    closeNodeScope(expressionEof21, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:829:1
-    final public ObjectIdentifier parseIdentifier() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseIdentifier";
-        ASTparseIdentifier parseIdentifier22= null;
-        if (buildTree) {
-            parseIdentifier22= new ASTparseIdentifier();
-            openNodeScope(parseIdentifier22);
-        }
-        ObjectIdentifier objectIdentifier;
-        ParseException parseException536= null;
-        int callStackSize537= parsingStack.size();
-        try {
-            if (first_set$mdx_jj$835$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:835:5
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
-                try {
-                    objectIdentifier= parseNameObjectIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else if (nextTokenType()== AMP_QUOTED_ID||nextTokenType== AMP_UNQUOTED_ID) {
-                // Code for NonTerminal specified at cc21/mdx.jj:837:5
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 837, 5);
-                try {
-                    objectIdentifier= parseKeyIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            else  {
-                pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
-                throw new ParseException(this, first_set$mdx_jj$835$5$, parsingStack);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:839:3
-            return objectIdentifier;
-        }
-        catch(ParseException e) {
-            parseException536= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize537);
-            if (parseIdentifier22!=null) {
-                if (parseException536== null) {
-                    closeNodeScope(parseIdentifier22, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> parseNameObjectIdentifier_FIRST_SET= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    // cc21/mdx.jj:844:1
-    final public NameObjectIdentifier parseNameObjectIdentifier() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseNameObjectIdentifier";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:849:3
-        ASTparseNameObjectIdentifier parseNameObjectIdentifier23= null;
-        if (buildTree) {
-            parseNameObjectIdentifier23= new ASTparseNameObjectIdentifier();
-            openNodeScope(parseNameObjectIdentifier23);
-        }
-        String id;
-        ParseException parseException558= null;
-        int callStackSize559= parsingStack.size();
-        try {
-            if (nextTokenType()== DIMENSION||nextTokenType== PROPERTIES) {
-                // Code for NonTerminal specified at cc21/mdx.jj:849:3
-                pushOntoCallStack("parseNameObjectIdentifier", "cc21/mdx.jj", 849, 3);
-                try {
-                    id= parseKeyword();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:850:3
-                // Keywords that are  not Reserved could be used
-                return new NameObjectIdentifier(id, ObjectIdentifier.Quoting.UNQUOTED);
-            }
-            else if (nextTokenType()== ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:854:3
-                consumeToken(ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:855:3
-                return new NameObjectIdentifier(getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
-            }
-            else if (nextTokenType()== ATSIGN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:858:3
-                consumeToken(ATSIGN);
-                // Code for RegexpRef specified at cc21/mdx.jj:858:14
-                consumeToken(ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:859:3
-                return new NameObjectIdentifier("@"+getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
-            }
-            else if (nextTokenType()== QUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:862:3
-                consumeToken(QUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:863:3
-                return new NameObjectIdentifier(stripQuotes(getToken(0).getImage(), "[", "]", "]]"), ObjectIdentifier.Quoting.QUOTED);
-            }
-            else  {
-                pushOntoCallStack("parseNameObjectIdentifier", "cc21/mdx.jj", 849, 3);
-                throw new ParseException(this, parseNameObjectIdentifier_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException558= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize559);
-            if (parseNameObjectIdentifier23!=null) {
-                if (parseException558== null) {
-                    closeNodeScope(parseNameObjectIdentifier23, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:871:1
-    final public// for example '&foo&[1]&bar' in '[x].&foo&[1]&bar.[y]'
-    KeyObjectIdentifier parseKeyIdentifier() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseKeyIdentifier";
-        ASTparseKeyIdentifier parseKeyIdentifier24= null;
-        if (buildTree) {
-            parseKeyIdentifier24= new ASTparseKeyIdentifier();
-            openNodeScope(parseKeyIdentifier24);
-        }
-        List<NameObjectIdentifier> list= new ArrayList<NameObjectIdentifier> ();
-        NameObjectIdentifier key;
-        ParseException parseException600= null;
-        int callStackSize601= parsingStack.size();
-        try {
-            // Code for OneOrMore specified at cc21/mdx.jj:877:3
-            while (true) {
-                // Code for NonTerminal specified at cc21/mdx.jj:878:5
-                pushOntoCallStack("parseKeyIdentifier", "cc21/mdx.jj", 878, 5);
-                try {
-                    key= parseAmpId();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:879:5
-                list.add(key);
-                if (!(nextTokenType()== AMP_QUOTED_ID||nextTokenType== AMP_UNQUOTED_ID)) break;
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:883:3
-            return new KeyObjectIdentifier(list);
-        }
-        catch(ParseException e) {
-            parseException600= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize601);
-            if (parseKeyIdentifier24!=null) {
-                if (parseException600== null) {
-                    closeNodeScope(parseKeyIdentifier24, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> parseAmpId_FIRST_SET= tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    // cc21/mdx.jj:888:1
-    final public NameObjectIdentifier parseAmpId() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseAmpId";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:892:3
-        ASTparseAmpId parseAmpId25= null;
-        if (buildTree) {
-            parseAmpId25= new ASTparseAmpId();
-            openNodeScope(parseAmpId25);
-        }
-        ParseException parseException618= null;
-        int callStackSize619= parsingStack.size();
-        try {
-            if (nextTokenType()== AMP_QUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:892:3
-                consumeToken(AMP_QUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:893:3
-                return new NameObjectIdentifier(stripQuotes(getToken(0).getImage(), "&[", "]", "]]"), ObjectIdentifier.Quoting.QUOTED);
-            }
-            else if (nextTokenType()== AMP_UNQUOTED_ID) {
-                // Code for RegexpRef specified at cc21/mdx.jj:899:3
-                consumeToken(AMP_UNQUOTED_ID);
-                // Code for CodeBlock specified at cc21/mdx.jj:900:3
-                return new NameObjectIdentifier(getToken(0).getImage().substring(1), ObjectIdentifier.Quoting.UNQUOTED);
-            }
-            else  {
-                pushOntoCallStack("parseAmpId", "cc21/mdx.jj", 892, 3);
-                throw new ParseException(this, parseAmpId_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException618= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize619);
-            if (parseAmpId25!=null) {
-                if (parseException618== null) {
-                    closeNodeScope(parseAmpId25, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:908:1
-    final public// a keyword that is not a RESERVED_WORD could be used as identifier
-    String parseKeyword() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseKeyword";
-        ASTparseKeyword parseKeyword26= null;
-        if (buildTree) {
-            parseKeyword26= new ASTparseKeyword();
-            openNodeScope(parseKeyword26);
-        }
-        ParseException parseException639= null;
-        int callStackSize640= parsingStack.size();
-        try {
-            if (nextTokenType()== DIMENSION) {
-                // Code for RegexpRef specified at cc21/mdx.jj:913:5
-                consumeToken(DIMENSION);
-            }
-            else if (nextTokenType()== PROPERTIES) {
-                // Code for RegexpRef specified at cc21/mdx.jj:914:5
-                consumeToken(PROPERTIES);
-            }
-            else  {
-                pushOntoCallStack("parseKeyword", "cc21/mdx.jj", 913, 5);
-                throw new ParseException(this, first_set$mdx_jj$913$5, parsingStack);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:916:3
-            return getToken(0).getImage();
-        }
-        catch(ParseException e) {
-            parseException639= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize640);
-            if (parseKeyword26!=null) {
-                if (parseException639== null) {
-                    closeNodeScope(parseKeyword26, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:921:1
-    final public CompoundId parseCompoundId() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseCompoundId";
-        ASTparseCompoundId parseCompoundId27= null;
-        if (buildTree) {
-            parseCompoundId27= new ASTparseCompoundId();
-            openNodeScope(parseCompoundId27);
-        }
-        CompoundId compoundId;
-        List<ObjectIdentifier> list= new ArrayList<ObjectIdentifier> ();
-        ObjectIdentifier s;
-        ParseException parseException661= null;
-        int callStackSize662= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:928:3
-            pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 928, 3);
-            try {
-                s= parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:929:3
-            list.add(s);
-            // Code for ZeroOrMore specified at cc21/mdx.jj:932:3
-            while (true) {
-                if (!(scan$mdx_jj$933$5())) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:934:5
-                consumeToken(DOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:934:13
-                pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 934, 13);
-                try {
-                    s= parseIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:935:5
-                list.add(s);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:939:3
-            return new CompoundId(list);
-        }
-        catch(ParseException e) {
-            parseException661= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize662);
-            if (parseCompoundId27!=null) {
-                if (parseException661== null) {
-                    closeNodeScope(parseCompoundId27, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:946:1
-    final public// ----------------------------------------------------------------------------
-    // Expressions
-    Expression unaliasedExpression() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "unaliasedExpression";
-        ASTunaliasedExpression unaliasedExpression28= null;
-        if (buildTree) {
-            unaliasedExpression28= new ASTunaliasedExpression();
-            openNodeScope(unaliasedExpression28);
-        }
-        Expression x, y;
-        ParseException parseException688= null;
-        int callStackSize689= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:951:3
-            pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 951, 3);
-            try {
-                x= term5();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:952:3
-            while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:953:5
-                if (nextTokenType()== OR) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:953:5
-                    consumeToken(OR);
-                    // Code for NonTerminal specified at cc21/mdx.jj:953:12
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 953, 12);
-                    try {
-                        y= term5();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:954:5
-                    x= new CallExpression("OR", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== XOR) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:960:5
-                    consumeToken(XOR);
-                    // Code for NonTerminal specified at cc21/mdx.jj:960:13
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 960, 13);
-                    try {
-                        y= term5();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:961:5
-                    x= new CallExpression("XOR", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== COLON) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:969:5
-                    consumeToken(COLON);
-                    // Code for NonTerminal specified at cc21/mdx.jj:969:15
-                    pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 969, 15);
-                    try {
-                        y= term5();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:970:5
-                    x= new CallExpression(":", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else  {
-                    break;
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:977:3
-            return x;
-        }
-        catch(ParseException e) {
-            parseException688= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize689);
-            if (unaliasedExpression28!=null) {
-                if (parseException688== null) {
-                    closeNodeScope(unaliasedExpression28, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:982:1
-    final public Expression term5() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "term5";
-        ASTterm5 term529= null;
-        if (buildTree) {
-            term529= new ASTterm5();
-            openNodeScope(term529);
-        }
-        Expression x, y;
-        ParseException parseException739= null;
-        int callStackSize740= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:987:3
-            pushOntoCallStack("term5", "cc21/mdx.jj", 987, 3);
-            try {
-                x= term4();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:988:3
-            while (true) {
-                if (!(nextTokenType()== AND)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:989:5
-                consumeToken(AND);
-                // Code for NonTerminal specified at cc21/mdx.jj:989:13
-                pushOntoCallStack("term5", "cc21/mdx.jj", 989, 13);
-                try {
-                    y= term4();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:990:5
-                x= new CallExpression("AND", CallExpression.Type.Term_Infix, List.of(x, y));
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:997:3
-            return x;
-        }
-        catch(ParseException e) {
-            parseException739= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize740);
-            if (term529!=null) {
-                if (parseException739== null) {
-                    closeNodeScope(term529, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> term4_FIRST_SET= term4_FIRST_SET_init();
-    static private EnumSet<TokenType> term4_FIRST_SET_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    // cc21/mdx.jj:1002:1
-    final public Expression term4() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "term4";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1007:3
-        ASTterm4 term430= null;
-        if (buildTree) {
-            term430= new ASTterm4();
-            openNodeScope(term430);
-        }
-        Expression x;
-        ParseException parseException763= null;
-        int callStackSize764= parsingStack.size();
-        try {
-            if (first_set$mdx_jj$1007$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1007:3
-                pushOntoCallStack("term4", "cc21/mdx.jj", 1007, 3);
-                try {
-                    x= term3();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1008:3
-                return x;
-            }
-            else if (nextTokenType()== NOT) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1011:3
-                consumeToken(NOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:1011:11
-                pushOntoCallStack("term4", "cc21/mdx.jj", 1011, 11);
-                try {
-                    x= term4();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1012:3
-                return new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(x));
-            }
-            else  {
-                pushOntoCallStack("term4", "cc21/mdx.jj", 1007, 3);
-                throw new ParseException(this, term4_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException763= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize764);
-            if (term430!=null) {
-                if (parseException763== null) {
-                    closeNodeScope(term430, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1020:1
-    final public Expression term3() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "term3";
-        ASTterm3 term331= null;
-        if (buildTree) {
-            term331= new ASTterm3();
-            openNodeScope(term331);
-        }
-        Expression x, y;
-        Token op;
-        ParseException parseException787= null;
-        int callStackSize788= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1026:3
-            pushOntoCallStack("term3", "cc21/mdx.jj", 1026, 3);
-            try {
-                x= term2();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1027:3
-            while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:1029:5
-                if (first_set$mdx_jj$1029$5.contains(nextTokenType())) {
-                    if (nextTokenType()== EQ) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1030:7
-                        consumeToken(EQ);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1031:7
-                        op= getToken(0);
-                    }
-                    else if (nextTokenType()== NE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1034:7
-                        consumeToken(NE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1035:7
-                        op= getToken(0);
-                    }
-                    else if (nextTokenType()== LT) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1038:7
-                        consumeToken(LT);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1039:7
-                        op= getToken(0);
-                    }
-                    else if (nextTokenType()== GT) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1042:7
-                        consumeToken(GT);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1043:7
-                        op= getToken(0);
-                    }
-                    else if (nextTokenType()== LE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1046:7
-                        consumeToken(LE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1047:7
-                        op= getToken(0);
-                    }
-                    else if (nextTokenType()== GE) {
-                        // Code for RegexpRef specified at cc21/mdx.jj:1050:7
-                        consumeToken(GE);
-                        // Code for CodeBlock specified at cc21/mdx.jj:1051:7
-                        op= getToken(0);
-                    }
-                    else  {
-                        pushOntoCallStack("term3", "cc21/mdx.jj", 1030, 7);
-                        throw new ParseException(this, first_set$mdx_jj$1030$7, parsingStack);
-                    }
-                    // Code for NonTerminal specified at cc21/mdx.jj:1055:5
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1055, 5);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1056:5
-                    x= new CallExpression(op.getImage(), CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (scan$mdx_jj$1065$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1066:5
-                    consumeToken(IS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1066:12
-                    consumeToken(NULL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1067:5
-                    x= new CallExpression("IS NULL", CallExpression.Type.Term_Postfix, List.of(x));
-                }
-                else if (scan$mdx_jj$1075$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1076:5
-                    consumeToken(IS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1076:12
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1076, 12);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1077:5
-                    x= new CallExpression("IS", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== IS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1083:5
-                    consumeToken(IS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1083:12
-                    consumeToken(EMPTY);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1084:5
-                    x= new CallExpression("IS EMPTY", CallExpression.Type.Term_Postfix, List.of(x));
-                }
-                else if (nextTokenType()== MATCHES) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1088:5
-                    consumeToken(MATCHES);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1088:17
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1088, 17);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1089:5
-                    x= new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (scan$mdx_jj$1095$5()) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1096:5
-                    consumeToken(NOT);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1096:13
-                    consumeToken(MATCHES);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1096:25
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1096, 25);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1097:5
-                    x= new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y))));
-                }
-                else if (nextTokenType()== IN) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1108:5
-                    consumeToken(IN);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1108:12
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1108, 12);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1109:5
-                    x= new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== NOT) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1115:5
-                    consumeToken(NOT);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1115:13
-                    consumeToken(IN);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1115:20
-                    pushOntoCallStack("term3", "cc21/mdx.jj", 1115, 20);
-                    try {
-                        y= term2();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1116:5
-                    x= new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y))));
-                }
-                else  {
-                    break;
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1128:3
-            return x;
-        }
-        catch(ParseException e) {
-            parseException787= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize788);
-            if (term331!=null) {
-                if (parseException787== null) {
-                    closeNodeScope(term331, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1133:1
-    final public Expression term2() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "term2";
-        ASTterm2 term232= null;
-        if (buildTree) {
-            term232= new ASTterm2();
-            openNodeScope(term232);
-        }
-        Expression x, y;
-        ParseException parseException959= null;
-        int callStackSize960= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1138:3
-            pushOntoCallStack("term2", "cc21/mdx.jj", 1138, 3);
-            try {
-                x= term();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1139:3
-            while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:1140:5
-                if (nextTokenType()== PLUS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1140:5
-                    consumeToken(PLUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1140:14
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1140, 14);
-                    try {
-                        y= term();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1141:5
-                    x= new CallExpression("+", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== MINUS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1147:5
-                    consumeToken(MINUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1147:15
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1147, 15);
-                    try {
-                        y= term();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1148:5
-                    x= new CallExpression("-", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== CONCAT) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1154:5
-                    consumeToken(CONCAT);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1154:16
-                    pushOntoCallStack("term2", "cc21/mdx.jj", 1154, 16);
-                    try {
-                        y= term();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1155:5
-                    x= new CallExpression("||", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else  {
-                    break;
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1162:3
-            return x;
-        }
-        catch(ParseException e) {
-            parseException959= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize960);
-            if (term232!=null) {
-                if (parseException959== null) {
-                    closeNodeScope(term232, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1167:1
-    final public Expression term() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "term";
-        ASTterm term33= null;
-        if (buildTree) {
-            term33= new ASTterm();
-            openNodeScope(term33);
-        }
-        Expression x, y;
-        ParseException parseException1010= null;
-        int callStackSize1011= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1172:3
-            pushOntoCallStack("term", "cc21/mdx.jj", 1172, 3);
-            try {
-                x= factor();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
-            while (true) {
-                // Code for ExpansionChoice specified at cc21/mdx.jj:1174:5
-                if (nextTokenType()== ASTERISK) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1174:5
-                    consumeToken(ASTERISK);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1174:18
-                    pushOntoCallStack("term", "cc21/mdx.jj", 1174, 18);
-                    try {
-                        y= factor();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1175:5
-                    x= new CallExpression("*", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else if (nextTokenType()== SOLIDUS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1181:5
-                    consumeToken(SOLIDUS);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1181:17
-                    pushOntoCallStack("term", "cc21/mdx.jj", 1181, 17);
-                    try {
-                        y= factor();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1182:5
-                    x= new CallExpression("/", CallExpression.Type.Term_Infix, List.of(x, y));
-                }
-                else  {
-                    break;
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1189:3
-            return x;
-        }
-        catch(ParseException e) {
-            parseException1010= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1011);
-            if (term33!=null) {
-                if (parseException1010== null) {
-                    closeNodeScope(term33, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> factor_FIRST_SET= factor_FIRST_SET_init();
-    static private EnumSet<TokenType> factor_FIRST_SET_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    // cc21/mdx.jj:1194:1
-    final public Expression factor() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "factor";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1199:3
-        ASTfactor factor34= null;
-        if (buildTree) {
-            factor34= new ASTfactor();
-            openNodeScope(factor34);
-        }
-        Expression p;
-        ParseException parseException1049= null;
-        int callStackSize1050= parsingStack.size();
-        try {
-            if (first_set$mdx_jj$1199$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1199:3
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1199, 3);
-                try {
-                    p= primary();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1200:3
-                return p;
-            }
-            else if (nextTokenType()== PLUS) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1203:3
-                consumeToken(PLUS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1203:12
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1203, 12);
-                try {
-                    p= primary();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1204:3
-                return p;
-            }
-            else if (nextTokenType()== MINUS) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1207:3
-                consumeToken(MINUS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1207:13
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1207, 13);
-                try {
-                    p= primary();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1208:3
-                return new CallExpression("-", CallExpression.Type.Term_Prefix, List.of(p));
-            }
-            else if (nextTokenType()== EXISTING) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1214:3
-                consumeToken(EXISTING);
-                // Code for NonTerminal specified at cc21/mdx.jj:1214:16
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1214, 16);
-                try {
-                    p= primary();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1215:3
-                return new CallExpression("Existing", CallExpression.Type.Term_Prefix, List.of(p));
-            }
-            else  {
-                pushOntoCallStack("factor", "cc21/mdx.jj", 1199, 3);
-                throw new ParseException(this, factor_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException1049= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1050);
-            if (factor34!=null) {
-                if (parseException1049== null) {
-                    closeNodeScope(factor34, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1223:1
-    final public Expression primary() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "primary";
-        ASTprimary primary35= null;
-        if (buildTree) {
-            primary35= new ASTprimary();
-            openNodeScope(primary35);
-        }
-        Expression expression;
-        ParseException parseException1097= null;
-        int callStackSize1098= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1228:3
-            pushOntoCallStack("primary", "cc21/mdx.jj", 1228, 3);
-            try {
-                expression= atom();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1229:3
-            while (true) {
-                if (!(nextTokenType()== DOT)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1230:5
-                consumeToken(DOT);
-                // Code for NonTerminal specified at cc21/mdx.jj:1230:13
-                pushOntoCallStack("primary", "cc21/mdx.jj", 1230, 13);
-                try {
-                    expression= objectIdentifierOrFuncall(expression);
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1232:3
-            return expression;
-        }
-        catch(ParseException e) {
-            parseException1097= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1098);
-            if (primary35!=null) {
-                if (parseException1097== null) {
-                    closeNodeScope(primary35, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1237:1
-    final public Expression objectIdentifierOrFuncall(Expression left) {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "objectIdentifierOrFuncall";
-        ASTobjectIdentifierOrFuncall objectIdentifierOrFuncall36= null;
-        if (buildTree) {
-            objectIdentifierOrFuncall36= new ASTobjectIdentifierOrFuncall();
-            openNodeScope(objectIdentifierOrFuncall36);
-        }
-        ObjectIdentifier objectIdentifier;
-        List<Expression> argList= null;
-        ParseException parseException1118= null;
-        int callStackSize1119= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1243:3
-            pushOntoCallStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1243, 3);
-            try {
-                objectIdentifier= parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1244:3
-            if (nextTokenType()== LPAREN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1245:5
-                consumeToken(LPAREN);
-                if (scan$mdx_jj$1247$7()) {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1248:7
-                    argList= Collections.emptyList();
-                }
-                else  {
-                    // Code for NonTerminal specified at cc21/mdx.jj:1252:7
-                    pushOntoCallStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1252, 7);
-                    try {
-                        argList= expOrEmptyList();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1254:5
-                consumeToken(RPAREN);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1256:3
-            return createCall(left, objectIdentifier, argList);
-        }
-        catch(ParseException e) {
-            parseException1118= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1119);
-            if (objectIdentifierOrFuncall36!=null) {
-                if (parseException1118== null) {
-                    closeNodeScope(objectIdentifierOrFuncall36, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> parseNumericLiteral_FIRST_SET= tokenTypeSet(UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
-    // cc21/mdx.jj:1261:1
-    final public NumericLiteral parseNumericLiteral() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseNumericLiteral";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1265:3
-        ASTparseNumericLiteral parseNumericLiteral37= null;
-        if (buildTree) {
-            parseNumericLiteral37= new ASTparseNumericLiteral();
-            openNodeScope(parseNumericLiteral37);
-        }
-        ParseException parseException1155= null;
-        int callStackSize1156= parsingStack.size();
-        try {
-            if (nextTokenType()== DECIMAL_NUMERIC_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1265:3
-                consumeToken(DECIMAL_NUMERIC_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1266:3
-                return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
-            }
-            else if (nextTokenType()== UNSIGNED_INTEGER_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1269:3
-                consumeToken(UNSIGNED_INTEGER_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1270:3
-                return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
-            }
-            else if (nextTokenType()== APPROX_NUMERIC_LITERAL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1273:3
-                consumeToken(APPROX_NUMERIC_LITERAL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1274:3
-                return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
-            }
-            else  {
-                pushOntoCallStack("parseNumericLiteral", "cc21/mdx.jj", 1265, 3);
-                throw new ParseException(this, parseNumericLiteral_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException1155= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1156);
-            if (parseNumericLiteral37!=null) {
-                if (parseException1155== null) {
-                    closeNodeScope(parseNumericLiteral37, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> atom_FIRST_SET= atom_FIRST_SET_init();
-    static private EnumSet<TokenType> atom_FIRST_SET_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    // cc21/mdx.jj:1279:1
-    final public Expression atom() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "atom";
-        // Code for ExpansionChoice specified at cc21/mdx.jj:1286:3
-        ASTatom atom38= null;
-        if (buildTree) {
-            atom38= new ASTatom();
-            openNodeScope(atom38);
-        }
-        Expression expression;
-        NameObjectIdentifier nameObjectIdentifier;
-        List<Expression> expressions;
-        ParseException parseException1185= null;
-        int callStackSize1186= parsingStack.size();
-        try {
-            if (nextTokenType()== SINGLE_QUOTED_STRING) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1286:3
-                consumeToken(SINGLE_QUOTED_STRING);
-                // Code for CodeBlock specified at cc21/mdx.jj:1287:3
-                return new StringLiteral(stripQuotes(getToken(0).getImage(), "'", "'", "''"));
-            }
-            else if (nextTokenType()== DOUBLE_QUOTED_STRING) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1290:3
-                consumeToken(DOUBLE_QUOTED_STRING);
-                // Code for CodeBlock specified at cc21/mdx.jj:1291:3
-                return new StringLiteral(stripQuotes(getToken(0).getImage(), '"'+"", '"'+"", '"'+""+'"'));
-            }
-            else if (nextTokenType()== UNSIGNED_INTEGER_LITERAL||nextTokenType== APPROX_NUMERIC_LITERAL||nextTokenType== DECIMAL_NUMERIC_LITERAL) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1294:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1294, 3);
-                try {
-                    expression= parseNumericLiteral();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1295:3
-                return expression;
-            }
-            else if (nextTokenType()== NULL) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1298:3
-                consumeToken(NULL);
-                // Code for CodeBlock specified at cc21/mdx.jj:1299:3
-                return NullLiteral.SINGLETON;
-            }
-            else if (nextTokenType()== CAST) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1302:3
-                consumeToken(CAST);
-                // Code for RegexpRef specified at cc21/mdx.jj:1302:12
-                consumeToken(LPAREN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1302:23
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1302, 23);
-                try {
-                    expression= unaliasedExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1303:3
-                consumeToken(AS);
-                // Code for NonTerminal specified at cc21/mdx.jj:1303:10
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1303, 10);
-                try {
-                    nameObjectIdentifier= parseNameObjectIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1303:61
-                consumeToken(RPAREN);
-                // Code for CodeBlock specified at cc21/mdx.jj:1304:3
-                return new CallExpression("CAST", CallExpression.Type.Cast, List.of(expression, new SymbolLiteral(nameObjectIdentifier.name())));
-            }
-            else if (nextTokenType()== LPAREN) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1312:3
-                consumeToken(LPAREN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1312:14
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1312, 14);
-                try {
-                    expressions= expList();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1312:38
-                consumeToken(RPAREN);
-                // Code for CodeBlock specified at cc21/mdx.jj:1313:3
-                // Whereas ([Sales],[Time]) and () are tuples, ([Sales]) and (5)
-                // are just expressions.
-                return new CallExpression("()", CallExpression.Type.Parentheses, expressions);
-            }
-            else if (nextTokenType()== LBRACE) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1321:3
-                consumeToken(LBRACE);
-                if (scan$mdx_jj$1323$5()) {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1324:5
-                    expressions= Collections.emptyList();
-                }
-                else if (first_set$mdx_jj$1328$5.contains(nextTokenType())) {
-                    // Code for NonTerminal specified at cc21/mdx.jj:1328:5
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1328, 5);
-                    try {
-                        expressions= expList();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                }
-                else  {
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1323, 5);
-                    throw new ParseException(this, first_set$mdx_jj$1323$5, parsingStack);
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1330:3
-                consumeToken(RBRACE);
-                // Code for CodeBlock specified at cc21/mdx.jj:1331:3
-                return new CallExpression("{}", CallExpression.Type.Braces, expressions);
-            }
-            else if (nextTokenType()== CASE) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1335:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1335, 3);
-                try {
-                    expression= caseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1336:3
-                return expression;
-            }
-            else if (first_set$mdx_jj$1342$3.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1342:3
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1342, 3);
-                try {
-                    // Function call "foo(a, b)" or "whiz!bang!foo(a, b)".
-                    // Properties "x.PROP" and methods "exp.meth(a)" are in primary().
-                    nameObjectIdentifier= parseNameObjectIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for ZeroOrMore specified at cc21/mdx.jj:1343:3
-                while (true) {
-                    if (!(nextTokenType()== BANG)) break;
-                    // Code for RegexpRef specified at cc21/mdx.jj:1344:5
-                    consumeToken(BANG);
-                    // Code for NonTerminal specified at cc21/mdx.jj:1344:14
-                    pushOntoCallStack("atom", "cc21/mdx.jj", 1344, 14);
-                    try {
-                        nameObjectIdentifier= parseNameObjectIdentifier();
-                    }
-                    finally {
-                        popCallStack();
-                    }
-                    // Code for CodeBlock specified at cc21/mdx.jj:1345:5
-                    // We support the syntax for qualifying function names with package
-                    // names separated by bang ('!'), e.g. 'whiz!bang!foo(a, b)'
-                    // but currently we ignore the qualifiers. The previous example is
-                    // equivalent to 'foo(a, b)'.
-                }
-                if (nextTokenType()== LPAREN) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1353:5
-                    consumeToken(LPAREN);
-                    if (scan$mdx_jj$1355$7()) {
-                        // Code for CodeBlock specified at cc21/mdx.jj:1356:7
-                        expressions= Collections.emptyList();
-                    }
-                    else  {
-                        // Code for NonTerminal specified at cc21/mdx.jj:1360:7
-                        pushOntoCallStack("atom", "cc21/mdx.jj", 1360, 7);
-                        try {
-                            expressions= expOrEmptyList();
-                        }
-                        finally {
-                            popCallStack();
-                        }
-                    }
-                    // Code for RegexpRef specified at cc21/mdx.jj:1362:5
-                    consumeToken(RPAREN);
-                }
-                else  {
-                    // Code for CodeBlock specified at cc21/mdx.jj:1364:16
-                    expressions= null;
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1368:3
-                return createCall(null, nameObjectIdentifier, expressions);
-            }
-            else  {
-                pushOntoCallStack("atom", "cc21/mdx.jj", 1286, 3);
-                throw new ParseException(this, atom_FIRST_SET, parsingStack);
-            }
-        }
-        catch(ParseException e) {
-            parseException1185= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1186);
-            if (atom38!=null) {
-                if (parseException1185== null) {
-                    closeNodeScope(atom38, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1373:1
-    final public Expression caseExpression() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "caseExpression";
-        ASTcaseExpression caseExpression39= null;
-        if (buildTree) {
-            caseExpression39= new ASTcaseExpression();
-            openNodeScope(caseExpression39);
-        }
-        Expression expression, expression2;
-        List<Expression> expressions= new ArrayList<Expression> ();
-        boolean match= false;
-        ParseException parseException1359= null;
-        int callStackSize1360= parsingStack.size();
-        try {
-            // Code for RegexpRef specified at cc21/mdx.jj:1380:3
-            consumeToken(CASE);
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1381:3
-            if (first_set$mdx_jj$1382$5.contains(nextTokenType())) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1382:5
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1382, 5);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1383:5
-                match= true;
-                expressions.add(expression);
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1388:3
-            while (true) {
-                if (!(nextTokenType()== WHEN)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1389:5
-                consumeToken(WHEN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1389:14
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1389, 14);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for RegexpRef specified at cc21/mdx.jj:1389:45
-                consumeToken(THEN);
-                // Code for NonTerminal specified at cc21/mdx.jj:1389:54
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1389, 54);
-                try {
-                    expression2= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1390:5
-                expressions.add(expression);
-                expressions.add(expression2);
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1395:3
-            if (nextTokenType()== ELSE) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1396:5
-                consumeToken(ELSE);
-                // Code for NonTerminal specified at cc21/mdx.jj:1396:14
-                pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1396, 14);
-                try {
-                    expression= parseExpression();
-                }
-                finally {
-                    popCallStack();
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1397:5
-                expressions.add(expression);
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:1401:3
-            consumeToken(END);
-            // Code for CodeBlock specified at cc21/mdx.jj:1402:3
-            if (match) {
-                return new CallExpression("_CaseMatch", CallExpression.Type.Term_Case, expressions);
-            }
-            else  {
-                return new CallExpression("_CaseTest", CallExpression.Type.Term_Case, expressions);
-            }
-        }
-        catch(ParseException e) {
-            parseException1359= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1360);
-            if (caseExpression39!=null) {
-                if (parseException1359== null) {
-                    closeNodeScope(caseExpression39, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1416:1
-    final public CellProperty parseCellProperty() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseCellProperty";
-        ASTparseCellProperty parseCellProperty40= null;
-        if (buildTree) {
-            parseCellProperty40= new ASTparseCellProperty();
-            openNodeScope(parseCellProperty40);
-        }
-        ParseException parseException1419= null;
-        int callStackSize1420= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1419:3
-            pushOntoCallStack("parseCellProperty", "cc21/mdx.jj", 1419, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1420:3
-            return new CellProperty(List.of());
-        }
-        catch(ParseException e) {
-            parseException1419= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1420);
-            if (parseCellProperty40!=null) {
-                if (parseException1419== null) {
-                    closeNodeScope(parseCellProperty40, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1425:1
-    final public CreateSetBodyClause parseCreateSetBodyClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseCreateSetBodyClause";
-        ASTparseCreateSetBodyClause parseCreateSetBodyClause41= null;
-        if (buildTree) {
-            parseCreateSetBodyClause41= new ASTparseCreateSetBodyClause();
-            openNodeScope(parseCreateSetBodyClause41);
-        }
-        ParseException parseException1428= null;
-        int callStackSize1429= parsingStack.size();
-        try {
-            // Code for NonTerminal specified at cc21/mdx.jj:1428:3
-            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1428, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:1428:21
-            consumeToken(AS);
-            // Code for NonTerminal specified at cc21/mdx.jj:1428:28
-            pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1428, 28);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1429:3
-            return new CreateSetBodyClause();
-        }
-        catch(ParseException e) {
-            parseException1428= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1429);
-            if (parseCreateSetBodyClause41!=null) {
-                if (parseException1428== null) {
-                    closeNodeScope(parseCreateSetBodyClause41, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1434:1
-    final public SelectDimensionPropertyListClause parseSelectDimensionPropertyListClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectDimensionPropertyListClause";
-        ASTparseSelectDimensionPropertyListClause parseSelectDimensionPropertyListClause42= null;
-        if (buildTree) {
-            parseSelectDimensionPropertyListClause42= new ASTparseSelectDimensionPropertyListClause();
-            openNodeScope(parseSelectDimensionPropertyListClause42);
-        }
-        ParseException parseException1443= null;
-        int callStackSize1444= parsingStack.size();
-        try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1437:3
-            if (nextTokenType()== DIMENSION) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1437:4
-                consumeToken(DIMENSION);
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:1437:20
-            consumeToken(PROPERTIES);
-            // Code for NonTerminal specified at cc21/mdx.jj:1438:3
-            pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1438, 3);
-            try {
-                parseIdentifier();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrMore specified at cc21/mdx.jj:1439:3
-            while (true) {
-                if (!(nextTokenType()== COMMA)) break;
-                // Code for RegexpRef specified at cc21/mdx.jj:1440:5
-                consumeToken(COMMA);
-                // Code for NonTerminal specified at cc21/mdx.jj:1440:15
-                pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1440, 15);
-                try {
-                    parseIdentifier();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1442:3
-            return new SelectDimensionPropertyListClause();
-        }
-        catch(ParseException e) {
-            parseException1443= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1444);
-            if (parseSelectDimensionPropertyListClause42!=null) {
-                if (parseException1443== null) {
-                    closeNodeScope(parseSelectDimensionPropertyListClause42, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    // cc21/mdx.jj:1448:1
-    final public// <SelectQueryAxisClause> ::= [NON EMPTY] <set> [<dimProps>] ON <axis_name>
-    SelectQueryAxisClause parseSelectQueryAxisClause() {
-        if (cancelled) throw new CancellationException();
-        String prevProduction= currentlyParsedProduction;
-        this.currentlyParsedProduction= "parseSelectQueryAxisClause";
-        ASTparseSelectQueryAxisClause parseSelectQueryAxisClause43= null;
-        if (buildTree) {
-            parseSelectQueryAxisClause43= new ASTparseSelectQueryAxisClause();
-            openNodeScope(parseSelectQueryAxisClause43);
-        }
-        boolean nonEmpty= false;
-        SelectDimensionPropertyListClause selectDimensionPropertyListClause= null;
-        Expression expression;
-        int n;
-        Axis axis;
-        ParseException parseException1476= null;
-        int callStackSize1477= parsingStack.size();
-        try {
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1457:3
-            if (nextTokenType()== NON) {
-                // Code for RegexpRef specified at cc21/mdx.jj:1457:4
-                consumeToken(NON);
-                // Code for RegexpRef specified at cc21/mdx.jj:1457:12
-                consumeToken(EMPTY);
-                // Code for CodeBlock specified at cc21/mdx.jj:1458:3
-                nonEmpty= true;
-            }
-            // Code for NonTerminal specified at cc21/mdx.jj:1462:3
-            pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1462, 3);
-            try {
-                expression= parseExpression();
-            }
-            finally {
-                popCallStack();
-            }
-            // Code for ZeroOrOne specified at cc21/mdx.jj:1463:3
-            if (nextTokenType()== DIMENSION||nextTokenType== PROPERTIES) {
-                // Code for NonTerminal specified at cc21/mdx.jj:1464:5
-                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1464, 5);
-                try {
-                    selectDimensionPropertyListClause= parseSelectDimensionPropertyListClause();
-                }
-                finally {
-                    popCallStack();
-                }
-            }
-            // Code for RegexpRef specified at cc21/mdx.jj:1466:3
-            consumeToken(ON);
-            if (nextTokenType()== AXIS||nextTokenType== UNSIGNED_INTEGER_LITERAL) {
-                if (nextTokenType()== UNSIGNED_INTEGER_LITERAL) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1469:7
-                    consumeToken(UNSIGNED_INTEGER_LITERAL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1470:7
-                    n= Integer.valueOf(getToken(0).getImage()).intValue();
-                }
-                else if (nextTokenType()== AXIS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1473:7
-                    consumeToken(AXIS);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1473:16
-                    consumeToken(LPAREN);
-                    // Code for RegexpRef specified at cc21/mdx.jj:1473:27
-                    consumeToken(UNSIGNED_INTEGER_LITERAL);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1474:7
-                    n= Integer.valueOf(getToken(0).getImage()).intValue();
-                    // Code for RegexpRef specified at cc21/mdx.jj:1477:7
-                    consumeToken(RPAREN);
-                }
-                else  {
-                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1469, 7);
-                    throw new ParseException(this, first_set$mdx_jj$1469$7, parsingStack);
-                }
-                // Code for CodeBlock specified at cc21/mdx.jj:1479:5
-                if (n<0) {
-                    throw new IllegalArgumentException("Only axis numbers >= 0 allowed.");
-                }
-                else  {
-                    axis= Axis.create(n);
-                }
-            }
-            else if (first_set$mdx_jj$1490$5.contains(nextTokenType())) {
-                if (nextTokenType()== COLUMNS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1491:7
-                    consumeToken(COLUMNS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1492:7
-                    axis= Axis.COLUMNS;
-                }
-                else if (nextTokenType()== ROWS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1495:7
-                    consumeToken(ROWS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1496:7
-                    axis= Axis.ROWS;
-                }
-                else if (nextTokenType()== PAGES) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1499:7
-                    consumeToken(PAGES);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1500:7
-                    axis= Axis.PAGES;
-                }
-                else if (nextTokenType()== SECTIONS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1503:7
-                    consumeToken(SECTIONS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1504:7
-                    axis= Axis.SECTIONS;
-                }
-                else if (nextTokenType()== CHAPTERS) {
-                    // Code for RegexpRef specified at cc21/mdx.jj:1507:7
-                    consumeToken(CHAPTERS);
-                    // Code for CodeBlock specified at cc21/mdx.jj:1508:7
-                    axis= Axis.CHAPTERS;
-                }
-                else  {
-                    pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1491, 7);
-                    throw new ParseException(this, first_set$mdx_jj$1491$7, parsingStack);
-                }
-            }
-            else  {
-                pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1468, 5);
-                throw new ParseException(this, first_set$mdx_jj$1468$5, parsingStack);
-            }
-            // Code for CodeBlock specified at cc21/mdx.jj:1513:3
-            return new SelectQueryAxisClause(nonEmpty, expression, axis, selectDimensionPropertyListClause);
-        }
-        catch(ParseException e) {
-            parseException1476= e;
-            throw e;
-        }
-        finally {
-            restoreCallStack(callStackSize1477);
-            if (parseSelectQueryAxisClause43!=null) {
-                if (parseException1476== null) {
-                    closeNodeScope(parseSelectQueryAxisClause43, nodeArity()> 1);
-                }
-                else  {
-                    clearNodeScope();
-                }
-            }
-            this.currentlyParsedProduction= prevProduction;
-        }
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$547$5= tokenTypeSet(MEMBER, SET, CALCULATED);
-    static private final EnumSet<TokenType> first_set$mdx_jj$575$5= first_set$mdx_jj$575$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$575$5_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$599$5$= tokenTypeSet(DIMENSION, PROPERTIES, LPAREN, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$599$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$631$7= first_set$mdx_jj$631$7_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$631$7_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$760$3= first_set$mdx_jj$760$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$760$3_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$835$5$= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$835$5= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$849$3= tokenTypeSet(DIMENSION, PROPERTIES);
-    static private final EnumSet<TokenType> first_set$mdx_jj$878$5= tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$913$5= tokenTypeSet(DIMENSION, PROPERTIES);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1007$3= first_set$mdx_jj$1007$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1007$3_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$1029$5= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1030$7= tokenTypeSet(EQ, GE, GT, LE, LT, NE);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1199$3= first_set$mdx_jj$1199$3_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1199$3_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$1294$3= tokenTypeSet(UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1323$5= first_set$mdx_jj$1323$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1323$5_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, RBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$1328$5= first_set$mdx_jj$1328$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1328$5_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$1342$3= tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID, QUOTED_ID);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1382$5= first_set$mdx_jj$1382$5_init();
-    static private EnumSet<TokenType> first_set$mdx_jj$1382$5_init() {
-        return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
-    }
-
-    static private final EnumSet<TokenType> first_set$mdx_jj$1468$5= tokenTypeSet(AXIS, CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS, UNSIGNED_INTEGER_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1469$7= tokenTypeSet(AXIS, UNSIGNED_INTEGER_LITERAL);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1490$5= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
-    static private final EnumSet<TokenType> first_set$mdx_jj$1491$7= tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS, SECTIONS);
-    private final boolean scanToken(TokenType expectedType) {
-        Token peekedToken= nextToken(currentLookaheadToken);
-        TokenType type= peekedToken.getType();
-        if (type!=expectedType) return false;
-        if (remainingLookahead!=UNLIMITED) remainingLookahead--;
-        currentLookaheadToken= peekedToken;
-        return true;
-    }
-
-    private final boolean scanToken(EnumSet<TokenType> types) {
-        Token peekedToken= nextToken(currentLookaheadToken);
-        TokenType type= peekedToken.getType();
-        if (!types.contains(type)) return false;
-        if (remainingLookahead!=UNLIMITED) remainingLookahead--;
-        //     if (type == upToTokenType) remainingLookahead = 0;
-        currentLookaheadToken= peekedToken;
-        return true;
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:741:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$741$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:741:5
-            if (!scanToken(AS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:741:12
-            // NonTerminal parseIdentifier at cc21/mdx.jj:741:12
-            pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 741, 12);
-            boolean prevScanToEnd1628= scanToEnd;
-            currentLookaheadProduction= "parseIdentifier";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1628;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:742:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:760:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$760$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:760:3
-            // NonTerminal parseExpression at cc21/mdx.jj:760:3
-            pushOntoLookaheadStack("expressionOrEmpty", "cc21/mdx.jj", 760, 3);
-            boolean prevScanToEnd1629= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1629;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:761:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:765:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$765$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:765:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:784:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$784$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:784:5
-            if (!scanToken(COMMA)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:785:5
-            // NonTerminal expressionOrEmpty at cc21/mdx.jj:785:5
-            pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 785, 5);
-            boolean prevScanToEnd1630= scanToEnd;
-            currentLookaheadProduction= "expressionOrEmpty";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$expressionOrEmpty()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1630;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:786:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:807:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$807$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:807:5
-            if (!scanToken(COMMA)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:808:5
-            // NonTerminal parseExpression at cc21/mdx.jj:808:5
-            pushOntoLookaheadStack("expList", "cc21/mdx.jj", 808, 5);
-            boolean prevScanToEnd1631= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1631;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:809:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:835:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$835$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:835:5
-            // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:835:5
-            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
-            boolean prevScanToEnd1633= scanToEnd;
-            currentLookaheadProduction= "parseNameObjectIdentifier";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseNameObjectIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1633;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:837:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$837$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:837:5
-            // NonTerminal parseKeyIdentifier at cc21/mdx.jj:837:5
-            pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 837, 5);
-            boolean prevScanToEnd1634= scanToEnd;
-            currentLookaheadProduction= "parseKeyIdentifier";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseKeyIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1634;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:858:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$858$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:858:3
-            if (!scanToken(ATSIGN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:858:14
-            if (!scanToken(ID)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:859:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:953:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$953$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:953:5
-            Token token1636= currentLookaheadToken;
-            int remainingLookahead1636= remainingLookahead;
-            boolean hitFailure1636= hitFailure;
-            if (!check$mdx_jj$953$5$()) {
-                currentLookaheadToken= token1636;
-                remainingLookahead= remainingLookahead1636;
-                hitFailure= hitFailure1636;
-                if (!check$mdx_jj$960$5()) {
-                    currentLookaheadToken= token1636;
-                    remainingLookahead= remainingLookahead1636;
-                    hitFailure= hitFailure1636;
-                    if (!check$mdx_jj$969$5()) {
-                        currentLookaheadToken= token1636;
-                        remainingLookahead= remainingLookahead1636;
-                        hitFailure= hitFailure1636;
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:953:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$953$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:953:5
-            if (!scanToken(OR)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:953:12
-            // NonTerminal term5 at cc21/mdx.jj:953:12
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 953, 12);
-            boolean prevScanToEnd1637= scanToEnd;
-            currentLookaheadProduction= "term5";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term5()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1637;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:954:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:960:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$960$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:960:5
-            if (!scanToken(XOR)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:960:13
-            // NonTerminal term5 at cc21/mdx.jj:960:13
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 960, 13);
-            boolean prevScanToEnd1638= scanToEnd;
-            currentLookaheadProduction= "term5";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term5()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1638;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:961:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:969:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$969$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:969:5
-            if (!scanToken(COLON)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:969:15
-            // NonTerminal term5 at cc21/mdx.jj:969:15
-            pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 969, 15);
-            boolean prevScanToEnd1639= scanToEnd;
-            currentLookaheadProduction= "term5";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term5()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1639;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:970:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:989:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$989$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:989:5
-            if (!scanToken(AND)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:989:13
-            // NonTerminal term4 at cc21/mdx.jj:989:13
-            pushOntoLookaheadStack("term5", "cc21/mdx.jj", 989, 13);
-            boolean prevScanToEnd1640= scanToEnd;
-            currentLookaheadProduction= "term4";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term4()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1640;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:990:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1007:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1007$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1007:3
-            // NonTerminal term3 at cc21/mdx.jj:1007:3
-            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 1007, 3);
-            boolean prevScanToEnd1641= scanToEnd;
-            currentLookaheadProduction= "term3";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term3()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1641;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1008:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1011:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1011$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1011:3
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1011:11
-            // NonTerminal term4 at cc21/mdx.jj:1011:11
-            pushOntoLookaheadStack("term4", "cc21/mdx.jj", 1011, 11);
-            boolean prevScanToEnd1642= scanToEnd;
-            currentLookaheadProduction= "term4";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term4()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1642;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1012:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1029:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1029$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1029:5
-            Token token1643= currentLookaheadToken;
-            int remainingLookahead1643= remainingLookahead;
-            boolean hitFailure1643= hitFailure;
-            if (!check$mdx_jj$1029$5$()) {
-                currentLookaheadToken= token1643;
-                remainingLookahead= remainingLookahead1643;
-                hitFailure= hitFailure1643;
-                if (!check$mdx_jj$1065$5()) {
-                    currentLookaheadToken= token1643;
-                    remainingLookahead= remainingLookahead1643;
-                    hitFailure= hitFailure1643;
-                    if (!check$mdx_jj$1075$5()) {
-                        currentLookaheadToken= token1643;
-                        remainingLookahead= remainingLookahead1643;
-                        hitFailure= hitFailure1643;
-                        if (!check$mdx_jj$1083$5()) {
-                            currentLookaheadToken= token1643;
-                            remainingLookahead= remainingLookahead1643;
-                            hitFailure= hitFailure1643;
-                            if (!check$mdx_jj$1088$5()) {
-                                currentLookaheadToken= token1643;
-                                remainingLookahead= remainingLookahead1643;
-                                hitFailure= hitFailure1643;
-                                if (!check$mdx_jj$1095$5()) {
-                                    currentLookaheadToken= token1643;
-                                    remainingLookahead= remainingLookahead1643;
-                                    hitFailure= hitFailure1643;
-                                    if (!check$mdx_jj$1108$5()) {
-                                        currentLookaheadToken= token1643;
-                                        remainingLookahead= remainingLookahead1643;
-                                        hitFailure= hitFailure1643;
-                                        if (!check$mdx_jj$1115$5()) {
-                                            currentLookaheadToken= token1643;
-                                            remainingLookahead= remainingLookahead1643;
-                                            hitFailure= hitFailure1643;
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1029:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1029$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1030:7
-            // Applying single-token optimization for expansion of type ExpansionChoice
-            // cc21/mdx.jj:1030:7
-            if (!scanToken(first_set$mdx_jj$1030$7)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1055:5
-            // NonTerminal term2 at cc21/mdx.jj:1055:5
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1055, 5);
-            boolean prevScanToEnd1644= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1644;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1056:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1065:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1065$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:12
-            if (!scanToken(NULL)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1067:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1075:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1075$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1076:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1076:12
-            // NonTerminal term2 at cc21/mdx.jj:1076:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1076, 12);
-            boolean prevScanToEnd1645= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1645;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1077:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1083:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1083$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1083:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1083:12
-            if (!scanToken(EMPTY)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1084:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1088:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1088$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1088:5
-            if (!scanToken(MATCHES)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1088:17
-            // NonTerminal term2 at cc21/mdx.jj:1088:17
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1088, 17);
-            boolean prevScanToEnd1646= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1646;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1089:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1095:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1095$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:5
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:13
-            if (!scanToken(MATCHES)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1096:25
-            // NonTerminal term2 at cc21/mdx.jj:1096:25
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1096, 25);
-            boolean prevScanToEnd1647= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1647;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1097:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1108:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1108$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1108:5
-            if (!scanToken(IN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1108:12
-            // NonTerminal term2 at cc21/mdx.jj:1108:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1108, 12);
-            boolean prevScanToEnd1648= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1648;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1109:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1115:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1115$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1115:5
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1115:13
-            if (!scanToken(IN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1115:20
-            // NonTerminal term2 at cc21/mdx.jj:1115:20
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1115, 20);
-            boolean prevScanToEnd1649= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1649;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1116:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1140:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1140$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1140:5
-            Token token1650= currentLookaheadToken;
-            int remainingLookahead1650= remainingLookahead;
-            boolean hitFailure1650= hitFailure;
-            if (!check$mdx_jj$1140$5$()) {
-                currentLookaheadToken= token1650;
-                remainingLookahead= remainingLookahead1650;
-                hitFailure= hitFailure1650;
-                if (!check$mdx_jj$1147$5()) {
-                    currentLookaheadToken= token1650;
-                    remainingLookahead= remainingLookahead1650;
-                    hitFailure= hitFailure1650;
-                    if (!check$mdx_jj$1154$5()) {
-                        currentLookaheadToken= token1650;
-                        remainingLookahead= remainingLookahead1650;
-                        hitFailure= hitFailure1650;
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1140:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1140$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1140:5
-            if (!scanToken(PLUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1140:14
-            // NonTerminal term at cc21/mdx.jj:1140:14
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1140, 14);
-            boolean prevScanToEnd1651= scanToEnd;
-            currentLookaheadProduction= "term";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1651;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1141:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1147:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1147$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1147:5
-            if (!scanToken(MINUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1147:15
-            // NonTerminal term at cc21/mdx.jj:1147:15
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1147, 15);
-            boolean prevScanToEnd1652= scanToEnd;
-            currentLookaheadProduction= "term";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1652;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1148:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1154:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1154$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1154:5
-            if (!scanToken(CONCAT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1154:16
-            // NonTerminal term at cc21/mdx.jj:1154:16
-            pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1154, 16);
-            boolean prevScanToEnd1653= scanToEnd;
-            currentLookaheadProduction= "term";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1653;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1155:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1174:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1174$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1174:5
-            Token token1654= currentLookaheadToken;
-            int remainingLookahead1654= remainingLookahead;
-            boolean hitFailure1654= hitFailure;
-            if (!check$mdx_jj$1174$5$()) {
-                currentLookaheadToken= token1654;
-                remainingLookahead= remainingLookahead1654;
-                hitFailure= hitFailure1654;
-                if (!check$mdx_jj$1181$5()) {
-                    currentLookaheadToken= token1654;
-                    remainingLookahead= remainingLookahead1654;
-                    hitFailure= hitFailure1654;
-                    return false;
-                }
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1174:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1174$5$() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1174:5
-            if (!scanToken(ASTERISK)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1174:18
-            // NonTerminal factor at cc21/mdx.jj:1174:18
-            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1174, 18);
-            boolean prevScanToEnd1655= scanToEnd;
-            currentLookaheadProduction= "factor";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$factor()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1655;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1175:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1181:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1181$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1181:5
-            if (!scanToken(SOLIDUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1181:17
-            // NonTerminal factor at cc21/mdx.jj:1181:17
-            pushOntoLookaheadStack("term", "cc21/mdx.jj", 1181, 17);
-            boolean prevScanToEnd1656= scanToEnd;
-            currentLookaheadProduction= "factor";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$factor()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1656;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1182:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1199:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1199$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1199:3
-            // NonTerminal primary at cc21/mdx.jj:1199:3
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1199, 3);
-            boolean prevScanToEnd1657= scanToEnd;
-            currentLookaheadProduction= "primary";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$primary()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1657;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1200:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1203:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1203$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1203:3
-            if (!scanToken(PLUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1203:12
-            // NonTerminal primary at cc21/mdx.jj:1203:12
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1203, 12);
-            boolean prevScanToEnd1658= scanToEnd;
-            currentLookaheadProduction= "primary";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$primary()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1658;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1204:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1207:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1207$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1207:3
-            if (!scanToken(MINUS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1207:13
-            // NonTerminal primary at cc21/mdx.jj:1207:13
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1207, 13);
-            boolean prevScanToEnd1659= scanToEnd;
-            currentLookaheadProduction= "primary";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$primary()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1659;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1208:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1214:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1214$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1214:3
-            if (!scanToken(EXISTING)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1214:16
-            // NonTerminal primary at cc21/mdx.jj:1214:16
-            pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1214, 16);
-            boolean prevScanToEnd1660= scanToEnd;
-            currentLookaheadProduction= "primary";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$primary()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1660;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1215:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1230:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1230$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1230:5
-            if (!scanToken(DOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1230:13
-            // NonTerminal objectIdentifierOrFuncall at cc21/mdx.jj:1230:13
-            pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1230, 13);
-            boolean prevScanToEnd1661= scanToEnd;
-            currentLookaheadProduction= "objectIdentifierOrFuncall";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$objectIdentifierOrFuncall()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1661;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1245:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1245$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1245:5
-            if (!scanToken(LPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1247:7
-            Token token1662= currentLookaheadToken;
-            int remainingLookahead1662= remainingLookahead;
-            boolean hitFailure1662= hitFailure;
-            if (!check$mdx_jj$1247$7()) {
-                currentLookaheadToken= token1662;
-                remainingLookahead= remainingLookahead1662;
-                hitFailure= hitFailure1662;
-                if (!check$mdx_jj$1252$7()) {
-                    currentLookaheadToken= token1662;
-                    remainingLookahead= remainingLookahead1662;
-                    hitFailure= hitFailure1662;
-                    return false;
-                }
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1254:5
-            if (!scanToken(RPAREN)) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1247:7
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1247$7() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1247$17()) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1248:7
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1252:7
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1252$7() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1252:7
-            // NonTerminal expOrEmptyList at cc21/mdx.jj:1252:7
-            pushOntoLookaheadStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1252, 7);
-            boolean prevScanToEnd1663= scanToEnd;
-            currentLookaheadProduction= "expOrEmptyList";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$expOrEmptyList()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1663;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1302:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1302$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1302:3
-            if (!scanToken(CAST)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1302:12
-            if (!scanToken(LPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1302:23
-            // NonTerminal unaliasedExpression at cc21/mdx.jj:1302:23
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1302, 23);
-            boolean prevScanToEnd1664= scanToEnd;
-            currentLookaheadProduction= "unaliasedExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$unaliasedExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1664;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1303:3
-            if (!scanToken(AS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1303:10
-            // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1303:10
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1303, 10);
-            boolean prevScanToEnd1665= scanToEnd;
-            currentLookaheadProduction= "parseNameObjectIdentifier";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseNameObjectIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1665;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1303:61
-            if (!scanToken(RPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1304:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1312:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1312$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1312:3
-            if (!scanToken(LPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1312:14
-            // NonTerminal expList at cc21/mdx.jj:1312:14
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1312, 14);
-            boolean prevScanToEnd1666= scanToEnd;
-            currentLookaheadProduction= "expList";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$expList()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1666;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1312:38
-            if (!scanToken(RPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1313:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1321:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1321$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1321:3
-            if (!scanToken(LBRACE)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1323:5
-            Token token1667= currentLookaheadToken;
-            int remainingLookahead1667= remainingLookahead;
-            boolean hitFailure1667= hitFailure;
-            if (!check$mdx_jj$1323$5()) {
-                currentLookaheadToken= token1667;
-                remainingLookahead= remainingLookahead1667;
-                hitFailure= hitFailure1667;
-                if (!check$mdx_jj$1328$5()) {
-                    currentLookaheadToken= token1667;
-                    remainingLookahead= remainingLookahead1667;
-                    hitFailure= hitFailure1667;
-                    return false;
-                }
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1330:3
-            if (!scanToken(RBRACE)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1331:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1323:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1323$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1323$15()) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1324:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1328:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1328$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1328:5
-            // NonTerminal expList at cc21/mdx.jj:1328:5
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1328, 5);
-            boolean prevScanToEnd1668= scanToEnd;
-            currentLookaheadProduction= "expList";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$expList()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1668;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1335:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1335$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1335:3
-            // NonTerminal caseExpression at cc21/mdx.jj:1335:3
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1335, 3);
-            boolean prevScanToEnd1669= scanToEnd;
-            currentLookaheadProduction= "caseExpression";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$caseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1669;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1336:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1342:3
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1342$3() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1342:3
-            // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1342:3
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1342, 3);
-            boolean prevScanToEnd1670= scanToEnd;
-            currentLookaheadProduction= "parseNameObjectIdentifier";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseNameObjectIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1670;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1343:3
-            while (remainingLookahead> 0&&!hitFailure) {
-                Token token1671= currentLookaheadToken;
-                if (!check$mdx_jj$1344$5()) {
-                    currentLookaheadToken= token1671;
-                    break;
-                }
-            }
-            hitFailure= false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1353:5
-            Token token1672= currentLookaheadToken;
-            int remainingLookahead1672= remainingLookahead;
-            boolean hitFailure1672= hitFailure;
-            if (!check$mdx_jj$1353$5()) {
-                currentLookaheadToken= token1672;
-                remainingLookahead= remainingLookahead1672;
-                hitFailure= hitFailure1672;
-                if (!check$mdx_jj$1364$16()) {
-                    currentLookaheadToken= token1672;
-                    remainingLookahead= remainingLookahead1672;
-                    hitFailure= hitFailure1672;
-                    return false;
-                }
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1368:3
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1344:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1344$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1344:5
-            if (!scanToken(BANG)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1344:14
-            // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1344:14
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1344, 14);
-            boolean prevScanToEnd1673= scanToEnd;
-            currentLookaheadProduction= "parseNameObjectIdentifier";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseNameObjectIdentifier()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1673;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1345:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1353:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1353$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1353:5
-            if (!scanToken(LPAREN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1355:7
-            Token token1674= currentLookaheadToken;
-            int remainingLookahead1674= remainingLookahead;
-            boolean hitFailure1674= hitFailure;
-            if (!check$mdx_jj$1355$7()) {
-                currentLookaheadToken= token1674;
-                remainingLookahead= remainingLookahead1674;
-                hitFailure= hitFailure1674;
-                if (!check$mdx_jj$1360$7()) {
-                    currentLookaheadToken= token1674;
-                    remainingLookahead= remainingLookahead1674;
-                    hitFailure= hitFailure1674;
-                    return false;
-                }
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1362:5
-            if (!scanToken(RPAREN)) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1355:7
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1355$7() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1355$17()) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1356:7
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1360:7
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1360$7() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1360:7
-            // NonTerminal expOrEmptyList at cc21/mdx.jj:1360:7
-            pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1360, 7);
-            boolean prevScanToEnd1675= scanToEnd;
-            currentLookaheadProduction= "expOrEmptyList";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$expOrEmptyList()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1675;
-                --nonTerminalNesting;
-            }
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1364:16
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1364$16() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1364:16
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1382:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1382$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1382:5
-            // NonTerminal parseExpression at cc21/mdx.jj:1382:5
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1382, 5);
-            boolean prevScanToEnd1676= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= false;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1676;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1383:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1389:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1389$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1389:5
-            if (!scanToken(WHEN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1389:14
-            // NonTerminal parseExpression at cc21/mdx.jj:1389:14
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1389, 14);
-            boolean prevScanToEnd1677= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1677;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1389:45
-            if (!scanToken(THEN)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1389:54
-            // NonTerminal parseExpression at cc21/mdx.jj:1389:54
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1389, 54);
-            boolean prevScanToEnd1678= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1678;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1390:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // scanahead routine for expansion at: 
-    // cc21/mdx.jj:1396:5
-    // BuildScanRoutine macro
-    private final boolean check$mdx_jj$1396$5() {
-        try {
-            lookaheadRoutineNesting++;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1396:5
-            if (!scanToken(ELSE)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1396:14
-            // NonTerminal parseExpression at cc21/mdx.jj:1396:14
-            pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1396, 14);
-            boolean prevScanToEnd1679= scanToEnd;
-            currentLookaheadProduction= "parseExpression";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$parseExpression()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1679;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1397:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:933:5
-    private final boolean scan$mdx_jj$933$5() {
-        int nonTerminalNesting1684= nonTerminalNesting;
-        int lookaheadRoutineNesting1686= lookaheadRoutineNesting;
-        Token currentLookaheadToken1685= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$933$15()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1686;
-            currentLookaheadToken= currentLookaheadToken1685;
-            nonTerminalNesting= nonTerminalNesting1684;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1065:5
-    private final boolean scan$mdx_jj$1065$5() {
-        int nonTerminalNesting1687= nonTerminalNesting;
-        int lookaheadRoutineNesting1689= lookaheadRoutineNesting;
-        Token currentLookaheadToken1688= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= 2;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:12
-            if (!scanToken(NULL)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1067:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1689;
-            currentLookaheadToken= currentLookaheadToken1688;
-            nonTerminalNesting= nonTerminalNesting1687;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1075:5
-    private final boolean scan$mdx_jj$1075$5() {
-        int nonTerminalNesting1690= nonTerminalNesting;
-        int lookaheadRoutineNesting1692= lookaheadRoutineNesting;
-        Token currentLookaheadToken1691= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= 2;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1076:5
-            if (!scanToken(IS)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1076:12
-            // NonTerminal term2 at cc21/mdx.jj:1076:12
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1076, 12);
-            boolean prevScanToEnd1693= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1693;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1077:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1692;
-            currentLookaheadToken= currentLookaheadToken1691;
-            nonTerminalNesting= nonTerminalNesting1690;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1095:5
-    private final boolean scan$mdx_jj$1095$5() {
-        int nonTerminalNesting1694= nonTerminalNesting;
-        int lookaheadRoutineNesting1696= lookaheadRoutineNesting;
-        Token currentLookaheadToken1695= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= 2;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:5
-            if (!scanToken(NOT)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:13
-            if (!scanToken(MATCHES)) return false;
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1096:25
-            // NonTerminal term2 at cc21/mdx.jj:1096:25
-            pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1096, 25);
-            boolean prevScanToEnd1697= scanToEnd;
-            currentLookaheadProduction= "term2";
-            scanToEnd= true;
-            ++nonTerminalNesting;
-            try {
-                if (!check$term2()) return false;
-            }
-            finally {
-                popLookaheadStack();
-                scanToEnd= prevScanToEnd1697;
-                --nonTerminalNesting;
-            }
-            if (hitFailure||remainingLookahead<=0) return!hitFailure;
-            // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1097:5
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1696;
-            currentLookaheadToken= currentLookaheadToken1695;
-            nonTerminalNesting= nonTerminalNesting1694;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1247:7
-    private final boolean scan$mdx_jj$1247$7() {
-        int nonTerminalNesting1698= nonTerminalNesting;
-        int lookaheadRoutineNesting1700= lookaheadRoutineNesting;
-        Token currentLookaheadToken1699= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1247$17()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1700;
-            currentLookaheadToken= currentLookaheadToken1699;
-            nonTerminalNesting= nonTerminalNesting1698;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1323:5
-    private final boolean scan$mdx_jj$1323$5() {
-        int nonTerminalNesting1701= nonTerminalNesting;
-        int lookaheadRoutineNesting1703= lookaheadRoutineNesting;
-        Token currentLookaheadToken1702= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1323$15()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1703;
-            currentLookaheadToken= currentLookaheadToken1702;
-            nonTerminalNesting= nonTerminalNesting1701;
-        }
-    }
-
-    // BuildPredicateRoutine: expansion at cc21/mdx.jj:1355:7
-    private final boolean scan$mdx_jj$1355$7() {
-        int nonTerminalNesting1704= nonTerminalNesting;
-        int lookaheadRoutineNesting1706= lookaheadRoutineNesting;
-        Token currentLookaheadToken1705= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            remainingLookahead= UNLIMITED;
-            if (currentLookaheadToken== null) currentLookaheadToken= lastConsumedToken;
-            hitFailure= false;
-            scanToEnd= false;
-            // BuildPredicateCode macro
-            if (remainingLookahead<=0) return true;
-            if (!check$mdx_jj$1355$17()) return false;
-            return true;
-        }
-        finally {
-            lookaheadRoutineNesting= lookaheadRoutineNesting1706;
-            currentLookaheadToken= currentLookaheadToken1705;
-            nonTerminalNesting= nonTerminalNesting1704;
-        }
-    }
-
-    // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:933:5
-    private final boolean check$mdx_jj$933$15() {
-        int prevRemainingLookahead= remainingLookahead;
-        boolean prevHitFailure= hitFailure;
-        Token prevScanAheadToken= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:933:15
-            if (!scanToken(DOT)) return false;
-            return!hitFailure;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-            currentLookaheadToken= prevScanAheadToken;
-            remainingLookahead= prevRemainingLookahead;
-            hitFailure= prevHitFailure;
-        }
-    }
-
-    // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1247:7
-    private final boolean check$mdx_jj$1247$17() {
-        int prevRemainingLookahead= remainingLookahead;
-        boolean prevHitFailure= hitFailure;
-        Token prevScanAheadToken= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1247:17
-            if (!scanToken(RPAREN)) return false;
-            return!hitFailure;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-            currentLookaheadToken= prevScanAheadToken;
-            remainingLookahead= prevRemainingLookahead;
-            hitFailure= prevHitFailure;
-        }
-    }
-
-    // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1323:5
-    private final boolean check$mdx_jj$1323$15() {
-        int prevRemainingLookahead= remainingLookahead;
-        boolean prevHitFailure= hitFailure;
-        Token prevScanAheadToken= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1323:15
-            if (!scanToken(RBRACE)) return false;
-            return!hitFailure;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-            currentLookaheadToken= prevScanAheadToken;
-            remainingLookahead= prevRemainingLookahead;
-            hitFailure= prevHitFailure;
-        }
-    }
-
-    // lookahead routine for lookahead at: 
-    // cc21/mdx.jj:1355:7
-    private final boolean check$mdx_jj$1355$17() {
-        int prevRemainingLookahead= remainingLookahead;
-        boolean prevHitFailure= hitFailure;
-        Token prevScanAheadToken= currentLookaheadToken;
-        try {
-            lookaheadRoutineNesting++;
-            // Applying single-token optimization for expansion of type ExpansionSequence
-            // cc21/mdx.jj:1355:17
-            if (!scanToken(RPAREN)) return false;
-            return!hitFailure;
-        }
-        finally {
-            lookaheadRoutineNesting--;
-            currentLookaheadToken= prevScanAheadToken;
-            remainingLookahead= prevRemainingLookahead;
-            hitFailure= prevHitFailure;
-        }
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$parseExpression() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:739:3
-        // NonTerminal unaliasedExpression at cc21/mdx.jj:739:3
-        pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 739, 3);
-        boolean prevScanToEnd1739= scanToEnd;
-        currentLookaheadProduction= "unaliasedExpression";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$unaliasedExpression()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1739;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:740:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1740= currentLookaheadToken;
-            if (!check$mdx_jj$741$5()) {
-                currentLookaheadToken= token1740;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:750:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$expressionOrEmpty() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:760:3
-        Token token1741= currentLookaheadToken;
-        int remainingLookahead1741= remainingLookahead;
-        boolean hitFailure1741= hitFailure;
-        if (!check$mdx_jj$760$3()) {
-            currentLookaheadToken= token1741;
-            remainingLookahead= remainingLookahead1741;
-            hitFailure= hitFailure1741;
-            if (!check$mdx_jj$765$3()) {
-                currentLookaheadToken= token1741;
-                remainingLookahead= remainingLookahead1741;
-                hitFailure= hitFailure1741;
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$expOrEmptyList() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:779:3
-        // NonTerminal expressionOrEmpty at cc21/mdx.jj:779:3
-        pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 779, 3);
-        boolean prevScanToEnd1742= scanToEnd;
-        currentLookaheadProduction= "expressionOrEmpty";
-        scanToEnd= true;
-        ++nonTerminalNesting;
-        try {
-            if (!check$expressionOrEmpty()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1742;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:780:3
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:783:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1743= currentLookaheadToken;
-            if (!check$mdx_jj$784$5()) {
-                currentLookaheadToken= token1743;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:790:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$expList() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:802:3
-        // NonTerminal parseExpression at cc21/mdx.jj:802:3
-        pushOntoLookaheadStack("expList", "cc21/mdx.jj", 802, 3);
-        boolean prevScanToEnd1744= scanToEnd;
-        currentLookaheadProduction= "parseExpression";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$parseExpression()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1744;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:803:3
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:806:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1745= currentLookaheadToken;
-            if (!check$mdx_jj$807$5()) {
-                currentLookaheadToken= token1745;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:813:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$parseIdentifier() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:835:5
-        Token token1747= currentLookaheadToken;
-        int remainingLookahead1747= remainingLookahead;
-        boolean hitFailure1747= hitFailure;
-        if (!check$mdx_jj$835$5$()) {
-            currentLookaheadToken= token1747;
-            remainingLookahead= remainingLookahead1747;
-            hitFailure= hitFailure1747;
-            if (!check$mdx_jj$837$5()) {
-                currentLookaheadToken= token1747;
-                remainingLookahead= remainingLookahead1747;
-                hitFailure= hitFailure1747;
-                return false;
-            }
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:839:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$parseNameObjectIdentifier() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:849:3
-        Token token1748= currentLookaheadToken;
-        int remainingLookahead1748= remainingLookahead;
-        boolean hitFailure1748= hitFailure;
-        if (!scanToken(first_set$mdx_jj$849$3)) {
-            currentLookaheadToken= token1748;
-            remainingLookahead= remainingLookahead1748;
-            hitFailure= hitFailure1748;
-            if (!scanToken(ID)) {
-                currentLookaheadToken= token1748;
-                remainingLookahead= remainingLookahead1748;
-                hitFailure= hitFailure1748;
-                if (!check$mdx_jj$858$3()) {
-                    currentLookaheadToken= token1748;
-                    remainingLookahead= remainingLookahead1748;
-                    hitFailure= hitFailure1748;
-                    if (!scanToken(QUOTED_ID)) {
-                        currentLookaheadToken= token1748;
-                        remainingLookahead= remainingLookahead1748;
-                        hitFailure= hitFailure1748;
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$parseKeyIdentifier() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for OneOrMore specified at cc21/mdx.jj:877:3
-        if (!scanToken(first_set$mdx_jj$878$5)) {
-            return false;
-        }
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1749= currentLookaheadToken;
-            if (!scanToken(first_set$mdx_jj$878$5)) {
-                currentLookaheadToken= token1749;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:883:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$unaliasedExpression() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:951:3
-        // NonTerminal term5 at cc21/mdx.jj:951:3
-        pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 951, 3);
-        boolean prevScanToEnd1752= scanToEnd;
-        currentLookaheadProduction= "term5";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$term5()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1752;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:952:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1753= currentLookaheadToken;
-            if (!check$mdx_jj$953$5()) {
-                currentLookaheadToken= token1753;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:977:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$term5() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:987:3
-        // NonTerminal term4 at cc21/mdx.jj:987:3
-        pushOntoLookaheadStack("term5", "cc21/mdx.jj", 987, 3);
-        boolean prevScanToEnd1754= scanToEnd;
-        currentLookaheadProduction= "term4";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$term4()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1754;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:988:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1755= currentLookaheadToken;
-            if (!check$mdx_jj$989$5()) {
-                currentLookaheadToken= token1755;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:997:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$term4() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1007:3
-        Token token1756= currentLookaheadToken;
-        int remainingLookahead1756= remainingLookahead;
-        boolean hitFailure1756= hitFailure;
-        if (!check$mdx_jj$1007$3()) {
-            currentLookaheadToken= token1756;
-            remainingLookahead= remainingLookahead1756;
-            hitFailure= hitFailure1756;
-            if (!check$mdx_jj$1011$3()) {
-                currentLookaheadToken= token1756;
-                remainingLookahead= remainingLookahead1756;
-                hitFailure= hitFailure1756;
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$term3() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1026:3
-        // NonTerminal term2 at cc21/mdx.jj:1026:3
-        pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1026, 3);
-        boolean prevScanToEnd1757= scanToEnd;
-        currentLookaheadProduction= "term2";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$term2()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1757;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1027:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1758= currentLookaheadToken;
-            if (!check$mdx_jj$1029$5()) {
-                currentLookaheadToken= token1758;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1128:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$term2() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1138:3
-        // NonTerminal term at cc21/mdx.jj:1138:3
-        pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1138, 3);
-        boolean prevScanToEnd1759= scanToEnd;
-        currentLookaheadProduction= "term";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$term()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1759;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1139:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1760= currentLookaheadToken;
-            if (!check$mdx_jj$1140$5()) {
-                currentLookaheadToken= token1760;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1162:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$term() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1172:3
-        // NonTerminal factor at cc21/mdx.jj:1172:3
-        pushOntoLookaheadStack("term", "cc21/mdx.jj", 1172, 3);
-        boolean prevScanToEnd1761= scanToEnd;
-        currentLookaheadProduction= "factor";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$factor()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1761;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1762= currentLookaheadToken;
-            if (!check$mdx_jj$1174$5()) {
-                currentLookaheadToken= token1762;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1189:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$factor() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1199:3
-        Token token1763= currentLookaheadToken;
-        int remainingLookahead1763= remainingLookahead;
-        boolean hitFailure1763= hitFailure;
-        if (!check$mdx_jj$1199$3()) {
-            currentLookaheadToken= token1763;
-            remainingLookahead= remainingLookahead1763;
-            hitFailure= hitFailure1763;
-            if (!check$mdx_jj$1203$3()) {
-                currentLookaheadToken= token1763;
-                remainingLookahead= remainingLookahead1763;
-                hitFailure= hitFailure1763;
-                if (!check$mdx_jj$1207$3()) {
-                    currentLookaheadToken= token1763;
-                    remainingLookahead= remainingLookahead1763;
-                    hitFailure= hitFailure1763;
-                    if (!check$mdx_jj$1214$3()) {
-                        currentLookaheadToken= token1763;
-                        remainingLookahead= remainingLookahead1763;
-                        hitFailure= hitFailure1763;
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$primary() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1228:3
-        // NonTerminal atom at cc21/mdx.jj:1228:3
-        pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1228, 3);
-        boolean prevScanToEnd1764= scanToEnd;
-        currentLookaheadProduction= "atom";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$atom()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1764;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1229:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1765= currentLookaheadToken;
-            if (!check$mdx_jj$1230$5()) {
-                currentLookaheadToken= token1765;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1232:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$objectIdentifierOrFuncall() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1243:3
-        // NonTerminal parseIdentifier at cc21/mdx.jj:1243:3
-        pushOntoLookaheadStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1243, 3);
-        boolean prevScanToEnd1766= scanToEnd;
-        currentLookaheadProduction= "parseIdentifier";
-        scanToEnd= false;
-        ++nonTerminalNesting;
-        try {
-            if (!check$parseIdentifier()) return false;
-        }
-        finally {
-            popLookaheadStack();
-            scanToEnd= prevScanToEnd1766;
-            --nonTerminalNesting;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1244:3
-        Token token1767= currentLookaheadToken;
-        if (!check$mdx_jj$1245$5()) {
-            currentLookaheadToken= token1767;
-            hitFailure= false;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1256:3
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$atom() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1286:3
-        Token token1768= currentLookaheadToken;
-        int remainingLookahead1768= remainingLookahead;
-        boolean hitFailure1768= hitFailure;
-        if (!scanToken(SINGLE_QUOTED_STRING)) {
-            currentLookaheadToken= token1768;
-            remainingLookahead= remainingLookahead1768;
-            hitFailure= hitFailure1768;
-            if (!scanToken(DOUBLE_QUOTED_STRING)) {
-                currentLookaheadToken= token1768;
-                remainingLookahead= remainingLookahead1768;
-                hitFailure= hitFailure1768;
-                if (!scanToken(first_set$mdx_jj$1294$3)) {
-                    currentLookaheadToken= token1768;
-                    remainingLookahead= remainingLookahead1768;
-                    hitFailure= hitFailure1768;
-                    if (!scanToken(NULL)) {
-                        currentLookaheadToken= token1768;
-                        remainingLookahead= remainingLookahead1768;
-                        hitFailure= hitFailure1768;
-                        if (!check$mdx_jj$1302$3()) {
-                            currentLookaheadToken= token1768;
-                            remainingLookahead= remainingLookahead1768;
-                            hitFailure= hitFailure1768;
-                            if (!check$mdx_jj$1312$3()) {
-                                currentLookaheadToken= token1768;
-                                remainingLookahead= remainingLookahead1768;
-                                hitFailure= hitFailure1768;
-                                if (!check$mdx_jj$1321$3()) {
-                                    currentLookaheadToken= token1768;
-                                    remainingLookahead= remainingLookahead1768;
-                                    hitFailure= hitFailure1768;
-                                    if (!check$mdx_jj$1335$3()) {
-                                        currentLookaheadToken= token1768;
-                                        remainingLookahead= remainingLookahead1768;
-                                        hitFailure= hitFailure1768;
-                                        if (!check$mdx_jj$1342$3()) {
-                                            currentLookaheadToken= token1768;
-                                            remainingLookahead= remainingLookahead1768;
-                                            hitFailure= hitFailure1768;
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    // BuildProductionLookaheadMethod macro
-    private final boolean check$caseExpression() {
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1380:3
-        if (!scanToken(CASE)) return false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1381:3
-        Token token1769= currentLookaheadToken;
-        if (!check$mdx_jj$1382$5()) {
-            currentLookaheadToken= token1769;
-            hitFailure= false;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1388:3
-        while (remainingLookahead> 0&&!hitFailure) {
-            Token token1770= currentLookaheadToken;
-            if (!check$mdx_jj$1389$5()) {
-                currentLookaheadToken= token1770;
-                break;
-            }
-        }
-        hitFailure= false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1395:3
-        Token token1771= currentLookaheadToken;
-        if (!check$mdx_jj$1396$5()) {
-            currentLookaheadToken= token1771;
-            hitFailure= false;
-        }
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1401:3
-        if (!scanToken(END)) return false;
-        if (hitFailure||remainingLookahead<=0) return!hitFailure;
-        // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1402:3
-        return true;
-    }
-
-    ArrayList<NonTerminalCall> parsingStack= new ArrayList<> ();
-    private ArrayList<NonTerminalCall> lookaheadStack= new ArrayList<> ();
-    /**
- * Inner class that represents entering a grammar production
- */
-    class NonTerminalCall {
-        final String sourceFile;
-        final String productionName;
-        final int line, column;
-        NonTerminalCall(String sourceFile, String productionName, int line, int column) {
-            this.sourceFile= sourceFile;
-            this.productionName= productionName;
-            this.line= line;
-            this.column= column;
-        }
-
-        final mdxLexer getTokenSource() {
-            return MDXParser.this.token_source;
-        }
-
-        StackTraceElement createStackTraceElement() {
-            return new StackTraceElement("MDXParser", productionName, sourceFile, line);
-        }
-
-        void dump(PrintStream ps) {
-            ps.println(productionName+":"+line+":"+column);
-        }
-
-    }
-    private final void pushOntoCallStack(String methodName, String fileName, int line, int column) {
-        parsingStack.add(new NonTerminalCall(fileName, methodName, line, column));
-    }
-
-    private final void popCallStack() {
-        NonTerminalCall ntc= parsingStack.remove(parsingStack.size()-1);
-        this.currentlyParsedProduction= ntc.productionName;
-    }
-
-    private final void restoreCallStack(int prevSize) {
-        while (parsingStack.size()> prevSize) {
+  final public Token getNextToken() {
+    return getToken(1);
+  }
+
+  /**
+   * @param index how many tokens to look ahead
+   * @return the specific regular (i.e. parsed) Token index ahead/behind in the
+   *         stream. If we are in a lookahead, it looks ahead from the
+   *         currentLookaheadToken Otherwise, it is the lastConsumedToken. If you
+   *         pass in a negative number it goes backward.
+   */
+  final public Token getToken(final int index) {
+    Token t = currentLookaheadToken == null ? lastConsumedToken : currentLookaheadToken;
+    for (int i = 0; i < index; i++) {
+      t = nextToken(t);
+    }
+    for (int i = 0; i > index; i--) {
+      t = t.getPrevious();
+      if (t == null)
+        break;
+    }
+    return t;
+  }
+
+  private final TokenType nextTokenType() {
+    if (nextTokenType == null) {
+      nextTokenType = nextToken(lastConsumedToken).getType();
+    }
+    return nextTokenType;
+  }
+
+  boolean activateTokenTypes(TokenType... types) {
+    boolean result = false;
+    for (TokenType tt : types) {
+      result |= token_source.activeTokenTypes.add(tt);
+    }
+    token_source.reset(getToken(0));
+    nextTokenType = null;
+    return result;
+  }
+
+  boolean deactivateTokenTypes(TokenType... types) {
+    boolean result = false;
+    for (TokenType tt : types) {
+      result |= token_source.activeTokenTypes.remove(tt);
+    }
+    token_source.reset(getToken(0));
+    nextTokenType = null;
+    return result;
+  }
+
+  private static HashMap<TokenType[], EnumSet<TokenType>> enumSetCache = new HashMap<>();
+
+  private static EnumSet<TokenType> tokenTypeSet(TokenType first, TokenType... rest) {
+    TokenType[] key = new TokenType[1 + rest.length];
+    key[0] = first;
+    if (rest.length > 0) {
+      System.arraycopy(rest, 0, key, 1, rest.length);
+    }
+    Arrays.sort(key);
+    if (enumSetCache.containsKey(key)) {
+      return enumSetCache.get(key);
+    }
+    EnumSet<TokenType> result = (rest.length == 0) ? EnumSet.of(first) : EnumSet.of(first, rest);
+    enumSetCache.put(key, result);
+    return result;
+  }
+
+  // cc21/mdx.jj:461:1
+  final public// ----------------------------------------------------------------------------
+  // MDX Statement
+  //
+  // <statement> ::= <selectStatement>
+  // | <drillthroughStatement>
+  // | <explainStatement>
+  //
+  // <selectStatement> ::= [WITH <formulaSpecification>]
+  // SELECT [<SelectQueryAxisClause>
+  // [, <SelectQueryAxisClause>...]]
+  // FROM [<cubeSpecification>]
+  // [WHERE <slicerSpecification>]
+  // [<cellProps>]
+  //
+  // <drillthroughStatment> ::=
+  // DRILLTHROUGH
+  // [ MAXROWS <count> ]
+  // [ FIRSTROWSET <count> ]
+  // <selectStatement>
+  // [ RETURN <memberOrAttribute> [, <memberOrAttribute>...] ]
+  //
+  // <explainStatement> ::=
+  // EXPLAIN PLAN FOR ( <selectStatement> | <drillthroughStatement> )
+  //
+  MdxStatement parseMdxStatement() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseMdxStatement";
+    ASTparseMdxStatement parseMdxStatement1 = null;
+    if (buildTree) {
+      parseMdxStatement1 = new ASTparseMdxStatement();
+      openNodeScope(parseMdxStatement1);
+    }
+    MdxStatement mdxStatement = null;
+    ParseException parseException1 = null;
+    int callStackSize2 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:466:3
+      pushOntoCallStack("parseMdxStatement", "cc21/mdx.jj", 466, 3);
+      try {
+        mdxStatement = parseSelectStatement();
+      } finally {
+        popCallStack();
+      }
+      // Code for EndOfFile specified at cc21/mdx.jj:479:3
+      consumeToken(EOF);
+      // Code for CodeBlock specified at cc21/mdx.jj:480:3
+      return mdxStatement;
+    } catch (ParseException e) {
+      parseException1 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize2);
+      if (parseMdxStatement1 != null) {
+        if (parseException1 == null) {
+          closeNodeScope(parseMdxStatement1, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:485:1
+  final public DrillthroughStatement parseDrillthroughStatement() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseDrillthroughStatement";
+    ASTparseDrillthroughStatement parseDrillthroughStatement2 = null;
+    if (buildTree) {
+      parseDrillthroughStatement2 = new ASTparseDrillthroughStatement();
+      openNodeScope(parseDrillthroughStatement2);
+    }
+    SelectStatement selectStatement = null;
+    List<ReturnItem> returnItems = null;
+    ParseException parseException13 = null;
+    int callStackSize14 = parsingStack.size();
+    try {
+      // Code for RegexpRef specified at cc21/mdx.jj:491:3
+      consumeToken(DRILLTHROUGH);
+      // Code for ZeroOrOne specified at cc21/mdx.jj:492:3
+      if (nextTokenType() == MAXROWS) {
+        // Code for RegexpRef specified at cc21/mdx.jj:492:4
+        consumeToken(MAXROWS);
+        // Code for RegexpRef specified at cc21/mdx.jj:492:16
+        consumeToken(UNSIGNED_INTEGER_LITERAL);
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:493:3
+      if (nextTokenType() == FIRSTROWSET) {
+        // Code for RegexpRef specified at cc21/mdx.jj:493:4
+        consumeToken(FIRSTROWSET);
+        // Code for RegexpRef specified at cc21/mdx.jj:493:20
+        consumeToken(UNSIGNED_INTEGER_LITERAL);
+      }
+      // Code for NonTerminal specified at cc21/mdx.jj:494:3
+      pushOntoCallStack("parseDrillthroughStatement", "cc21/mdx.jj", 494, 3);
+      try {
+        selectStatement = parseSelectStatement();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:495:3
+      if (nextTokenType() == RETURN) {
+        // Code for RegexpRef specified at cc21/mdx.jj:496:5
+        consumeToken(RETURN);
+        // Code for NonTerminal specified at cc21/mdx.jj:496:16
+        pushOntoCallStack("parseDrillthroughStatement", "cc21/mdx.jj", 496, 16);
+        try {
+          returnItems = parseReturnItems();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:498:3
+      return new DrillthroughStatement();
+    } catch (ParseException e) {
+      parseException13 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize14);
+      if (parseDrillthroughStatement2 != null) {
+        if (parseException13 == null) {
+          closeNodeScope(parseDrillthroughStatement2, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:503:1
+  final public List<ReturnItem> parseReturnItems() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseReturnItems";
+    ASTparseReturnItems parseReturnItems3 = null;
+    if (buildTree) {
+      parseReturnItems3 = new ASTparseReturnItems();
+      openNodeScope(parseReturnItems3);
+    }
+    List<ReturnItem> returnItems = new LinkedList<ReturnItem>();
+    ReturnItem item;
+    ParseException parseException61 = null;
+    int callStackSize62 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:509:3
+      pushOntoCallStack("parseReturnItems", "cc21/mdx.jj", 509, 3);
+      try {
+        item = parseReturnItem();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:510:3
+      returnItems.add(item);
+      // Code for ZeroOrMore specified at cc21/mdx.jj:513:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:514:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:514:15
+        pushOntoCallStack("parseReturnItems", "cc21/mdx.jj", 514, 15);
+        try {
+          item = parseReturnItem();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:515:5
+        returnItems.add(item);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:519:3
+      return returnItems;
+    } catch (ParseException e) {
+      parseException61 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize62);
+      if (parseReturnItems3 != null) {
+        if (parseException61 == null) {
+          closeNodeScope(parseReturnItems3, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:524:1
+  final public ReturnItem parseReturnItem() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseReturnItem";
+    ASTparseReturnItem parseReturnItem4 = null;
+    if (buildTree) {
+      parseReturnItem4 = new ASTparseReturnItem();
+      openNodeScope(parseReturnItem4);
+    }
+    CompoundId compoundId;
+    ParseException parseException88 = null;
+    int callStackSize89 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:529:3
+      pushOntoCallStack("parseReturnItem", "cc21/mdx.jj", 529, 3);
+      try {
+        compoundId = parseCompoundId();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:530:3
+      return new ReturnItem(compoundId);
+    } catch (ParseException e) {
+      parseException88 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize89);
+      if (parseReturnItem4 != null) {
+        if (parseException88 == null) {
+          closeNodeScope(parseReturnItem4, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:540:1
+  final public// CreateCellCalculationBodyClause:
+  // ;
+  // MeasureBodyClause:
+  // <APPROX_NUMERIC_LITERAL>
+  // ;
+  SelectWithClause parseSelectWithClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectWithClause";
+    ASTparseSelectWithClause parseSelectWithClause5 = null;
+    if (buildTree) {
+      parseSelectWithClause5 = new ASTparseSelectWithClause();
+      openNodeScope(parseSelectWithClause5);
+    }
+    CreateMemberBodyClause createMemberBodyClause = null;
+    CreateSetBodyClause createSetBodyClause = null;
+    ParseException parseException97 = null;
+    int callStackSize98 = parsingStack.size();
+    try {
+      if (nextTokenType() == MEMBER || nextTokenType == CALCULATED) {
+        // Code for ZeroOrOne specified at cc21/mdx.jj:547:5
+        if (nextTokenType() == CALCULATED) {
+          // Code for RegexpStringLiteral specified at cc21/mdx.jj:547:6
+          consumeToken(CALCULATED);
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:547:21
+        consumeToken(MEMBER);
+        // Code for NonTerminal specified at cc21/mdx.jj:547:32
+        pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 547, 32);
+        try {
+          createMemberBodyClause = parseCreateMemberBodyClause();
+        } finally {
+          popCallStack();
+        }
+      } else if (nextTokenType() == SET) {
+        // Code for RegexpRef specified at cc21/mdx.jj:548:5
+        consumeToken(SET);
+        // Code for NonTerminal specified at cc21/mdx.jj:548:13
+        pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 548, 13);
+        try {
+          createSetBodyClause = parseCreateSetBodyClause();
+        } finally {
+          popCallStack();
+        }
+      } else {
+        pushOntoCallStack("parseSelectWithClause", "cc21/mdx.jj", 547, 5);
+        throw new ParseException(this, first_set$mdx_jj$547$5, parsingStack);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:551:3
+      return new SelectWithClause();
+    } catch (ParseException e) {
+      parseException97 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize98);
+      if (parseSelectWithClause5 != null) {
+        if (parseException97 == null) {
+          closeNodeScope(parseSelectWithClause5, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:556:1
+  final public SelectStatement parseSelectStatement() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectStatement";
+    ASTparseSelectStatement parseSelectStatement6 = null;
+    if (buildTree) {
+      parseSelectStatement6 = new ASTparseSelectStatement();
+      openNodeScope(parseSelectStatement6);
+    }
+    SelectWithClause selectWithClause = null;
+    SelectSlicerAxisClause selectSlicerAxisClause = null;
+    SelectQueryClause selectQueryClause = null;
+    SelectSubcubeClause selectSubcubeClause = null;
+    SelectCellPropertyListClause selectCellPropertyListClause = null;
+    ParseException parseException134 = null;
+    int callStackSize135 = parsingStack.size();
+    try {
+      // Code for ZeroOrOne specified at cc21/mdx.jj:565:3
+      if (nextTokenType() == WITH) {
+        // Code for RegexpRef specified at cc21/mdx.jj:566:5
+        consumeToken(WITH);
+        // Code for OneOrMore specified at cc21/mdx.jj:567:5
+        while (true) {
+          // Code for NonTerminal specified at cc21/mdx.jj:568:7
+          pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 568, 7);
+          try {
+            selectWithClause = parseSelectWithClause();
+          } finally {
             popCallStack();
+          }
+          if (!(nextTokenType() == MEMBER || nextTokenType == SET || nextTokenType == CALCULATED))
+            break;
         }
-    }
-
-    private final void pushOntoLookaheadStack(String methodName, String fileName, int line, int column) {
-        lookaheadStack.add(new NonTerminalCall(fileName, methodName, line, column));
-    }
-
-    private final void popLookaheadStack() {
-        NonTerminalCall ntc= lookaheadStack.remove(lookaheadStack.size()-1);
-        this.currentLookaheadProduction= ntc.productionName;
-    }
-
-    void dumpLookaheadStack(PrintStream ps) {
-        ListIterator<NonTerminalCall> it= lookaheadStack.listIterator(lookaheadStack.size());
-        while (it.hasPrevious()) {
-            it.previous().dump(ps);
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:571:3
+      consumeToken(SELECT);
+      if (nextTokenType() == ASTERISK) {
+        // Code for NonTerminal specified at cc21/mdx.jj:573:5
+        pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 573, 5);
+        try {
+          selectQueryClause = parseSelectQueryAsteriskClause();
+        } finally {
+          popCallStack();
         }
-    }
-
-    void dumpCallStack(PrintStream ps) {
-        ListIterator<NonTerminalCall> it= parsingStack.listIterator(parsingStack.size());
-        while (it.hasPrevious()) {
-            it.previous().dump(ps);
+      } else if (first_set$mdx_jj$575$5.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:575:5
+        pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 575, 5);
+        try {
+          selectQueryClause = parseSelectQueryAxesClause();
+        } finally {
+          popCallStack();
         }
+      } else {
+        // Code for CodeBlock specified at cc21/mdx.jj:577:5
+        selectQueryClause = new SelectQueryEmptyClause();
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:581:3
+      consumeToken(FROM);
+      // Code for NonTerminal specified at cc21/mdx.jj:581:12
+      pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 581, 12);
+      try {
+        selectSubcubeClause = parseSelectSubcubeClause();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:582:3
+      if (nextTokenType() == WHERE) {
+        // Code for NonTerminal specified at cc21/mdx.jj:583:5
+        pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 583, 5);
+        try {
+          selectSlicerAxisClause = parseSelectSlicerAxisClause();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:585:3
+      if (nextTokenType() == CELL || nextTokenType == PROPERTIES) {
+        // Code for NonTerminal specified at cc21/mdx.jj:586:5
+        pushOntoCallStack("parseSelectStatement", "cc21/mdx.jj", 586, 5);
+        try {
+          selectCellPropertyListClause = parseSelectCellPropertyListClause();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:588:3
+      return new SelectStatement(selectWithClause, selectQueryClause, selectSubcubeClause, selectSlicerAxisClause,
+          selectCellPropertyListClause);
+    } catch (ParseException e) {
+      parseException134 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize135);
+      if (parseSelectStatement6 != null) {
+        if (parseException134 == null) {
+          closeNodeScope(parseSelectStatement6, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
     }
+  }
 
-    void dumpLookaheadCallStack(PrintStream ps) {
-        ps.println("Current Parser Production is: "+currentlyParsedProduction);
-        ps.println("Current Lookahead Production is: "+currentLookaheadProduction);
-        ps.println("---Lookahead Stack---");
-        dumpLookaheadStack(ps);
-        ps.println("---Call Stack---");
-        dumpCallStack(ps);
+  // cc21/mdx.jj:593:1
+  final public SelectSubcubeClause parseSelectSubcubeClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectSubcubeClause";
+    ASTparseSelectSubcubeClause parseSelectSubcubeClause7 = null;
+    if (buildTree) {
+      parseSelectSubcubeClause7 = new ASTparseSelectSubcubeClause();
+      openNodeScope(parseSelectSubcubeClause7);
     }
+    SelectSubcubeClause selectSubcubeClause = null;
+    ParseException parseException207 = null;
+    int callStackSize208 = parsingStack.size();
+    try {
+      if (first_set$mdx_jj$599$5.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:599:5
+        pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 599, 5);
+        try {
+          selectSubcubeClause = parseSelectSubcubeClauseName();
+        } finally {
+          popCallStack();
+        }
+      } else if (nextTokenType() == LPAREN) {
+        // Code for NonTerminal specified at cc21/mdx.jj:601:5
+        pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 601, 5);
+        try {
+          selectSubcubeClause = parseSelectSubcubeClauseStatement();
+        } finally {
+          popCallStack();
+        }
+      } else {
+        pushOntoCallStack("parseSelectSubcubeClause", "cc21/mdx.jj", 599, 5);
+        throw new ParseException(this, first_set$mdx_jj$599$5$, parsingStack);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:603:3
+      return selectSubcubeClause;
+    } catch (ParseException e) {
+      parseException207 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize208);
+      if (parseSelectSubcubeClause7 != null) {
+        if (parseException207 == null) {
+          closeNodeScope(parseSelectSubcubeClause7, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
 
-    public boolean isParserTolerant() {
+  // cc21/mdx.jj:608:1
+  final public SelectSubcubeClauseName parseSelectSubcubeClauseName() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectSubcubeClauseName";
+    ASTparseSelectSubcubeClauseName parseSelectSubcubeClauseName8 = null;
+    if (buildTree) {
+      parseSelectSubcubeClauseName8 = new ASTparseSelectSubcubeClauseName();
+      openNodeScope(parseSelectSubcubeClauseName8);
+    }
+    NameObjectIdentifier nameObjectIdentifier;
+    ParseException parseException229 = null;
+    int callStackSize230 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:613:3
+      pushOntoCallStack("parseSelectSubcubeClauseName", "cc21/mdx.jj", 613, 3);
+      try {
+        nameObjectIdentifier = parseNameObjectIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:614:3
+      return new SelectSubcubeClauseName(nameObjectIdentifier);
+    } catch (ParseException e) {
+      parseException229 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize230);
+      if (parseSelectSubcubeClauseName8 != null) {
+        if (parseException229 == null) {
+          closeNodeScope(parseSelectSubcubeClauseName8, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:619:1
+  final public SelectSubcubeClauseStatement parseSelectSubcubeClauseStatement() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectSubcubeClauseStatement";
+    ASTparseSelectSubcubeClauseStatement parseSelectSubcubeClauseStatement9 = null;
+    if (buildTree) {
+      parseSelectSubcubeClauseStatement9 = new ASTparseSelectSubcubeClauseStatement();
+      openNodeScope(parseSelectSubcubeClauseStatement9);
+    }
+    SelectSlicerAxisClause selectSlicerAxisClause = null;
+    SelectQueryClause selectQueryClause = null;
+    SelectSubcubeClause selectSubcubeClause = null;
+    ParseException parseException238 = null;
+    int callStackSize239 = parsingStack.size();
+    try {
+      // Code for RegexpRef specified at cc21/mdx.jj:627:5
+      consumeToken(LPAREN);
+      // Code for RegexpRef specified at cc21/mdx.jj:627:16
+      consumeToken(SELECT);
+      // Code for ZeroOrOne specified at cc21/mdx.jj:628:5
+      // Code for ExpansionChoice specified at cc21/mdx.jj:629:7
+      if (nextTokenType() == ASTERISK) {
+        // Code for NonTerminal specified at cc21/mdx.jj:629:7
+        pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 629, 7);
+        try {
+          selectQueryClause = parseSelectQueryAsteriskClause();
+        } finally {
+          popCallStack();
+        }
+      } else if (first_set$mdx_jj$631$7.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:631:7
+        pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 631, 7);
+        try {
+          selectQueryClause = parseSelectQueryAxesClause();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:633:5
+      consumeToken(FROM);
+      // Code for NonTerminal specified at cc21/mdx.jj:633:14
+      pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 633, 14);
+      try {
+        selectSubcubeClause = parseSelectSubcubeClause();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:634:5
+      if (nextTokenType() == WHERE) {
+        // Code for NonTerminal specified at cc21/mdx.jj:635:7
+        pushOntoCallStack("parseSelectSubcubeClauseStatement", "cc21/mdx.jj", 635, 7);
+        try {
+          selectSlicerAxisClause = parseSelectSlicerAxisClause();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:637:5
+      consumeToken(RPAREN);
+      // Code for CodeBlock specified at cc21/mdx.jj:639:3
+      return new SelectSubcubeClauseStatement(selectQueryClause, selectSubcubeClause, selectSlicerAxisClause);
+    } catch (ParseException e) {
+      parseException238 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize239);
+      if (parseSelectSubcubeClauseStatement9 != null) {
+        if (parseException238 == null) {
+          closeNodeScope(parseSelectSubcubeClauseStatement9, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:644:1
+  final public SelectQueryAsteriskClause parseSelectQueryAsteriskClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectQueryAsteriskClause";
+    ASTparseSelectQueryAsteriskClause parseSelectQueryAsteriskClause10 = null;
+    if (buildTree) {
+      parseSelectQueryAsteriskClause10 = new ASTparseSelectQueryAsteriskClause();
+      openNodeScope(parseSelectQueryAsteriskClause10);
+    }
+    ParseException parseException290 = null;
+    int callStackSize291 = parsingStack.size();
+    try {
+      // Code for RegexpRef specified at cc21/mdx.jj:648:3
+      consumeToken(ASTERISK);
+      // Code for CodeBlock specified at cc21/mdx.jj:649:3
+      return new SelectQueryAsteriskClause();
+    } catch (ParseException e) {
+      parseException290 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize291);
+      if (parseSelectQueryAsteriskClause10 != null) {
+        if (parseException290 == null) {
+          closeNodeScope(parseSelectQueryAsteriskClause10, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:654:1
+  final public SelectQueryAxesClause parseSelectQueryAxesClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectQueryAxesClause";
+    ASTparseSelectQueryAxesClause parseSelectQueryAxesClause11 = null;
+    if (buildTree) {
+      parseSelectQueryAxesClause11 = new ASTparseSelectQueryAxesClause();
+      openNodeScope(parseSelectQueryAxesClause11);
+    }
+    List<SelectQueryAxisClause> selectQueryAxisClauses = new LinkedList<SelectQueryAxisClause>();
+    SelectQueryAxisClause selectQueryAxisClause;
+    ParseException parseException299 = null;
+    int callStackSize300 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:660:3
+      pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 660, 3);
+      try {
+        selectQueryAxisClause = parseSelectQueryAxisClause();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:661:3
+      selectQueryAxisClauses.add(selectQueryAxisClause);
+      // Code for ZeroOrMore specified at cc21/mdx.jj:664:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:665:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:665:15
+        pushOntoCallStack("parseSelectQueryAxesClause", "cc21/mdx.jj", 665, 15);
+        try {
+          selectQueryAxisClause = parseSelectQueryAxisClause();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:666:5
+        selectQueryAxisClauses.add(selectQueryAxisClause);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:670:3
+      return new SelectQueryAxesClause(selectQueryAxisClauses);
+    } catch (ParseException e) {
+      parseException299 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize300);
+      if (parseSelectQueryAxesClause11 != null) {
+        if (parseException299 == null) {
+          closeNodeScope(parseSelectQueryAxesClause11, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:675:1
+  final public SelectSlicerAxisClause parseSelectSlicerAxisClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectSlicerAxisClause";
+    ASTparseSelectSlicerAxisClause parseSelectSlicerAxisClause12 = null;
+    if (buildTree) {
+      parseSelectSlicerAxisClause12 = new ASTparseSelectSlicerAxisClause();
+      openNodeScope(parseSelectSlicerAxisClause12);
+    }
+    Expression expression = null;
+    ParseException parseException326 = null;
+    int callStackSize327 = parsingStack.size();
+    try {
+      // Code for RegexpRef specified at cc21/mdx.jj:680:3
+      consumeToken(WHERE);
+      // Code for NonTerminal specified at cc21/mdx.jj:680:13
+      pushOntoCallStack("parseSelectSlicerAxisClause", "cc21/mdx.jj", 680, 13);
+      try {
+        expression = parseExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:681:3
+      return new SelectSlicerAxisClause();
+    } catch (ParseException e) {
+      parseException326 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize327);
+      if (parseSelectSlicerAxisClause12 != null) {
+        if (parseException326 == null) {
+          closeNodeScope(parseSelectSlicerAxisClause12, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:686:1
+  final public SelectCellPropertyListClause parseSelectCellPropertyListClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectCellPropertyListClause";
+    ASTparseSelectCellPropertyListClause parseSelectCellPropertyListClause13 = null;
+    if (buildTree) {
+      parseSelectCellPropertyListClause13 = new ASTparseSelectCellPropertyListClause();
+      openNodeScope(parseSelectCellPropertyListClause13);
+    }
+    List<CellProperty> cellPropertys = new LinkedList<CellProperty>();
+    ParseException parseException338 = null;
+    int callStackSize339 = parsingStack.size();
+    try {
+      // Code for ZeroOrOne specified at cc21/mdx.jj:691:3
+      if (nextTokenType() == CELL) {
+        // Code for RegexpRef specified at cc21/mdx.jj:691:4
+        consumeToken(CELL);
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:691:15
+      consumeToken(PROPERTIES);
+      // Code for NonTerminal specified at cc21/mdx.jj:691:30
+      pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 691, 30);
+      try {
+        parseCellProperty();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:692:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:693:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:693:15
+        pushOntoCallStack("parseSelectCellPropertyListClause", "cc21/mdx.jj", 693, 15);
+        try {
+          parseCellProperty();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:695:3
+      return new SelectCellPropertyListClause();
+    } catch (ParseException e) {
+      parseException338 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize339);
+      if (parseSelectCellPropertyListClause13 != null) {
+        if (parseException338 == null) {
+          closeNodeScope(parseSelectCellPropertyListClause13, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:700:1
+  final public CreateMemberBodyClause parseCreateMemberBodyClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseCreateMemberBodyClause";
+    ASTparseCreateMemberBodyClause parseCreateMemberBodyClause14 = null;
+    if (buildTree) {
+      parseCreateMemberBodyClause14 = new ASTparseCreateMemberBodyClause();
+      openNodeScope(parseCreateMemberBodyClause14);
+    }
+    ParseException parseException371 = null;
+    int callStackSize372 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:704:3
+      pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 704, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:704:21
+      consumeToken(AS);
+      // Code for NonTerminal specified at cc21/mdx.jj:704:28
+      pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 704, 28);
+      try {
+        parseFormulaExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:705:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:706:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:706:15
+        pushOntoCallStack("parseCreateMemberBodyClause", "cc21/mdx.jj", 706, 15);
+        try {
+          parseMemberPropertyDefinition();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:708:3
+      return new CreateMemberBodyClause();
+    } catch (ParseException e) {
+      parseException371 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize372);
+      if (parseCreateMemberBodyClause14 != null) {
+        if (parseException371 == null) {
+          closeNodeScope(parseCreateMemberBodyClause14, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:713:1
+  final public MemberPropertyDefinition parseMemberPropertyDefinition() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseMemberPropertyDefinition";
+    ASTparseMemberPropertyDefinition parseMemberPropertyDefinition15 = null;
+    if (buildTree) {
+      parseMemberPropertyDefinition15 = new ASTparseMemberPropertyDefinition();
+      openNodeScope(parseMemberPropertyDefinition15);
+    }
+    ParseException parseException398 = null;
+    int callStackSize399 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:717:3
+      pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 717, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:717:21
+      consumeToken(EQ);
+      // Code for NonTerminal specified at cc21/mdx.jj:717:28
+      pushOntoCallStack("parseMemberPropertyDefinition", "cc21/mdx.jj", 717, 28);
+      try {
+        parseExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:718:3
+      return new MemberPropertyDefinition();
+    } catch (ParseException e) {
+      parseException398 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize399);
+      if (parseMemberPropertyDefinition15 != null) {
+        if (parseException398 == null) {
+          closeNodeScope(parseMemberPropertyDefinition15, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:723:1
+  final public FormulaExpression parseFormulaExpression() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseFormulaExpression";
+    ASTparseFormulaExpression parseFormulaExpression16 = null;
+    if (buildTree) {
+      parseFormulaExpression16 = new ASTparseFormulaExpression();
+      openNodeScope(parseFormulaExpression16);
+    }
+    ParseException parseException413 = null;
+    int callStackSize414 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:727:3
+      pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 727, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:727:21
+      consumeToken(EQ);
+      // Code for NonTerminal specified at cc21/mdx.jj:727:28
+      pushOntoCallStack("parseFormulaExpression", "cc21/mdx.jj", 727, 28);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:728:3
+      return new FormulaExpression();
+    } catch (ParseException e) {
+      parseException413 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize414);
+      if (parseFormulaExpression16 != null) {
+        if (parseException413 == null) {
+          closeNodeScope(parseFormulaExpression16, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:733:1
+  final public Expression parseExpression() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseExpression";
+    ASTparseExpression parseExpression17 = null;
+    if (buildTree) {
+      parseExpression17 = new ASTparseExpression();
+      openNodeScope(parseExpression17);
+    }
+    Expression expression;
+    ObjectIdentifier objectIdentifier;
+    ParseException parseException428 = null;
+    int callStackSize429 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:739:3
+      pushOntoCallStack("parseExpression", "cc21/mdx.jj", 739, 3);
+      try {
+        expression = unaliasedExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:740:3
+      while (true) {
+        if (!(nextTokenType() == AS))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:741:5
+        consumeToken(AS);
+        // Code for NonTerminal specified at cc21/mdx.jj:741:12
+        pushOntoCallStack("parseExpression", "cc21/mdx.jj", 741, 12);
+        try {
+          objectIdentifier = parseIdentifier();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:742:5
+        CompoundId compundId = new CompoundId(List.of(objectIdentifier));
+        expression = new CallExpression("AS", CallExpression.Type.Term_Infix, List.of(expression, compundId));
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:750:3
+      return expression;
+    } catch (ParseException e) {
+      parseException428 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize429);
+      if (parseExpression17 != null) {
+        if (parseException428 == null) {
+          closeNodeScope(parseExpression17, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:755:1
+  final public Expression expressionOrEmpty() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "expressionOrEmpty";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:760:3
+    ASTexpressionOrEmpty expressionOrEmpty18 = null;
+    if (buildTree) {
+      expressionOrEmpty18 = new ASTexpressionOrEmpty();
+      openNodeScope(expressionOrEmpty18);
+    }
+    Expression expression;
+    ParseException parseException452 = null;
+    int callStackSize453 = parsingStack.size();
+    try {
+      if (first_set$mdx_jj$760$3.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:760:3
+        pushOntoCallStack("expressionOrEmpty", "cc21/mdx.jj", 760, 3);
+        try {
+          expression = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:761:3
+        return expression;
+      } else {
+        // Code for CodeBlock specified at cc21/mdx.jj:765:3
+        return new CallExpression("", CallExpression.Type.Empty, List.of());
+      }
+    } catch (ParseException e) {
+      parseException452 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize453);
+      if (expressionOrEmpty18 != null) {
+        if (parseException452 == null) {
+          closeNodeScope(expressionOrEmpty18, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:773:1
+  final public// Comma-separated list of expressions, some of which may be empty. Used
+  // for functions.
+  List<Expression> expOrEmptyList() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "expOrEmptyList";
+    ASTexpOrEmptyList expOrEmptyList19 = null;
+    if (buildTree) {
+      expOrEmptyList19 = new ASTexpOrEmptyList();
+      openNodeScope(expOrEmptyList19);
+    }
+    Expression expression;
+    List<Expression> list = new LinkedList<Expression>();
+    ParseException parseException470 = null;
+    int callStackSize471 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:779:3
+      pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 779, 3);
+      try {
+        expression = expressionOrEmpty();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:780:3
+      list.add(expression);
+      // Code for ZeroOrMore specified at cc21/mdx.jj:783:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:784:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:785:5
+        pushOntoCallStack("expOrEmptyList", "cc21/mdx.jj", 785, 5);
+        try {
+          expression = expressionOrEmpty();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:786:5
+        list.add(expression);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:790:3
+      return list;
+    } catch (ParseException e) {
+      parseException470 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize471);
+      if (expOrEmptyList19 != null) {
+        if (parseException470 == null) {
+          closeNodeScope(expOrEmptyList19, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:796:1
+  final public// List of expressions, none of which may be empty.
+  List<Expression> expList() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "expList";
+    ASTexpList expList20 = null;
+    if (buildTree) {
+      expList20 = new ASTexpList();
+      openNodeScope(expList20);
+    }
+    Expression expression;
+    List<Expression> list = new LinkedList<Expression>();
+    ParseException parseException497 = null;
+    int callStackSize498 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:802:3
+      pushOntoCallStack("expList", "cc21/mdx.jj", 802, 3);
+      try {
+        expression = parseExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:803:3
+      list.add(expression);
+      // Code for ZeroOrMore specified at cc21/mdx.jj:806:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:807:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:808:5
+        pushOntoCallStack("expList", "cc21/mdx.jj", 808, 5);
+        try {
+          expression = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:809:5
+        list.add(expression);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:813:3
+      return list;
+    } catch (ParseException e) {
+      parseException497 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize498);
+      if (expList20 != null) {
+        if (parseException497 == null) {
+          closeNodeScope(expList20, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:818:1
+  final public Expression expressionEof() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "expressionEof";
+    ASTexpressionEof expressionEof21 = null;
+    if (buildTree) {
+      expressionEof21 = new ASTexpressionEof();
+      openNodeScope(expressionEof21);
+    }
+    Expression expression;
+    ParseException parseException524 = null;
+    int callStackSize525 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:823:3
+      pushOntoCallStack("expressionEof", "cc21/mdx.jj", 823, 3);
+      try {
+        expression = parseExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for EndOfFile specified at cc21/mdx.jj:823:34
+      consumeToken(EOF);
+      // Code for CodeBlock specified at cc21/mdx.jj:824:3
+      return expression;
+    } catch (ParseException e) {
+      parseException524 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize525);
+      if (expressionEof21 != null) {
+        if (parseException524 == null) {
+          closeNodeScope(expressionEof21, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:829:1
+  final public ObjectIdentifier parseIdentifier() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseIdentifier";
+    ASTparseIdentifier parseIdentifier22 = null;
+    if (buildTree) {
+      parseIdentifier22 = new ASTparseIdentifier();
+      openNodeScope(parseIdentifier22);
+    }
+    ObjectIdentifier objectIdentifier;
+    ParseException parseException536 = null;
+    int callStackSize537 = parsingStack.size();
+    try {
+      if (first_set$mdx_jj$835$5.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:835:5
+        pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
+        try {
+          objectIdentifier = parseNameObjectIdentifier();
+        } finally {
+          popCallStack();
+        }
+      } else if (nextTokenType() == AMP_QUOTED_ID || nextTokenType == AMP_UNQUOTED_ID) {
+        // Code for NonTerminal specified at cc21/mdx.jj:837:5
+        pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 837, 5);
+        try {
+          objectIdentifier = parseKeyIdentifier();
+        } finally {
+          popCallStack();
+        }
+      } else {
+        pushOntoCallStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
+        throw new ParseException(this, first_set$mdx_jj$835$5$, parsingStack);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:839:3
+      return objectIdentifier;
+    } catch (ParseException e) {
+      parseException536 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize537);
+      if (parseIdentifier22 != null) {
+        if (parseException536 == null) {
+          closeNodeScope(parseIdentifier22, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> parseNameObjectIdentifier_FIRST_SET = tokenTypeSet(DIMENSION, PROPERTIES,
+      ATSIGN, ID, QUOTED_ID);
+
+  // cc21/mdx.jj:844:1
+  final public NameObjectIdentifier parseNameObjectIdentifier() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseNameObjectIdentifier";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:849:3
+    ASTparseNameObjectIdentifier parseNameObjectIdentifier23 = null;
+    if (buildTree) {
+      parseNameObjectIdentifier23 = new ASTparseNameObjectIdentifier();
+      openNodeScope(parseNameObjectIdentifier23);
+    }
+    String id;
+    ParseException parseException558 = null;
+    int callStackSize559 = parsingStack.size();
+    try {
+      if (nextTokenType() == DIMENSION || nextTokenType == PROPERTIES) {
+        // Code for NonTerminal specified at cc21/mdx.jj:849:3
+        pushOntoCallStack("parseNameObjectIdentifier", "cc21/mdx.jj", 849, 3);
+        try {
+          id = parseKeyword();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:850:3
+        // Keywords that are not Reserved could be used
+        return new NameObjectIdentifier(id, ObjectIdentifier.Quoting.UNQUOTED);
+      } else if (nextTokenType() == ID) {
+        // Code for RegexpRef specified at cc21/mdx.jj:854:3
+        consumeToken(ID);
+        // Code for CodeBlock specified at cc21/mdx.jj:855:3
+        return new NameObjectIdentifier(getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
+      } else if (nextTokenType() == ATSIGN) {
+        // Code for RegexpRef specified at cc21/mdx.jj:858:3
+        consumeToken(ATSIGN);
+        // Code for RegexpRef specified at cc21/mdx.jj:858:14
+        consumeToken(ID);
+        // Code for CodeBlock specified at cc21/mdx.jj:859:3
+        return new NameObjectIdentifier("@" + getToken(0).getImage(), ObjectIdentifier.Quoting.UNQUOTED);
+      } else if (nextTokenType() == QUOTED_ID) {
+        // Code for RegexpRef specified at cc21/mdx.jj:862:3
+        consumeToken(QUOTED_ID);
+        // Code for CodeBlock specified at cc21/mdx.jj:863:3
+        return new NameObjectIdentifier(stripQuotes(getToken(0).getImage(), "[", "]", "]]"),
+            ObjectIdentifier.Quoting.QUOTED);
+      } else {
+        pushOntoCallStack("parseNameObjectIdentifier", "cc21/mdx.jj", 849, 3);
+        throw new ParseException(this, parseNameObjectIdentifier_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException558 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize559);
+      if (parseNameObjectIdentifier23 != null) {
+        if (parseException558 == null) {
+          closeNodeScope(parseNameObjectIdentifier23, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:871:1
+  final public// for example '&foo&[1]&bar' in '[x].&foo&[1]&bar.[y]'
+  KeyObjectIdentifier parseKeyIdentifier() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseKeyIdentifier";
+    ASTparseKeyIdentifier parseKeyIdentifier24 = null;
+    if (buildTree) {
+      parseKeyIdentifier24 = new ASTparseKeyIdentifier();
+      openNodeScope(parseKeyIdentifier24);
+    }
+    List<NameObjectIdentifier> list = new ArrayList<NameObjectIdentifier>();
+    NameObjectIdentifier key;
+    ParseException parseException600 = null;
+    int callStackSize601 = parsingStack.size();
+    try {
+      // Code for OneOrMore specified at cc21/mdx.jj:877:3
+      while (true) {
+        // Code for NonTerminal specified at cc21/mdx.jj:878:5
+        pushOntoCallStack("parseKeyIdentifier", "cc21/mdx.jj", 878, 5);
+        try {
+          key = parseAmpId();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:879:5
+        list.add(key);
+        if (!(nextTokenType() == AMP_QUOTED_ID || nextTokenType == AMP_UNQUOTED_ID))
+          break;
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:883:3
+      return new KeyObjectIdentifier(list);
+    } catch (ParseException e) {
+      parseException600 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize601);
+      if (parseKeyIdentifier24 != null) {
+        if (parseException600 == null) {
+          closeNodeScope(parseKeyIdentifier24, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> parseAmpId_FIRST_SET = tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+
+  // cc21/mdx.jj:888:1
+  final public NameObjectIdentifier parseAmpId() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseAmpId";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:892:3
+    ASTparseAmpId parseAmpId25 = null;
+    if (buildTree) {
+      parseAmpId25 = new ASTparseAmpId();
+      openNodeScope(parseAmpId25);
+    }
+    ParseException parseException618 = null;
+    int callStackSize619 = parsingStack.size();
+    try {
+      if (nextTokenType() == AMP_QUOTED_ID) {
+        // Code for RegexpRef specified at cc21/mdx.jj:892:3
+        consumeToken(AMP_QUOTED_ID);
+        // Code for CodeBlock specified at cc21/mdx.jj:893:3
+        return new NameObjectIdentifier(stripQuotes(getToken(0).getImage(), "&[", "]", "]]"),
+            ObjectIdentifier.Quoting.QUOTED);
+      } else if (nextTokenType() == AMP_UNQUOTED_ID) {
+        // Code for RegexpRef specified at cc21/mdx.jj:899:3
+        consumeToken(AMP_UNQUOTED_ID);
+        // Code for CodeBlock specified at cc21/mdx.jj:900:3
+        return new NameObjectIdentifier(getToken(0).getImage().substring(1), ObjectIdentifier.Quoting.UNQUOTED);
+      } else {
+        pushOntoCallStack("parseAmpId", "cc21/mdx.jj", 892, 3);
+        throw new ParseException(this, parseAmpId_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException618 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize619);
+      if (parseAmpId25 != null) {
+        if (parseException618 == null) {
+          closeNodeScope(parseAmpId25, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:908:1
+  final public// a keyword that is not a RESERVED_WORD could be used as identifier
+  String parseKeyword() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseKeyword";
+    ASTparseKeyword parseKeyword26 = null;
+    if (buildTree) {
+      parseKeyword26 = new ASTparseKeyword();
+      openNodeScope(parseKeyword26);
+    }
+    ParseException parseException639 = null;
+    int callStackSize640 = parsingStack.size();
+    try {
+      if (nextTokenType() == DIMENSION) {
+        // Code for RegexpRef specified at cc21/mdx.jj:913:5
+        consumeToken(DIMENSION);
+      } else if (nextTokenType() == PROPERTIES) {
+        // Code for RegexpRef specified at cc21/mdx.jj:914:5
+        consumeToken(PROPERTIES);
+      } else {
+        pushOntoCallStack("parseKeyword", "cc21/mdx.jj", 913, 5);
+        throw new ParseException(this, first_set$mdx_jj$913$5, parsingStack);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:916:3
+      return getToken(0).getImage();
+    } catch (ParseException e) {
+      parseException639 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize640);
+      if (parseKeyword26 != null) {
+        if (parseException639 == null) {
+          closeNodeScope(parseKeyword26, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:921:1
+  final public CompoundId parseCompoundId() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseCompoundId";
+    ASTparseCompoundId parseCompoundId27 = null;
+    if (buildTree) {
+      parseCompoundId27 = new ASTparseCompoundId();
+      openNodeScope(parseCompoundId27);
+    }
+    CompoundId compoundId;
+    List<ObjectIdentifier> list = new ArrayList<ObjectIdentifier>();
+    ObjectIdentifier s;
+    ParseException parseException661 = null;
+    int callStackSize662 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:928:3
+      pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 928, 3);
+      try {
+        s = parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:929:3
+      list.add(s);
+      // Code for ZeroOrMore specified at cc21/mdx.jj:932:3
+      while (true) {
+        if (!(scan$mdx_jj$933$5()))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:934:5
+        consumeToken(DOT);
+        // Code for NonTerminal specified at cc21/mdx.jj:934:13
+        pushOntoCallStack("parseCompoundId", "cc21/mdx.jj", 934, 13);
+        try {
+          s = parseIdentifier();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:935:5
+        list.add(s);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:939:3
+      return new CompoundId(list);
+    } catch (ParseException e) {
+      parseException661 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize662);
+      if (parseCompoundId27 != null) {
+        if (parseException661 == null) {
+          closeNodeScope(parseCompoundId27, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:946:1
+  final public// ----------------------------------------------------------------------------
+  // Expressions
+  Expression unaliasedExpression() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "unaliasedExpression";
+    ASTunaliasedExpression unaliasedExpression28 = null;
+    if (buildTree) {
+      unaliasedExpression28 = new ASTunaliasedExpression();
+      openNodeScope(unaliasedExpression28);
+    }
+    Expression x, y;
+    ParseException parseException688 = null;
+    int callStackSize689 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:951:3
+      pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 951, 3);
+      try {
+        x = term5();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:952:3
+      while (true) {
+        // Code for ExpansionChoice specified at cc21/mdx.jj:953:5
+        if (nextTokenType() == OR) {
+          // Code for RegexpRef specified at cc21/mdx.jj:953:5
+          consumeToken(OR);
+          // Code for NonTerminal specified at cc21/mdx.jj:953:12
+          pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 953, 12);
+          try {
+            y = term5();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:954:5
+          x = new CallExpression("OR", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == XOR) {
+          // Code for RegexpRef specified at cc21/mdx.jj:960:5
+          consumeToken(XOR);
+          // Code for NonTerminal specified at cc21/mdx.jj:960:13
+          pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 960, 13);
+          try {
+            y = term5();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:961:5
+          x = new CallExpression("XOR", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == COLON) {
+          // Code for RegexpRef specified at cc21/mdx.jj:969:5
+          consumeToken(COLON);
+          // Code for NonTerminal specified at cc21/mdx.jj:969:15
+          pushOntoCallStack("unaliasedExpression", "cc21/mdx.jj", 969, 15);
+          try {
+            y = term5();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:970:5
+          x = new CallExpression(":", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else {
+          break;
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:977:3
+      return x;
+    } catch (ParseException e) {
+      parseException688 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize689);
+      if (unaliasedExpression28 != null) {
+        if (parseException688 == null) {
+          closeNodeScope(unaliasedExpression28, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:982:1
+  final public Expression term5() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "term5";
+    ASTterm5 term529 = null;
+    if (buildTree) {
+      term529 = new ASTterm5();
+      openNodeScope(term529);
+    }
+    Expression x, y;
+    ParseException parseException739 = null;
+    int callStackSize740 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:987:3
+      pushOntoCallStack("term5", "cc21/mdx.jj", 987, 3);
+      try {
+        x = term4();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:988:3
+      while (true) {
+        if (!(nextTokenType() == AND))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:989:5
+        consumeToken(AND);
+        // Code for NonTerminal specified at cc21/mdx.jj:989:13
+        pushOntoCallStack("term5", "cc21/mdx.jj", 989, 13);
+        try {
+          y = term4();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:990:5
+        x = new CallExpression("AND", CallExpression.Type.Term_Infix, List.of(x, y));
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:997:3
+      return x;
+    } catch (ParseException e) {
+      parseException739 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize740);
+      if (term529 != null) {
+        if (parseException739 == null) {
+          closeNodeScope(term529, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> term4_FIRST_SET = term4_FIRST_SET_init();
+
+  static private EnumSet<TokenType> term4_FIRST_SET_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  // cc21/mdx.jj:1002:1
+  final public Expression term4() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "term4";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:1007:3
+    ASTterm4 term430 = null;
+    if (buildTree) {
+      term430 = new ASTterm4();
+      openNodeScope(term430);
+    }
+    Expression x;
+    ParseException parseException763 = null;
+    int callStackSize764 = parsingStack.size();
+    try {
+      if (first_set$mdx_jj$1007$3.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1007:3
+        pushOntoCallStack("term4", "cc21/mdx.jj", 1007, 3);
+        try {
+          x = term3();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1008:3
+        return x;
+      } else if (nextTokenType() == NOT) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1011:3
+        consumeToken(NOT);
+        // Code for NonTerminal specified at cc21/mdx.jj:1011:11
+        pushOntoCallStack("term4", "cc21/mdx.jj", 1011, 11);
+        try {
+          x = term4();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1012:3
+        return new CallExpression("NOT", CallExpression.Type.Term_Prefix, List.of(x));
+      } else {
+        pushOntoCallStack("term4", "cc21/mdx.jj", 1007, 3);
+        throw new ParseException(this, term4_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException763 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize764);
+      if (term430 != null) {
+        if (parseException763 == null) {
+          closeNodeScope(term430, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1020:1
+  final public Expression term3() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "term3";
+    ASTterm3 term331 = null;
+    if (buildTree) {
+      term331 = new ASTterm3();
+      openNodeScope(term331);
+    }
+    Expression x, y;
+    Token op;
+    ParseException parseException787 = null;
+    int callStackSize788 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1026:3
+      pushOntoCallStack("term3", "cc21/mdx.jj", 1026, 3);
+      try {
+        x = term2();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1027:3
+      while (true) {
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1029:5
+        if (first_set$mdx_jj$1029$5.contains(nextTokenType())) {
+          if (nextTokenType() == EQ) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1030:7
+            consumeToken(EQ);
+            // Code for CodeBlock specified at cc21/mdx.jj:1031:7
+            op = getToken(0);
+          } else if (nextTokenType() == NE) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1034:7
+            consumeToken(NE);
+            // Code for CodeBlock specified at cc21/mdx.jj:1035:7
+            op = getToken(0);
+          } else if (nextTokenType() == LT) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1038:7
+            consumeToken(LT);
+            // Code for CodeBlock specified at cc21/mdx.jj:1039:7
+            op = getToken(0);
+          } else if (nextTokenType() == GT) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1042:7
+            consumeToken(GT);
+            // Code for CodeBlock specified at cc21/mdx.jj:1043:7
+            op = getToken(0);
+          } else if (nextTokenType() == LE) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1046:7
+            consumeToken(LE);
+            // Code for CodeBlock specified at cc21/mdx.jj:1047:7
+            op = getToken(0);
+          } else if (nextTokenType() == GE) {
+            // Code for RegexpRef specified at cc21/mdx.jj:1050:7
+            consumeToken(GE);
+            // Code for CodeBlock specified at cc21/mdx.jj:1051:7
+            op = getToken(0);
+          } else {
+            pushOntoCallStack("term3", "cc21/mdx.jj", 1030, 7);
+            throw new ParseException(this, first_set$mdx_jj$1030$7, parsingStack);
+          }
+          // Code for NonTerminal specified at cc21/mdx.jj:1055:5
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1055, 5);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1056:5
+          x = new CallExpression(op.getImage(), CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (scan$mdx_jj$1065$5()) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1066:5
+          consumeToken(IS);
+          // Code for RegexpRef specified at cc21/mdx.jj:1066:12
+          consumeToken(NULL);
+          // Code for CodeBlock specified at cc21/mdx.jj:1067:5
+          x = new CallExpression("IS NULL", CallExpression.Type.Term_Postfix, List.of(x));
+        } else if (scan$mdx_jj$1075$5()) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1076:5
+          consumeToken(IS);
+          // Code for NonTerminal specified at cc21/mdx.jj:1076:12
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1076, 12);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1077:5
+          x = new CallExpression("IS", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == IS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1083:5
+          consumeToken(IS);
+          // Code for RegexpRef specified at cc21/mdx.jj:1083:12
+          consumeToken(EMPTY);
+          // Code for CodeBlock specified at cc21/mdx.jj:1084:5
+          x = new CallExpression("IS EMPTY", CallExpression.Type.Term_Postfix, List.of(x));
+        } else if (nextTokenType() == MATCHES) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1088:5
+          consumeToken(MATCHES);
+          // Code for NonTerminal specified at cc21/mdx.jj:1088:17
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1088, 17);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1089:5
+          x = new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (scan$mdx_jj$1095$5()) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1096:5
+          consumeToken(NOT);
+          // Code for RegexpRef specified at cc21/mdx.jj:1096:13
+          consumeToken(MATCHES);
+          // Code for NonTerminal specified at cc21/mdx.jj:1096:25
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1096, 25);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1097:5
+          x = new CallExpression("NOT", CallExpression.Type.Term_Prefix,
+              List.of(new CallExpression("MATCHES", CallExpression.Type.Term_Infix, List.of(x, y))));
+        } else if (nextTokenType() == IN) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1108:5
+          consumeToken(IN);
+          // Code for NonTerminal specified at cc21/mdx.jj:1108:12
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1108, 12);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1109:5
+          x = new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == NOT) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1115:5
+          consumeToken(NOT);
+          // Code for RegexpRef specified at cc21/mdx.jj:1115:13
+          consumeToken(IN);
+          // Code for NonTerminal specified at cc21/mdx.jj:1115:20
+          pushOntoCallStack("term3", "cc21/mdx.jj", 1115, 20);
+          try {
+            y = term2();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1116:5
+          x = new CallExpression("NOT", CallExpression.Type.Term_Prefix,
+              List.of(new CallExpression("IN", CallExpression.Type.Term_Infix, List.of(x, y))));
+        } else {
+          break;
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1128:3
+      return x;
+    } catch (ParseException e) {
+      parseException787 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize788);
+      if (term331 != null) {
+        if (parseException787 == null) {
+          closeNodeScope(term331, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1133:1
+  final public Expression term2() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "term2";
+    ASTterm2 term232 = null;
+    if (buildTree) {
+      term232 = new ASTterm2();
+      openNodeScope(term232);
+    }
+    Expression x, y;
+    ParseException parseException959 = null;
+    int callStackSize960 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1138:3
+      pushOntoCallStack("term2", "cc21/mdx.jj", 1138, 3);
+      try {
+        x = term();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1139:3
+      while (true) {
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1140:5
+        if (nextTokenType() == PLUS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1140:5
+          consumeToken(PLUS);
+          // Code for NonTerminal specified at cc21/mdx.jj:1140:14
+          pushOntoCallStack("term2", "cc21/mdx.jj", 1140, 14);
+          try {
+            y = term();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1141:5
+          x = new CallExpression("+", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == MINUS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1147:5
+          consumeToken(MINUS);
+          // Code for NonTerminal specified at cc21/mdx.jj:1147:15
+          pushOntoCallStack("term2", "cc21/mdx.jj", 1147, 15);
+          try {
+            y = term();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1148:5
+          x = new CallExpression("-", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == CONCAT) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1154:5
+          consumeToken(CONCAT);
+          // Code for NonTerminal specified at cc21/mdx.jj:1154:16
+          pushOntoCallStack("term2", "cc21/mdx.jj", 1154, 16);
+          try {
+            y = term();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1155:5
+          x = new CallExpression("||", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else {
+          break;
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1162:3
+      return x;
+    } catch (ParseException e) {
+      parseException959 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize960);
+      if (term232 != null) {
+        if (parseException959 == null) {
+          closeNodeScope(term232, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1167:1
+  final public Expression term() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "term";
+    ASTterm term33 = null;
+    if (buildTree) {
+      term33 = new ASTterm();
+      openNodeScope(term33);
+    }
+    Expression x, y;
+    ParseException parseException1010 = null;
+    int callStackSize1011 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1172:3
+      pushOntoCallStack("term", "cc21/mdx.jj", 1172, 3);
+      try {
+        x = factor();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
+      while (true) {
+        // Code for ExpansionChoice specified at cc21/mdx.jj:1174:5
+        if (nextTokenType() == ASTERISK) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1174:5
+          consumeToken(ASTERISK);
+          // Code for NonTerminal specified at cc21/mdx.jj:1174:18
+          pushOntoCallStack("term", "cc21/mdx.jj", 1174, 18);
+          try {
+            y = factor();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1175:5
+          x = new CallExpression("*", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else if (nextTokenType() == SOLIDUS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1181:5
+          consumeToken(SOLIDUS);
+          // Code for NonTerminal specified at cc21/mdx.jj:1181:17
+          pushOntoCallStack("term", "cc21/mdx.jj", 1181, 17);
+          try {
+            y = factor();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1182:5
+          x = new CallExpression("/", CallExpression.Type.Term_Infix, List.of(x, y));
+        } else {
+          break;
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1189:3
+      return x;
+    } catch (ParseException e) {
+      parseException1010 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1011);
+      if (term33 != null) {
+        if (parseException1010 == null) {
+          closeNodeScope(term33, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> factor_FIRST_SET = factor_FIRST_SET_init();
+
+  static private EnumSet<TokenType> factor_FIRST_SET_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  // cc21/mdx.jj:1194:1
+  final public Expression factor() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "factor";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:1199:3
+    ASTfactor factor34 = null;
+    if (buildTree) {
+      factor34 = new ASTfactor();
+      openNodeScope(factor34);
+    }
+    Expression p;
+    ParseException parseException1049 = null;
+    int callStackSize1050 = parsingStack.size();
+    try {
+      if (first_set$mdx_jj$1199$3.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1199:3
+        pushOntoCallStack("factor", "cc21/mdx.jj", 1199, 3);
+        try {
+          p = primary();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1200:3
+        return p;
+      } else if (nextTokenType() == PLUS) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1203:3
+        consumeToken(PLUS);
+        // Code for NonTerminal specified at cc21/mdx.jj:1203:12
+        pushOntoCallStack("factor", "cc21/mdx.jj", 1203, 12);
+        try {
+          p = primary();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1204:3
+        return p;
+      } else if (nextTokenType() == MINUS) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1207:3
+        consumeToken(MINUS);
+        // Code for NonTerminal specified at cc21/mdx.jj:1207:13
+        pushOntoCallStack("factor", "cc21/mdx.jj", 1207, 13);
+        try {
+          p = primary();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1208:3
+        return new CallExpression("-", CallExpression.Type.Term_Prefix, List.of(p));
+      } else if (nextTokenType() == EXISTING) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1214:3
+        consumeToken(EXISTING);
+        // Code for NonTerminal specified at cc21/mdx.jj:1214:16
+        pushOntoCallStack("factor", "cc21/mdx.jj", 1214, 16);
+        try {
+          p = primary();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1215:3
+        return new CallExpression("Existing", CallExpression.Type.Term_Prefix, List.of(p));
+      } else {
+        pushOntoCallStack("factor", "cc21/mdx.jj", 1199, 3);
+        throw new ParseException(this, factor_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException1049 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1050);
+      if (factor34 != null) {
+        if (parseException1049 == null) {
+          closeNodeScope(factor34, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1223:1
+  final public Expression primary() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "primary";
+    ASTprimary primary35 = null;
+    if (buildTree) {
+      primary35 = new ASTprimary();
+      openNodeScope(primary35);
+    }
+    Expression expression;
+    ParseException parseException1097 = null;
+    int callStackSize1098 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1228:3
+      pushOntoCallStack("primary", "cc21/mdx.jj", 1228, 3);
+      try {
+        expression = atom();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1229:3
+      while (true) {
+        if (!(nextTokenType() == DOT))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:1230:5
+        consumeToken(DOT);
+        // Code for NonTerminal specified at cc21/mdx.jj:1230:13
+        pushOntoCallStack("primary", "cc21/mdx.jj", 1230, 13);
+        try {
+          expression = objectIdentifierOrFuncall(expression);
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1232:3
+      return expression;
+    } catch (ParseException e) {
+      parseException1097 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1098);
+      if (primary35 != null) {
+        if (parseException1097 == null) {
+          closeNodeScope(primary35, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1237:1
+  final public Expression objectIdentifierOrFuncall(Expression left) {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "objectIdentifierOrFuncall";
+    ASTobjectIdentifierOrFuncall objectIdentifierOrFuncall36 = null;
+    if (buildTree) {
+      objectIdentifierOrFuncall36 = new ASTobjectIdentifierOrFuncall();
+      openNodeScope(objectIdentifierOrFuncall36);
+    }
+    ObjectIdentifier objectIdentifier;
+    List<Expression> argList = null;
+    ParseException parseException1118 = null;
+    int callStackSize1119 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1243:3
+      pushOntoCallStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1243, 3);
+      try {
+        objectIdentifier = parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1244:3
+      if (nextTokenType() == LPAREN) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1245:5
+        consumeToken(LPAREN);
+        if (scan$mdx_jj$1247$7()) {
+          // Code for CodeBlock specified at cc21/mdx.jj:1248:7
+          argList = Collections.emptyList();
+        } else {
+          // Code for NonTerminal specified at cc21/mdx.jj:1252:7
+          pushOntoCallStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1252, 7);
+          try {
+            argList = expOrEmptyList();
+          } finally {
+            popCallStack();
+          }
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1254:5
+        consumeToken(RPAREN);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1256:3
+      return createCall(left, objectIdentifier, argList);
+    } catch (ParseException e) {
+      parseException1118 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1119);
+      if (objectIdentifierOrFuncall36 != null) {
+        if (parseException1118 == null) {
+          closeNodeScope(objectIdentifierOrFuncall36, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> parseNumericLiteral_FIRST_SET = tokenTypeSet(UNSIGNED_INTEGER_LITERAL,
+      APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
+
+  // cc21/mdx.jj:1261:1
+  final public NumericLiteral parseNumericLiteral() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseNumericLiteral";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:1265:3
+    ASTparseNumericLiteral parseNumericLiteral37 = null;
+    if (buildTree) {
+      parseNumericLiteral37 = new ASTparseNumericLiteral();
+      openNodeScope(parseNumericLiteral37);
+    }
+    ParseException parseException1155 = null;
+    int callStackSize1156 = parsingStack.size();
+    try {
+      if (nextTokenType() == DECIMAL_NUMERIC_LITERAL) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1265:3
+        consumeToken(DECIMAL_NUMERIC_LITERAL);
+        // Code for CodeBlock specified at cc21/mdx.jj:1266:3
+        return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
+      } else if (nextTokenType() == UNSIGNED_INTEGER_LITERAL) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1269:3
+        consumeToken(UNSIGNED_INTEGER_LITERAL);
+        // Code for CodeBlock specified at cc21/mdx.jj:1270:3
+        return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
+      } else if (nextTokenType() == APPROX_NUMERIC_LITERAL) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1273:3
+        consumeToken(APPROX_NUMERIC_LITERAL);
+        // Code for CodeBlock specified at cc21/mdx.jj:1274:3
+        return new NumericLiteral(new BigDecimal(getToken(0).getImage()));
+      } else {
+        pushOntoCallStack("parseNumericLiteral", "cc21/mdx.jj", 1265, 3);
+        throw new ParseException(this, parseNumericLiteral_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException1155 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1156);
+      if (parseNumericLiteral37 != null) {
+        if (parseException1155 == null) {
+          closeNodeScope(parseNumericLiteral37, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> atom_FIRST_SET = atom_FIRST_SET_init();
+
+  static private EnumSet<TokenType> atom_FIRST_SET_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID,
+        UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  // cc21/mdx.jj:1279:1
+  final public Expression atom() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "atom";
+    // Code for ExpansionChoice specified at cc21/mdx.jj:1286:3
+    ASTatom atom38 = null;
+    if (buildTree) {
+      atom38 = new ASTatom();
+      openNodeScope(atom38);
+    }
+    Expression expression;
+    NameObjectIdentifier nameObjectIdentifier;
+    List<Expression> expressions;
+    ParseException parseException1185 = null;
+    int callStackSize1186 = parsingStack.size();
+    try {
+      if (nextTokenType() == SINGLE_QUOTED_STRING) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1286:3
+        consumeToken(SINGLE_QUOTED_STRING);
+        // Code for CodeBlock specified at cc21/mdx.jj:1287:3
+        return new StringLiteral(stripQuotes(getToken(0).getImage(), "'", "'", "''"));
+      } else if (nextTokenType() == DOUBLE_QUOTED_STRING) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1290:3
+        consumeToken(DOUBLE_QUOTED_STRING);
+        // Code for CodeBlock specified at cc21/mdx.jj:1291:3
+        return new StringLiteral(stripQuotes(getToken(0).getImage(), '"' + "", '"' + "", '"' + "" + '"'));
+      } else if (nextTokenType() == UNSIGNED_INTEGER_LITERAL || nextTokenType == APPROX_NUMERIC_LITERAL
+          || nextTokenType == DECIMAL_NUMERIC_LITERAL) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1294:3
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1294, 3);
+        try {
+          expression = parseNumericLiteral();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1295:3
+        return expression;
+      } else if (nextTokenType() == NULL) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1298:3
+        consumeToken(NULL);
+        // Code for CodeBlock specified at cc21/mdx.jj:1299:3
+        return NullLiteral.SINGLETON;
+      } else if (nextTokenType() == CAST) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1302:3
+        consumeToken(CAST);
+        // Code for RegexpRef specified at cc21/mdx.jj:1302:12
+        consumeToken(LPAREN);
+        // Code for NonTerminal specified at cc21/mdx.jj:1302:23
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1302, 23);
+        try {
+          expression = unaliasedExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1303:3
+        consumeToken(AS);
+        // Code for NonTerminal specified at cc21/mdx.jj:1303:10
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1303, 10);
+        try {
+          nameObjectIdentifier = parseNameObjectIdentifier();
+        } finally {
+          popCallStack();
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1303:61
+        consumeToken(RPAREN);
+        // Code for CodeBlock specified at cc21/mdx.jj:1304:3
+        return new CallExpression("CAST", CallExpression.Type.Cast,
+            List.of(expression, new SymbolLiteral(nameObjectIdentifier.name())));
+      } else if (nextTokenType() == LPAREN) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1312:3
+        consumeToken(LPAREN);
+        // Code for NonTerminal specified at cc21/mdx.jj:1312:14
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1312, 14);
+        try {
+          expressions = expList();
+        } finally {
+          popCallStack();
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1312:38
+        consumeToken(RPAREN);
+        // Code for CodeBlock specified at cc21/mdx.jj:1313:3
+        // Whereas ([Sales],[Time]) and () are tuples, ([Sales]) and (5)
+        // are just expressions.
+        return new CallExpression("()", CallExpression.Type.Parentheses, expressions);
+      } else if (nextTokenType() == LBRACE) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1321:3
+        consumeToken(LBRACE);
+        if (scan$mdx_jj$1323$5()) {
+          // Code for CodeBlock specified at cc21/mdx.jj:1324:5
+          expressions = Collections.emptyList();
+        } else if (first_set$mdx_jj$1328$5.contains(nextTokenType())) {
+          // Code for NonTerminal specified at cc21/mdx.jj:1328:5
+          pushOntoCallStack("atom", "cc21/mdx.jj", 1328, 5);
+          try {
+            expressions = expList();
+          } finally {
+            popCallStack();
+          }
+        } else {
+          pushOntoCallStack("atom", "cc21/mdx.jj", 1323, 5);
+          throw new ParseException(this, first_set$mdx_jj$1323$5, parsingStack);
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1330:3
+        consumeToken(RBRACE);
+        // Code for CodeBlock specified at cc21/mdx.jj:1331:3
+        return new CallExpression("{}", CallExpression.Type.Braces, expressions);
+      } else if (nextTokenType() == CASE) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1335:3
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1335, 3);
+        try {
+          expression = caseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1336:3
+        return expression;
+      } else if (first_set$mdx_jj$1342$3.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1342:3
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1342, 3);
+        try {
+          // Function call "foo(a, b)" or "whiz!bang!foo(a, b)".
+          // Properties "x.PROP" and methods "exp.meth(a)" are in primary().
+          nameObjectIdentifier = parseNameObjectIdentifier();
+        } finally {
+          popCallStack();
+        }
+        // Code for ZeroOrMore specified at cc21/mdx.jj:1343:3
+        while (true) {
+          if (!(nextTokenType() == BANG))
+            break;
+          // Code for RegexpRef specified at cc21/mdx.jj:1344:5
+          consumeToken(BANG);
+          // Code for NonTerminal specified at cc21/mdx.jj:1344:14
+          pushOntoCallStack("atom", "cc21/mdx.jj", 1344, 14);
+          try {
+            nameObjectIdentifier = parseNameObjectIdentifier();
+          } finally {
+            popCallStack();
+          }
+          // Code for CodeBlock specified at cc21/mdx.jj:1345:5
+          // We support the syntax for qualifying function names with package
+          // names separated by bang ('!'), e.g. 'whiz!bang!foo(a, b)'
+          // but currently we ignore the qualifiers. The previous example is
+          // equivalent to 'foo(a, b)'.
+        }
+        if (nextTokenType() == LPAREN) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1353:5
+          consumeToken(LPAREN);
+          if (scan$mdx_jj$1355$7()) {
+            // Code for CodeBlock specified at cc21/mdx.jj:1356:7
+            expressions = Collections.emptyList();
+          } else {
+            // Code for NonTerminal specified at cc21/mdx.jj:1360:7
+            pushOntoCallStack("atom", "cc21/mdx.jj", 1360, 7);
+            try {
+              expressions = expOrEmptyList();
+            } finally {
+              popCallStack();
+            }
+          }
+          // Code for RegexpRef specified at cc21/mdx.jj:1362:5
+          consumeToken(RPAREN);
+        } else {
+          // Code for CodeBlock specified at cc21/mdx.jj:1364:16
+          expressions = null;
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1368:3
+        return createCall(null, nameObjectIdentifier, expressions);
+      } else {
+        pushOntoCallStack("atom", "cc21/mdx.jj", 1286, 3);
+        throw new ParseException(this, atom_FIRST_SET, parsingStack);
+      }
+    } catch (ParseException e) {
+      parseException1185 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1186);
+      if (atom38 != null) {
+        if (parseException1185 == null) {
+          closeNodeScope(atom38, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1373:1
+  final public Expression caseExpression() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "caseExpression";
+    ASTcaseExpression caseExpression39 = null;
+    if (buildTree) {
+      caseExpression39 = new ASTcaseExpression();
+      openNodeScope(caseExpression39);
+    }
+    Expression expression, expression2;
+    List<Expression> expressions = new ArrayList<Expression>();
+    boolean match = false;
+    ParseException parseException1359 = null;
+    int callStackSize1360 = parsingStack.size();
+    try {
+      // Code for RegexpRef specified at cc21/mdx.jj:1380:3
+      consumeToken(CASE);
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1381:3
+      if (first_set$mdx_jj$1382$5.contains(nextTokenType())) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1382:5
+        pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1382, 5);
+        try {
+          expression = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1383:5
+        match = true;
+        expressions.add(expression);
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1388:3
+      while (true) {
+        if (!(nextTokenType() == WHEN))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:1389:5
+        consumeToken(WHEN);
+        // Code for NonTerminal specified at cc21/mdx.jj:1389:14
+        pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1389, 14);
+        try {
+          expression = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for RegexpRef specified at cc21/mdx.jj:1389:45
+        consumeToken(THEN);
+        // Code for NonTerminal specified at cc21/mdx.jj:1389:54
+        pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1389, 54);
+        try {
+          expression2 = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1390:5
+        expressions.add(expression);
+        expressions.add(expression2);
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1395:3
+      if (nextTokenType() == ELSE) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1396:5
+        consumeToken(ELSE);
+        // Code for NonTerminal specified at cc21/mdx.jj:1396:14
+        pushOntoCallStack("caseExpression", "cc21/mdx.jj", 1396, 14);
+        try {
+          expression = parseExpression();
+        } finally {
+          popCallStack();
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1397:5
+        expressions.add(expression);
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:1401:3
+      consumeToken(END);
+      // Code for CodeBlock specified at cc21/mdx.jj:1402:3
+      if (match) {
+        return new CallExpression("_CaseMatch", CallExpression.Type.Term_Case, expressions);
+      } else {
+        return new CallExpression("_CaseTest", CallExpression.Type.Term_Case, expressions);
+      }
+    } catch (ParseException e) {
+      parseException1359 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1360);
+      if (caseExpression39 != null) {
+        if (parseException1359 == null) {
+          closeNodeScope(caseExpression39, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1416:1
+  final public CellProperty parseCellProperty() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseCellProperty";
+    ASTparseCellProperty parseCellProperty40 = null;
+    if (buildTree) {
+      parseCellProperty40 = new ASTparseCellProperty();
+      openNodeScope(parseCellProperty40);
+    }
+    ParseException parseException1419 = null;
+    int callStackSize1420 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1419:3
+      pushOntoCallStack("parseCellProperty", "cc21/mdx.jj", 1419, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1420:3
+      return new CellProperty(List.of());
+    } catch (ParseException e) {
+      parseException1419 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1420);
+      if (parseCellProperty40 != null) {
+        if (parseException1419 == null) {
+          closeNodeScope(parseCellProperty40, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1425:1
+  final public CreateSetBodyClause parseCreateSetBodyClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseCreateSetBodyClause";
+    ASTparseCreateSetBodyClause parseCreateSetBodyClause41 = null;
+    if (buildTree) {
+      parseCreateSetBodyClause41 = new ASTparseCreateSetBodyClause();
+      openNodeScope(parseCreateSetBodyClause41);
+    }
+    ParseException parseException1428 = null;
+    int callStackSize1429 = parsingStack.size();
+    try {
+      // Code for NonTerminal specified at cc21/mdx.jj:1428:3
+      pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1428, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:1428:21
+      consumeToken(AS);
+      // Code for NonTerminal specified at cc21/mdx.jj:1428:28
+      pushOntoCallStack("parseCreateSetBodyClause", "cc21/mdx.jj", 1428, 28);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1429:3
+      return new CreateSetBodyClause();
+    } catch (ParseException e) {
+      parseException1428 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1429);
+      if (parseCreateSetBodyClause41 != null) {
+        if (parseException1428 == null) {
+          closeNodeScope(parseCreateSetBodyClause41, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1434:1
+  final public SelectDimensionPropertyListClause parseSelectDimensionPropertyListClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectDimensionPropertyListClause";
+    ASTparseSelectDimensionPropertyListClause parseSelectDimensionPropertyListClause42 = null;
+    if (buildTree) {
+      parseSelectDimensionPropertyListClause42 = new ASTparseSelectDimensionPropertyListClause();
+      openNodeScope(parseSelectDimensionPropertyListClause42);
+    }
+    ParseException parseException1443 = null;
+    int callStackSize1444 = parsingStack.size();
+    try {
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1437:3
+      if (nextTokenType() == DIMENSION) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1437:4
+        consumeToken(DIMENSION);
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:1437:20
+      consumeToken(PROPERTIES);
+      // Code for NonTerminal specified at cc21/mdx.jj:1438:3
+      pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1438, 3);
+      try {
+        parseIdentifier();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrMore specified at cc21/mdx.jj:1439:3
+      while (true) {
+        if (!(nextTokenType() == COMMA))
+          break;
+        // Code for RegexpRef specified at cc21/mdx.jj:1440:5
+        consumeToken(COMMA);
+        // Code for NonTerminal specified at cc21/mdx.jj:1440:15
+        pushOntoCallStack("parseSelectDimensionPropertyListClause", "cc21/mdx.jj", 1440, 15);
+        try {
+          parseIdentifier();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1442:3
+      return new SelectDimensionPropertyListClause();
+    } catch (ParseException e) {
+      parseException1443 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1444);
+      if (parseSelectDimensionPropertyListClause42 != null) {
+        if (parseException1443 == null) {
+          closeNodeScope(parseSelectDimensionPropertyListClause42, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  // cc21/mdx.jj:1448:1
+  final public// <SelectQueryAxisClause> ::= [NON EMPTY] <set> [<dimProps>] ON <axis_name>
+  SelectQueryAxisClause parseSelectQueryAxisClause() {
+    if (cancelled)
+      throw new CancellationException();
+    String prevProduction = currentlyParsedProduction;
+    this.currentlyParsedProduction = "parseSelectQueryAxisClause";
+    ASTparseSelectQueryAxisClause parseSelectQueryAxisClause43 = null;
+    if (buildTree) {
+      parseSelectQueryAxisClause43 = new ASTparseSelectQueryAxisClause();
+      openNodeScope(parseSelectQueryAxisClause43);
+    }
+    boolean nonEmpty = false;
+    SelectDimensionPropertyListClause selectDimensionPropertyListClause = null;
+    Expression expression;
+    int n;
+    Axis axis;
+    ParseException parseException1476 = null;
+    int callStackSize1477 = parsingStack.size();
+    try {
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1457:3
+      if (nextTokenType() == NON) {
+        // Code for RegexpRef specified at cc21/mdx.jj:1457:4
+        consumeToken(NON);
+        // Code for RegexpRef specified at cc21/mdx.jj:1457:12
+        consumeToken(EMPTY);
+        // Code for CodeBlock specified at cc21/mdx.jj:1458:3
+        nonEmpty = true;
+      }
+      // Code for NonTerminal specified at cc21/mdx.jj:1462:3
+      pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1462, 3);
+      try {
+        expression = parseExpression();
+      } finally {
+        popCallStack();
+      }
+      // Code for ZeroOrOne specified at cc21/mdx.jj:1463:3
+      if (nextTokenType() == DIMENSION || nextTokenType == PROPERTIES) {
+        // Code for NonTerminal specified at cc21/mdx.jj:1464:5
+        pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1464, 5);
+        try {
+          selectDimensionPropertyListClause = parseSelectDimensionPropertyListClause();
+        } finally {
+          popCallStack();
+        }
+      }
+      // Code for RegexpRef specified at cc21/mdx.jj:1466:3
+      consumeToken(ON);
+      if (nextTokenType() == AXIS || nextTokenType == UNSIGNED_INTEGER_LITERAL) {
+        if (nextTokenType() == UNSIGNED_INTEGER_LITERAL) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1469:7
+          consumeToken(UNSIGNED_INTEGER_LITERAL);
+          // Code for CodeBlock specified at cc21/mdx.jj:1470:7
+          n = Integer.valueOf(getToken(0).getImage()).intValue();
+        } else if (nextTokenType() == AXIS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1473:7
+          consumeToken(AXIS);
+          // Code for RegexpRef specified at cc21/mdx.jj:1473:16
+          consumeToken(LPAREN);
+          // Code for RegexpRef specified at cc21/mdx.jj:1473:27
+          consumeToken(UNSIGNED_INTEGER_LITERAL);
+          // Code for CodeBlock specified at cc21/mdx.jj:1474:7
+          n = Integer.valueOf(getToken(0).getImage()).intValue();
+          // Code for RegexpRef specified at cc21/mdx.jj:1477:7
+          consumeToken(RPAREN);
+        } else {
+          pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1469, 7);
+          throw new ParseException(this, first_set$mdx_jj$1469$7, parsingStack);
+        }
+        // Code for CodeBlock specified at cc21/mdx.jj:1479:5
+        if (n < 0) {
+          throw new IllegalArgumentException("Only axis numbers >= 0 allowed.");
+        } else {
+          axis = Axis.create(n);
+        }
+      } else if (first_set$mdx_jj$1490$5.contains(nextTokenType())) {
+        if (nextTokenType() == COLUMNS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1491:7
+          consumeToken(COLUMNS);
+          // Code for CodeBlock specified at cc21/mdx.jj:1492:7
+          axis = Axis.COLUMNS;
+        } else if (nextTokenType() == ROWS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1495:7
+          consumeToken(ROWS);
+          // Code for CodeBlock specified at cc21/mdx.jj:1496:7
+          axis = Axis.ROWS;
+        } else if (nextTokenType() == PAGES) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1499:7
+          consumeToken(PAGES);
+          // Code for CodeBlock specified at cc21/mdx.jj:1500:7
+          axis = Axis.PAGES;
+        } else if (nextTokenType() == SECTIONS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1503:7
+          consumeToken(SECTIONS);
+          // Code for CodeBlock specified at cc21/mdx.jj:1504:7
+          axis = Axis.SECTIONS;
+        } else if (nextTokenType() == CHAPTERS) {
+          // Code for RegexpRef specified at cc21/mdx.jj:1507:7
+          consumeToken(CHAPTERS);
+          // Code for CodeBlock specified at cc21/mdx.jj:1508:7
+          axis = Axis.CHAPTERS;
+        } else {
+          pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1491, 7);
+          throw new ParseException(this, first_set$mdx_jj$1491$7, parsingStack);
+        }
+      } else {
+        pushOntoCallStack("parseSelectQueryAxisClause", "cc21/mdx.jj", 1468, 5);
+        throw new ParseException(this, first_set$mdx_jj$1468$5, parsingStack);
+      }
+      // Code for CodeBlock specified at cc21/mdx.jj:1513:3
+      return new SelectQueryAxisClause(nonEmpty, expression, axis, selectDimensionPropertyListClause);
+    } catch (ParseException e) {
+      parseException1476 = e;
+      throw e;
+    } finally {
+      restoreCallStack(callStackSize1477);
+      if (parseSelectQueryAxisClause43 != null) {
+        if (parseException1476 == null) {
+          closeNodeScope(parseSelectQueryAxisClause43, nodeArity() > 1);
+        } else {
+          clearNodeScope();
+        }
+      }
+      this.currentlyParsedProduction = prevProduction;
+    }
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$547$5 = tokenTypeSet(MEMBER, SET, CALCULATED);
+  static private final EnumSet<TokenType> first_set$mdx_jj$575$5 = first_set$mdx_jj$575$5_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$575$5_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS,
+        ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL,
+        SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$599$5$ = tokenTypeSet(DIMENSION, PROPERTIES, LPAREN, ATSIGN,
+      ID, QUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$599$5 = tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID,
+      QUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$631$7 = first_set$mdx_jj$631$7_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$631$7_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NON, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS,
+        ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL,
+        SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$760$3 = first_set$mdx_jj$760$3_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$760$3_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$835$5$ = tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID,
+      QUOTED_ID, AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$835$5 = tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID,
+      QUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$849$3 = tokenTypeSet(DIMENSION, PROPERTIES);
+  static private final EnumSet<TokenType> first_set$mdx_jj$878$5 = tokenTypeSet(AMP_QUOTED_ID, AMP_UNQUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$913$5 = tokenTypeSet(DIMENSION, PROPERTIES);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1007$3 = first_set$mdx_jj$1007$3_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$1007$3_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$1029$5 = tokenTypeSet(EQ, GE, GT, LE, LT, NE);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1030$7 = tokenTypeSet(EQ, GE, GT, LE, LT, NE);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1199$3 = first_set$mdx_jj$1199$3_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$1199$3_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NULL, PROPERTIES, LPAREN, LBRACE, ATSIGN, ID, QUOTED_ID,
+        UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$1294$3 = tokenTypeSet(UNSIGNED_INTEGER_LITERAL,
+      APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1323$5 = first_set$mdx_jj$1323$5_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$1323$5_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, RBRACE, MINUS, PLUS,
+        ATSIGN, ID, QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL,
+        SINGLE_QUOTED_STRING, DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$1328$5 = first_set$mdx_jj$1328$5_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$1328$5_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$1342$3 = tokenTypeSet(DIMENSION, PROPERTIES, ATSIGN, ID,
+      QUOTED_ID);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1382$5 = first_set$mdx_jj$1382$5_init();
+
+  static private EnumSet<TokenType> first_set$mdx_jj$1382$5_init() {
+    return tokenTypeSet(CASE, CAST, DIMENSION, NOT, NULL, PROPERTIES, EXISTING, LPAREN, LBRACE, MINUS, PLUS, ATSIGN, ID,
+        QUOTED_ID, UNSIGNED_INTEGER_LITERAL, APPROX_NUMERIC_LITERAL, DECIMAL_NUMERIC_LITERAL, SINGLE_QUOTED_STRING,
+        DOUBLE_QUOTED_STRING);
+  }
+
+  static private final EnumSet<TokenType> first_set$mdx_jj$1468$5 = tokenTypeSet(AXIS, CHAPTERS, COLUMNS, PAGES, ROWS,
+      SECTIONS, UNSIGNED_INTEGER_LITERAL);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1469$7 = tokenTypeSet(AXIS, UNSIGNED_INTEGER_LITERAL);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1490$5 = tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS,
+      SECTIONS);
+  static private final EnumSet<TokenType> first_set$mdx_jj$1491$7 = tokenTypeSet(CHAPTERS, COLUMNS, PAGES, ROWS,
+      SECTIONS);
+
+  private final boolean scanToken(TokenType expectedType) {
+    Token peekedToken = nextToken(currentLookaheadToken);
+    TokenType type = peekedToken.getType();
+    if (type != expectedType)
+      return false;
+    if (remainingLookahead != UNLIMITED)
+      remainingLookahead--;
+    currentLookaheadToken = peekedToken;
+    return true;
+  }
+
+  private final boolean scanToken(EnumSet<TokenType> types) {
+    Token peekedToken = nextToken(currentLookaheadToken);
+    TokenType type = peekedToken.getType();
+    if (!types.contains(type))
+      return false;
+    if (remainingLookahead != UNLIMITED)
+      remainingLookahead--;
+    // if (type == upToTokenType) remainingLookahead = 0;
+    currentLookaheadToken = peekedToken;
+    return true;
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:741:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$741$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:741:5
+      if (!scanToken(AS))
         return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:741:12
+      // NonTerminal parseIdentifier at cc21/mdx.jj:741:12
+      pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 741, 12);
+      boolean prevScanToEnd1628 = scanToEnd;
+      currentLookaheadProduction = "parseIdentifier";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1628;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:742:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    public void setParserTolerant(boolean tolerantParsing) {
-        if (tolerantParsing) {
-            throw new UnsupportedOperationException("This parser was not built with that feature!");
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:760:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$760$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:760:3
+      // NonTerminal parseExpression at cc21/mdx.jj:760:3
+      pushOntoLookaheadStack("expressionOrEmpty", "cc21/mdx.jj", 760, 3);
+      boolean prevScanToEnd1629 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1629;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:761:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:765:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$765$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:765:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:784:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$784$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:784:5
+      if (!scanToken(COMMA))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:785:5
+      // NonTerminal expressionOrEmpty at cc21/mdx.jj:785:5
+      pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 785, 5);
+      boolean prevScanToEnd1630 = scanToEnd;
+      currentLookaheadProduction = "expressionOrEmpty";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$expressionOrEmpty())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1630;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:786:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:807:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$807$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:807:5
+      if (!scanToken(COMMA))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:808:5
+      // NonTerminal parseExpression at cc21/mdx.jj:808:5
+      pushOntoLookaheadStack("expList", "cc21/mdx.jj", 808, 5);
+      boolean prevScanToEnd1631 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1631;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:809:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:835:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$835$5$() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:835:5
+      // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:835:5
+      pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 835, 5);
+      boolean prevScanToEnd1633 = scanToEnd;
+      currentLookaheadProduction = "parseNameObjectIdentifier";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseNameObjectIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1633;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:837:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$837$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:837:5
+      // NonTerminal parseKeyIdentifier at cc21/mdx.jj:837:5
+      pushOntoLookaheadStack("parseIdentifier", "cc21/mdx.jj", 837, 5);
+      boolean prevScanToEnd1634 = scanToEnd;
+      currentLookaheadProduction = "parseKeyIdentifier";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseKeyIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1634;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:858:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$858$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:858:3
+      if (!scanToken(ATSIGN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:858:14
+      if (!scanToken(ID))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:859:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:953:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$953$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:953:5
+      Token token1636 = currentLookaheadToken;
+      int remainingLookahead1636 = remainingLookahead;
+      boolean hitFailure1636 = hitFailure;
+      if (!check$mdx_jj$953$5$()) {
+        currentLookaheadToken = token1636;
+        remainingLookahead = remainingLookahead1636;
+        hitFailure = hitFailure1636;
+        if (!check$mdx_jj$960$5()) {
+          currentLookaheadToken = token1636;
+          remainingLookahead = remainingLookahead1636;
+          hitFailure = hitFailure1636;
+          if (!check$mdx_jj$969$5()) {
+            currentLookaheadToken = token1636;
+            remainingLookahead = remainingLookahead1636;
+            hitFailure = hitFailure1636;
+            return false;
+          }
         }
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    private Token consumeToken(TokenType expectedType) {
-        Token oldToken= lastConsumedToken;
-        Token nextToken= nextToken(lastConsumedToken);
-        if (nextToken.getType()!=expectedType) {
-            nextToken= handleUnexpectedTokenType(expectedType, nextToken);
-        }
-        this.lastConsumedToken= nextToken;
-        this.nextTokenType= null;
-        if (buildTree&&tokensAreNodes) {
-            pushNode(lastConsumedToken);
-        }
-        return lastConsumedToken;
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:953:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$953$5$() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:953:5
+      if (!scanToken(OR))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:953:12
+      // NonTerminal term5 at cc21/mdx.jj:953:12
+      pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 953, 12);
+      boolean prevScanToEnd1637 = scanToEnd;
+      currentLookaheadProduction = "term5";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term5())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1637;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:954:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    private Token handleUnexpectedTokenType(TokenType expectedType, Token nextToken) {
-        throw new ParseException(this, nextToken, EnumSet.of(expectedType), parsingStack);
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:960:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$960$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:960:5
+      if (!scanToken(XOR))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:960:13
+      // NonTerminal term5 at cc21/mdx.jj:960:13
+      pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 960, 13);
+      boolean prevScanToEnd1638 = scanToEnd;
+      currentLookaheadProduction = "term5";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term5())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1638;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:961:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    private class ParseState {
-        Token lastConsumed;
-        ArrayList<NonTerminalCall> parsingStack;
-        LexicalState lexicalState;
-        NodeScope nodeScope;
-        ParseState() {
-            this.lastConsumed= MDXParser.this.lastConsumedToken;
-            @SuppressWarnings("unchecked")
-            ArrayList<NonTerminalCall> parsingStack= (ArrayList<NonTerminalCall> ) MDXParser.this.parsingStack.clone();
-            this.parsingStack= parsingStack;
-            this.lexicalState= token_source.lexicalState;
-            this.nodeScope= (NodeScope) currentNodeScope.clone();
-        }
-
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:969:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$969$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:969:5
+      if (!scanToken(COLON))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:969:15
+      // NonTerminal term5 at cc21/mdx.jj:969:15
+      pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 969, 15);
+      boolean prevScanToEnd1639 = scanToEnd;
+      currentLookaheadProduction = "term5";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term5())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1639;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:970:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
-    private boolean buildTree= true;
-    private boolean tokensAreNodes= true;
-    private boolean unparsedTokensAreNodes= false;
-    public boolean isTreeBuildingEnabled() {
-        return buildTree;
-    }
+  }
 
-    public void setUnparsedTokensAreNodes(boolean unparsedTokensAreNodes) {
-        this.unparsedTokensAreNodes= unparsedTokensAreNodes;
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:989:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$989$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:989:5
+      if (!scanToken(AND))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:989:13
+      // NonTerminal term4 at cc21/mdx.jj:989:13
+      pushOntoLookaheadStack("term5", "cc21/mdx.jj", 989, 13);
+      boolean prevScanToEnd1640 = scanToEnd;
+      currentLookaheadProduction = "term4";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term4())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1640;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:990:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    public void setTokensAreNodes(boolean tokensAreNodes) {
-        this.tokensAreNodes= tokensAreNodes;
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1007:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1007$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1007:3
+      // NonTerminal term3 at cc21/mdx.jj:1007:3
+      pushOntoLookaheadStack("term4", "cc21/mdx.jj", 1007, 3);
+      boolean prevScanToEnd1641 = scanToEnd;
+      currentLookaheadProduction = "term3";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term3())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1641;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1008:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    NodeScope currentNodeScope= new NodeScope();
-    /** 
-         * @return the root node of the AST. It only makes sense to call
-         * this after a successful parse. 
-         */
-    public Node rootNode() {
-        return currentNodeScope.rootNode();
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1011:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1011$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1011:3
+      if (!scanToken(NOT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1011:11
+      // NonTerminal term4 at cc21/mdx.jj:1011:11
+      pushOntoLookaheadStack("term4", "cc21/mdx.jj", 1011, 11);
+      boolean prevScanToEnd1642 = scanToEnd;
+      currentLookaheadProduction = "term4";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term4())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1642;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1012:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
     }
+  }
 
-    /**
-     * push a node onto the top of the node stack
-     * @param n the node to push
-     */
-    public void pushNode(Node n) {
-        currentNodeScope.add(n);
-    }
-
-    /** 
-     * @return the node on the top of the stack, and remove it from the
-     * stack.  
-     */
-    public Node popNode() {
-        return currentNodeScope.pop();
-    }
-
-    /** 
-     * @return the node currently on the top of the tree-building stack. 
-     */
-    public Node peekNode() {
-        return currentNodeScope.peek();
-    }
-
-    /**
-     * Puts the node on the top of the stack. However, unlike pushNode()
-     * it replaces the node that is currently on the top of the stack.
-     * This is effectively equivalent to popNode() followed by pushNode(n)
-     * @param n the node to poke
-     */
-    public void pokeNode(Node n) {
-        currentNodeScope.poke(n);
-    }
-
-    /** 
-     * @return the number of Nodes on the tree-building stack in the current node
-         * scope. 
-         */
-    public int nodeArity() {
-        return currentNodeScope.size();
-    }
-
-    private void clearNodeScope() {
-        currentNodeScope.clear();
-    }
-
-    private void openNodeScope(Node n) {
-        new NodeScope();
-        if (n!=null) {
-            Token next= nextToken(lastConsumedToken);
-            n.setTokenSource(lastConsumedToken.getTokenSource());
-            n.setBeginOffset(next.getBeginOffset());
-            n.open();
-        }
-    }
-
-    /* A definite node is constructed from a specified number of
-         * children.  That number of nodes are popped from the stack and
-         * made the children of the definite node.  Then the definite node
-         * is pushed on to the stack.
-         */
-    private void closeNodeScope(Node n, int num) {
-        n.setEndOffset(lastConsumedToken.getEndOffset());
-        currentNodeScope.close();
-        ArrayList<Node> nodes= new ArrayList<Node> ();
-        for (int i= 0; i<num; i++) {
-            nodes.add(popNode());
-        }
-        Collections.reverse(nodes);
-        for (Node child : nodes) {
-            // FIXME deal with the UNPARSED_TOKENS_ARE_NODES case
-            n.addChild(child);
-        }
-        n.close();
-        pushNode(n);
-    }
-
-    /**
-         * A conditional node is constructed if the condition is true.  All
-         * the nodes that have been pushed since the node was opened are
-         * made children of the conditional node, which is then pushed
-         * on to the stack.  If the condition is false the node is not
-         * constructed and they are left on the stack. 
-         */
-    private void closeNodeScope(Node n, boolean condition) {
-        if (n!=null&&condition) {
-            n.setEndOffset(lastConsumedToken.getEndOffset());
-            int a= nodeArity();
-            currentNodeScope.close();
-            ArrayList<Node> nodes= new ArrayList<Node> ();
-            while (a--> 0) {
-                nodes.add(popNode());
-            }
-            Collections.reverse(nodes);
-            for (Node child : nodes) {
-                if (unparsedTokensAreNodes&&child instanceof Token) {
-                    Token tok= (Token) child;
-                    while (tok.previousCachedToken()!=null&&tok.previousCachedToken().isUnparsed()) {
-                        tok= tok.previousCachedToken();
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1029:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1029$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1029:5
+      Token token1643 = currentLookaheadToken;
+      int remainingLookahead1643 = remainingLookahead;
+      boolean hitFailure1643 = hitFailure;
+      if (!check$mdx_jj$1029$5$()) {
+        currentLookaheadToken = token1643;
+        remainingLookahead = remainingLookahead1643;
+        hitFailure = hitFailure1643;
+        if (!check$mdx_jj$1065$5()) {
+          currentLookaheadToken = token1643;
+          remainingLookahead = remainingLookahead1643;
+          hitFailure = hitFailure1643;
+          if (!check$mdx_jj$1075$5()) {
+            currentLookaheadToken = token1643;
+            remainingLookahead = remainingLookahead1643;
+            hitFailure = hitFailure1643;
+            if (!check$mdx_jj$1083$5()) {
+              currentLookaheadToken = token1643;
+              remainingLookahead = remainingLookahead1643;
+              hitFailure = hitFailure1643;
+              if (!check$mdx_jj$1088$5()) {
+                currentLookaheadToken = token1643;
+                remainingLookahead = remainingLookahead1643;
+                hitFailure = hitFailure1643;
+                if (!check$mdx_jj$1095$5()) {
+                  currentLookaheadToken = token1643;
+                  remainingLookahead = remainingLookahead1643;
+                  hitFailure = hitFailure1643;
+                  if (!check$mdx_jj$1108$5()) {
+                    currentLookaheadToken = token1643;
+                    remainingLookahead = remainingLookahead1643;
+                    hitFailure = hitFailure1643;
+                    if (!check$mdx_jj$1115$5()) {
+                      currentLookaheadToken = token1643;
+                      remainingLookahead = remainingLookahead1643;
+                      hitFailure = hitFailure1643;
+                      return false;
                     }
-                    while (tok.isUnparsed()) {
-                        n.addChild(tok);
-                        tok= tok.nextCachedToken();
-                    }
+                  }
                 }
-                n.addChild(child);
+              }
             }
-            n.close();
-            pushNode(n);
+          }
         }
-        else  {
-            currentNodeScope.close();
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1029:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1029$5$() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1030:7
+      // Applying single-token optimization for expansion of type ExpansionChoice
+      // cc21/mdx.jj:1030:7
+      if (!scanToken(first_set$mdx_jj$1030$7))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1055:5
+      // NonTerminal term2 at cc21/mdx.jj:1055:5
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1055, 5);
+      boolean prevScanToEnd1644 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1644;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1056:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1065:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1065$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:5
+      if (!scanToken(IS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:12
+      if (!scanToken(NULL))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1067:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1075:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1075$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1076:5
+      if (!scanToken(IS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1076:12
+      // NonTerminal term2 at cc21/mdx.jj:1076:12
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1076, 12);
+      boolean prevScanToEnd1645 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1645;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1077:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1083:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1083$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1083:5
+      if (!scanToken(IS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1083:12
+      if (!scanToken(EMPTY))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1084:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1088:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1088$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1088:5
+      if (!scanToken(MATCHES))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1088:17
+      // NonTerminal term2 at cc21/mdx.jj:1088:17
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1088, 17);
+      boolean prevScanToEnd1646 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1646;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1089:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1095:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1095$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:5
+      if (!scanToken(NOT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:13
+      if (!scanToken(MATCHES))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1096:25
+      // NonTerminal term2 at cc21/mdx.jj:1096:25
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1096, 25);
+      boolean prevScanToEnd1647 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1647;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1097:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1108:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1108$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1108:5
+      if (!scanToken(IN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1108:12
+      // NonTerminal term2 at cc21/mdx.jj:1108:12
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1108, 12);
+      boolean prevScanToEnd1648 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1648;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1109:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1115:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1115$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1115:5
+      if (!scanToken(NOT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1115:13
+      if (!scanToken(IN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1115:20
+      // NonTerminal term2 at cc21/mdx.jj:1115:20
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1115, 20);
+      boolean prevScanToEnd1649 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1649;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1116:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1140:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1140$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1140:5
+      Token token1650 = currentLookaheadToken;
+      int remainingLookahead1650 = remainingLookahead;
+      boolean hitFailure1650 = hitFailure;
+      if (!check$mdx_jj$1140$5$()) {
+        currentLookaheadToken = token1650;
+        remainingLookahead = remainingLookahead1650;
+        hitFailure = hitFailure1650;
+        if (!check$mdx_jj$1147$5()) {
+          currentLookaheadToken = token1650;
+          remainingLookahead = remainingLookahead1650;
+          hitFailure = hitFailure1650;
+          if (!check$mdx_jj$1154$5()) {
+            currentLookaheadToken = token1650;
+            remainingLookahead = remainingLookahead1650;
+            hitFailure = hitFailure1650;
+            return false;
+          }
         }
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1140:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1140$5$() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1140:5
+      if (!scanToken(PLUS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1140:14
+      // NonTerminal term at cc21/mdx.jj:1140:14
+      pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1140, 14);
+      boolean prevScanToEnd1651 = scanToEnd;
+      currentLookaheadProduction = "term";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1651;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1141:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1147:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1147$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1147:5
+      if (!scanToken(MINUS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1147:15
+      // NonTerminal term at cc21/mdx.jj:1147:15
+      pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1147, 15);
+      boolean prevScanToEnd1652 = scanToEnd;
+      currentLookaheadProduction = "term";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1652;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1148:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1154:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1154$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1154:5
+      if (!scanToken(CONCAT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1154:16
+      // NonTerminal term at cc21/mdx.jj:1154:16
+      pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1154, 16);
+      boolean prevScanToEnd1653 = scanToEnd;
+      currentLookaheadProduction = "term";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1653;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1155:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1174:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1174$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1174:5
+      Token token1654 = currentLookaheadToken;
+      int remainingLookahead1654 = remainingLookahead;
+      boolean hitFailure1654 = hitFailure;
+      if (!check$mdx_jj$1174$5$()) {
+        currentLookaheadToken = token1654;
+        remainingLookahead = remainingLookahead1654;
+        hitFailure = hitFailure1654;
+        if (!check$mdx_jj$1181$5()) {
+          currentLookaheadToken = token1654;
+          remainingLookahead = remainingLookahead1654;
+          hitFailure = hitFailure1654;
+          return false;
+        }
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1174:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1174$5$() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1174:5
+      if (!scanToken(ASTERISK))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1174:18
+      // NonTerminal factor at cc21/mdx.jj:1174:18
+      pushOntoLookaheadStack("term", "cc21/mdx.jj", 1174, 18);
+      boolean prevScanToEnd1655 = scanToEnd;
+      currentLookaheadProduction = "factor";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$factor())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1655;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1175:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1181:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1181$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1181:5
+      if (!scanToken(SOLIDUS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1181:17
+      // NonTerminal factor at cc21/mdx.jj:1181:17
+      pushOntoLookaheadStack("term", "cc21/mdx.jj", 1181, 17);
+      boolean prevScanToEnd1656 = scanToEnd;
+      currentLookaheadProduction = "factor";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$factor())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1656;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1182:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1199:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1199$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1199:3
+      // NonTerminal primary at cc21/mdx.jj:1199:3
+      pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1199, 3);
+      boolean prevScanToEnd1657 = scanToEnd;
+      currentLookaheadProduction = "primary";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$primary())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1657;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1200:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1203:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1203$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1203:3
+      if (!scanToken(PLUS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1203:12
+      // NonTerminal primary at cc21/mdx.jj:1203:12
+      pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1203, 12);
+      boolean prevScanToEnd1658 = scanToEnd;
+      currentLookaheadProduction = "primary";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$primary())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1658;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1204:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1207:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1207$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1207:3
+      if (!scanToken(MINUS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1207:13
+      // NonTerminal primary at cc21/mdx.jj:1207:13
+      pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1207, 13);
+      boolean prevScanToEnd1659 = scanToEnd;
+      currentLookaheadProduction = "primary";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$primary())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1659;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1208:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1214:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1214$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1214:3
+      if (!scanToken(EXISTING))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1214:16
+      // NonTerminal primary at cc21/mdx.jj:1214:16
+      pushOntoLookaheadStack("factor", "cc21/mdx.jj", 1214, 16);
+      boolean prevScanToEnd1660 = scanToEnd;
+      currentLookaheadProduction = "primary";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$primary())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1660;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1215:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1230:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1230$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1230:5
+      if (!scanToken(DOT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1230:13
+      // NonTerminal objectIdentifierOrFuncall at cc21/mdx.jj:1230:13
+      pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1230, 13);
+      boolean prevScanToEnd1661 = scanToEnd;
+      currentLookaheadProduction = "objectIdentifierOrFuncall";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$objectIdentifierOrFuncall())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1661;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1245:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1245$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1245:5
+      if (!scanToken(LPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1247:7
+      Token token1662 = currentLookaheadToken;
+      int remainingLookahead1662 = remainingLookahead;
+      boolean hitFailure1662 = hitFailure;
+      if (!check$mdx_jj$1247$7()) {
+        currentLookaheadToken = token1662;
+        remainingLookahead = remainingLookahead1662;
+        hitFailure = hitFailure1662;
+        if (!check$mdx_jj$1252$7()) {
+          currentLookaheadToken = token1662;
+          remainingLookahead = remainingLookahead1662;
+          hitFailure = hitFailure1662;
+          return false;
+        }
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1254:5
+      if (!scanToken(RPAREN))
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1247:7
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1247$7() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1247$17())
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1248:7
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1252:7
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1252$7() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1252:7
+      // NonTerminal expOrEmptyList at cc21/mdx.jj:1252:7
+      pushOntoLookaheadStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1252, 7);
+      boolean prevScanToEnd1663 = scanToEnd;
+      currentLookaheadProduction = "expOrEmptyList";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$expOrEmptyList())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1663;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1302:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1302$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1302:3
+      if (!scanToken(CAST))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1302:12
+      if (!scanToken(LPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1302:23
+      // NonTerminal unaliasedExpression at cc21/mdx.jj:1302:23
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1302, 23);
+      boolean prevScanToEnd1664 = scanToEnd;
+      currentLookaheadProduction = "unaliasedExpression";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$unaliasedExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1664;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1303:3
+      if (!scanToken(AS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1303:10
+      // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1303:10
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1303, 10);
+      boolean prevScanToEnd1665 = scanToEnd;
+      currentLookaheadProduction = "parseNameObjectIdentifier";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseNameObjectIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1665;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1303:61
+      if (!scanToken(RPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1304:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1312:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1312$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1312:3
+      if (!scanToken(LPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1312:14
+      // NonTerminal expList at cc21/mdx.jj:1312:14
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1312, 14);
+      boolean prevScanToEnd1666 = scanToEnd;
+      currentLookaheadProduction = "expList";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$expList())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1666;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1312:38
+      if (!scanToken(RPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1313:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1321:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1321$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1321:3
+      if (!scanToken(LBRACE))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1323:5
+      Token token1667 = currentLookaheadToken;
+      int remainingLookahead1667 = remainingLookahead;
+      boolean hitFailure1667 = hitFailure;
+      if (!check$mdx_jj$1323$5()) {
+        currentLookaheadToken = token1667;
+        remainingLookahead = remainingLookahead1667;
+        hitFailure = hitFailure1667;
+        if (!check$mdx_jj$1328$5()) {
+          currentLookaheadToken = token1667;
+          remainingLookahead = remainingLookahead1667;
+          hitFailure = hitFailure1667;
+          return false;
+        }
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1330:3
+      if (!scanToken(RBRACE))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1331:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1323:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1323$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1323$15())
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1324:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1328:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1328$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1328:5
+      // NonTerminal expList at cc21/mdx.jj:1328:5
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1328, 5);
+      boolean prevScanToEnd1668 = scanToEnd;
+      currentLookaheadProduction = "expList";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$expList())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1668;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1335:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1335$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1335:3
+      // NonTerminal caseExpression at cc21/mdx.jj:1335:3
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1335, 3);
+      boolean prevScanToEnd1669 = scanToEnd;
+      currentLookaheadProduction = "caseExpression";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$caseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1669;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1336:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1342:3
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1342$3() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1342:3
+      // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1342:3
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1342, 3);
+      boolean prevScanToEnd1670 = scanToEnd;
+      currentLookaheadProduction = "parseNameObjectIdentifier";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseNameObjectIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1670;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1343:3
+      while (remainingLookahead > 0 && !hitFailure) {
+        Token token1671 = currentLookaheadToken;
+        if (!check$mdx_jj$1344$5()) {
+          currentLookaheadToken = token1671;
+          break;
+        }
+      }
+      hitFailure = false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1353:5
+      Token token1672 = currentLookaheadToken;
+      int remainingLookahead1672 = remainingLookahead;
+      boolean hitFailure1672 = hitFailure;
+      if (!check$mdx_jj$1353$5()) {
+        currentLookaheadToken = token1672;
+        remainingLookahead = remainingLookahead1672;
+        hitFailure = hitFailure1672;
+        if (!check$mdx_jj$1364$16()) {
+          currentLookaheadToken = token1672;
+          remainingLookahead = remainingLookahead1672;
+          hitFailure = hitFailure1672;
+          return false;
+        }
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1368:3
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1344:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1344$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1344:5
+      if (!scanToken(BANG))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1344:14
+      // NonTerminal parseNameObjectIdentifier at cc21/mdx.jj:1344:14
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1344, 14);
+      boolean prevScanToEnd1673 = scanToEnd;
+      currentLookaheadProduction = "parseNameObjectIdentifier";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseNameObjectIdentifier())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1673;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1345:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1353:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1353$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1353:5
+      if (!scanToken(LPAREN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1355:7
+      Token token1674 = currentLookaheadToken;
+      int remainingLookahead1674 = remainingLookahead;
+      boolean hitFailure1674 = hitFailure;
+      if (!check$mdx_jj$1355$7()) {
+        currentLookaheadToken = token1674;
+        remainingLookahead = remainingLookahead1674;
+        hitFailure = hitFailure1674;
+        if (!check$mdx_jj$1360$7()) {
+          currentLookaheadToken = token1674;
+          remainingLookahead = remainingLookahead1674;
+          hitFailure = hitFailure1674;
+          return false;
+        }
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1362:5
+      if (!scanToken(RPAREN))
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1355:7
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1355$7() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1355$17())
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1356:7
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1360:7
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1360$7() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1360:7
+      // NonTerminal expOrEmptyList at cc21/mdx.jj:1360:7
+      pushOntoLookaheadStack("atom", "cc21/mdx.jj", 1360, 7);
+      boolean prevScanToEnd1675 = scanToEnd;
+      currentLookaheadProduction = "expOrEmptyList";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$expOrEmptyList())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1675;
+        --nonTerminalNesting;
+      }
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1364:16
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1364$16() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1364:16
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1382:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1382$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1382:5
+      // NonTerminal parseExpression at cc21/mdx.jj:1382:5
+      pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1382, 5);
+      boolean prevScanToEnd1676 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = false;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1676;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1383:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1389:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1389$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1389:5
+      if (!scanToken(WHEN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1389:14
+      // NonTerminal parseExpression at cc21/mdx.jj:1389:14
+      pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1389, 14);
+      boolean prevScanToEnd1677 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1677;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1389:45
+      if (!scanToken(THEN))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1389:54
+      // NonTerminal parseExpression at cc21/mdx.jj:1389:54
+      pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1389, 54);
+      boolean prevScanToEnd1678 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1678;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1390:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // scanahead routine for expansion at:
+  // cc21/mdx.jj:1396:5
+  // BuildScanRoutine macro
+  private final boolean check$mdx_jj$1396$5() {
+    try {
+      lookaheadRoutineNesting++;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1396:5
+      if (!scanToken(ELSE))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1396:14
+      // NonTerminal parseExpression at cc21/mdx.jj:1396:14
+      pushOntoLookaheadStack("caseExpression", "cc21/mdx.jj", 1396, 14);
+      boolean prevScanToEnd1679 = scanToEnd;
+      currentLookaheadProduction = "parseExpression";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$parseExpression())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1679;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1397:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting--;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:933:5
+  private final boolean scan$mdx_jj$933$5() {
+    int nonTerminalNesting1684 = nonTerminalNesting;
+    int lookaheadRoutineNesting1686 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1685 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = UNLIMITED;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$933$15())
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1686;
+      currentLookaheadToken = currentLookaheadToken1685;
+      nonTerminalNesting = nonTerminalNesting1684;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1065:5
+  private final boolean scan$mdx_jj$1065$5() {
+    int nonTerminalNesting1687 = nonTerminalNesting;
+    int lookaheadRoutineNesting1689 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1688 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = 2;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:5
+      if (!scanToken(IS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1066:12
+      if (!scanToken(NULL))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1067:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1689;
+      currentLookaheadToken = currentLookaheadToken1688;
+      nonTerminalNesting = nonTerminalNesting1687;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1075:5
+  private final boolean scan$mdx_jj$1075$5() {
+    int nonTerminalNesting1690 = nonTerminalNesting;
+    int lookaheadRoutineNesting1692 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1691 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = 2;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1076:5
+      if (!scanToken(IS))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1076:12
+      // NonTerminal term2 at cc21/mdx.jj:1076:12
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1076, 12);
+      boolean prevScanToEnd1693 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1693;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1077:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1692;
+      currentLookaheadToken = currentLookaheadToken1691;
+      nonTerminalNesting = nonTerminalNesting1690;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1095:5
+  private final boolean scan$mdx_jj$1095$5() {
+    int nonTerminalNesting1694 = nonTerminalNesting;
+    int lookaheadRoutineNesting1696 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1695 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = 2;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:5
+      if (!scanToken(NOT))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1096:13
+      if (!scanToken(MATCHES))
+        return false;
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1096:25
+      // NonTerminal term2 at cc21/mdx.jj:1096:25
+      pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1096, 25);
+      boolean prevScanToEnd1697 = scanToEnd;
+      currentLookaheadProduction = "term2";
+      scanToEnd = true;
+      ++nonTerminalNesting;
+      try {
+        if (!check$term2())
+          return false;
+      } finally {
+        popLookaheadStack();
+        scanToEnd = prevScanToEnd1697;
+        --nonTerminalNesting;
+      }
+      if (hitFailure || remainingLookahead <= 0)
+        return !hitFailure;
+      // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1097:5
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1696;
+      currentLookaheadToken = currentLookaheadToken1695;
+      nonTerminalNesting = nonTerminalNesting1694;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1247:7
+  private final boolean scan$mdx_jj$1247$7() {
+    int nonTerminalNesting1698 = nonTerminalNesting;
+    int lookaheadRoutineNesting1700 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1699 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = UNLIMITED;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1247$17())
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1700;
+      currentLookaheadToken = currentLookaheadToken1699;
+      nonTerminalNesting = nonTerminalNesting1698;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1323:5
+  private final boolean scan$mdx_jj$1323$5() {
+    int nonTerminalNesting1701 = nonTerminalNesting;
+    int lookaheadRoutineNesting1703 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1702 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = UNLIMITED;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1323$15())
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1703;
+      currentLookaheadToken = currentLookaheadToken1702;
+      nonTerminalNesting = nonTerminalNesting1701;
+    }
+  }
+
+  // BuildPredicateRoutine: expansion at cc21/mdx.jj:1355:7
+  private final boolean scan$mdx_jj$1355$7() {
+    int nonTerminalNesting1704 = nonTerminalNesting;
+    int lookaheadRoutineNesting1706 = lookaheadRoutineNesting;
+    Token currentLookaheadToken1705 = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      remainingLookahead = UNLIMITED;
+      if (currentLookaheadToken == null)
+        currentLookaheadToken = lastConsumedToken;
+      hitFailure = false;
+      scanToEnd = false;
+      // BuildPredicateCode macro
+      if (remainingLookahead <= 0)
+        return true;
+      if (!check$mdx_jj$1355$17())
+        return false;
+      return true;
+    } finally {
+      lookaheadRoutineNesting = lookaheadRoutineNesting1706;
+      currentLookaheadToken = currentLookaheadToken1705;
+      nonTerminalNesting = nonTerminalNesting1704;
+    }
+  }
+
+  // lookahead routine for lookahead at:
+  // cc21/mdx.jj:933:5
+  private final boolean check$mdx_jj$933$15() {
+    int prevRemainingLookahead = remainingLookahead;
+    boolean prevHitFailure = hitFailure;
+    Token prevScanAheadToken = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      // Applying single-token optimization for expansion of type ExpansionSequence
+      // cc21/mdx.jj:933:15
+      if (!scanToken(DOT))
+        return false;
+      return !hitFailure;
+    } finally {
+      lookaheadRoutineNesting--;
+      currentLookaheadToken = prevScanAheadToken;
+      remainingLookahead = prevRemainingLookahead;
+      hitFailure = prevHitFailure;
+    }
+  }
+
+  // lookahead routine for lookahead at:
+  // cc21/mdx.jj:1247:7
+  private final boolean check$mdx_jj$1247$17() {
+    int prevRemainingLookahead = remainingLookahead;
+    boolean prevHitFailure = hitFailure;
+    Token prevScanAheadToken = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      // Applying single-token optimization for expansion of type ExpansionSequence
+      // cc21/mdx.jj:1247:17
+      if (!scanToken(RPAREN))
+        return false;
+      return !hitFailure;
+    } finally {
+      lookaheadRoutineNesting--;
+      currentLookaheadToken = prevScanAheadToken;
+      remainingLookahead = prevRemainingLookahead;
+      hitFailure = prevHitFailure;
+    }
+  }
+
+  // lookahead routine for lookahead at:
+  // cc21/mdx.jj:1323:5
+  private final boolean check$mdx_jj$1323$15() {
+    int prevRemainingLookahead = remainingLookahead;
+    boolean prevHitFailure = hitFailure;
+    Token prevScanAheadToken = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      // Applying single-token optimization for expansion of type ExpansionSequence
+      // cc21/mdx.jj:1323:15
+      if (!scanToken(RBRACE))
+        return false;
+      return !hitFailure;
+    } finally {
+      lookaheadRoutineNesting--;
+      currentLookaheadToken = prevScanAheadToken;
+      remainingLookahead = prevRemainingLookahead;
+      hitFailure = prevHitFailure;
+    }
+  }
+
+  // lookahead routine for lookahead at:
+  // cc21/mdx.jj:1355:7
+  private final boolean check$mdx_jj$1355$17() {
+    int prevRemainingLookahead = remainingLookahead;
+    boolean prevHitFailure = hitFailure;
+    Token prevScanAheadToken = currentLookaheadToken;
+    try {
+      lookaheadRoutineNesting++;
+      // Applying single-token optimization for expansion of type ExpansionSequence
+      // cc21/mdx.jj:1355:17
+      if (!scanToken(RPAREN))
+        return false;
+      return !hitFailure;
+    } finally {
+      lookaheadRoutineNesting--;
+      currentLookaheadToken = prevScanAheadToken;
+      remainingLookahead = prevRemainingLookahead;
+      hitFailure = prevHitFailure;
+    }
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$parseExpression() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:739:3
+    // NonTerminal unaliasedExpression at cc21/mdx.jj:739:3
+    pushOntoLookaheadStack("parseExpression", "cc21/mdx.jj", 739, 3);
+    boolean prevScanToEnd1739 = scanToEnd;
+    currentLookaheadProduction = "unaliasedExpression";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$unaliasedExpression())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1739;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:740:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1740 = currentLookaheadToken;
+      if (!check$mdx_jj$741$5()) {
+        currentLookaheadToken = token1740;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:750:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$expressionOrEmpty() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:760:3
+    Token token1741 = currentLookaheadToken;
+    int remainingLookahead1741 = remainingLookahead;
+    boolean hitFailure1741 = hitFailure;
+    if (!check$mdx_jj$760$3()) {
+      currentLookaheadToken = token1741;
+      remainingLookahead = remainingLookahead1741;
+      hitFailure = hitFailure1741;
+      if (!check$mdx_jj$765$3()) {
+        currentLookaheadToken = token1741;
+        remainingLookahead = remainingLookahead1741;
+        hitFailure = hitFailure1741;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$expOrEmptyList() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:779:3
+    // NonTerminal expressionOrEmpty at cc21/mdx.jj:779:3
+    pushOntoLookaheadStack("expOrEmptyList", "cc21/mdx.jj", 779, 3);
+    boolean prevScanToEnd1742 = scanToEnd;
+    currentLookaheadProduction = "expressionOrEmpty";
+    scanToEnd = true;
+    ++nonTerminalNesting;
+    try {
+      if (!check$expressionOrEmpty())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1742;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:780:3
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:783:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1743 = currentLookaheadToken;
+      if (!check$mdx_jj$784$5()) {
+        currentLookaheadToken = token1743;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:790:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$expList() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:802:3
+    // NonTerminal parseExpression at cc21/mdx.jj:802:3
+    pushOntoLookaheadStack("expList", "cc21/mdx.jj", 802, 3);
+    boolean prevScanToEnd1744 = scanToEnd;
+    currentLookaheadProduction = "parseExpression";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$parseExpression())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1744;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:803:3
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:806:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1745 = currentLookaheadToken;
+      if (!check$mdx_jj$807$5()) {
+        currentLookaheadToken = token1745;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:813:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$parseIdentifier() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:835:5
+    Token token1747 = currentLookaheadToken;
+    int remainingLookahead1747 = remainingLookahead;
+    boolean hitFailure1747 = hitFailure;
+    if (!check$mdx_jj$835$5$()) {
+      currentLookaheadToken = token1747;
+      remainingLookahead = remainingLookahead1747;
+      hitFailure = hitFailure1747;
+      if (!check$mdx_jj$837$5()) {
+        currentLookaheadToken = token1747;
+        remainingLookahead = remainingLookahead1747;
+        hitFailure = hitFailure1747;
+        return false;
+      }
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:839:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$parseNameObjectIdentifier() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:849:3
+    Token token1748 = currentLookaheadToken;
+    int remainingLookahead1748 = remainingLookahead;
+    boolean hitFailure1748 = hitFailure;
+    if (!scanToken(first_set$mdx_jj$849$3)) {
+      currentLookaheadToken = token1748;
+      remainingLookahead = remainingLookahead1748;
+      hitFailure = hitFailure1748;
+      if (!scanToken(ID)) {
+        currentLookaheadToken = token1748;
+        remainingLookahead = remainingLookahead1748;
+        hitFailure = hitFailure1748;
+        if (!check$mdx_jj$858$3()) {
+          currentLookaheadToken = token1748;
+          remainingLookahead = remainingLookahead1748;
+          hitFailure = hitFailure1748;
+          if (!scanToken(QUOTED_ID)) {
+            currentLookaheadToken = token1748;
+            remainingLookahead = remainingLookahead1748;
+            hitFailure = hitFailure1748;
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$parseKeyIdentifier() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for OneOrMore specified at cc21/mdx.jj:877:3
+    if (!scanToken(first_set$mdx_jj$878$5)) {
+      return false;
+    }
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1749 = currentLookaheadToken;
+      if (!scanToken(first_set$mdx_jj$878$5)) {
+        currentLookaheadToken = token1749;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:883:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$unaliasedExpression() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:951:3
+    // NonTerminal term5 at cc21/mdx.jj:951:3
+    pushOntoLookaheadStack("unaliasedExpression", "cc21/mdx.jj", 951, 3);
+    boolean prevScanToEnd1752 = scanToEnd;
+    currentLookaheadProduction = "term5";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$term5())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1752;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:952:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1753 = currentLookaheadToken;
+      if (!check$mdx_jj$953$5()) {
+        currentLookaheadToken = token1753;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:977:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$term5() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:987:3
+    // NonTerminal term4 at cc21/mdx.jj:987:3
+    pushOntoLookaheadStack("term5", "cc21/mdx.jj", 987, 3);
+    boolean prevScanToEnd1754 = scanToEnd;
+    currentLookaheadProduction = "term4";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$term4())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1754;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:988:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1755 = currentLookaheadToken;
+      if (!check$mdx_jj$989$5()) {
+        currentLookaheadToken = token1755;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:997:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$term4() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1007:3
+    Token token1756 = currentLookaheadToken;
+    int remainingLookahead1756 = remainingLookahead;
+    boolean hitFailure1756 = hitFailure;
+    if (!check$mdx_jj$1007$3()) {
+      currentLookaheadToken = token1756;
+      remainingLookahead = remainingLookahead1756;
+      hitFailure = hitFailure1756;
+      if (!check$mdx_jj$1011$3()) {
+        currentLookaheadToken = token1756;
+        remainingLookahead = remainingLookahead1756;
+        hitFailure = hitFailure1756;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$term3() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1026:3
+    // NonTerminal term2 at cc21/mdx.jj:1026:3
+    pushOntoLookaheadStack("term3", "cc21/mdx.jj", 1026, 3);
+    boolean prevScanToEnd1757 = scanToEnd;
+    currentLookaheadProduction = "term2";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$term2())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1757;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1027:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1758 = currentLookaheadToken;
+      if (!check$mdx_jj$1029$5()) {
+        currentLookaheadToken = token1758;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1128:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$term2() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1138:3
+    // NonTerminal term at cc21/mdx.jj:1138:3
+    pushOntoLookaheadStack("term2", "cc21/mdx.jj", 1138, 3);
+    boolean prevScanToEnd1759 = scanToEnd;
+    currentLookaheadProduction = "term";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$term())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1759;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1139:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1760 = currentLookaheadToken;
+      if (!check$mdx_jj$1140$5()) {
+        currentLookaheadToken = token1760;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1162:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$term() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1172:3
+    // NonTerminal factor at cc21/mdx.jj:1172:3
+    pushOntoLookaheadStack("term", "cc21/mdx.jj", 1172, 3);
+    boolean prevScanToEnd1761 = scanToEnd;
+    currentLookaheadProduction = "factor";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$factor())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1761;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1173:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1762 = currentLookaheadToken;
+      if (!check$mdx_jj$1174$5()) {
+        currentLookaheadToken = token1762;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1189:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$factor() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1199:3
+    Token token1763 = currentLookaheadToken;
+    int remainingLookahead1763 = remainingLookahead;
+    boolean hitFailure1763 = hitFailure;
+    if (!check$mdx_jj$1199$3()) {
+      currentLookaheadToken = token1763;
+      remainingLookahead = remainingLookahead1763;
+      hitFailure = hitFailure1763;
+      if (!check$mdx_jj$1203$3()) {
+        currentLookaheadToken = token1763;
+        remainingLookahead = remainingLookahead1763;
+        hitFailure = hitFailure1763;
+        if (!check$mdx_jj$1207$3()) {
+          currentLookaheadToken = token1763;
+          remainingLookahead = remainingLookahead1763;
+          hitFailure = hitFailure1763;
+          if (!check$mdx_jj$1214$3()) {
+            currentLookaheadToken = token1763;
+            remainingLookahead = remainingLookahead1763;
+            hitFailure = hitFailure1763;
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$primary() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1228:3
+    // NonTerminal atom at cc21/mdx.jj:1228:3
+    pushOntoLookaheadStack("primary", "cc21/mdx.jj", 1228, 3);
+    boolean prevScanToEnd1764 = scanToEnd;
+    currentLookaheadProduction = "atom";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$atom())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1764;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1229:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1765 = currentLookaheadToken;
+      if (!check$mdx_jj$1230$5()) {
+        currentLookaheadToken = token1765;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1232:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$objectIdentifierOrFuncall() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for NonTerminal specified at cc21/mdx.jj:1243:3
+    // NonTerminal parseIdentifier at cc21/mdx.jj:1243:3
+    pushOntoLookaheadStack("objectIdentifierOrFuncall", "cc21/mdx.jj", 1243, 3);
+    boolean prevScanToEnd1766 = scanToEnd;
+    currentLookaheadProduction = "parseIdentifier";
+    scanToEnd = false;
+    ++nonTerminalNesting;
+    try {
+      if (!check$parseIdentifier())
+        return false;
+    } finally {
+      popLookaheadStack();
+      scanToEnd = prevScanToEnd1766;
+      --nonTerminalNesting;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1244:3
+    Token token1767 = currentLookaheadToken;
+    if (!check$mdx_jj$1245$5()) {
+      currentLookaheadToken = token1767;
+      hitFailure = false;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1256:3
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$atom() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ExpansionChoice specified at cc21/mdx.jj:1286:3
+    Token token1768 = currentLookaheadToken;
+    int remainingLookahead1768 = remainingLookahead;
+    boolean hitFailure1768 = hitFailure;
+    if (!scanToken(SINGLE_QUOTED_STRING)) {
+      currentLookaheadToken = token1768;
+      remainingLookahead = remainingLookahead1768;
+      hitFailure = hitFailure1768;
+      if (!scanToken(DOUBLE_QUOTED_STRING)) {
+        currentLookaheadToken = token1768;
+        remainingLookahead = remainingLookahead1768;
+        hitFailure = hitFailure1768;
+        if (!scanToken(first_set$mdx_jj$1294$3)) {
+          currentLookaheadToken = token1768;
+          remainingLookahead = remainingLookahead1768;
+          hitFailure = hitFailure1768;
+          if (!scanToken(NULL)) {
+            currentLookaheadToken = token1768;
+            remainingLookahead = remainingLookahead1768;
+            hitFailure = hitFailure1768;
+            if (!check$mdx_jj$1302$3()) {
+              currentLookaheadToken = token1768;
+              remainingLookahead = remainingLookahead1768;
+              hitFailure = hitFailure1768;
+              if (!check$mdx_jj$1312$3()) {
+                currentLookaheadToken = token1768;
+                remainingLookahead = remainingLookahead1768;
+                hitFailure = hitFailure1768;
+                if (!check$mdx_jj$1321$3()) {
+                  currentLookaheadToken = token1768;
+                  remainingLookahead = remainingLookahead1768;
+                  hitFailure = hitFailure1768;
+                  if (!check$mdx_jj$1335$3()) {
+                    currentLookaheadToken = token1768;
+                    remainingLookahead = remainingLookahead1768;
+                    hitFailure = hitFailure1768;
+                    if (!check$mdx_jj$1342$3()) {
+                      currentLookaheadToken = token1768;
+                      remainingLookahead = remainingLookahead1768;
+                      hitFailure = hitFailure1768;
+                      return false;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // BuildProductionLookaheadMethod macro
+  private final boolean check$caseExpression() {
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1380:3
+    if (!scanToken(CASE))
+      return false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1381:3
+    Token token1769 = currentLookaheadToken;
+    if (!check$mdx_jj$1382$5()) {
+      currentLookaheadToken = token1769;
+      hitFailure = false;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrMore specified at cc21/mdx.jj:1388:3
+    while (remainingLookahead > 0 && !hitFailure) {
+      Token token1770 = currentLookaheadToken;
+      if (!check$mdx_jj$1389$5()) {
+        currentLookaheadToken = token1770;
+        break;
+      }
+    }
+    hitFailure = false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for ZeroOrOne specified at cc21/mdx.jj:1395:3
+    Token token1771 = currentLookaheadToken;
+    if (!check$mdx_jj$1396$5()) {
+      currentLookaheadToken = token1771;
+      hitFailure = false;
+    }
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for RegexpRef specified at cc21/mdx.jj:1401:3
+    if (!scanToken(END))
+      return false;
+    if (hitFailure || remainingLookahead <= 0)
+      return !hitFailure;
+    // Lookahead Code for CodeBlock specified at cc21/mdx.jj:1402:3
+    return true;
+  }
+
+  ArrayList<NonTerminalCall> parsingStack = new ArrayList<>();
+  private ArrayList<NonTerminalCall> lookaheadStack = new ArrayList<>();
+
+  /**
+   * Inner class that represents entering a grammar production
+   */
+  class NonTerminalCall {
+    final String sourceFile;
+    final String productionName;
+    final int line, column;
+
+    NonTerminalCall(String sourceFile, String productionName, int line, int column) {
+      this.sourceFile = sourceFile;
+      this.productionName = productionName;
+      this.line = line;
+      this.column = column;
     }
 
-    public boolean getBuildTree() {
-        return buildTree;
+    final mdxLexer getTokenSource() {
+      return MDXParser.this.token_source;
     }
 
-    public void setBuildTree(boolean buildTree) {
-        this.buildTree= buildTree;
+    StackTraceElement createStackTraceElement() {
+      return new StackTraceElement("MDXParser", productionName, sourceFile, line);
     }
 
-    /**
-     * Just a kludge so that existing jjtree-based code that uses
-     * parser.jjtree.foo can work without change.
-     */
-    MDXParser jjtree= this;
-    @SuppressWarnings("serial")
-    class NodeScope extends ArrayList<Node>  {
-        NodeScope parentScope;
-        NodeScope() {
-            this.parentScope= MDXParser.this.currentNodeScope;
-            MDXParser.this.currentNodeScope= this;
-        }
-
-        boolean isRootScope() {
-            return parentScope== null;
-        }
-
-        Node rootNode() {
-            NodeScope ns= this;
-            while (ns.parentScope!=null) {
-                ns= ns.parentScope;
-            }
-            return ns.isEmpty()?null:
-            ns.get(0);
-        }
-
-        Node peek() {
-            return isEmpty()?parentScope.peek():
-            get(size()-1);
-        }
-
-        Node pop() {
-            return isEmpty()?parentScope.pop():
-            remove(size()-1);
-        }
-
-        void poke(Node n) {
-            if (isEmpty()) {
-                parentScope.poke(n);
-            }
-            else  {
-                set(size()-1, n);
-            }
-        }
-
-        void close() {
-            parentScope.addAll(this);
-            MDXParser.this.currentNodeScope= parentScope;
-        }
-
-        int nestingLevel() {
-            int result= 0;
-            NodeScope parent= this;
-            while (parent.parentScope!=null) {
-                result++;
-                parent= parent.parentScope;
-            }
-            return result;
-        }
-
-        public NodeScope clone() {
-            NodeScope clone= (NodeScope) super.clone();
-            if (parentScope!=null) {
-                clone.parentScope= (NodeScope) parentScope.clone();
-            }
-            return clone;
-        }
-
+    void dump(PrintStream ps) {
+      ps.println(productionName + ":" + line + ":" + column);
     }
+
+  }
+
+  private final void pushOntoCallStack(String methodName, String fileName, int line, int column) {
+    parsingStack.add(new NonTerminalCall(fileName, methodName, line, column));
+  }
+
+  private final void popCallStack() {
+    NonTerminalCall ntc = parsingStack.remove(parsingStack.size() - 1);
+    this.currentlyParsedProduction = ntc.productionName;
+  }
+
+  private final void restoreCallStack(int prevSize) {
+    while (parsingStack.size() > prevSize) {
+      popCallStack();
+    }
+  }
+
+  private final void pushOntoLookaheadStack(String methodName, String fileName, int line, int column) {
+    lookaheadStack.add(new NonTerminalCall(fileName, methodName, line, column));
+  }
+
+  private final void popLookaheadStack() {
+    NonTerminalCall ntc = lookaheadStack.remove(lookaheadStack.size() - 1);
+    this.currentLookaheadProduction = ntc.productionName;
+  }
+
+  void dumpLookaheadStack(PrintStream ps) {
+    ListIterator<NonTerminalCall> it = lookaheadStack.listIterator(lookaheadStack.size());
+    while (it.hasPrevious()) {
+      it.previous().dump(ps);
+    }
+  }
+
+  void dumpCallStack(PrintStream ps) {
+    ListIterator<NonTerminalCall> it = parsingStack.listIterator(parsingStack.size());
+    while (it.hasPrevious()) {
+      it.previous().dump(ps);
+    }
+  }
+
+  void dumpLookaheadCallStack(PrintStream ps) {
+    ps.println("Current Parser Production is: " + currentlyParsedProduction);
+    ps.println("Current Lookahead Production is: " + currentLookaheadProduction);
+    ps.println("---Lookahead Stack---");
+    dumpLookaheadStack(ps);
+    ps.println("---Call Stack---");
+    dumpCallStack(ps);
+  }
+
+  public boolean isParserTolerant() {
+    return false;
+  }
+
+  public void setParserTolerant(boolean tolerantParsing) {
+    if (tolerantParsing) {
+      throw new UnsupportedOperationException("This parser was not built with that feature!");
+    }
+  }
+
+  private Token consumeToken(TokenType expectedType) {
+    Token oldToken = lastConsumedToken;
+    Token nextToken = nextToken(lastConsumedToken);
+    if (nextToken.getType() != expectedType) {
+      nextToken = handleUnexpectedTokenType(expectedType, nextToken);
+    }
+    this.lastConsumedToken = nextToken;
+    this.nextTokenType = null;
+    if (buildTree && tokensAreNodes) {
+      pushNode(lastConsumedToken);
+    }
+    return lastConsumedToken;
+  }
+
+  private Token handleUnexpectedTokenType(TokenType expectedType, Token nextToken) {
+    throw new ParseException(this, nextToken, EnumSet.of(expectedType), parsingStack);
+  }
+
+  private class ParseState {
+    Token lastConsumed;
+    ArrayList<NonTerminalCall> parsingStack;
+    LexicalState lexicalState;
+    NodeScope nodeScope;
+
+    ParseState() {
+      this.lastConsumed = MDXParser.this.lastConsumedToken;
+      @SuppressWarnings("unchecked")
+      ArrayList<NonTerminalCall> parsingStack = (ArrayList<NonTerminalCall>) MDXParser.this.parsingStack.clone();
+      this.parsingStack = parsingStack;
+      this.lexicalState = token_source.lexicalState;
+      this.nodeScope = (NodeScope) currentNodeScope.clone();
+    }
+
+  }
+
+  private boolean buildTree = true;
+  private boolean tokensAreNodes = true;
+  private boolean unparsedTokensAreNodes = false;
+
+  public boolean isTreeBuildingEnabled() {
+    return buildTree;
+  }
+
+  public void setUnparsedTokensAreNodes(boolean unparsedTokensAreNodes) {
+    this.unparsedTokensAreNodes = unparsedTokensAreNodes;
+  }
+
+  public void setTokensAreNodes(boolean tokensAreNodes) {
+    this.tokensAreNodes = tokensAreNodes;
+  }
+
+  NodeScope currentNodeScope = new NodeScope();
+
+  /**
+   * @return the root node of the AST. It only makes sense to call this after a
+   *         successful parse.
+   */
+  public Node rootNode() {
+    return currentNodeScope.rootNode();
+  }
+
+  /**
+   * push a node onto the top of the node stack
+   * 
+   * @param n the node to push
+   */
+  public void pushNode(Node n) {
+    currentNodeScope.add(n);
+  }
+
+  /**
+   * @return the node on the top of the stack, and remove it from the stack.
+   */
+  public Node popNode() {
+    return currentNodeScope.pop();
+  }
+
+  /**
+   * @return the node currently on the top of the tree-building stack.
+   */
+  public Node peekNode() {
+    return currentNodeScope.peek();
+  }
+
+  /**
+   * Puts the node on the top of the stack. However, unlike pushNode() it replaces
+   * the node that is currently on the top of the stack. This is effectively
+   * equivalent to popNode() followed by pushNode(n)
+   * 
+   * @param n the node to poke
+   */
+  public void pokeNode(Node n) {
+    currentNodeScope.poke(n);
+  }
+
+  /**
+   * @return the number of Nodes on the tree-building stack in the current node
+   *         scope.
+   */
+  public int nodeArity() {
+    return currentNodeScope.size();
+  }
+
+  private void clearNodeScope() {
+    currentNodeScope.clear();
+  }
+
+  private void openNodeScope(Node n) {
+    new NodeScope();
+    if (n != null) {
+      Token next = nextToken(lastConsumedToken);
+      n.setTokenSource(lastConsumedToken.getTokenSource());
+      n.setBeginOffset(next.getBeginOffset());
+      n.open();
+    }
+  }
+
+  /*
+   * A definite node is constructed from a specified number of children. That
+   * number of nodes are popped from the stack and made the children of the
+   * definite node. Then the definite node is pushed on to the stack.
+   */
+  private void closeNodeScope(Node n, int num) {
+    n.setEndOffset(lastConsumedToken.getEndOffset());
+    currentNodeScope.close();
+    ArrayList<Node> nodes = new ArrayList<Node>();
+    for (int i = 0; i < num; i++) {
+      nodes.add(popNode());
+    }
+    Collections.reverse(nodes);
+    for (Node child : nodes) {
+      // FIXME deal with the UNPARSED_TOKENS_ARE_NODES case
+      n.addChild(child);
+    }
+    n.close();
+    pushNode(n);
+  }
+
+  /**
+   * A conditional node is constructed if the condition is true. All the nodes
+   * that have been pushed since the node was opened are made children of the
+   * conditional node, which is then pushed on to the stack. If the condition is
+   * false the node is not constructed and they are left on the stack.
+   */
+  private void closeNodeScope(Node n, boolean condition) {
+    if (n != null && condition) {
+      n.setEndOffset(lastConsumedToken.getEndOffset());
+      int a = nodeArity();
+      currentNodeScope.close();
+      ArrayList<Node> nodes = new ArrayList<Node>();
+      while (a-- > 0) {
+        nodes.add(popNode());
+      }
+      Collections.reverse(nodes);
+      for (Node child : nodes) {
+        if (unparsedTokensAreNodes && child instanceof Token) {
+          Token tok = (Token) child;
+          while (tok.previousCachedToken() != null && tok.previousCachedToken().isUnparsed()) {
+            tok = tok.previousCachedToken();
+          }
+          while (tok.isUnparsed()) {
+            n.addChild(tok);
+            tok = tok.nextCachedToken();
+          }
+        }
+        n.addChild(child);
+      }
+      n.close();
+      pushNode(n);
+    } else {
+      currentNodeScope.close();
+    }
+  }
+
+  public boolean getBuildTree() {
+    return buildTree;
+  }
+
+  public void setBuildTree(boolean buildTree) {
+    this.buildTree = buildTree;
+  }
+
+  /**
+   * Just a kludge so that existing jjtree-based code that uses parser.jjtree.foo
+   * can work without change.
+   */
+  MDXParser jjtree = this;
+
+  @SuppressWarnings("serial")
+  class NodeScope extends ArrayList<Node> {
+    NodeScope parentScope;
+
+    NodeScope() {
+      this.parentScope = MDXParser.this.currentNodeScope;
+      MDXParser.this.currentNodeScope = this;
+    }
+
+    boolean isRootScope() {
+      return parentScope == null;
+    }
+
+    Node rootNode() {
+      NodeScope ns = this;
+      while (ns.parentScope != null) {
+        ns = ns.parentScope;
+      }
+      return ns.isEmpty() ? null : ns.get(0);
+    }
+
+    Node peek() {
+      return isEmpty() ? parentScope.peek() : get(size() - 1);
+    }
+
+    Node pop() {
+      return isEmpty() ? parentScope.pop() : remove(size() - 1);
+    }
+
+    void poke(Node n) {
+      if (isEmpty()) {
+        parentScope.poke(n);
+      } else {
+        set(size() - 1, n);
+      }
+    }
+
+    void close() {
+      parentScope.addAll(this);
+      MDXParser.this.currentNodeScope = parentScope;
+    }
+
+    int nestingLevel() {
+      int result = 0;
+      NodeScope parent = this;
+      while (parent.parentScope != null) {
+        result++;
+        parent = parent.parentScope;
+      }
+      return result;
+    }
+
+    public NodeScope clone() {
+      NodeScope clone = (NodeScope) super.clone();
+      if (parentScope != null) {
+        clone.parentScope = (NodeScope) parentScope.clone();
+      }
+      return clone;
+    }
+
+  }
 }

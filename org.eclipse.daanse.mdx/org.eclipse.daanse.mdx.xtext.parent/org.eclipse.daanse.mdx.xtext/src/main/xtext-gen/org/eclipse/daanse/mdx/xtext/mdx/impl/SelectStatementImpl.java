@@ -11,33 +11,29 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Select Statement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Select
+ * Statement</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */
-public class SelectStatementImpl extends MinimalEObjectImpl.Container implements SelectStatement
-{
+public class SelectStatementImpl extends MinimalEObjectImpl.Container implements SelectStatement {
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
-  protected SelectStatementImpl()
-  {
+  protected SelectStatementImpl() {
     super();
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  protected EClass eStaticClass()
-  {
+  protected EClass eStaticClass() {
     return MdxPackage.Literals.SELECT_STATEMENT;
   }
 
-} //SelectStatementImpl
+} // SelectStatementImpl

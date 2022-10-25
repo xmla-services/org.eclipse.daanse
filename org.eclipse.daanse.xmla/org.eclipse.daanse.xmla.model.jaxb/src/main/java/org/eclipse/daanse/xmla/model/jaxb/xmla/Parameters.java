@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Parameters complex type.
+ * <p>
+ * Java class for Parameters complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Parameters"&gt;
@@ -30,49 +32,48 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Parameters", propOrder = {
-    "parameter"
-})
+@XmlType(name = "Parameters", propOrder = { "parameter" })
 public class Parameters {
 
-    @XmlElement(name = "Parameter")
-    protected List<ExecuteParameter> parameter;
+  @XmlElement(name = "Parameter")
+  protected List<ExecuteParameter> parameter;
 
-    /**
-     * Gets the value of the parameter property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the parameter property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getParameter().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExecuteParameter }
-     * 
-     * 
-     */
-    public List<ExecuteParameter> getParameter() {
-        if (parameter == null) {
-            parameter = new ArrayList<ExecuteParameter>();
-        }
-        return this.parameter;
+  /**
+   * Gets the value of the parameter property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the parameter property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getParameter().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link ExecuteParameter }
+   * 
+   * 
+   */
+  public List<ExecuteParameter> getParameter() {
+    if (parameter == null) {
+      parameter = new ArrayList<ExecuteParameter>();
     }
+    return this.parameter;
+  }
 
-    public boolean isSetParameter() {
-        return ((this.parameter!= null)&&(!this.parameter.isEmpty()));
-    }
+  public boolean isSetParameter() {
+    return ((this.parameter != null) && (!this.parameter.isEmpty()));
+  }
 
-    public void unsetParameter() {
-        this.parameter = null;
-    }
+  public void unsetParameter() {
+    this.parameter = null;
+  }
 
 }

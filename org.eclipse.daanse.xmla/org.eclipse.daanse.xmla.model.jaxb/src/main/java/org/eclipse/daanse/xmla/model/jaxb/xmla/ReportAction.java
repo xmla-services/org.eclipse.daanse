@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ReportAction complex type.
+ * <p>
+ * Java class for ReportAction complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ReportAction"&gt;
@@ -122,810 +124,726 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ReportAction", propOrder = {
-    "name",
-    "id",
-    "caption",
-    "captionIsMdx",
-    "translations",
-    "targetType",
-    "target",
-    "condition",
-    "type",
-    "invocation",
-    "application",
-    "description",
-    "annotations",
-    "reportServer",
-    "path",
-    "reportParameters",
-    "reportFormatParameters"
-})
-public class ReportAction
-    extends Action
-{
+@XmlType(name = "ReportAction", propOrder = { "name", "id", "caption", "captionIsMdx", "translations", "targetType",
+    "target", "condition", "type", "invocation", "application", "description", "annotations", "reportServer", "path",
+    "reportParameters", "reportFormatParameters" })
+public class ReportAction extends Action {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "ID")
-    protected String id;
-    @XmlElement(name = "Caption")
-    protected String caption;
-    @XmlElement(name = "CaptionIsMdx")
-    protected Boolean captionIsMdx;
-    @XmlElement(name = "Translations")
-    protected ReportAction.Translations translations;
-    @XmlElement(name = "TargetType", required = true)
-    protected String targetType;
-    @XmlElement(name = "Target")
-    protected String target;
-    @XmlElement(name = "Condition")
-    protected String condition;
-    @XmlElement(name = "Type", required = true)
-    protected String type;
-    @XmlElement(name = "Invocation")
-    protected String invocation;
-    @XmlElement(name = "Application")
-    protected String application;
-    @XmlElement(name = "Description")
-    protected String description;
-    @XmlElement(name = "Annotations")
-    protected ReportAction.Annotations annotations;
-    @XmlElement(name = "ReportServer", required = true)
-    protected String reportServer;
-    @XmlElement(name = "Path")
-    protected String path;
-    @XmlElement(name = "ReportParameters")
-    protected ReportAction.ReportParameters reportParameters;
-    @XmlElement(name = "ReportFormatParameters")
-    protected ReportAction.ReportFormatParameters reportFormatParameters;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "ID")
+  protected String id;
+  @XmlElement(name = "Caption")
+  protected String caption;
+  @XmlElement(name = "CaptionIsMdx")
+  protected Boolean captionIsMdx;
+  @XmlElement(name = "Translations")
+  protected ReportAction.Translations translations;
+  @XmlElement(name = "TargetType", required = true)
+  protected String targetType;
+  @XmlElement(name = "Target")
+  protected String target;
+  @XmlElement(name = "Condition")
+  protected String condition;
+  @XmlElement(name = "Type", required = true)
+  protected String type;
+  @XmlElement(name = "Invocation")
+  protected String invocation;
+  @XmlElement(name = "Application")
+  protected String application;
+  @XmlElement(name = "Description")
+  protected String description;
+  @XmlElement(name = "Annotations")
+  protected ReportAction.Annotations annotations;
+  @XmlElement(name = "ReportServer", required = true)
+  protected String reportServer;
+  @XmlElement(name = "Path")
+  protected String path;
+  @XmlElement(name = "ReportParameters")
+  protected ReportAction.ReportParameters reportParameters;
+  @XmlElement(name = "ReportFormatParameters")
+  protected ReportAction.ReportFormatParameters reportFormatParameters;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getID() {
-        return id;
-    }
+  /**
+   * Gets the value of the id property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getID() {
+    return id;
+  }
 
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setID(String value) {
-        this.id = value;
-    }
+  /**
+   * Sets the value of the id property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setID(String value) {
+    this.id = value;
+  }
 
-    public boolean isSetID() {
-        return (this.id!= null);
-    }
+  public boolean isSetID() {
+    return (this.id != null);
+  }
 
-    /**
-     * Gets the value of the caption property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCaption() {
-        return caption;
-    }
+  /**
+   * Gets the value of the caption property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCaption() {
+    return caption;
+  }
 
-    /**
-     * Sets the value of the caption property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCaption(String value) {
-        this.caption = value;
-    }
+  /**
+   * Sets the value of the caption property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCaption(String value) {
+    this.caption = value;
+  }
 
-    public boolean isSetCaption() {
-        return (this.caption!= null);
-    }
+  public boolean isSetCaption() {
+    return (this.caption != null);
+  }
 
-    /**
-     * Gets the value of the captionIsMdx property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isCaptionIsMdx() {
-        return captionIsMdx;
-    }
+  /**
+   * Gets the value of the captionIsMdx property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isCaptionIsMdx() {
+    return captionIsMdx;
+  }
 
-    /**
-     * Sets the value of the captionIsMdx property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setCaptionIsMdx(Boolean value) {
-        this.captionIsMdx = value;
-    }
+  /**
+   * Sets the value of the captionIsMdx property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setCaptionIsMdx(Boolean value) {
+    this.captionIsMdx = value;
+  }
 
-    public boolean isSetCaptionIsMdx() {
-        return (this.captionIsMdx!= null);
-    }
+  public boolean isSetCaptionIsMdx() {
+    return (this.captionIsMdx != null);
+  }
 
-    /**
-     * Gets the value of the translations property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReportAction.Translations }
-     *     
-     */
-    public ReportAction.Translations getTranslations() {
-        return translations;
-    }
+  /**
+   * Gets the value of the translations property.
+   * 
+   * @return possible object is {@link ReportAction.Translations }
+   * 
+   */
+  public ReportAction.Translations getTranslations() {
+    return translations;
+  }
 
-    /**
-     * Sets the value of the translations property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReportAction.Translations }
-     *     
-     */
-    public void setTranslations(ReportAction.Translations value) {
-        this.translations = value;
-    }
+  /**
+   * Sets the value of the translations property.
+   * 
+   * @param value allowed object is {@link ReportAction.Translations }
+   * 
+   */
+  public void setTranslations(ReportAction.Translations value) {
+    this.translations = value;
+  }
 
-    public boolean isSetTranslations() {
-        return (this.translations!= null);
-    }
+  public boolean isSetTranslations() {
+    return (this.translations != null);
+  }
 
-    /**
-     * Gets the value of the targetType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTargetType() {
-        return targetType;
-    }
+  /**
+   * Gets the value of the targetType property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getTargetType() {
+    return targetType;
+  }
 
-    /**
-     * Sets the value of the targetType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTargetType(String value) {
-        this.targetType = value;
-    }
+  /**
+   * Sets the value of the targetType property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setTargetType(String value) {
+    this.targetType = value;
+  }
 
-    public boolean isSetTargetType() {
-        return (this.targetType!= null);
-    }
+  public boolean isSetTargetType() {
+    return (this.targetType != null);
+  }
 
-    /**
-     * Gets the value of the target property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTarget() {
-        return target;
-    }
+  /**
+   * Gets the value of the target property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getTarget() {
+    return target;
+  }
 
-    /**
-     * Sets the value of the target property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTarget(String value) {
-        this.target = value;
-    }
+  /**
+   * Sets the value of the target property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setTarget(String value) {
+    this.target = value;
+  }
 
-    public boolean isSetTarget() {
-        return (this.target!= null);
-    }
+  public boolean isSetTarget() {
+    return (this.target != null);
+  }
 
-    /**
-     * Gets the value of the condition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCondition() {
-        return condition;
-    }
+  /**
+   * Gets the value of the condition property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCondition() {
+    return condition;
+  }
 
-    /**
-     * Sets the value of the condition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCondition(String value) {
-        this.condition = value;
-    }
+  /**
+   * Sets the value of the condition property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCondition(String value) {
+    this.condition = value;
+  }
 
-    public boolean isSetCondition() {
-        return (this.condition!= null);
-    }
+  public boolean isSetCondition() {
+    return (this.condition != null);
+  }
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
-    /**
-     * Gets the value of the invocation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getInvocation() {
-        return invocation;
-    }
+  /**
+   * Gets the value of the invocation property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getInvocation() {
+    return invocation;
+  }
 
-    /**
-     * Sets the value of the invocation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setInvocation(String value) {
-        this.invocation = value;
-    }
+  /**
+   * Sets the value of the invocation property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setInvocation(String value) {
+    this.invocation = value;
+  }
 
-    public boolean isSetInvocation() {
-        return (this.invocation!= null);
-    }
+  public boolean isSetInvocation() {
+    return (this.invocation != null);
+  }
 
-    /**
-     * Gets the value of the application property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getApplication() {
-        return application;
-    }
+  /**
+   * Gets the value of the application property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getApplication() {
+    return application;
+  }
 
-    /**
-     * Sets the value of the application property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setApplication(String value) {
-        this.application = value;
-    }
+  /**
+   * Sets the value of the application property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setApplication(String value) {
+    this.application = value;
+  }
 
-    public boolean isSetApplication() {
-        return (this.application!= null);
-    }
+  public boolean isSetApplication() {
+    return (this.application != null);
+  }
 
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
+  /**
+   * Gets the value of the description property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDescription() {
+    return description;
+  }
 
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
-    }
+  /**
+   * Sets the value of the description property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDescription(String value) {
+    this.description = value;
+  }
 
-    public boolean isSetDescription() {
-        return (this.description!= null);
-    }
+  public boolean isSetDescription() {
+    return (this.description != null);
+  }
 
-    /**
-     * Gets the value of the annotations property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReportAction.Annotations }
-     *     
-     */
-    public ReportAction.Annotations getAnnotations() {
-        return annotations;
-    }
+  /**
+   * Gets the value of the annotations property.
+   * 
+   * @return possible object is {@link ReportAction.Annotations }
+   * 
+   */
+  public ReportAction.Annotations getAnnotations() {
+    return annotations;
+  }
 
-    /**
-     * Sets the value of the annotations property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReportAction.Annotations }
-     *     
-     */
-    public void setAnnotations(ReportAction.Annotations value) {
-        this.annotations = value;
-    }
+  /**
+   * Sets the value of the annotations property.
+   * 
+   * @param value allowed object is {@link ReportAction.Annotations }
+   * 
+   */
+  public void setAnnotations(ReportAction.Annotations value) {
+    this.annotations = value;
+  }
 
-    public boolean isSetAnnotations() {
-        return (this.annotations!= null);
-    }
+  public boolean isSetAnnotations() {
+    return (this.annotations != null);
+  }
 
-    /**
-     * Gets the value of the reportServer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getReportServer() {
-        return reportServer;
-    }
+  /**
+   * Gets the value of the reportServer property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getReportServer() {
+    return reportServer;
+  }
 
-    /**
-     * Sets the value of the reportServer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setReportServer(String value) {
-        this.reportServer = value;
-    }
+  /**
+   * Sets the value of the reportServer property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setReportServer(String value) {
+    this.reportServer = value;
+  }
 
-    public boolean isSetReportServer() {
-        return (this.reportServer!= null);
-    }
+  public boolean isSetReportServer() {
+    return (this.reportServer != null);
+  }
 
-    /**
-     * Gets the value of the path property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPath() {
-        return path;
-    }
+  /**
+   * Gets the value of the path property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getPath() {
+    return path;
+  }
 
-    /**
-     * Sets the value of the path property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPath(String value) {
-        this.path = value;
-    }
+  /**
+   * Sets the value of the path property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setPath(String value) {
+    this.path = value;
+  }
 
-    public boolean isSetPath() {
-        return (this.path!= null);
-    }
+  public boolean isSetPath() {
+    return (this.path != null);
+  }
 
-    /**
-     * Gets the value of the reportParameters property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReportAction.ReportParameters }
-     *     
-     */
-    public ReportAction.ReportParameters getReportParameters() {
-        return reportParameters;
-    }
+  /**
+   * Gets the value of the reportParameters property.
+   * 
+   * @return possible object is {@link ReportAction.ReportParameters }
+   * 
+   */
+  public ReportAction.ReportParameters getReportParameters() {
+    return reportParameters;
+  }
+
+  /**
+   * Sets the value of the reportParameters property.
+   * 
+   * @param value allowed object is {@link ReportAction.ReportParameters }
+   * 
+   */
+  public void setReportParameters(ReportAction.ReportParameters value) {
+    this.reportParameters = value;
+  }
+
+  public boolean isSetReportParameters() {
+    return (this.reportParameters != null);
+  }
+
+  /**
+   * Gets the value of the reportFormatParameters property.
+   * 
+   * @return possible object is {@link ReportAction.ReportFormatParameters }
+   * 
+   */
+  public ReportAction.ReportFormatParameters getReportFormatParameters() {
+    return reportFormatParameters;
+  }
+
+  /**
+   * Sets the value of the reportFormatParameters property.
+   * 
+   * @param value allowed object is {@link ReportAction.ReportFormatParameters }
+   * 
+   */
+  public void setReportFormatParameters(ReportAction.ReportFormatParameters value) {
+    this.reportFormatParameters = value;
+  }
+
+  public boolean isSetReportFormatParameters() {
+    return (this.reportFormatParameters != null);
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "annotation" })
+  public static class Annotations {
+
+    @XmlElement(name = "Annotation")
+    protected List<Annotation> annotation;
 
     /**
-     * Sets the value of the reportParameters property.
+     * Gets the value of the annotation property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link ReportAction.ReportParameters }
-     *     
-     */
-    public void setReportParameters(ReportAction.ReportParameters value) {
-        this.reportParameters = value;
-    }
-
-    public boolean isSetReportParameters() {
-        return (this.reportParameters!= null);
-    }
-
-    /**
-     * Gets the value of the reportFormatParameters property.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the annotation property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ReportAction.ReportFormatParameters }
-     *     
-     */
-    public ReportAction.ReportFormatParameters getReportFormatParameters() {
-        return reportFormatParameters;
-    }
-
-    /**
-     * Sets the value of the reportFormatParameters property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReportAction.ReportFormatParameters }
-     *     
-     */
-    public void setReportFormatParameters(ReportAction.ReportFormatParameters value) {
-        this.reportFormatParameters = value;
-    }
-
-    public boolean isSetReportFormatParameters() {
-        return (this.reportFormatParameters!= null);
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getAnnotation().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Annotation }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "annotation"
-    })
-    public static class Annotations {
-
-        @XmlElement(name = "Annotation")
-        protected List<Annotation> annotation;
-
-        /**
-         * Gets the value of the annotation property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the annotation property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getAnnotation().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Annotation }
-         * 
-         * 
-         */
-        public List<Annotation> getAnnotation() {
-            if (annotation == null) {
-                annotation = new ArrayList<Annotation>();
-            }
-            return this.annotation;
-        }
-
-        public boolean isSetAnnotation() {
-            return ((this.annotation!= null)&&(!this.annotation.isEmpty()));
-        }
-
-        public void unsetAnnotation() {
-            this.annotation = null;
-        }
-
+    public List<Annotation> getAnnotation() {
+      if (annotation == null) {
+        annotation = new ArrayList<Annotation>();
+      }
+      return this.annotation;
     }
 
+    public boolean isSetAnnotation() {
+      return ((this.annotation != null) && (!this.annotation.isEmpty()));
+    }
+
+    public void unsetAnnotation() {
+      this.annotation = null;
+    }
+
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="ReportFormatParameter" type="{urn:schemas-microsoft-com:xml-analysis}ReportFormatParameter" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "reportFormatParameter" })
+  public static class ReportFormatParameters {
+
+    @XmlElement(name = "ReportFormatParameter")
+    protected List<ReportFormatParameter> reportFormatParameter;
 
     /**
-     * <p>Java class for anonymous complex type.
+     * Gets the value of the reportFormatParameter property.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the reportFormatParameter property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="ReportFormatParameter" type="{urn:schemas-microsoft-com:xml-analysis}ReportFormatParameter" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getReportFormatParameter().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ReportFormatParameter }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "reportFormatParameter"
-    })
-    public static class ReportFormatParameters {
-
-        @XmlElement(name = "ReportFormatParameter")
-        protected List<ReportFormatParameter> reportFormatParameter;
-
-        /**
-         * Gets the value of the reportFormatParameter property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the reportFormatParameter property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getReportFormatParameter().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ReportFormatParameter }
-         * 
-         * 
-         */
-        public List<ReportFormatParameter> getReportFormatParameter() {
-            if (reportFormatParameter == null) {
-                reportFormatParameter = new ArrayList<ReportFormatParameter>();
-            }
-            return this.reportFormatParameter;
-        }
-
-        public boolean isSetReportFormatParameter() {
-            return ((this.reportFormatParameter!= null)&&(!this.reportFormatParameter.isEmpty()));
-        }
-
-        public void unsetReportFormatParameter() {
-            this.reportFormatParameter = null;
-        }
-
+    public List<ReportFormatParameter> getReportFormatParameter() {
+      if (reportFormatParameter == null) {
+        reportFormatParameter = new ArrayList<ReportFormatParameter>();
+      }
+      return this.reportFormatParameter;
     }
 
+    public boolean isSetReportFormatParameter() {
+      return ((this.reportFormatParameter != null) && (!this.reportFormatParameter.isEmpty()));
+    }
+
+    public void unsetReportFormatParameter() {
+      this.reportFormatParameter = null;
+    }
+
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="ReportParameter" type="{urn:schemas-microsoft-com:xml-analysis}ReportParameter" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "reportParameter" })
+  public static class ReportParameters {
+
+    @XmlElement(name = "ReportParameter")
+    protected List<ReportParameter> reportParameter;
 
     /**
-     * <p>Java class for anonymous complex type.
+     * Gets the value of the reportParameter property.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the reportParameter property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="ReportParameter" type="{urn:schemas-microsoft-com:xml-analysis}ReportParameter" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getReportParameter().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ReportParameter }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "reportParameter"
-    })
-    public static class ReportParameters {
-
-        @XmlElement(name = "ReportParameter")
-        protected List<ReportParameter> reportParameter;
-
-        /**
-         * Gets the value of the reportParameter property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the reportParameter property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getReportParameter().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ReportParameter }
-         * 
-         * 
-         */
-        public List<ReportParameter> getReportParameter() {
-            if (reportParameter == null) {
-                reportParameter = new ArrayList<ReportParameter>();
-            }
-            return this.reportParameter;
-        }
-
-        public boolean isSetReportParameter() {
-            return ((this.reportParameter!= null)&&(!this.reportParameter.isEmpty()));
-        }
-
-        public void unsetReportParameter() {
-            this.reportParameter = null;
-        }
-
+    public List<ReportParameter> getReportParameter() {
+      if (reportParameter == null) {
+        reportParameter = new ArrayList<ReportParameter>();
+      }
+      return this.reportParameter;
     }
 
+    public boolean isSetReportParameter() {
+      return ((this.reportParameter != null) && (!this.reportParameter.isEmpty()));
+    }
+
+    public void unsetReportParameter() {
+      this.reportParameter = null;
+    }
+
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="Translation" type="{urn:schemas-microsoft-com:xml-analysis}Translation" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "translation" })
+  public static class Translations {
+
+    @XmlElement(name = "Translation")
+    protected List<Translation> translation;
 
     /**
-     * <p>Java class for anonymous complex type.
+     * Gets the value of the translation property.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the translation property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="Translation" type="{urn:schemas-microsoft-com:xml-analysis}Translation" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getTranslation().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Translation }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "translation"
-    })
-    public static class Translations {
-
-        @XmlElement(name = "Translation")
-        protected List<Translation> translation;
-
-        /**
-         * Gets the value of the translation property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the translation property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getTranslation().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Translation }
-         * 
-         * 
-         */
-        public List<Translation> getTranslation() {
-            if (translation == null) {
-                translation = new ArrayList<Translation>();
-            }
-            return this.translation;
-        }
-
-        public boolean isSetTranslation() {
-            return ((this.translation!= null)&&(!this.translation.isEmpty()));
-        }
-
-        public void unsetTranslation() {
-            this.translation = null;
-        }
-
+    public List<Translation> getTranslation() {
+      if (translation == null) {
+        translation = new ArrayList<Translation>();
+      }
+      return this.translation;
     }
+
+    public boolean isSetTranslation() {
+      return ((this.translation != null) && (!this.translation.isEmpty()));
+    }
+
+    public void unsetTranslation() {
+      this.translation = null;
+    }
+
+  }
 
 }

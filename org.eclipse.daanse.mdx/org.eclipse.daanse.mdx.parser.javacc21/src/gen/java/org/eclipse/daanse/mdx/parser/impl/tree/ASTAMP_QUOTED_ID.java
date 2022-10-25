@@ -7,10 +7,11 @@ package org.eclipse.daanse.mdx.parser.impl.tree;
 import org.eclipse.daanse.mdx.parser.impl.*;
 import org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType;
 import static org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType.*;
+
 @SuppressWarnings("unused")
 public class ASTAMP_QUOTED_ID extends Token {
-    public ASTAMP_QUOTED_ID(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
-        super(type, tokenSource, beginOffset, endOffset);
-    }
+  public ASTAMP_QUOTED_ID(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
+    super(type, tokenSource, beginOffset, endOffset);
+  }
 
 }

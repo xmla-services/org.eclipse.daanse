@@ -3,13 +3,13 @@
  */
 package org.eclipse.daanse.mdx.xtext;
 
-
 /**
- * Initialization support for running Xtext languages without Equinox extension registry.
+ * Initialization support for running Xtext languages without Equinox extension
+ * registry.
  */
 public class MdxStandaloneSetup extends MdxStandaloneSetupGenerated {
 
-	public static void doSetup() {
-		new MdxStandaloneSetup().createInjectorAndDoEMFRegistration();
-	}
+  public static void doSetup() {
+    new MdxStandaloneSetup().createInjectorAndDoEMFRegistration();
+  }
 }

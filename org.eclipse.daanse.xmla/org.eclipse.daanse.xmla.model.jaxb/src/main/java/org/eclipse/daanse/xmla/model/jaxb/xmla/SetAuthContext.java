@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for SetAuthContext complex type.
+ * <p>
+ * Java class for SetAuthContext complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="SetAuthContext"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class SetAuthContext {
 
-    @XmlElement(name = "Token", namespace = "http://schemas.microsoft.com/analysisservices/2010/engine/200/200", required = true)
-    protected String token;
-    @XmlElement(name = "DatabaseID", required = true)
-    protected String databaseID;
+  @XmlElement(name = "Token", namespace = "http://schemas.microsoft.com/analysisservices/2010/engine/200/200", required = true)
+  protected String token;
+  @XmlElement(name = "DatabaseID", required = true)
+  protected String databaseID;
 
-    /**
-     * Gets the value of the token property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getToken() {
-        return token;
-    }
+  /**
+   * Gets the value of the token property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getToken() {
+    return token;
+  }
 
-    /**
-     * Sets the value of the token property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setToken(String value) {
-        this.token = value;
-    }
+  /**
+   * Sets the value of the token property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setToken(String value) {
+    this.token = value;
+  }
 
-    public boolean isSetToken() {
-        return (this.token!= null);
-    }
+  public boolean isSetToken() {
+    return (this.token != null);
+  }
 
-    /**
-     * Gets the value of the databaseID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDatabaseID() {
-        return databaseID;
-    }
+  /**
+   * Gets the value of the databaseID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDatabaseID() {
+    return databaseID;
+  }
 
-    /**
-     * Sets the value of the databaseID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDatabaseID(String value) {
-        this.databaseID = value;
-    }
+  /**
+   * Sets the value of the databaseID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDatabaseID(String value) {
+    this.databaseID = value;
+  }
 
-    public boolean isSetDatabaseID() {
-        return (this.databaseID!= null);
-    }
+  public boolean isSetDatabaseID() {
+    return (this.databaseID != null);
+  }
 
 }

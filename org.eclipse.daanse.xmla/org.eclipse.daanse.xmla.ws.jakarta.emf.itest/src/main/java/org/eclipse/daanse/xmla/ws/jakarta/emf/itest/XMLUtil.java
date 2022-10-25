@@ -1,6 +1,5 @@
 package org.eclipse.daanse.xmla.ws.jakarta.emf.itest;
 
-
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.StringReader;
@@ -20,39 +19,39 @@ import org.xml.sax.InputSource;
 
 public class XMLUtil {
 
-	public static String pretty(String xmlData) throws Exception {
-		return pretty(xmlData, 2);
-	}
+  public static String pretty(String xmlData) throws Exception {
+    return pretty(xmlData, 2);
+  }
 
-	public static String pretty(String xmlData, int indent) throws Exception {
-		System.out.println(xmlData);
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		transformerFactory.setAttribute("indent-number", indent);
+  public static String pretty(String xmlData, int indent) throws Exception {
+    System.out.println(xmlData);
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setAttribute("indent-number", indent);
 
-		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    Transformer transformer = transformerFactory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-		StringWriter stringWriter = new StringWriter();
-		StreamResult xmlOutput = new StreamResult(stringWriter);
+    StringWriter stringWriter = new StringWriter();
+    StreamResult xmlOutput = new StreamResult(stringWriter);
 
-		Source xmlInput = new StreamSource(new StringReader(xmlData));
-		transformer.transform(xmlInput, xmlOutput);
+    Source xmlInput = new StreamSource(new StringReader(xmlData));
+    transformer.transform(xmlInput, xmlOutput);
 
-		return xmlOutput.getWriter().toString();
-	}
+    return xmlOutput.getWriter().toString();
+  }
 
-	public static Document stringToDocument(String xmlStr) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		
-		DocumentBuilder builder;
-		try {
-			builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(new InputSource(new StringReader(xmlStr)));
-			return doc;
-		} catch (Exception e) {
-			fail(e);
-		}
-		return null;
-	}
+  public static Document stringToDocument(String xmlStr) {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+
+    DocumentBuilder builder;
+    try {
+      builder = factory.newDocumentBuilder();
+      Document doc = builder.parse(new InputSource(new StringReader(xmlStr)));
+      return doc;
+    } catch (Exception e) {
+      fail(e);
+    }
+    return null;
+  }
 }

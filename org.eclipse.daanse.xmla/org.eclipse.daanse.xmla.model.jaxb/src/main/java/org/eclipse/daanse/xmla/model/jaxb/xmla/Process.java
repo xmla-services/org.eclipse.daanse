@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Process complex type.
+ * <p>
+ * Java class for Process complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Process"&gt;
@@ -56,216 +58,188 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Process {
 
-    @XmlElement(name = "Type", required = true)
-    protected String type;
-    @XmlElement(name = "Object", required = true)
-    protected ObjectReference object;
-    @XmlElement(name = "Bindings")
-    protected Bindings bindings;
-    @XmlElement(name = "DataSource")
-    protected DataSource dataSource;
-    @XmlElement(name = "DataSourceView")
-    protected DataSourceView dataSourceView;
-    @XmlElement(name = "ErrorConfiguration")
-    protected ErrorConfiguration errorConfiguration;
-    @XmlElement(name = "WriteBackTableCreation")
-    @XmlSchemaType(name = "string")
-    protected WriteBackTableCreation writeBackTableCreation;
+  @XmlElement(name = "Type", required = true)
+  protected String type;
+  @XmlElement(name = "Object", required = true)
+  protected ObjectReference object;
+  @XmlElement(name = "Bindings")
+  protected Bindings bindings;
+  @XmlElement(name = "DataSource")
+  protected DataSource dataSource;
+  @XmlElement(name = "DataSourceView")
+  protected DataSourceView dataSourceView;
+  @XmlElement(name = "ErrorConfiguration")
+  protected ErrorConfiguration errorConfiguration;
+  @XmlElement(name = "WriteBackTableCreation")
+  @XmlSchemaType(name = "string")
+  protected WriteBackTableCreation writeBackTableCreation;
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the bindings property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Bindings }
-     *     
-     */
-    public Bindings getBindings() {
-        return bindings;
-    }
+  /**
+   * Gets the value of the bindings property.
+   * 
+   * @return possible object is {@link Bindings }
+   * 
+   */
+  public Bindings getBindings() {
+    return bindings;
+  }
 
-    /**
-     * Sets the value of the bindings property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Bindings }
-     *     
-     */
-    public void setBindings(Bindings value) {
-        this.bindings = value;
-    }
+  /**
+   * Sets the value of the bindings property.
+   * 
+   * @param value allowed object is {@link Bindings }
+   * 
+   */
+  public void setBindings(Bindings value) {
+    this.bindings = value;
+  }
 
-    public boolean isSetBindings() {
-        return (this.bindings!= null);
-    }
+  public boolean isSetBindings() {
+    return (this.bindings != null);
+  }
 
-    /**
-     * Gets the value of the dataSource property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DataSource }
-     *     
-     */
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+  /**
+   * Gets the value of the dataSource property.
+   * 
+   * @return possible object is {@link DataSource }
+   * 
+   */
+  public DataSource getDataSource() {
+    return dataSource;
+  }
 
-    /**
-     * Sets the value of the dataSource property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DataSource }
-     *     
-     */
-    public void setDataSource(DataSource value) {
-        this.dataSource = value;
-    }
+  /**
+   * Sets the value of the dataSource property.
+   * 
+   * @param value allowed object is {@link DataSource }
+   * 
+   */
+  public void setDataSource(DataSource value) {
+    this.dataSource = value;
+  }
 
-    public boolean isSetDataSource() {
-        return (this.dataSource!= null);
-    }
+  public boolean isSetDataSource() {
+    return (this.dataSource != null);
+  }
 
-    /**
-     * Gets the value of the dataSourceView property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DataSourceView }
-     *     
-     */
-    public DataSourceView getDataSourceView() {
-        return dataSourceView;
-    }
+  /**
+   * Gets the value of the dataSourceView property.
+   * 
+   * @return possible object is {@link DataSourceView }
+   * 
+   */
+  public DataSourceView getDataSourceView() {
+    return dataSourceView;
+  }
 
-    /**
-     * Sets the value of the dataSourceView property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DataSourceView }
-     *     
-     */
-    public void setDataSourceView(DataSourceView value) {
-        this.dataSourceView = value;
-    }
+  /**
+   * Sets the value of the dataSourceView property.
+   * 
+   * @param value allowed object is {@link DataSourceView }
+   * 
+   */
+  public void setDataSourceView(DataSourceView value) {
+    this.dataSourceView = value;
+  }
 
-    public boolean isSetDataSourceView() {
-        return (this.dataSourceView!= null);
-    }
+  public boolean isSetDataSourceView() {
+    return (this.dataSourceView != null);
+  }
 
-    /**
-     * Gets the value of the errorConfiguration property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ErrorConfiguration }
-     *     
-     */
-    public ErrorConfiguration getErrorConfiguration() {
-        return errorConfiguration;
-    }
+  /**
+   * Gets the value of the errorConfiguration property.
+   * 
+   * @return possible object is {@link ErrorConfiguration }
+   * 
+   */
+  public ErrorConfiguration getErrorConfiguration() {
+    return errorConfiguration;
+  }
 
-    /**
-     * Sets the value of the errorConfiguration property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ErrorConfiguration }
-     *     
-     */
-    public void setErrorConfiguration(ErrorConfiguration value) {
-        this.errorConfiguration = value;
-    }
+  /**
+   * Sets the value of the errorConfiguration property.
+   * 
+   * @param value allowed object is {@link ErrorConfiguration }
+   * 
+   */
+  public void setErrorConfiguration(ErrorConfiguration value) {
+    this.errorConfiguration = value;
+  }
 
-    public boolean isSetErrorConfiguration() {
-        return (this.errorConfiguration!= null);
-    }
+  public boolean isSetErrorConfiguration() {
+    return (this.errorConfiguration != null);
+  }
 
-    /**
-     * Gets the value of the writeBackTableCreation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WriteBackTableCreation }
-     *     
-     */
-    public WriteBackTableCreation getWriteBackTableCreation() {
-        return writeBackTableCreation;
-    }
+  /**
+   * Gets the value of the writeBackTableCreation property.
+   * 
+   * @return possible object is {@link WriteBackTableCreation }
+   * 
+   */
+  public WriteBackTableCreation getWriteBackTableCreation() {
+    return writeBackTableCreation;
+  }
 
-    /**
-     * Sets the value of the writeBackTableCreation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WriteBackTableCreation }
-     *     
-     */
-    public void setWriteBackTableCreation(WriteBackTableCreation value) {
-        this.writeBackTableCreation = value;
-    }
+  /**
+   * Sets the value of the writeBackTableCreation property.
+   * 
+   * @param value allowed object is {@link WriteBackTableCreation }
+   * 
+   */
+  public void setWriteBackTableCreation(WriteBackTableCreation value) {
+    this.writeBackTableCreation = value;
+  }
 
-    public boolean isSetWriteBackTableCreation() {
-        return (this.writeBackTableCreation!= null);
-    }
+  public boolean isSetWriteBackTableCreation() {
+    return (this.writeBackTableCreation != null);
+  }
 
 }

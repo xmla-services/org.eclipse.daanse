@@ -20,25 +20,24 @@ import com.google.inject.Inject;
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MdxInjectorProvider.class)
 public class MdxParsingTest {
-	@Inject
-	private ParseHelper<MdxStatement> parseHelper;
-	
-	@Test
+  @Inject
+  private ParseHelper<MdxStatement> parseHelper;
+
+  @Test
 //	@Disabled
-	public void loadMdxStatement() throws Exception {
-		String s="SELECT [Customer].[Gender].[Gender].Membmers ON COLUMNS,\n"
-				+ "							         {[Customer].[Customer].[Aaron A. Allen],\n"
-				+ "							          [Customer].[Customer].[Abigail Clark]} ON ROWS\n"
-				+ "							   FROM [Adventure Works]\n"
-				+ "							   WHERE [Measures].[Internet Sales Amount]";
-		
-		
-s=		"SELECT [a].[b].[&aa] on ROWS FROM [a].[c]  WHERE [a]";
-		MdxStatement result = parseHelper.parse(s);
-		
-		System.out.println(result);
-		Assertions.assertNotNull(result);
-		List<Diagnostic> errors = result.eResource().getErrors();
-		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors: " + IterableExtensions.join(errors, ", "));
-	}
+  public void loadMdxStatement() throws Exception {
+    String s = "SELECT [Customer].[Gender].[Gender].Membmers ON COLUMNS,\n"
+        + "							         {[Customer].[Customer].[Aaron A. Allen],\n"
+        + "							          [Customer].[Customer].[Abigail Clark]} ON ROWS\n"
+        + "							   FROM [Adventure Works]\n"
+        + "							   WHERE [Measures].[Internet Sales Amount]";
+
+    s = "SELECT [a].[b].[&aa] on ROWS FROM [a].[c]  WHERE [a]";
+    MdxStatement result = parseHelper.parse(s);
+
+    System.out.println(result);
+    Assertions.assertNotNull(result);
+    List<Diagnostic> errors = result.eResource().getErrors();
+    Assertions.assertTrue(errors.isEmpty(), "Unexpected errors: " + IterableExtensions.join(errors, ", "));
+  }
 }

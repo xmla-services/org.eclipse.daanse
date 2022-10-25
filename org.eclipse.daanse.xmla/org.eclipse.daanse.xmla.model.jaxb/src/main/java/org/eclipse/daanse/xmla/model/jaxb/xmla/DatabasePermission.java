@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DatabasePermission complex type.
+ * <p>
+ * Java class for DatabasePermission complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DatabasePermission"&gt;
@@ -34,73 +36,60 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DatabasePermission", propOrder = {
-    "administer",
-    "write"
-})
-public class DatabasePermission
-    extends Permission
-{
+@XmlType(name = "DatabasePermission", propOrder = { "administer", "write" })
+public class DatabasePermission extends Permission {
 
-    @XmlElement(name = "Administer")
-    protected Boolean administer;
-    @XmlElement(name = "Write")
-    protected String write;
+  @XmlElement(name = "Administer")
+  protected Boolean administer;
+  @XmlElement(name = "Write")
+  protected String write;
 
-    /**
-     * Gets the value of the administer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isAdminister() {
-        return administer;
-    }
+  /**
+   * Gets the value of the administer property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isAdminister() {
+    return administer;
+  }
 
-    /**
-     * Sets the value of the administer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setAdminister(Boolean value) {
-        this.administer = value;
-    }
+  /**
+   * Sets the value of the administer property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setAdminister(Boolean value) {
+    this.administer = value;
+  }
 
-    public boolean isSetAdminister() {
-        return (this.administer!= null);
-    }
+  public boolean isSetAdminister() {
+    return (this.administer != null);
+  }
 
-    /**
-     * Gets the value of the write property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getWrite() {
-        return write;
-    }
+  /**
+   * Gets the value of the write property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getWrite() {
+    return write;
+  }
 
-    /**
-     * Sets the value of the write property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setWrite(String value) {
-        this.write = value;
-    }
+  /**
+   * Sets the value of the write property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setWrite(String value) {
+    this.write = value;
+  }
 
-    public boolean isSetWrite() {
-        return (this.write!= null);
-    }
+  public boolean isSetWrite() {
+    return (this.write != null);
+  }
 
 }

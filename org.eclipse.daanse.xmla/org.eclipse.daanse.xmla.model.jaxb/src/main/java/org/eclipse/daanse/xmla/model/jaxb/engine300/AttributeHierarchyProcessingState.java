@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for AttributeHierarchyProcessingState.
+ * <p>
+ * Java class for AttributeHierarchyProcessingState.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="AttributeHierarchyProcessingState"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -25,29 +28,28 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum AttributeHierarchyProcessingState {
 
-    @XmlEnumValue("Processed")
-    PROCESSED("Processed"),
-    @XmlEnumValue("Unprocessed")
-    UNPROCESSED("Unprocessed"),
-    @XmlEnumValue("DependencyError")
-    DEPENDENCY_ERROR("DependencyError");
-    private final String value;
+  @XmlEnumValue("Processed")
+  PROCESSED("Processed"), @XmlEnumValue("Unprocessed")
+  UNPROCESSED("Unprocessed"), @XmlEnumValue("DependencyError")
+  DEPENDENCY_ERROR("DependencyError");
 
-    AttributeHierarchyProcessingState(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  AttributeHierarchyProcessingState(String v) {
+    value = v;
+  }
 
-    public static AttributeHierarchyProcessingState fromValue(String v) {
-        for (AttributeHierarchyProcessingState c: AttributeHierarchyProcessingState.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static AttributeHierarchyProcessingState fromValue(String v) {
+    for (AttributeHierarchyProcessingState c : AttributeHierarchyProcessingState.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

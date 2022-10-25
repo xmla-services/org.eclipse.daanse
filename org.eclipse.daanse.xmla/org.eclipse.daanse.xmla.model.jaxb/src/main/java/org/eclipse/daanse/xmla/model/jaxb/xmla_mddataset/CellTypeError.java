@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CellTypeError complex type.
+ * <p>
+ * Java class for CellTypeError complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CellTypeError"&gt;
@@ -29,69 +31,61 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "CellTypeError")
 public class CellTypeError {
 
-    @XmlAttribute(name = "ErrorCode")
-    protected Long errorCode;
-    @XmlAttribute(name = "Description")
-    protected String description;
+  @XmlAttribute(name = "ErrorCode")
+  protected Long errorCode;
+  @XmlAttribute(name = "Description")
+  protected String description;
 
-    /**
-     * Gets the value of the errorCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public long getErrorCode() {
-        return errorCode;
-    }
+  /**
+   * Gets the value of the errorCode property.
+   * 
+   * @return possible object is {@link Long }
+   * 
+   */
+  public long getErrorCode() {
+    return errorCode;
+  }
 
-    /**
-     * Sets the value of the errorCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
-     */
-    public void setErrorCode(long value) {
-        this.errorCode = value;
-    }
+  /**
+   * Sets the value of the errorCode property.
+   * 
+   * @param value allowed object is {@link Long }
+   * 
+   */
+  public void setErrorCode(long value) {
+    this.errorCode = value;
+  }
 
-    public boolean isSetErrorCode() {
-        return (this.errorCode!= null);
-    }
+  public boolean isSetErrorCode() {
+    return (this.errorCode != null);
+  }
 
-    public void unsetErrorCode() {
-        this.errorCode = null;
-    }
+  public void unsetErrorCode() {
+    this.errorCode = null;
+  }
 
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
+  /**
+   * Gets the value of the description property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDescription() {
+    return description;
+  }
 
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
-    }
+  /**
+   * Sets the value of the description property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDescription(String value) {
+    this.description = value;
+  }
 
-    public boolean isSetDescription() {
-        return (this.description!= null);
-    }
+  public boolean isSetDescription() {
+    return (this.description != null);
+  }
 
 }

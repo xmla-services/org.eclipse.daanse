@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for Lock complex type.
+ * <p>
+ * Java class for Lock complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Lock"&gt;
@@ -49,96 +51,84 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 public class Lock {
 
-    @XmlElement(name = "ID", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    protected String id;
-    @XmlElement(name = "Object", required = true)
-    protected ObjectReference object;
-    @XmlElement(name = "Mode", required = true)
-    protected String mode;
+  @XmlElement(name = "ID", required = true)
+  @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+  protected String id;
+  @XmlElement(name = "Object", required = true)
+  protected ObjectReference object;
+  @XmlElement(name = "Mode", required = true)
+  protected String mode;
 
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getID() {
-        return id;
-    }
+  /**
+   * Gets the value of the id property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getID() {
+    return id;
+  }
 
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setID(String value) {
-        this.id = value;
-    }
+  /**
+   * Sets the value of the id property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setID(String value) {
+    this.id = value;
+  }
 
-    public boolean isSetID() {
-        return (this.id!= null);
-    }
+  public boolean isSetID() {
+    return (this.id != null);
+  }
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the mode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMode() {
-        return mode;
-    }
+  /**
+   * Gets the value of the mode property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getMode() {
+    return mode;
+  }
 
-    /**
-     * Sets the value of the mode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMode(String value) {
-        this.mode = value;
-    }
+  /**
+   * Sets the value of the mode property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setMode(String value) {
+    this.mode = value;
+  }
 
-    public boolean isSetMode() {
-        return (this.mode!= null);
-    }
+  public boolean isSetMode() {
+    return (this.mode != null);
+  }
 
 }

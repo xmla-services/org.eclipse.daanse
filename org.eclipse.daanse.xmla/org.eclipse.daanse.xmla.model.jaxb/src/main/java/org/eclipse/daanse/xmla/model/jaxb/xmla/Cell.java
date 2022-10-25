@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Cell complex type.
+ * <p>
+ * Java class for Cell complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Cell"&gt;
@@ -34,69 +36,61 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Cell {
 
-    @XmlElement(name = "Value", required = true)
-    protected java.lang.Object value;
-    @XmlAttribute(name = "CellOrdinal")
-    protected Long cellOrdinal;
+  @XmlElement(name = "Value", required = true)
+  protected java.lang.Object value;
+  @XmlAttribute(name = "CellOrdinal")
+  protected Long cellOrdinal;
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public java.lang.Object getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the value property.
+   * 
+   * @return possible object is {@link java.lang.Object }
+   * 
+   */
+  public java.lang.Object getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public void setValue(java.lang.Object value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the value property.
+   * 
+   * @param value allowed object is {@link java.lang.Object }
+   * 
+   */
+  public void setValue(java.lang.Object value) {
+    this.value = value;
+  }
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+  public boolean isSetValue() {
+    return (this.value != null);
+  }
 
-    /**
-     * Gets the value of the cellOrdinal property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public long getCellOrdinal() {
-        return cellOrdinal;
-    }
+  /**
+   * Gets the value of the cellOrdinal property.
+   * 
+   * @return possible object is {@link Long }
+   * 
+   */
+  public long getCellOrdinal() {
+    return cellOrdinal;
+  }
 
-    /**
-     * Sets the value of the cellOrdinal property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
-     */
-    public void setCellOrdinal(long value) {
-        this.cellOrdinal = value;
-    }
+  /**
+   * Sets the value of the cellOrdinal property.
+   * 
+   * @param value allowed object is {@link Long }
+   * 
+   */
+  public void setCellOrdinal(long value) {
+    this.cellOrdinal = value;
+  }
 
-    public boolean isSetCellOrdinal() {
-        return (this.cellOrdinal!= null);
-    }
+  public boolean isSetCellOrdinal() {
+    return (this.cellOrdinal != null);
+  }
 
-    public void unsetCellOrdinal() {
-        this.cellOrdinal = null;
-    }
+  public void unsetCellOrdinal() {
+    this.cellOrdinal = null;
+  }
 
 }

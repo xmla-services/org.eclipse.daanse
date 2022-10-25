@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CubeDimensionBinding complex type.
+ * <p>
+ * Java class for CubeDimensionBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CubeDimensionBinding"&gt;
@@ -30,135 +32,112 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CubeDimensionBinding", propOrder = {
-    "dataSourceID",
-    "cubeID",
-    "cubeDimensionID",
-    "filter"
-})
-public class CubeDimensionBinding
-    extends Binding
-{
+@XmlType(name = "CubeDimensionBinding", propOrder = { "dataSourceID", "cubeID", "cubeDimensionID", "filter" })
+public class CubeDimensionBinding extends Binding {
 
-    @XmlElement(name = "DataSourceID", required = true)
-    protected String dataSourceID;
-    @XmlElement(name = "CubeID", required = true)
-    protected String cubeID;
-    @XmlElement(name = "CubeDimensionID", required = true)
-    protected String cubeDimensionID;
-    @XmlElement(name = "Filter")
-    protected String filter;
+  @XmlElement(name = "DataSourceID", required = true)
+  protected String dataSourceID;
+  @XmlElement(name = "CubeID", required = true)
+  protected String cubeID;
+  @XmlElement(name = "CubeDimensionID", required = true)
+  protected String cubeDimensionID;
+  @XmlElement(name = "Filter")
+  protected String filter;
 
-    /**
-     * Gets the value of the dataSourceID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDataSourceID() {
-        return dataSourceID;
-    }
+  /**
+   * Gets the value of the dataSourceID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDataSourceID() {
+    return dataSourceID;
+  }
 
-    /**
-     * Sets the value of the dataSourceID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDataSourceID(String value) {
-        this.dataSourceID = value;
-    }
+  /**
+   * Sets the value of the dataSourceID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDataSourceID(String value) {
+    this.dataSourceID = value;
+  }
 
-    public boolean isSetDataSourceID() {
-        return (this.dataSourceID!= null);
-    }
+  public boolean isSetDataSourceID() {
+    return (this.dataSourceID != null);
+  }
 
-    /**
-     * Gets the value of the cubeID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCubeID() {
-        return cubeID;
-    }
+  /**
+   * Gets the value of the cubeID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCubeID() {
+    return cubeID;
+  }
 
-    /**
-     * Sets the value of the cubeID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCubeID(String value) {
-        this.cubeID = value;
-    }
+  /**
+   * Sets the value of the cubeID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCubeID(String value) {
+    this.cubeID = value;
+  }
 
-    public boolean isSetCubeID() {
-        return (this.cubeID!= null);
-    }
+  public boolean isSetCubeID() {
+    return (this.cubeID != null);
+  }
 
-    /**
-     * Gets the value of the cubeDimensionID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCubeDimensionID() {
-        return cubeDimensionID;
-    }
+  /**
+   * Gets the value of the cubeDimensionID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCubeDimensionID() {
+    return cubeDimensionID;
+  }
 
-    /**
-     * Sets the value of the cubeDimensionID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCubeDimensionID(String value) {
-        this.cubeDimensionID = value;
-    }
+  /**
+   * Sets the value of the cubeDimensionID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCubeDimensionID(String value) {
+    this.cubeDimensionID = value;
+  }
 
-    public boolean isSetCubeDimensionID() {
-        return (this.cubeDimensionID!= null);
-    }
+  public boolean isSetCubeDimensionID() {
+    return (this.cubeDimensionID != null);
+  }
 
-    /**
-     * Gets the value of the filter property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getFilter() {
-        return filter;
-    }
+  /**
+   * Gets the value of the filter property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getFilter() {
+    return filter;
+  }
 
-    /**
-     * Sets the value of the filter property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setFilter(String value) {
-        this.filter = value;
-    }
+  /**
+   * Sets the value of the filter property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setFilter(String value) {
+    this.filter = value;
+  }
 
-    public boolean isSetFilter() {
-        return (this.filter!= null);
-    }
+  public boolean isSetFilter() {
+    return (this.filter != null);
+  }
 
 }

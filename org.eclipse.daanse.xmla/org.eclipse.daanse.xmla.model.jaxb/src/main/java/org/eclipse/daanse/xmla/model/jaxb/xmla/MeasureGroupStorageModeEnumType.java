@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MeasureGroupStorageModeEnumType.
+ * <p>
+ * Java class for MeasureGroupStorageModeEnumType.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="MeasureGroupStorageModeEnumType"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -26,31 +29,29 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum MeasureGroupStorageModeEnumType {
 
-    @XmlEnumValue("Molap")
-    MOLAP("Molap"),
-    @XmlEnumValue("Rolap")
-    ROLAP("Rolap"),
-    @XmlEnumValue("Holap")
-    HOLAP("Holap"),
-    @XmlEnumValue("InMemory")
-    IN_MEMORY("InMemory");
-    private final String value;
+  @XmlEnumValue("Molap")
+  MOLAP("Molap"), @XmlEnumValue("Rolap")
+  ROLAP("Rolap"), @XmlEnumValue("Holap")
+  HOLAP("Holap"), @XmlEnumValue("InMemory")
+  IN_MEMORY("InMemory");
 
-    MeasureGroupStorageModeEnumType(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  MeasureGroupStorageModeEnumType(String v) {
+    value = v;
+  }
 
-    public static MeasureGroupStorageModeEnumType fromValue(String v) {
-        for (MeasureGroupStorageModeEnumType c: MeasureGroupStorageModeEnumType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static MeasureGroupStorageModeEnumType fromValue(String v) {
+    for (MeasureGroupStorageModeEnumType c : MeasureGroupStorageModeEnumType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

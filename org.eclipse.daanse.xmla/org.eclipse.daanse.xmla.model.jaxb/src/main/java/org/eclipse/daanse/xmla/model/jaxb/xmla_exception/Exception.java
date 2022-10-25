@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Exception complex type.
+ * <p>
+ * Java class for Exception complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Exception"&gt;
@@ -27,10 +29,8 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Exception")
-public class Exception
-    implements Serializable
-{
+public class Exception implements Serializable {
 
-    private final static long serialVersionUID = 1L;
+  private final static long serialVersionUID = 1L;
 
 }

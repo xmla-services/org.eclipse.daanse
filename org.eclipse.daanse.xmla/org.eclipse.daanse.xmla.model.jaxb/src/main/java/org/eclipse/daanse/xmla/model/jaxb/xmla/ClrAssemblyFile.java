@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ClrAssemblyFile complex type.
+ * <p>
+ * Java class for ClrAssemblyFile complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ClrAssemblyFile"&gt;
@@ -42,95 +44,83 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ClrAssemblyFile {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "Type", required = true)
-    protected String type;
-    @XmlElement(name = "Data", required = true)
-    protected DataBlock data;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "Type", required = true)
+  protected String type;
+  @XmlElement(name = "Data", required = true)
+  protected DataBlock data;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
-    /**
-     * Gets the value of the data property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DataBlock }
-     *     
-     */
-    public DataBlock getData() {
-        return data;
-    }
+  /**
+   * Gets the value of the data property.
+   * 
+   * @return possible object is {@link DataBlock }
+   * 
+   */
+  public DataBlock getData() {
+    return data;
+  }
 
-    /**
-     * Sets the value of the data property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DataBlock }
-     *     
-     */
-    public void setData(DataBlock value) {
-        this.data = value;
-    }
+  /**
+   * Sets the value of the data property.
+   * 
+   * @param value allowed object is {@link DataBlock }
+   * 
+   */
+  public void setData(DataBlock value) {
+    this.data = value;
+  }
 
-    public boolean isSetData() {
-        return (this.data!= null);
-    }
+  public boolean isSetData() {
+    return (this.data != null);
+  }
 
 }

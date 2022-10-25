@@ -7,10 +7,11 @@ package org.eclipse.daanse.mdx.parser.impl.tree;
 import org.eclipse.daanse.mdx.parser.impl.*;
 import org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType;
 import static org.eclipse.daanse.mdx.parser.impl.mdxConstants.TokenType.*;
+
 @SuppressWarnings("unused")
 public class ASTUSE_WEIGHTED_INCREMENT extends Token {
-    public ASTUSE_WEIGHTED_INCREMENT(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
-        super(type, tokenSource, beginOffset, endOffset);
-    }
+  public ASTUSE_WEIGHTED_INCREMENT(TokenType type, mdxLexer tokenSource, int beginOffset, int endOffset) {
+    super(type, tokenSource, beginOffset, endOffset);
+  }
 
 }

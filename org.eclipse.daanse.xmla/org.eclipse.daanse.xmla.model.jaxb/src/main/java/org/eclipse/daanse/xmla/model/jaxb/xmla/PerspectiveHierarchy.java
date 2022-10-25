@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for PerspectiveHierarchy complex type.
+ * <p>
+ * Java class for PerspectiveHierarchy complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="PerspectiveHierarchy"&gt;
@@ -46,133 +48,125 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class PerspectiveHierarchy {
 
-    @XmlElement(name = "HierarchyID", required = true)
-    protected String hierarchyID;
-    @XmlElement(name = "Annotations")
-    protected PerspectiveHierarchy.Annotations annotations;
+  @XmlElement(name = "HierarchyID", required = true)
+  protected String hierarchyID;
+  @XmlElement(name = "Annotations")
+  protected PerspectiveHierarchy.Annotations annotations;
+
+  /**
+   * Gets the value of the hierarchyID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getHierarchyID() {
+    return hierarchyID;
+  }
+
+  /**
+   * Sets the value of the hierarchyID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setHierarchyID(String value) {
+    this.hierarchyID = value;
+  }
+
+  public boolean isSetHierarchyID() {
+    return (this.hierarchyID != null);
+  }
+
+  /**
+   * Gets the value of the annotations property.
+   * 
+   * @return possible object is {@link PerspectiveHierarchy.Annotations }
+   * 
+   */
+  public PerspectiveHierarchy.Annotations getAnnotations() {
+    return annotations;
+  }
+
+  /**
+   * Sets the value of the annotations property.
+   * 
+   * @param value allowed object is {@link PerspectiveHierarchy.Annotations }
+   * 
+   */
+  public void setAnnotations(PerspectiveHierarchy.Annotations value) {
+    this.annotations = value;
+  }
+
+  public boolean isSetAnnotations() {
+    return (this.annotations != null);
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "annotation" })
+  public static class Annotations {
+
+    @XmlElement(name = "Annotation")
+    protected List<Annotation> annotation;
 
     /**
-     * Gets the value of the hierarchyID property.
+     * Gets the value of the annotation property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getHierarchyID() {
-        return hierarchyID;
-    }
-
-    /**
-     * Sets the value of the hierarchyID property.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the annotation property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setHierarchyID(String value) {
-        this.hierarchyID = value;
-    }
-
-    public boolean isSetHierarchyID() {
-        return (this.hierarchyID!= null);
-    }
-
-    /**
-     * Gets the value of the annotations property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PerspectiveHierarchy.Annotations }
-     *     
-     */
-    public PerspectiveHierarchy.Annotations getAnnotations() {
-        return annotations;
-    }
-
-    /**
-     * Sets the value of the annotations property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PerspectiveHierarchy.Annotations }
-     *     
-     */
-    public void setAnnotations(PerspectiveHierarchy.Annotations value) {
-        this.annotations = value;
-    }
-
-    public boolean isSetAnnotations() {
-        return (this.annotations!= null);
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getAnnotation().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Annotation }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "annotation"
-    })
-    public static class Annotations {
-
-        @XmlElement(name = "Annotation")
-        protected List<Annotation> annotation;
-
-        /**
-         * Gets the value of the annotation property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the annotation property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getAnnotation().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Annotation }
-         * 
-         * 
-         */
-        public List<Annotation> getAnnotation() {
-            if (annotation == null) {
-                annotation = new ArrayList<Annotation>();
-            }
-            return this.annotation;
-        }
-
-        public boolean isSetAnnotation() {
-            return ((this.annotation!= null)&&(!this.annotation.isEmpty()));
-        }
-
-        public void unsetAnnotation() {
-            this.annotation = null;
-        }
-
+    public List<Annotation> getAnnotation() {
+      if (annotation == null) {
+        annotation = new ArrayList<Annotation>();
+      }
+      return this.annotation;
     }
+
+    public boolean isSetAnnotation() {
+      return ((this.annotation != null) && (!this.annotation.isEmpty()));
+    }
+
+    public void unsetAnnotation() {
+      this.annotation = null;
+    }
+
+  }
 
 }

@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for partitionModes.
+ * <p>
+ * Java class for partitionModes.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="partitionModes"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -25,29 +28,28 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum PartitionModes {
 
-    @XmlEnumValue("none")
-    NONE("none"),
-    @XmlEnumValue("perNode")
-    PER_NODE("perNode"),
-    @XmlEnumValue("perCpu")
-    PER_CPU("perCpu");
-    private final String value;
+  @XmlEnumValue("none")
+  NONE("none"), @XmlEnumValue("perNode")
+  PER_NODE("perNode"), @XmlEnumValue("perCpu")
+  PER_CPU("perCpu");
 
-    PartitionModes(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  PartitionModes(String v) {
+    value = v;
+  }
 
-    public static PartitionModes fromValue(String v) {
-        for (PartitionModes c: PartitionModes.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static PartitionModes fromValue(String v) {
+    for (PartitionModes c : PartitionModes.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

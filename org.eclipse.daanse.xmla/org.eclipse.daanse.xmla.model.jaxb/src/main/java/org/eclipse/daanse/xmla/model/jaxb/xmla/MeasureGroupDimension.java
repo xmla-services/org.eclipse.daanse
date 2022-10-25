@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MeasureGroupDimension complex type.
+ * <p>
+ * Java class for MeasureGroupDimension complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MeasureGroupDimension"&gt;
@@ -25,14 +27,9 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MeasureGroupDimension")
-@XmlSeeAlso({
-    ManyToManyMeasureGroupDimension.class,
-    RegularMeasureGroupDimension.class,
-    ReferenceMeasureGroupDimension.class,
-    DegenerateMeasureGroupDimension.class,
-    DataMiningMeasureGroupDimension.class
-})
+@XmlSeeAlso({ ManyToManyMeasureGroupDimension.class, RegularMeasureGroupDimension.class,
+    ReferenceMeasureGroupDimension.class, DegenerateMeasureGroupDimension.class,
+    DataMiningMeasureGroupDimension.class })
 public abstract class MeasureGroupDimension {
-
 
 }

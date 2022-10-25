@@ -5,8 +5,6 @@ import org.eclipse.daanse.xmla.model.ecore.xmla.DiscoverResponse;
 
 public interface XmlaService {
 
-
-	public DiscoverResponse discover(Discover parameters);
-
+  public DiscoverResponse discover(Discover parameters);
 
 }

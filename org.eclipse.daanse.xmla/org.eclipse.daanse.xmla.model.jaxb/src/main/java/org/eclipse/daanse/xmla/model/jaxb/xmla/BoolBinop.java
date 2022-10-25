@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for bool_binop complex type.
+ * <p>
+ * Java class for bool_binop complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="bool_binop"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class BoolBinop {
 
-    @XmlElement(name = "ColumnID", required = true)
-    protected String columnID;
-    @XmlElement(name = "Value", required = true)
-    protected String value;
+  @XmlElement(name = "ColumnID", required = true)
+  protected String columnID;
+  @XmlElement(name = "Value", required = true)
+  protected String value;
 
-    /**
-     * Gets the value of the columnID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getColumnID() {
-        return columnID;
-    }
+  /**
+   * Gets the value of the columnID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getColumnID() {
+    return columnID;
+  }
 
-    /**
-     * Sets the value of the columnID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setColumnID(String value) {
-        this.columnID = value;
-    }
+  /**
+   * Sets the value of the columnID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setColumnID(String value) {
+    this.columnID = value;
+  }
 
-    public boolean isSetColumnID() {
-        return (this.columnID!= null);
-    }
+  public boolean isSetColumnID() {
+    return (this.columnID != null);
+  }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the value property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the value property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+  public boolean isSetValue() {
+    return (this.value != null);
+  }
 
 }

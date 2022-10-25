@@ -28,61 +28,67 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>EPackageConfiguration</b> and <b>ResourceFactoryConfigurator</b> for the model.
- * The package will be registered into a OSGi base model registry.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>EPackageConfiguration</b> and
+ * <b>ResourceFactoryConfigurator</b> for the model. The package will be
+ * registered into a OSGi base model registry. <!-- end-user-doc -->
+ * 
  * @see EPackageConfigurator
  * @see ResourceFactoryConfigurator
  * @generated
  */
-@Component(name="ExtConfigurator", service= EPackageConfigurator.class)
-@EMFModel(name=ExtPackage.eNAME, nsURI={ExtPackage.eNS_URI}, version="1.0.0")
+@Component(name = "ExtConfigurator", service = EPackageConfigurator.class)
+@EMFModel(name = ExtPackage.eNAME, nsURI = { ExtPackage.eNS_URI }, version = "1.0.0")
 @ProvideEMFModel(name = ExtPackage.eNAME, nsURI = { ExtPackage.eNS_URI }, version = "1.0.0")
 public class ExtConfigurationComponent implements EPackageConfigurator {
-	private ServiceRegistration<?> packageRegistration = null;
-	
-	@Activate
-	public void activate(BundleContext ctx) {
-		ExtPackage p = ExtPackageImpl.init();
-		if(p == null){
-			p= ExtPackageImpl.eINSTANCE;
-			EPackage.Registry.INSTANCE.put(ExtPackage.eNS_URI,p);
-		}
-		Dictionary<String, Object> properties = new Hashtable<String, Object>();
-		properties.put(EMFNamespaces.EMF_MODEL_NAME, ExtPackage.eNAME);
-		properties.put(EMFNamespaces.EMF_MODEL_NSURI, ExtPackage.eNS_URI);
-		properties.put(EMFNamespaces.EMF_MODEL_FILE_EXT, "ext");
-		String[] serviceClasses = new String[] {ExtPackage.class.getName(), EPackage.class.getName()};
-		packageRegistration = ctx.registerService(serviceClasses, p, properties);
-	}
+  private ServiceRegistration<?> packageRegistration = null;
 
-	
-	/* 
-	 * (non-Javadoc)
-	 * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#configureEPackage(org.eclipse.emf.ecore.EPackage.Registry)
-	 * @generated
-	 */
-	@Override
-	public void configureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
-		registry.put(ExtPackage.eNS_URI, ExtPackageImpl.init());
-	}
-	
-	/* 
-	 * (non-Javadoc)
-	 * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry)
-	 * @generated
-	 */
-	@Override
-	public void unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
-		registry.remove(ExtPackage.eNS_URI);
-	}
-	
-	@Deactivate
-	public void deactivate() {
-		EPackage.Registry.INSTANCE.remove(ExtPackage.eNS_URI);
-		if(packageRegistration != null){
-			packageRegistration.unregister();
-		}
-	}
+  @Activate
+  public void activate(BundleContext ctx) {
+    ExtPackage p = ExtPackageImpl.init();
+    if (p == null) {
+      p = ExtPackageImpl.eINSTANCE;
+      EPackage.Registry.INSTANCE.put(ExtPackage.eNS_URI, p);
+    }
+    Dictionary<String, Object> properties = new Hashtable<String, Object>();
+    properties.put(EMFNamespaces.EMF_MODEL_NAME, ExtPackage.eNAME);
+    properties.put(EMFNamespaces.EMF_MODEL_NSURI, ExtPackage.eNS_URI);
+    properties.put(EMFNamespaces.EMF_MODEL_FILE_EXT, "ext");
+    String[] serviceClasses = new String[] { ExtPackage.class.getName(), EPackage.class.getName() };
+    packageRegistration = ctx.registerService(serviceClasses, p, properties);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gecko.emf.osgi.EPackageRegistryConfigurator#configureEPackage(org.eclipse
+   * .emf.ecore.EPackage.Registry)
+   * 
+   * @generated
+   */
+  @Override
+  public void configureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
+    registry.put(ExtPackage.eNS_URI, ExtPackageImpl.init());
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#unconfigureEPackage(org.
+   * eclipse.emf.ecore.EPackage.Registry)
+   * 
+   * @generated
+   */
+  @Override
+  public void unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
+    registry.remove(ExtPackage.eNS_URI);
+  }
+
+  @Deactivate
+  public void deactivate() {
+    EPackage.Registry.INSTANCE.remove(ExtPackage.eNS_URI);
+    if (packageRegistration != null) {
+      packageRegistration.unregister();
+    }
+  }
 }

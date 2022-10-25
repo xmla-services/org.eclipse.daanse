@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TuplesType complex type.
+ * <p>
+ * Java class for TuplesType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="TuplesType"&gt;
@@ -29,49 +31,47 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TuplesType", propOrder = {
-    "tuple"
-})
+@XmlType(name = "TuplesType", propOrder = { "tuple" })
 public class TuplesType {
 
-    @XmlElement(name = "Tuple")
-    protected List<TupleType> tuple;
+  @XmlElement(name = "Tuple")
+  protected List<TupleType> tuple;
 
-    /**
-     * Gets the value of the tuple property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the tuple property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getTuple().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TupleType }
-     * 
-     * 
-     */
-    public List<TupleType> getTuple() {
-        if (tuple == null) {
-            tuple = new ArrayList<TupleType>();
-        }
-        return this.tuple;
+  /**
+   * Gets the value of the tuple property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the tuple property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getTuple().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link TupleType }
+   * 
+   * 
+   */
+  public List<TupleType> getTuple() {
+    if (tuple == null) {
+      tuple = new ArrayList<TupleType>();
     }
+    return this.tuple;
+  }
 
-    public boolean isSetTuple() {
-        return ((this.tuple!= null)&&(!this.tuple.isEmpty()));
-    }
+  public boolean isSetTuple() {
+    return ((this.tuple != null) && (!this.tuple.isEmpty()));
+  }
 
-    public void unsetTuple() {
-        this.tuple = null;
-    }
+  public void unsetTuple() {
+    this.tuple = null;
+  }
 
 }

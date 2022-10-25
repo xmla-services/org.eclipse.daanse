@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for RowNumberBinding complex type.
+ * <p>
+ * Java class for RowNumberBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="RowNumberBinding"&gt;
@@ -28,11 +30,8 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RowNumberBinding")
-public class RowNumberBinding
-    extends Binding
-    implements Serializable
-{
+public class RowNumberBinding extends Binding implements Serializable {
 
-    private final static long serialVersionUID = 1L;
+  private final static long serialVersionUID = 1L;
 
 }

@@ -12,45 +12,45 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ImpersonationInfo {
 
-	@XmlElement(name = "ImpersonationMode", required = true)
-	protected String impersonationMode;
-	@XmlElement(name = "Account")
-	protected String account;
-	@XmlElement(name = "Password")
-	protected String password;
-	@XmlElement(name = "ImpersonationInfoSecurity")
-	protected String impersonationInfoSecurity;
+  @XmlElement(name = "ImpersonationMode", required = true)
+  protected String impersonationMode;
+  @XmlElement(name = "Account")
+  protected String account;
+  @XmlElement(name = "Password")
+  protected String password;
+  @XmlElement(name = "ImpersonationInfoSecurity")
+  protected String impersonationInfoSecurity;
 
-	public String getImpersonationMode() {
-		return impersonationMode;
-	}
+  public String getImpersonationMode() {
+    return impersonationMode;
+  }
 
-	public void setImpersonationMode(String value) {
-		this.impersonationMode = value;
-	}
+  public void setImpersonationMode(String value) {
+    this.impersonationMode = value;
+  }
 
-	public String getAccount() {
-		return account;
-	}
+  public String getAccount() {
+    return account;
+  }
 
-	public void setAccount(String value) {
-		this.account = value;
-	}
+  public void setAccount(String value) {
+    this.account = value;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public void setPassword(String value) {
-		this.password = value;
-	}
+  public void setPassword(String value) {
+    this.password = value;
+  }
 
-	public String getImpersonationInfoSecurity() {
-		return impersonationInfoSecurity;
-	}
+  public String getImpersonationInfoSecurity() {
+    return impersonationInfoSecurity;
+  }
 
-	public void setImpersonationInfoSecurity(String value) {
-		this.impersonationInfoSecurity = value;
-	}
+  public void setImpersonationInfoSecurity(String value) {
+    this.impersonationInfoSecurity = value;
+  }
 
 }

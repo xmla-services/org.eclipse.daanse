@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -35,100 +37,86 @@ import jakarta.xml.bind.annotation.XmlType;
 
 })
 @XmlRootElement(name = "WarningMeasure")
-public class WarningMeasure
-    implements Serializable
-{
+public class WarningMeasure implements Serializable {
 
-    private final static long serialVersionUID = 1L;
-    @XmlElement(name = "Cube", required = true)
-    protected String cube;
-    @XmlElement(name = "MeasureGroup", required = true)
-    protected String measureGroup;
-    @XmlElement(name = "MeasureName", required = true)
-    protected String measureName;
+  private final static long serialVersionUID = 1L;
+  @XmlElement(name = "Cube", required = true)
+  protected String cube;
+  @XmlElement(name = "MeasureGroup", required = true)
+  protected String measureGroup;
+  @XmlElement(name = "MeasureName", required = true)
+  protected String measureName;
 
-    /**
-     * Gets the value of the cube property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCube() {
-        return cube;
-    }
+  /**
+   * Gets the value of the cube property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCube() {
+    return cube;
+  }
 
-    /**
-     * Sets the value of the cube property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCube(String value) {
-        this.cube = value;
-    }
+  /**
+   * Sets the value of the cube property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCube(String value) {
+    this.cube = value;
+  }
 
-    public boolean isSetCube() {
-        return (this.cube!= null);
-    }
+  public boolean isSetCube() {
+    return (this.cube != null);
+  }
 
-    /**
-     * Gets the value of the measureGroup property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMeasureGroup() {
-        return measureGroup;
-    }
+  /**
+   * Gets the value of the measureGroup property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getMeasureGroup() {
+    return measureGroup;
+  }
 
-    /**
-     * Sets the value of the measureGroup property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMeasureGroup(String value) {
-        this.measureGroup = value;
-    }
+  /**
+   * Sets the value of the measureGroup property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setMeasureGroup(String value) {
+    this.measureGroup = value;
+  }
 
-    public boolean isSetMeasureGroup() {
-        return (this.measureGroup!= null);
-    }
+  public boolean isSetMeasureGroup() {
+    return (this.measureGroup != null);
+  }
 
-    /**
-     * Gets the value of the measureName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMeasureName() {
-        return measureName;
-    }
+  /**
+   * Gets the value of the measureName property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getMeasureName() {
+    return measureName;
+  }
 
-    /**
-     * Sets the value of the measureName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMeasureName(String value) {
-        this.measureName = value;
-    }
+  /**
+   * Sets the value of the measureName property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setMeasureName(String value) {
+    this.measureName = value;
+  }
 
-    public boolean isSetMeasureName() {
-        return (this.measureName!= null);
-    }
+  public boolean isSetMeasureName() {
+    return (this.measureName != null);
+  }
 
 }

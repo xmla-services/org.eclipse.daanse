@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for UnknownMemberEnumType.
+ * <p>
+ * Java class for UnknownMemberEnumType.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="UnknownMemberEnumType"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -26,31 +29,29 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum UnknownMemberEnumType {
 
-    @XmlEnumValue("Visible")
-    VISIBLE("Visible"),
-    @XmlEnumValue("Hidden")
-    HIDDEN("Hidden"),
-    @XmlEnumValue("None")
-    NONE("None"),
-    @XmlEnumValue("AutomaticNull")
-    AUTOMATIC_NULL("AutomaticNull");
-    private final String value;
+  @XmlEnumValue("Visible")
+  VISIBLE("Visible"), @XmlEnumValue("Hidden")
+  HIDDEN("Hidden"), @XmlEnumValue("None")
+  NONE("None"), @XmlEnumValue("AutomaticNull")
+  AUTOMATIC_NULL("AutomaticNull");
 
-    UnknownMemberEnumType(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  UnknownMemberEnumType(String v) {
+    value = v;
+  }
 
-    public static UnknownMemberEnumType fromValue(String v) {
-        for (UnknownMemberEnumType c: UnknownMemberEnumType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static UnknownMemberEnumType fromValue(String v) {
+    for (UnknownMemberEnumType c : UnknownMemberEnumType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

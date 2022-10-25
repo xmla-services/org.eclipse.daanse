@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CubeStorageModeEnumType.
+ * <p>
+ * Java class for CubeStorageModeEnumType.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="CubeStorageModeEnumType"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -26,31 +29,29 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum CubeStorageModeEnumType {
 
-    @XmlEnumValue("Molap")
-    MOLAP("Molap"),
-    @XmlEnumValue("Rolap")
-    ROLAP("Rolap"),
-    @XmlEnumValue("Holap")
-    HOLAP("Holap"),
-    @XmlEnumValue("InMemory")
-    IN_MEMORY("InMemory");
-    private final String value;
+  @XmlEnumValue("Molap")
+  MOLAP("Molap"), @XmlEnumValue("Rolap")
+  ROLAP("Rolap"), @XmlEnumValue("Holap")
+  HOLAP("Holap"), @XmlEnumValue("InMemory")
+  IN_MEMORY("InMemory");
 
-    CubeStorageModeEnumType(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  CubeStorageModeEnumType(String v) {
+    value = v;
+  }
 
-    public static CubeStorageModeEnumType fromValue(String v) {
-        for (CubeStorageModeEnumType c: CubeStorageModeEnumType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static CubeStorageModeEnumType fromValue(String v) {
+    for (CubeStorageModeEnumType c : CubeStorageModeEnumType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

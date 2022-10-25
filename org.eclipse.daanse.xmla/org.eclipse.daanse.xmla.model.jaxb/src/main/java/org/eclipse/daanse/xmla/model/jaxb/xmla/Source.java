@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Source complex type.
+ * <p>
+ * Java class for Source complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Source"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Source {
 
-    @XmlElement(name = "Object", required = true)
-    protected ObjectReference object;
-    @XmlElement(name = "ConnectionString", required = true)
-    protected String connectionString;
+  @XmlElement(name = "Object", required = true)
+  protected ObjectReference object;
+  @XmlElement(name = "ConnectionString", required = true)
+  protected String connectionString;
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the connectionString property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getConnectionString() {
-        return connectionString;
-    }
+  /**
+   * Gets the value of the connectionString property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getConnectionString() {
+    return connectionString;
+  }
 
-    /**
-     * Sets the value of the connectionString property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setConnectionString(String value) {
-        this.connectionString = value;
-    }
+  /**
+   * Sets the value of the connectionString property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setConnectionString(String value) {
+    this.connectionString = value;
+  }
 
-    public boolean isSetConnectionString() {
-        return (this.connectionString!= null);
-    }
+  public boolean isSetConnectionString() {
+    return (this.connectionString != null);
+  }
 
 }

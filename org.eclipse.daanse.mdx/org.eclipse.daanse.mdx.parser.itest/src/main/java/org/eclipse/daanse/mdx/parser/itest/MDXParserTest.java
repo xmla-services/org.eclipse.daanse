@@ -12,22 +12,21 @@ import org.osgi.test.junit5.service.ServiceSource;
 
 public class MDXParserTest {
 
-	@ParameterizedTest
-	@ServiceSource(serviceType = MdxParserProvider.class)
-	public void testParseStatementsCount_Single(MdxParserProvider parserProvider) throws MdxParserException {
-		String mdx = """
-							SELECT [Customer].[Gender].[Gender].Members ON COLUMNS,
-				            {[Customer].[Customer].[Aaron A. Allen],
-				             [Customer].[Customer].[Abigail Clark]} ON ROWS
-				      FROM [Adventure Works]
-				      WHERE Measures.[Internet Sales Amount]
-							""";
+  @ParameterizedTest
+  @ServiceSource(serviceType = MdxParserProvider.class)
+  public void testParseStatementsCount_Single(MdxParserProvider parserProvider) throws MdxParserException {
+    String mdx = """
+        SELECT [Customer].[Gender].[Gender].Members ON COLUMNS,
+                 {[Customer].[Customer].[Aaron A. Allen],
+                  [Customer].[Customer].[Abigail Clark]} ON ROWS
+           FROM [Adventure Works]
+           WHERE Measures.[Internet Sales Amount]
+        """;
 
-		MdxParser parser = parserProvider.newParser(mdx);
+    MdxParser parser = parserProvider.newParser(mdx);
 
-		assertThat(assertDoesNotThrow(() -> parser.parseMdxStatement())).isInstanceOf(SelectStatement.class);
+    assertThat(assertDoesNotThrow(() -> parser.parseMdxStatement())).isInstanceOf(SelectStatement.class);
 
-	}
-	
+  }
 
 }

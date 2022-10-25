@@ -13,20 +13,20 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "Authenticate")
 public class Authenticate implements Serializable {
 
-	private final static long serialVersionUID = 1L;
-	@XmlElement(name = "SspiHandshake", required = true)
-	protected byte[] sspiHandshake;
+  private final static long serialVersionUID = 1L;
+  @XmlElement(name = "SspiHandshake", required = true)
+  protected byte[] sspiHandshake;
 
-	public byte[] getSspiHandshake() {
-		return sspiHandshake;
-	}
+  public byte[] getSspiHandshake() {
+    return sspiHandshake;
+  }
 
-	public void setSspiHandshake(byte[] value) {
-		this.sspiHandshake = value;
-	}
+  public void setSspiHandshake(byte[] value) {
+    this.sspiHandshake = value;
+  }
 
-	public boolean isSetSspiHandshake() {
-		return (this.sspiHandshake != null);
-	}
+  public boolean isSetSspiHandshake() {
+    return (this.sspiHandshake != null);
+  }
 
 }

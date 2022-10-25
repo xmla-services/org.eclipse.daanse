@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for IncrementalProcessingNotification complex type.
+ * <p>
+ * Java class for IncrementalProcessingNotification complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="IncrementalProcessingNotification"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class IncrementalProcessingNotification {
 
-    @XmlElement(name = "TableID", required = true)
-    protected String tableID;
-    @XmlElement(name = "ProcessingQuery", required = true)
-    protected String processingQuery;
+  @XmlElement(name = "TableID", required = true)
+  protected String tableID;
+  @XmlElement(name = "ProcessingQuery", required = true)
+  protected String processingQuery;
 
-    /**
-     * Gets the value of the tableID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTableID() {
-        return tableID;
-    }
+  /**
+   * Gets the value of the tableID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getTableID() {
+    return tableID;
+  }
 
-    /**
-     * Sets the value of the tableID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTableID(String value) {
-        this.tableID = value;
-    }
+  /**
+   * Sets the value of the tableID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setTableID(String value) {
+    this.tableID = value;
+  }
 
-    public boolean isSetTableID() {
-        return (this.tableID!= null);
-    }
+  public boolean isSetTableID() {
+    return (this.tableID != null);
+  }
 
-    /**
-     * Gets the value of the processingQuery property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getProcessingQuery() {
-        return processingQuery;
-    }
+  /**
+   * Gets the value of the processingQuery property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getProcessingQuery() {
+    return processingQuery;
+  }
 
-    /**
-     * Sets the value of the processingQuery property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setProcessingQuery(String value) {
-        this.processingQuery = value;
-    }
+  /**
+   * Sets the value of the processingQuery property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setProcessingQuery(String value) {
+    this.processingQuery = value;
+  }
 
-    public boolean isSetProcessingQuery() {
-        return (this.processingQuery!= null);
-    }
+  public boolean isSetProcessingQuery() {
+    return (this.processingQuery != null);
+  }
 
 }

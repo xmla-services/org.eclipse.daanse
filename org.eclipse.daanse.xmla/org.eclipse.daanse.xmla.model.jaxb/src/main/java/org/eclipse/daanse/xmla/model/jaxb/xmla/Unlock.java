@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for Unlock complex type.
+ * <p>
+ * Java class for Unlock complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Unlock"&gt;
@@ -40,36 +42,32 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 public class Unlock {
 
-    @XmlElement(name = "ID", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    protected String id;
+  @XmlElement(name = "ID", required = true)
+  @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+  protected String id;
 
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getID() {
-        return id;
-    }
+  /**
+   * Gets the value of the id property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getID() {
+    return id;
+  }
 
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setID(String value) {
-        this.id = value;
-    }
+  /**
+   * Sets the value of the id property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setID(String value) {
+    this.id = value;
+  }
 
-    public boolean isSetID() {
-        return (this.id!= null);
-    }
+  public boolean isSetID() {
+    return (this.id != null);
+  }
 
 }

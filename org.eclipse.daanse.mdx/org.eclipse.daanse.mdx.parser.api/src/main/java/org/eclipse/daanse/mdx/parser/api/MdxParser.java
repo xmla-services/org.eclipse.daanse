@@ -7,12 +7,12 @@ import org.eclipse.daanse.mdx.model.select.SelectQueryAxesClause;
 
 public interface MdxParser {
 
-	public MdxStatement parseMdxStatement() throws MdxParserException;
+  public MdxStatement parseMdxStatement() throws MdxParserException;
 
-	public SelectStatement parseSelectStatement() throws MdxParserException;
+  public SelectStatement parseSelectStatement() throws MdxParserException;
 
-	public SelectQueryAsteriskClause parseSelectQueryAsteriskClause() throws MdxParserException;
+  public SelectQueryAsteriskClause parseSelectQueryAsteriskClause() throws MdxParserException;
 
-	public SelectQueryAxesClause parseSelectQueryAxesClause() throws MdxParserException;
+  public SelectQueryAxesClause parseSelectQueryAxesClause() throws MdxParserException;
 
 }

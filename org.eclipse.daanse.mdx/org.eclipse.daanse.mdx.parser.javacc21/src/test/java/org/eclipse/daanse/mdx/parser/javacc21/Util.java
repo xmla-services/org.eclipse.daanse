@@ -10,34 +10,31 @@ import org.eclipse.daanse.mdx.parser.api.MdxParserException;
 
 public class Util {
 
-	public static MdxParser newParser(String input) throws MdxParserException {
-		return new MdxParserWrapper(input);
-	}
+  public static MdxParser newParser(String input) throws MdxParserException {
+    return new MdxParserWrapper(input);
+  }
 
-	public static SelectQueryAsteriskClause parseSelectQueryAsteriskClause(String input) throws MdxParserException {
+  public static SelectQueryAsteriskClause parseSelectQueryAsteriskClause(String input) throws MdxParserException {
 
-		return newParser(input).parseSelectQueryAsteriskClause();
+    return newParser(input).parseSelectQueryAsteriskClause();
 
-	}
-	
-	public static SelectQueryAxesClause parseSelectQueryAxesClause(String input) throws MdxParserException {
+  }
 
-		return newParser(input).parseSelectQueryAxesClause();
+  public static SelectQueryAxesClause parseSelectQueryAxesClause(String input) throws MdxParserException {
 
-	}
-	
+    return newParser(input).parseSelectQueryAxesClause();
 
+  }
 
+  public static MdxStatement parseMdxStatement(String input) throws MdxParserException {
 
-	public static MdxStatement parseMdxStatement(String input) throws MdxParserException {
+    return newParser(input).parseMdxStatement();
 
-		return newParser(input).parseMdxStatement();
+  }
 
-	}
+  public static SelectStatement parseSelectStatement(String input) throws MdxParserException {
 
-	public static SelectStatement parseSelectStatement(String input) throws MdxParserException {
+    return newParser(input).parseSelectStatement();
 
-		return newParser(input).parseSelectStatement();
-
-	}
+  }
 }

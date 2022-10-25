@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Where complex type.
+ * <p>
+ * Java class for Where complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Where"&gt;
@@ -32,35 +34,31 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Where {
 
-    @XmlElement(name = "Attribute", required = true)
-    protected WhereAttribute attribute;
+  @XmlElement(name = "Attribute", required = true)
+  protected WhereAttribute attribute;
 
-    /**
-     * Gets the value of the attribute property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WhereAttribute }
-     *     
-     */
-    public WhereAttribute getAttribute() {
-        return attribute;
-    }
+  /**
+   * Gets the value of the attribute property.
+   * 
+   * @return possible object is {@link WhereAttribute }
+   * 
+   */
+  public WhereAttribute getAttribute() {
+    return attribute;
+  }
 
-    /**
-     * Sets the value of the attribute property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WhereAttribute }
-     *     
-     */
-    public void setAttribute(WhereAttribute value) {
-        this.attribute = value;
-    }
+  /**
+   * Sets the value of the attribute property.
+   * 
+   * @param value allowed object is {@link WhereAttribute }
+   * 
+   */
+  public void setAttribute(WhereAttribute value) {
+    this.attribute = value;
+  }
 
-    public boolean isSetAttribute() {
-        return (this.attribute!= null);
-    }
+  public boolean isSetAttribute() {
+    return (this.attribute != null);
+  }
 
 }

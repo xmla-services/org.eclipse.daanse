@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MeasureGroupBinding complex type.
+ * <p>
+ * Java class for MeasureGroupBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MeasureGroupBinding"&gt;
@@ -50,228 +52,191 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MeasureGroupBinding", propOrder = {
-    "dataSourceID",
-    "cubeID",
-    "measureGroupID",
-    "persistence",
-    "refreshPolicy",
-    "refreshInterval",
-    "filter"
-})
-public class MeasureGroupBinding
-    extends Binding
-{
+@XmlType(name = "MeasureGroupBinding", propOrder = { "dataSourceID", "cubeID", "measureGroupID", "persistence",
+    "refreshPolicy", "refreshInterval", "filter" })
+public class MeasureGroupBinding extends Binding {
 
-    @XmlElement(name = "DataSourceID", required = true)
-    protected String dataSourceID;
-    @XmlElement(name = "CubeID", required = true)
-    protected String cubeID;
-    @XmlElement(name = "MeasureGroupID", required = true)
-    protected String measureGroupID;
-    @XmlElement(name = "Persistence")
-    protected String persistence;
-    @XmlElement(name = "RefreshPolicy")
-    protected String refreshPolicy;
-    @XmlElement(name = "RefreshInterval")
-    protected Duration refreshInterval;
-    @XmlElement(name = "Filter")
-    protected String filter;
+  @XmlElement(name = "DataSourceID", required = true)
+  protected String dataSourceID;
+  @XmlElement(name = "CubeID", required = true)
+  protected String cubeID;
+  @XmlElement(name = "MeasureGroupID", required = true)
+  protected String measureGroupID;
+  @XmlElement(name = "Persistence")
+  protected String persistence;
+  @XmlElement(name = "RefreshPolicy")
+  protected String refreshPolicy;
+  @XmlElement(name = "RefreshInterval")
+  protected Duration refreshInterval;
+  @XmlElement(name = "Filter")
+  protected String filter;
 
-    /**
-     * Gets the value of the dataSourceID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDataSourceID() {
-        return dataSourceID;
-    }
+  /**
+   * Gets the value of the dataSourceID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDataSourceID() {
+    return dataSourceID;
+  }
 
-    /**
-     * Sets the value of the dataSourceID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDataSourceID(String value) {
-        this.dataSourceID = value;
-    }
+  /**
+   * Sets the value of the dataSourceID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDataSourceID(String value) {
+    this.dataSourceID = value;
+  }
 
-    public boolean isSetDataSourceID() {
-        return (this.dataSourceID!= null);
-    }
+  public boolean isSetDataSourceID() {
+    return (this.dataSourceID != null);
+  }
 
-    /**
-     * Gets the value of the cubeID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCubeID() {
-        return cubeID;
-    }
+  /**
+   * Gets the value of the cubeID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCubeID() {
+    return cubeID;
+  }
 
-    /**
-     * Sets the value of the cubeID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCubeID(String value) {
-        this.cubeID = value;
-    }
+  /**
+   * Sets the value of the cubeID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCubeID(String value) {
+    this.cubeID = value;
+  }
 
-    public boolean isSetCubeID() {
-        return (this.cubeID!= null);
-    }
+  public boolean isSetCubeID() {
+    return (this.cubeID != null);
+  }
 
-    /**
-     * Gets the value of the measureGroupID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMeasureGroupID() {
-        return measureGroupID;
-    }
+  /**
+   * Gets the value of the measureGroupID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getMeasureGroupID() {
+    return measureGroupID;
+  }
 
-    /**
-     * Sets the value of the measureGroupID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMeasureGroupID(String value) {
-        this.measureGroupID = value;
-    }
+  /**
+   * Sets the value of the measureGroupID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setMeasureGroupID(String value) {
+    this.measureGroupID = value;
+  }
 
-    public boolean isSetMeasureGroupID() {
-        return (this.measureGroupID!= null);
-    }
+  public boolean isSetMeasureGroupID() {
+    return (this.measureGroupID != null);
+  }
 
-    /**
-     * Gets the value of the persistence property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPersistence() {
-        return persistence;
-    }
+  /**
+   * Gets the value of the persistence property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getPersistence() {
+    return persistence;
+  }
 
-    /**
-     * Sets the value of the persistence property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPersistence(String value) {
-        this.persistence = value;
-    }
+  /**
+   * Sets the value of the persistence property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setPersistence(String value) {
+    this.persistence = value;
+  }
 
-    public boolean isSetPersistence() {
-        return (this.persistence!= null);
-    }
+  public boolean isSetPersistence() {
+    return (this.persistence != null);
+  }
 
-    /**
-     * Gets the value of the refreshPolicy property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getRefreshPolicy() {
-        return refreshPolicy;
-    }
+  /**
+   * Gets the value of the refreshPolicy property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getRefreshPolicy() {
+    return refreshPolicy;
+  }
 
-    /**
-     * Sets the value of the refreshPolicy property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setRefreshPolicy(String value) {
-        this.refreshPolicy = value;
-    }
+  /**
+   * Sets the value of the refreshPolicy property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setRefreshPolicy(String value) {
+    this.refreshPolicy = value;
+  }
 
-    public boolean isSetRefreshPolicy() {
-        return (this.refreshPolicy!= null);
-    }
+  public boolean isSetRefreshPolicy() {
+    return (this.refreshPolicy != null);
+  }
 
-    /**
-     * Gets the value of the refreshInterval property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Duration }
-     *     
-     */
-    public Duration getRefreshInterval() {
-        return refreshInterval;
-    }
+  /**
+   * Gets the value of the refreshInterval property.
+   * 
+   * @return possible object is {@link Duration }
+   * 
+   */
+  public Duration getRefreshInterval() {
+    return refreshInterval;
+  }
 
-    /**
-     * Sets the value of the refreshInterval property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Duration }
-     *     
-     */
-    public void setRefreshInterval(Duration value) {
-        this.refreshInterval = value;
-    }
+  /**
+   * Sets the value of the refreshInterval property.
+   * 
+   * @param value allowed object is {@link Duration }
+   * 
+   */
+  public void setRefreshInterval(Duration value) {
+    this.refreshInterval = value;
+  }
 
-    public boolean isSetRefreshInterval() {
-        return (this.refreshInterval!= null);
-    }
+  public boolean isSetRefreshInterval() {
+    return (this.refreshInterval != null);
+  }
 
-    /**
-     * Gets the value of the filter property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getFilter() {
-        return filter;
-    }
+  /**
+   * Gets the value of the filter property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getFilter() {
+    return filter;
+  }
 
-    /**
-     * Sets the value of the filter property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setFilter(String value) {
-        this.filter = value;
-    }
+  /**
+   * Sets the value of the filter property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setFilter(String value) {
+    this.filter = value;
+  }
 
-    public boolean isSetFilter() {
-        return (this.filter!= null);
-    }
+  public boolean isSetFilter() {
+    return (this.filter != null);
+  }
 
 }

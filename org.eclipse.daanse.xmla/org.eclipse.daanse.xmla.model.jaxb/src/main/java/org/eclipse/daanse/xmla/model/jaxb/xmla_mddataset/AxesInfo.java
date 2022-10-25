@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for AxesInfo complex type.
+ * <p>
+ * Java class for AxesInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AxesInfo"&gt;
@@ -29,49 +31,47 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AxesInfo", propOrder = {
-    "axisInfo"
-})
+@XmlType(name = "AxesInfo", propOrder = { "axisInfo" })
 public class AxesInfo {
 
-    @XmlElement(name = "AxisInfo", required = true)
-    protected List<AxisInfo> axisInfo;
+  @XmlElement(name = "AxisInfo", required = true)
+  protected List<AxisInfo> axisInfo;
 
-    /**
-     * Gets the value of the axisInfo property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the axisInfo property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getAxisInfo().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link AxisInfo }
-     * 
-     * 
-     */
-    public List<AxisInfo> getAxisInfo() {
-        if (axisInfo == null) {
-            axisInfo = new ArrayList<AxisInfo>();
-        }
-        return this.axisInfo;
+  /**
+   * Gets the value of the axisInfo property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the axisInfo property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getAxisInfo().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link AxisInfo }
+   * 
+   * 
+   */
+  public List<AxisInfo> getAxisInfo() {
+    if (axisInfo == null) {
+      axisInfo = new ArrayList<AxisInfo>();
     }
+    return this.axisInfo;
+  }
 
-    public boolean isSetAxisInfo() {
-        return ((this.axisInfo!= null)&&(!this.axisInfo.isEmpty()));
-    }
+  public boolean isSetAxisInfo() {
+    return ((this.axisInfo != null) && (!this.axisInfo.isEmpty()));
+  }
 
-    public void unsetAxisInfo() {
-        this.axisInfo = null;
-    }
+  public void unsetAxisInfo() {
+    this.axisInfo = null;
+  }
 
 }

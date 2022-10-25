@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for AttributeBinding complex type.
+ * <p>
+ * Java class for AttributeBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AttributeBinding"&gt;
@@ -45,104 +47,86 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AttributeBinding", propOrder = {
-    "attributeID",
-    "type",
-    "ordinal"
-})
-public class AttributeBinding
-    extends Binding
-{
+@XmlType(name = "AttributeBinding", propOrder = { "attributeID", "type", "ordinal" })
+public class AttributeBinding extends Binding {
 
-    @XmlElement(name = "AttributeID", required = true)
-    protected String attributeID;
-    @XmlElement(name = "Type", required = true)
-    protected String type;
-    @XmlElement(name = "Ordinal")
-    protected BigInteger ordinal;
+  @XmlElement(name = "AttributeID", required = true)
+  protected String attributeID;
+  @XmlElement(name = "Type", required = true)
+  protected String type;
+  @XmlElement(name = "Ordinal")
+  protected BigInteger ordinal;
 
-    /**
-     * Gets the value of the attributeID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAttributeID() {
-        return attributeID;
-    }
+  /**
+   * Gets the value of the attributeID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getAttributeID() {
+    return attributeID;
+  }
 
-    /**
-     * Sets the value of the attributeID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAttributeID(String value) {
-        this.attributeID = value;
-    }
+  /**
+   * Sets the value of the attributeID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setAttributeID(String value) {
+    this.attributeID = value;
+  }
 
-    public boolean isSetAttributeID() {
-        return (this.attributeID!= null);
-    }
+  public boolean isSetAttributeID() {
+    return (this.attributeID != null);
+  }
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
-    /**
-     * Gets the value of the ordinal property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getOrdinal() {
-        return ordinal;
-    }
+  /**
+   * Gets the value of the ordinal property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getOrdinal() {
+    return ordinal;
+  }
 
-    /**
-     * Sets the value of the ordinal property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setOrdinal(BigInteger value) {
-        this.ordinal = value;
-    }
+  /**
+   * Sets the value of the ordinal property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setOrdinal(BigInteger value) {
+    this.ordinal = value;
+  }
 
-    public boolean isSetOrdinal() {
-        return (this.ordinal!= null);
-    }
+  public boolean isSetOrdinal() {
+    return (this.ordinal != null);
+  }
 
 }

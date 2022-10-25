@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ProactiveCachingInheritedBinding complex type.
+ * <p>
+ * Java class for ProactiveCachingInheritedBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ProactiveCachingInheritedBinding"&gt;
@@ -34,42 +36,34 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProactiveCachingInheritedBinding", propOrder = {
-    "notificationTechnique"
-})
-public class ProactiveCachingInheritedBinding
-    extends ProactiveCachingObjectNotificationBinding
-{
+@XmlType(name = "ProactiveCachingInheritedBinding", propOrder = { "notificationTechnique" })
+public class ProactiveCachingInheritedBinding extends ProactiveCachingObjectNotificationBinding {
 
-    @XmlElement(name = "NotificationTechnique")
-    protected String notificationTechnique;
+  @XmlElement(name = "NotificationTechnique")
+  protected String notificationTechnique;
 
-    /**
-     * Gets the value of the notificationTechnique property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getNotificationTechnique() {
-        return notificationTechnique;
-    }
+  /**
+   * Gets the value of the notificationTechnique property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getNotificationTechnique() {
+    return notificationTechnique;
+  }
 
-    /**
-     * Sets the value of the notificationTechnique property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setNotificationTechnique(String value) {
-        this.notificationTechnique = value;
-    }
+  /**
+   * Sets the value of the notificationTechnique property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setNotificationTechnique(String value) {
+    this.notificationTechnique = value;
+  }
 
-    public boolean isSetNotificationTechnique() {
-        return (this.notificationTechnique!= null);
-    }
+  public boolean isSetNotificationTechnique() {
+    return (this.notificationTechnique != null);
+  }
 
 }

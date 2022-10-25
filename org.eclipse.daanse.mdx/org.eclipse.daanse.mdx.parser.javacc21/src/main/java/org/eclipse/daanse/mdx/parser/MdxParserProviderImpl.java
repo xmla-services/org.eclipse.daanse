@@ -8,9 +8,9 @@ import org.osgi.service.component.annotations.Component;
 @Component(service = MdxParserProvider.class)
 public class MdxParserProviderImpl implements MdxParserProvider {
 
-	@Override
-	public MdxParser newParser(CharSequence mdx) throws MdxParserException {
-		MdxParserWrapper parser = new MdxParserWrapper(mdx);
-		return parser;
-	}
+  @Override
+  public MdxParser newParser(CharSequence mdx) throws MdxParserException {
+    MdxParserWrapper parser = new MdxParserWrapper(mdx);
+    return parser;
+  }
 }

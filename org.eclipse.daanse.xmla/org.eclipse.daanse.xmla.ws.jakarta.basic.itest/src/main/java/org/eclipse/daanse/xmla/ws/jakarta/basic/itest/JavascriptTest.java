@@ -16,29 +16,29 @@ import org.mozilla.javascript.Scriptable;
 
 public class JavascriptTest {
 
-	public static void main(String[] args) throws NoSuchMethodException, ScriptException, IOException {
-		new JavascriptTest().testJS();
-	}
+  public static void main(String[] args) throws NoSuchMethodException, ScriptException, IOException {
+    new JavascriptTest().testJS();
+  }
 
-	@Test
-	@Disabled
-	void testJS() throws ScriptException, IOException, NoSuchMethodException {
-		Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/test.js"), StandardCharsets.UTF_8);
-		Context cx = Context.enter();
+  @Test
+  @Disabled
+  void testJS() throws ScriptException, IOException, NoSuchMethodException {
+    Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/test.js"), StandardCharsets.UTF_8);
+    Context cx = Context.enter();
 
-		Scriptable scope = cx.initStandardObjects();
-		cx.evaluateReader(scope, reader, "<cmd>", 1, null);
+    Scriptable scope = cx.initStandardObjects();
+    cx.evaluateReader(scope, reader, "<cmd>", 1, null);
 
-		Object fObj = scope.get("myFunction", scope);
-		if (!(fObj instanceof Function)) {
-			System.out.println("myFunction is undefined or not a function.");
-		} else {
-			Object functionArgs[] = { 2, 21 };
-			Function f = (Function) fObj;
-			Object result = f.call(cx, scope, scope, functionArgs);
-			String report = Context.toString(result);
-			System.out.println(report);
-		}
+    Object fObj = scope.get("myFunction", scope);
+    if (!(fObj instanceof Function)) {
+      System.out.println("myFunction is undefined or not a function.");
+    } else {
+      Object functionArgs[] = { 2, 21 };
+      Function f = (Function) fObj;
+      Object result = f.call(cx, scope, scope, functionArgs);
+      String report = Context.toString(result);
+      System.out.println(report);
+    }
 
-	}
+  }
 }

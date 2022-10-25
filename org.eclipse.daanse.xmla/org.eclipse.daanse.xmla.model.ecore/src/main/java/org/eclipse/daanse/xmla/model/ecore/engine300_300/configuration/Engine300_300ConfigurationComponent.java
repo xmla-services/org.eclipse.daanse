@@ -28,61 +28,67 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>EPackageConfiguration</b> and <b>ResourceFactoryConfigurator</b> for the model.
- * The package will be registered into a OSGi base model registry.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>EPackageConfiguration</b> and
+ * <b>ResourceFactoryConfigurator</b> for the model. The package will be
+ * registered into a OSGi base model registry. <!-- end-user-doc -->
+ * 
  * @see EPackageConfigurator
  * @see ResourceFactoryConfigurator
  * @generated
  */
-@Component(name="Engine300_300Configurator", service= EPackageConfigurator.class)
-@EMFModel(name=Engine300_300Package.eNAME, nsURI={Engine300_300Package.eNS_URI}, version="1.0.0")
+@Component(name = "Engine300_300Configurator", service = EPackageConfigurator.class)
+@EMFModel(name = Engine300_300Package.eNAME, nsURI = { Engine300_300Package.eNS_URI }, version = "1.0.0")
 @ProvideEMFModel(name = Engine300_300Package.eNAME, nsURI = { Engine300_300Package.eNS_URI }, version = "1.0.0")
 public class Engine300_300ConfigurationComponent implements EPackageConfigurator {
-	private ServiceRegistration<?> packageRegistration = null;
-	
-	@Activate
-	public void activate(BundleContext ctx) {
-		Engine300_300Package p = Engine300_300PackageImpl.init();
-		if(p == null){
-			p= Engine300_300PackageImpl.eINSTANCE;
-			EPackage.Registry.INSTANCE.put(Engine300_300Package.eNS_URI,p);
-		}
-		Dictionary<String, Object> properties = new Hashtable<String, Object>();
-		properties.put(EMFNamespaces.EMF_MODEL_NAME, Engine300_300Package.eNAME);
-		properties.put(EMFNamespaces.EMF_MODEL_NSURI, Engine300_300Package.eNS_URI);
-		properties.put(EMFNamespaces.EMF_MODEL_FILE_EXT, "engine300_300");
-		String[] serviceClasses = new String[] {Engine300_300Package.class.getName(), EPackage.class.getName()};
-		packageRegistration = ctx.registerService(serviceClasses, p, properties);
-	}
+  private ServiceRegistration<?> packageRegistration = null;
 
-	
-	/* 
-	 * (non-Javadoc)
-	 * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#configureEPackage(org.eclipse.emf.ecore.EPackage.Registry)
-	 * @generated
-	 */
-	@Override
-	public void configureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
-		registry.put(Engine300_300Package.eNS_URI, Engine300_300PackageImpl.init());
-	}
-	
-	/* 
-	 * (non-Javadoc)
-	 * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry)
-	 * @generated
-	 */
-	@Override
-	public void unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
-		registry.remove(Engine300_300Package.eNS_URI);
-	}
-	
-	@Deactivate
-	public void deactivate() {
-		EPackage.Registry.INSTANCE.remove(Engine300_300Package.eNS_URI);
-		if(packageRegistration != null){
-			packageRegistration.unregister();
-		}
-	}
+  @Activate
+  public void activate(BundleContext ctx) {
+    Engine300_300Package p = Engine300_300PackageImpl.init();
+    if (p == null) {
+      p = Engine300_300PackageImpl.eINSTANCE;
+      EPackage.Registry.INSTANCE.put(Engine300_300Package.eNS_URI, p);
+    }
+    Dictionary<String, Object> properties = new Hashtable<String, Object>();
+    properties.put(EMFNamespaces.EMF_MODEL_NAME, Engine300_300Package.eNAME);
+    properties.put(EMFNamespaces.EMF_MODEL_NSURI, Engine300_300Package.eNS_URI);
+    properties.put(EMFNamespaces.EMF_MODEL_FILE_EXT, "engine300_300");
+    String[] serviceClasses = new String[] { Engine300_300Package.class.getName(), EPackage.class.getName() };
+    packageRegistration = ctx.registerService(serviceClasses, p, properties);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gecko.emf.osgi.EPackageRegistryConfigurator#configureEPackage(org.eclipse
+   * .emf.ecore.EPackage.Registry)
+   * 
+   * @generated
+   */
+  @Override
+  public void configureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
+    registry.put(Engine300_300Package.eNS_URI, Engine300_300PackageImpl.init());
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gecko.emf.osgi.EPackageRegistryConfigurator#unconfigureEPackage(org.
+   * eclipse.emf.ecore.EPackage.Registry)
+   * 
+   * @generated
+   */
+  @Override
+  public void unconfigureEPackage(org.eclipse.emf.ecore.EPackage.Registry registry) {
+    registry.remove(Engine300_300Package.eNS_URI);
+  }
+
+  @Deactivate
+  public void deactivate() {
+    EPackage.Registry.INSTANCE.remove(Engine300_300Package.eNS_URI);
+    if (packageRegistration != null) {
+      packageRegistration.unregister();
+    }
+  }
 }

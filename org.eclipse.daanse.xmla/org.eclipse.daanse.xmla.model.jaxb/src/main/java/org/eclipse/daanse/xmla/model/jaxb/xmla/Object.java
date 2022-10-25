@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Object complex type.
+ * <p>
+ * Java class for Object complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Object"&gt;
@@ -34,95 +36,83 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Object {
 
-    @XmlElement(name = "Database", required = true)
-    protected String database;
-    @XmlElement(name = "Cube", required = true)
-    protected String cube;
-    @XmlElement(name = "Dimension", required = true)
-    protected String dimension;
+  @XmlElement(name = "Database", required = true)
+  protected String database;
+  @XmlElement(name = "Cube", required = true)
+  protected String cube;
+  @XmlElement(name = "Dimension", required = true)
+  protected String dimension;
 
-    /**
-     * Gets the value of the database property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDatabase() {
-        return database;
-    }
+  /**
+   * Gets the value of the database property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDatabase() {
+    return database;
+  }
 
-    /**
-     * Sets the value of the database property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDatabase(String value) {
-        this.database = value;
-    }
+  /**
+   * Sets the value of the database property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDatabase(String value) {
+    this.database = value;
+  }
 
-    public boolean isSetDatabase() {
-        return (this.database!= null);
-    }
+  public boolean isSetDatabase() {
+    return (this.database != null);
+  }
 
-    /**
-     * Gets the value of the cube property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCube() {
-        return cube;
-    }
+  /**
+   * Gets the value of the cube property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCube() {
+    return cube;
+  }
 
-    /**
-     * Sets the value of the cube property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCube(String value) {
-        this.cube = value;
-    }
+  /**
+   * Sets the value of the cube property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCube(String value) {
+    this.cube = value;
+  }
 
-    public boolean isSetCube() {
-        return (this.cube!= null);
-    }
+  public boolean isSetCube() {
+    return (this.cube != null);
+  }
 
-    /**
-     * Gets the value of the dimension property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDimension() {
-        return dimension;
-    }
+  /**
+   * Gets the value of the dimension property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDimension() {
+    return dimension;
+  }
 
-    /**
-     * Sets the value of the dimension property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDimension(String value) {
-        this.dimension = value;
-    }
+  /**
+   * Sets the value of the dimension property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDimension(String value) {
+    this.dimension = value;
+  }
 
-    public boolean isSetDimension() {
-        return (this.dimension!= null);
-    }
+  public boolean isSetDimension() {
+    return (this.dimension != null);
+  }
 
 }

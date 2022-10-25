@@ -10,11 +10,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ExpressionBinding complex type.
+ * <p>
+ * Java class for ExpressionBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ExpressionBinding"&gt;
@@ -31,44 +33,35 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ExpressionBinding", propOrder = {
-    "expression"
-})
-public class ExpressionBinding
-    extends Binding
-    implements Serializable
-{
+@XmlType(name = "ExpressionBinding", propOrder = { "expression" })
+public class ExpressionBinding extends Binding implements Serializable {
 
-    private final static long serialVersionUID = 1L;
-    @XmlElement(name = "Expression", required = true)
-    protected String expression;
+  private final static long serialVersionUID = 1L;
+  @XmlElement(name = "Expression", required = true)
+  protected String expression;
 
-    /**
-     * Gets the value of the expression property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getExpression() {
-        return expression;
-    }
+  /**
+   * Gets the value of the expression property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getExpression() {
+    return expression;
+  }
 
-    /**
-     * Sets the value of the expression property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setExpression(String value) {
-        this.expression = value;
-    }
+  /**
+   * Sets the value of the expression property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setExpression(String value) {
+    this.expression = value;
+  }
 
-    public boolean isSetExpression() {
-        return (this.expression!= null);
-    }
+  public boolean isSetExpression() {
+    return (this.expression != null);
+  }
 
 }

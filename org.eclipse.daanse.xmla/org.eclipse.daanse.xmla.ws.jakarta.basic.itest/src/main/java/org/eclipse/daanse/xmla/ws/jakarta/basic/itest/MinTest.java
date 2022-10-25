@@ -43,151 +43,153 @@ import jakarta.xml.soap.SOAPPart;
 
 @ServiceCapability(XmlaService.class)
 public class MinTest {
-	private Logger logger = LoggerFactory.getLogger(MinTest.class);
+  private Logger logger = LoggerFactory.getLogger(MinTest.class);
 
-	private static final String URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS = "urn:schemas-microsoft-com:xml-analysis";
+  private static final String URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS = "urn:schemas-microsoft-com:xml-analysis";
 
-	public static final QName QNAME_Discover = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Discover");
-	public static final QName QNAME_RequestType = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "RequestType");
-	public static final QName QNAME_Restrictions = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Restrictions");
-	public static final QName QNAME_RestrictionList = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS,
-			"RestrictionList");
-	public static final QName QNAME_Properties = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Properties");
-	public static final QName QNAME_PropertyList = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "PropertyList");
-	public static final QName QNAME_DataSourceInfo = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "DataSourceInfo");
-	public static final QName QNAME_Catalog = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Catalog");
-	public static final QName QNAME_Format = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Format");
-	public static final QName QNAME_Content = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Content");
+  public static final QName QNAME_Discover = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Discover");
+  public static final QName QNAME_RequestType = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "RequestType");
+  public static final QName QNAME_Restrictions = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Restrictions");
+  public static final QName QNAME_RestrictionList = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS,
+      "RestrictionList");
+  public static final QName QNAME_Properties = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Properties");
+  public static final QName QNAME_PropertyList = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "PropertyList");
+  public static final QName QNAME_DataSourceInfo = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "DataSourceInfo");
+  public static final QName QNAME_Catalog = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Catalog");
+  public static final QName QNAME_Format = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Format");
+  public static final QName QNAME_Content = new QName(URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS, "Content");
 
-	public static final String soapEndpointUrl = "http://localhost:8081/xmla";
-	public static final String SOAP_ACTION_DISCOVER = URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS + ":Discover";
+  public static final String soapEndpointUrl = "http://localhost:8081/xmla";
+  public static final String SOAP_ACTION_DISCOVER = URN_SCHEMAS_MICROSOFT_COM_XML_ANALYSIS + ":Discover";
 
-	public static final String REQUEST_DISCOVER_MDSCHEMACUBES_CONTENT = """
-			<Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
-			<RequestType>MDSCHEMA_CUBES</RequestType>
-			<Restrictions></Restrictions>
-			<Properties>
-			<PropertyList>
-			<Content>Data</Content>
-			</PropertyList>
-			</Properties>
-			</Discover>
-			""";
-	
-	public static final String REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier = """
-			<Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
-      <RequestType>DISCOVER_PROPERTIES</RequestType>
-       <Restrictions />
-       <Properties>
-         <PropertyList>
-           <LocaleIdentifier>1033</LocaleIdentifier>
-         </PropertyList>
-       </Properties>
-			</Discover>
-			""";
+  public static final String REQUEST_DISCOVER_MDSCHEMACUBES_CONTENT = """
+      <Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
+      <RequestType>MDSCHEMA_CUBES</RequestType>
+      <Restrictions></Restrictions>
+      <Properties>
+      <PropertyList>
+      <Content>Data</Content>
+      </PropertyList>
+      </Properties>
+      </Discover>
+      """;
 
-	@InjectBundleContext
-	BundleContext bc;
+  public static final String REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier = """
+      <Discover xmlns="urn:schemas-microsoft-com:xml-analysis">
+         <RequestType>DISCOVER_PROPERTIES</RequestType>
+          <Restrictions />
+          <Properties>
+            <PropertyList>
+              <LocaleIdentifier>1033</LocaleIdentifier>
+            </PropertyList>
+          </Properties>
+      </Discover>
+      """;
 
-	private ArgumentCaptor<Discover> dicoverCaptor;
+  @InjectBundleContext
+  BundleContext bc;
 
-	@BeforeEach
-	void beforaEach() {
-		XmlaService xmlaService = mock(XmlaService.class);
-		dicoverCaptor = ArgumentCaptor.forClass(Discover.class);
-		bc.registerService(XmlaService.class, xmlaService, new Hashtable<>());
-	}
+  private ArgumentCaptor<Discover> dicoverCaptor;
 
-	@Test
-	void testRequestwsdl(@InjectService XmlaService xmlaService) throws Exception {
+  @BeforeEach
+  void beforaEach() {
+    XmlaService xmlaService = mock(XmlaService.class);
+    dicoverCaptor = ArgumentCaptor.forClass(Discover.class);
+    bc.registerService(XmlaService.class, xmlaService, new Hashtable<>());
+  }
+
+  @Test
+  void testRequestwsdl(@InjectService XmlaService xmlaService) throws Exception {
 
 //		Thread.sleep(1000000);
-		System.out.println(1);
-	}
-	@Test
-	void testRequest_DISCOVER_PROPERTIES_LocaleIdentifier(@InjectService XmlaService xmlaService) throws Exception {
+    System.out.println(1);
+  }
 
-		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier));
+  @Test
+  void testRequest_DISCOVER_PROPERTIES_LocaleIdentifier(@InjectService XmlaService xmlaService) throws Exception {
 
-		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
+    callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_PROPERTIES_LocaleIdentifier));
 
-		var discoverAssert = assertThat(dicoverCaptor.getValue());
+    verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
 
-		discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("DISCOVER_PROPERTIES");
+    var discoverAssert = assertThat(dicoverCaptor.getValue());
 
-		discoverAssert.extracting(Discover::getRestrictions)
-				.isNotNull()
-				.extracting(Restrictions::getRestrictionList)
-				.isNull();
-		
-		discoverAssert.extracting(Discover::getProperties)
-				.isNotNull()
-				.extracting(Properties::getPropertyList)
-				.isNotNull()
-				.satisfies(pl -> pl.getLocaleIdentifier().equals(new BigInteger("1033")));
+    discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("DISCOVER_PROPERTIES");
 
-	}
-	@Test
-	void testRequest_MDSCHEMA_CUBES_Content_Data(@InjectService XmlaService xmlaService) throws Exception {
+    discoverAssert.extracting(Discover::getRestrictions)
+        .isNotNull()
+        .extracting(Restrictions::getRestrictionList)
+        .isNull();
 
-		callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_MDSCHEMACUBES_CONTENT));
+    discoverAssert.extracting(Discover::getProperties)
+        .isNotNull()
+        .extracting(Properties::getPropertyList)
+        .isNotNull()
+        .satisfies(pl -> pl.getLocaleIdentifier().equals(new BigInteger("1033")));
 
-		verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
+  }
 
-		var discoverAssert = assertThat(dicoverCaptor.getValue());
+  @Test
+  void testRequest_MDSCHEMA_CUBES_Content_Data(@InjectService XmlaService xmlaService) throws Exception {
 
-		discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("MDSCHEMA_CUBES");
+    callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(REQUEST_DISCOVER_MDSCHEMACUBES_CONTENT));
 
-		discoverAssert.extracting(Discover::getRestrictions)
-				.isNotNull()
-				.extracting(Restrictions::getRestrictionList)
-				.isNull();
+    verify(xmlaService, (times(1))).discover(dicoverCaptor.capture(), isNull(), isNull(), isNull());
 
-		discoverAssert.extracting(Discover::getProperties)
-				.isNotNull()
-				.extracting(Properties::getPropertyList)
-				.isNotNull()
-				.satisfies(pl -> pl.getContent().equals("Data"));
+    var discoverAssert = assertThat(dicoverCaptor.getValue());
 
-	}
+    discoverAssert.extracting(Discover::getRequestType).isNotNull().isEqualTo("MDSCHEMA_CUBES");
 
-	@Test
-	@Disabled
-	void testResponse(@InjectService XmlaService xmlaService) throws Exception {
+    discoverAssert.extracting(Discover::getRestrictions)
+        .isNotNull()
+        .extracting(Restrictions::getRestrictionList)
+        .isNull();
 
-		DiscoverResponse discoverResponse = new DiscoverResponse();
-		Return r = new Return();
-		Rowset rs = new Rowset();
-		Row row = new Row();
+    discoverAssert.extracting(Discover::getProperties)
+        .isNotNull()
+        .extracting(Properties::getPropertyList)
+        .isNotNull()
+        .satisfies(pl -> pl.getContent().equals("Data"));
 
-		rs.getRow().add(row);
+  }
 
-		r.setRoot(rs);
-		discoverResponse.setReturn(r);
+  @Test
+  @Disabled
+  void testResponse(@InjectService XmlaService xmlaService) throws Exception {
 
-		when(xmlaService.discover(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(discoverResponse);
+    DiscoverResponse discoverResponse = new DiscoverResponse();
+    Return r = new Return();
+    Rowset rs = new Rowset();
+    Row row = new Row();
 
-		SOAPMessage response = callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(""));
-		System.out.println(response);
+    rs.getRow().add(row);
 
-	}
+    r.setRoot(rs);
+    discoverResponse.setReturn(r);
 
-	private static Consumer<SOAPMessage> envelop(String xmlString) throws SOAPException {
+    when(xmlaService.discover(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(discoverResponse);
 
-		return plainSoapMessage -> {
+    SOAPMessage response = callSoapWebService(soapEndpointUrl, SOAP_ACTION_DISCOVER, envelop(""));
+    System.out.println(response);
 
-			try {
-				SOAPPart soapPart = plainSoapMessage.getSOAPPart();
-				plainSoapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "false");
-				SOAPEnvelope envelope = soapPart.getEnvelope();
-				// SOAP Body
-				SOAPBody soapBody = envelope.getBody();
-				soapBody.addDocument(XMLUtil.stringToDocument(xmlString));
+  }
 
-			} catch (SOAPException e) {
-				fail(e);
-			}
-		};
-	}
+  private static Consumer<SOAPMessage> envelop(String xmlString) throws SOAPException {
+
+    return plainSoapMessage -> {
+
+      try {
+        SOAPPart soapPart = plainSoapMessage.getSOAPPart();
+        plainSoapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "false");
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        // SOAP Body
+        SOAPBody soapBody = envelope.getBody();
+        soapBody.addDocument(XMLUtil.stringToDocument(xmlString));
+
+      } catch (SOAPException e) {
+        fail(e);
+      }
+    };
+  }
 
 }

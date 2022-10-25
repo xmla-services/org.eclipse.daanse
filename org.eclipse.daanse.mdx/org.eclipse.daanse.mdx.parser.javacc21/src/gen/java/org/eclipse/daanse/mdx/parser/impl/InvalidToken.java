@@ -5,12 +5,12 @@ package org.eclipse.daanse.mdx.parser.impl;
  * Token subclass to represent lexically invalid input
  */
 public class InvalidToken extends Token {
-    public InvalidToken(mdxLexer tokenSource, int beginOffset, int endOffset) {
-        super(TokenType.INVALID, tokenSource, beginOffset, endOffset);
-    }
+  public InvalidToken(mdxLexer tokenSource, int beginOffset, int endOffset) {
+    super(TokenType.INVALID, tokenSource, beginOffset, endOffset);
+  }
 
-    public String getNormalizedText() {
-        return"Lexically Invalid Input:"+getImage();
-    }
+  public String getNormalizedText() {
+    return "Lexically Invalid Input:" + getImage();
+  }
 
 }

@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DimensionAttributeVisualizationProperties complex type.
+ * <p>
+ * Java class for DimensionAttributeVisualizationProperties complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DimensionAttributeVisualizationProperties"&gt;
@@ -79,446 +81,376 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DimensionAttributeVisualizationProperties", propOrder = {
-    "folderPosition",
-    "contextualNameRule",
-    "alignment",
-    "isFolderDefault",
-    "isRightToLeft",
-    "sortDirection",
-    "units",
-    "width",
-    "defaultDetailsPosition",
-    "commonIdentifierPosition",
-    "sortPropertiesPosition",
-    "displayKeyPosition",
-    "isDefaultImage",
-    "defaultAggregateFunction"
-})
-public class DimensionAttributeVisualizationProperties
-    implements Serializable
-{
+@XmlType(name = "DimensionAttributeVisualizationProperties", propOrder = { "folderPosition", "contextualNameRule",
+    "alignment", "isFolderDefault", "isRightToLeft", "sortDirection", "units", "width", "defaultDetailsPosition",
+    "commonIdentifierPosition", "sortPropertiesPosition", "displayKeyPosition", "isDefaultImage",
+    "defaultAggregateFunction" })
+public class DimensionAttributeVisualizationProperties implements Serializable {
 
-    private final static long serialVersionUID = 1L;
-    @XmlElement(name = "FolderPosition", defaultValue = "-1")
-    protected BigInteger folderPosition;
-    @XmlElement(name = "ContextualNameRule", defaultValue = "None")
-    protected String contextualNameRule;
-    @XmlElement(name = "Alignment", defaultValue = "Default")
-    protected String alignment;
-    @XmlElement(name = "IsFolderDefault", defaultValue = "false")
-    protected Boolean isFolderDefault;
-    @XmlElement(name = "IsRightToLeft", defaultValue = "false")
-    protected Boolean isRightToLeft;
-    @XmlElement(name = "SortDirection", defaultValue = "Default")
-    protected String sortDirection;
-    @XmlElement(name = "Units", defaultValue = "")
-    protected String units;
-    @XmlElement(name = "Width", defaultValue = "-1")
-    protected BigInteger width;
-    @XmlElement(name = "DefaultDetailsPosition", defaultValue = "-1")
-    protected BigInteger defaultDetailsPosition;
-    @XmlElement(name = "CommonIdentifierPosition", defaultValue = "-1")
-    protected BigInteger commonIdentifierPosition;
-    @XmlElement(name = "SortPropertiesPosition", defaultValue = "-1")
-    protected BigInteger sortPropertiesPosition;
-    @XmlElement(name = "DisplayKeyPosition", defaultValue = "-1")
-    protected BigInteger displayKeyPosition;
-    @XmlElement(name = "IsDefaultImage", defaultValue = "false")
-    protected Boolean isDefaultImage;
-    @XmlElement(name = "DefaultAggregateFunction", defaultValue = "Default")
-    protected String defaultAggregateFunction;
+  private final static long serialVersionUID = 1L;
+  @XmlElement(name = "FolderPosition", defaultValue = "-1")
+  protected BigInteger folderPosition;
+  @XmlElement(name = "ContextualNameRule", defaultValue = "None")
+  protected String contextualNameRule;
+  @XmlElement(name = "Alignment", defaultValue = "Default")
+  protected String alignment;
+  @XmlElement(name = "IsFolderDefault", defaultValue = "false")
+  protected Boolean isFolderDefault;
+  @XmlElement(name = "IsRightToLeft", defaultValue = "false")
+  protected Boolean isRightToLeft;
+  @XmlElement(name = "SortDirection", defaultValue = "Default")
+  protected String sortDirection;
+  @XmlElement(name = "Units", defaultValue = "")
+  protected String units;
+  @XmlElement(name = "Width", defaultValue = "-1")
+  protected BigInteger width;
+  @XmlElement(name = "DefaultDetailsPosition", defaultValue = "-1")
+  protected BigInteger defaultDetailsPosition;
+  @XmlElement(name = "CommonIdentifierPosition", defaultValue = "-1")
+  protected BigInteger commonIdentifierPosition;
+  @XmlElement(name = "SortPropertiesPosition", defaultValue = "-1")
+  protected BigInteger sortPropertiesPosition;
+  @XmlElement(name = "DisplayKeyPosition", defaultValue = "-1")
+  protected BigInteger displayKeyPosition;
+  @XmlElement(name = "IsDefaultImage", defaultValue = "false")
+  protected Boolean isDefaultImage;
+  @XmlElement(name = "DefaultAggregateFunction", defaultValue = "Default")
+  protected String defaultAggregateFunction;
 
-    /**
-     * Gets the value of the folderPosition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getFolderPosition() {
-        return folderPosition;
-    }
+  /**
+   * Gets the value of the folderPosition property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getFolderPosition() {
+    return folderPosition;
+  }
 
-    /**
-     * Sets the value of the folderPosition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setFolderPosition(BigInteger value) {
-        this.folderPosition = value;
-    }
+  /**
+   * Sets the value of the folderPosition property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setFolderPosition(BigInteger value) {
+    this.folderPosition = value;
+  }
 
-    public boolean isSetFolderPosition() {
-        return (this.folderPosition!= null);
-    }
+  public boolean isSetFolderPosition() {
+    return (this.folderPosition != null);
+  }
 
-    /**
-     * Gets the value of the contextualNameRule property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getContextualNameRule() {
-        return contextualNameRule;
-    }
+  /**
+   * Gets the value of the contextualNameRule property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getContextualNameRule() {
+    return contextualNameRule;
+  }
 
-    /**
-     * Sets the value of the contextualNameRule property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setContextualNameRule(String value) {
-        this.contextualNameRule = value;
-    }
+  /**
+   * Sets the value of the contextualNameRule property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setContextualNameRule(String value) {
+    this.contextualNameRule = value;
+  }
 
-    public boolean isSetContextualNameRule() {
-        return (this.contextualNameRule!= null);
-    }
+  public boolean isSetContextualNameRule() {
+    return (this.contextualNameRule != null);
+  }
 
-    /**
-     * Gets the value of the alignment property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAlignment() {
-        return alignment;
-    }
+  /**
+   * Gets the value of the alignment property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getAlignment() {
+    return alignment;
+  }
 
-    /**
-     * Sets the value of the alignment property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAlignment(String value) {
-        this.alignment = value;
-    }
+  /**
+   * Sets the value of the alignment property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setAlignment(String value) {
+    this.alignment = value;
+  }
 
-    public boolean isSetAlignment() {
-        return (this.alignment!= null);
-    }
+  public boolean isSetAlignment() {
+    return (this.alignment != null);
+  }
 
-    /**
-     * Gets the value of the isFolderDefault property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsFolderDefault() {
-        return isFolderDefault;
-    }
+  /**
+   * Gets the value of the isFolderDefault property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isIsFolderDefault() {
+    return isFolderDefault;
+  }
 
-    /**
-     * Sets the value of the isFolderDefault property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsFolderDefault(Boolean value) {
-        this.isFolderDefault = value;
-    }
+  /**
+   * Sets the value of the isFolderDefault property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setIsFolderDefault(Boolean value) {
+    this.isFolderDefault = value;
+  }
 
-    public boolean isSetIsFolderDefault() {
-        return (this.isFolderDefault!= null);
-    }
+  public boolean isSetIsFolderDefault() {
+    return (this.isFolderDefault != null);
+  }
 
-    /**
-     * Gets the value of the isRightToLeft property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRightToLeft() {
-        return isRightToLeft;
-    }
+  /**
+   * Gets the value of the isRightToLeft property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isIsRightToLeft() {
+    return isRightToLeft;
+  }
 
-    /**
-     * Sets the value of the isRightToLeft property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRightToLeft(Boolean value) {
-        this.isRightToLeft = value;
-    }
+  /**
+   * Sets the value of the isRightToLeft property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setIsRightToLeft(Boolean value) {
+    this.isRightToLeft = value;
+  }
 
-    public boolean isSetIsRightToLeft() {
-        return (this.isRightToLeft!= null);
-    }
+  public boolean isSetIsRightToLeft() {
+    return (this.isRightToLeft != null);
+  }
 
-    /**
-     * Gets the value of the sortDirection property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSortDirection() {
-        return sortDirection;
-    }
+  /**
+   * Gets the value of the sortDirection property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getSortDirection() {
+    return sortDirection;
+  }
 
-    /**
-     * Sets the value of the sortDirection property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSortDirection(String value) {
-        this.sortDirection = value;
-    }
+  /**
+   * Sets the value of the sortDirection property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setSortDirection(String value) {
+    this.sortDirection = value;
+  }
 
-    public boolean isSetSortDirection() {
-        return (this.sortDirection!= null);
-    }
+  public boolean isSetSortDirection() {
+    return (this.sortDirection != null);
+  }
 
-    /**
-     * Gets the value of the units property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUnits() {
-        return units;
-    }
+  /**
+   * Gets the value of the units property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getUnits() {
+    return units;
+  }
 
-    /**
-     * Sets the value of the units property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUnits(String value) {
-        this.units = value;
-    }
+  /**
+   * Sets the value of the units property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setUnits(String value) {
+    this.units = value;
+  }
 
-    public boolean isSetUnits() {
-        return (this.units!= null);
-    }
+  public boolean isSetUnits() {
+    return (this.units != null);
+  }
 
-    /**
-     * Gets the value of the width property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getWidth() {
-        return width;
-    }
+  /**
+   * Gets the value of the width property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getWidth() {
+    return width;
+  }
 
-    /**
-     * Sets the value of the width property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setWidth(BigInteger value) {
-        this.width = value;
-    }
+  /**
+   * Sets the value of the width property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setWidth(BigInteger value) {
+    this.width = value;
+  }
 
-    public boolean isSetWidth() {
-        return (this.width!= null);
-    }
+  public boolean isSetWidth() {
+    return (this.width != null);
+  }
 
-    /**
-     * Gets the value of the defaultDetailsPosition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getDefaultDetailsPosition() {
-        return defaultDetailsPosition;
-    }
+  /**
+   * Gets the value of the defaultDetailsPosition property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getDefaultDetailsPosition() {
+    return defaultDetailsPosition;
+  }
 
-    /**
-     * Sets the value of the defaultDetailsPosition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setDefaultDetailsPosition(BigInteger value) {
-        this.defaultDetailsPosition = value;
-    }
+  /**
+   * Sets the value of the defaultDetailsPosition property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setDefaultDetailsPosition(BigInteger value) {
+    this.defaultDetailsPosition = value;
+  }
 
-    public boolean isSetDefaultDetailsPosition() {
-        return (this.defaultDetailsPosition!= null);
-    }
+  public boolean isSetDefaultDetailsPosition() {
+    return (this.defaultDetailsPosition != null);
+  }
 
-    /**
-     * Gets the value of the commonIdentifierPosition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getCommonIdentifierPosition() {
-        return commonIdentifierPosition;
-    }
+  /**
+   * Gets the value of the commonIdentifierPosition property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getCommonIdentifierPosition() {
+    return commonIdentifierPosition;
+  }
 
-    /**
-     * Sets the value of the commonIdentifierPosition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setCommonIdentifierPosition(BigInteger value) {
-        this.commonIdentifierPosition = value;
-    }
+  /**
+   * Sets the value of the commonIdentifierPosition property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setCommonIdentifierPosition(BigInteger value) {
+    this.commonIdentifierPosition = value;
+  }
 
-    public boolean isSetCommonIdentifierPosition() {
-        return (this.commonIdentifierPosition!= null);
-    }
+  public boolean isSetCommonIdentifierPosition() {
+    return (this.commonIdentifierPosition != null);
+  }
 
-    /**
-     * Gets the value of the sortPropertiesPosition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getSortPropertiesPosition() {
-        return sortPropertiesPosition;
-    }
+  /**
+   * Gets the value of the sortPropertiesPosition property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getSortPropertiesPosition() {
+    return sortPropertiesPosition;
+  }
 
-    /**
-     * Sets the value of the sortPropertiesPosition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setSortPropertiesPosition(BigInteger value) {
-        this.sortPropertiesPosition = value;
-    }
+  /**
+   * Sets the value of the sortPropertiesPosition property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setSortPropertiesPosition(BigInteger value) {
+    this.sortPropertiesPosition = value;
+  }
 
-    public boolean isSetSortPropertiesPosition() {
-        return (this.sortPropertiesPosition!= null);
-    }
+  public boolean isSetSortPropertiesPosition() {
+    return (this.sortPropertiesPosition != null);
+  }
 
-    /**
-     * Gets the value of the displayKeyPosition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getDisplayKeyPosition() {
-        return displayKeyPosition;
-    }
+  /**
+   * Gets the value of the displayKeyPosition property.
+   * 
+   * @return possible object is {@link BigInteger }
+   * 
+   */
+  public BigInteger getDisplayKeyPosition() {
+    return displayKeyPosition;
+  }
 
-    /**
-     * Sets the value of the displayKeyPosition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setDisplayKeyPosition(BigInteger value) {
-        this.displayKeyPosition = value;
-    }
+  /**
+   * Sets the value of the displayKeyPosition property.
+   * 
+   * @param value allowed object is {@link BigInteger }
+   * 
+   */
+  public void setDisplayKeyPosition(BigInteger value) {
+    this.displayKeyPosition = value;
+  }
 
-    public boolean isSetDisplayKeyPosition() {
-        return (this.displayKeyPosition!= null);
-    }
+  public boolean isSetDisplayKeyPosition() {
+    return (this.displayKeyPosition != null);
+  }
 
-    /**
-     * Gets the value of the isDefaultImage property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsDefaultImage() {
-        return isDefaultImage;
-    }
+  /**
+   * Gets the value of the isDefaultImage property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isIsDefaultImage() {
+    return isDefaultImage;
+  }
 
-    /**
-     * Sets the value of the isDefaultImage property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsDefaultImage(Boolean value) {
-        this.isDefaultImage = value;
-    }
+  /**
+   * Sets the value of the isDefaultImage property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setIsDefaultImage(Boolean value) {
+    this.isDefaultImage = value;
+  }
 
-    public boolean isSetIsDefaultImage() {
-        return (this.isDefaultImage!= null);
-    }
+  public boolean isSetIsDefaultImage() {
+    return (this.isDefaultImage != null);
+  }
 
-    /**
-     * Gets the value of the defaultAggregateFunction property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDefaultAggregateFunction() {
-        return defaultAggregateFunction;
-    }
+  /**
+   * Gets the value of the defaultAggregateFunction property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDefaultAggregateFunction() {
+    return defaultAggregateFunction;
+  }
 
-    /**
-     * Sets the value of the defaultAggregateFunction property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultAggregateFunction(String value) {
-        this.defaultAggregateFunction = value;
-    }
+  /**
+   * Sets the value of the defaultAggregateFunction property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDefaultAggregateFunction(String value) {
+    this.defaultAggregateFunction = value;
+  }
 
-    public boolean isSetDefaultAggregateFunction() {
-        return (this.defaultAggregateFunction!= null);
-    }
+  public boolean isSetDefaultAggregateFunction() {
+    return (this.defaultAggregateFunction != null);
+  }
 
 }

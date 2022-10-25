@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -28,41 +30,35 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "_return"
-})
+@XmlType(name = "", propOrder = { "_return" })
 @XmlRootElement(name = "ExecuteResponse")
 public class ExecuteResponse {
 
-    @XmlElement(name = "return", required = true)
-    protected Return _return;
+  @XmlElement(name = "return", required = true)
+  protected Return _return;
 
-    /**
-     * Gets the value of the return property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Return }
-     *     
-     */
-    public Return getReturn() {
-        return _return;
-    }
+  /**
+   * Gets the value of the return property.
+   * 
+   * @return possible object is {@link Return }
+   * 
+   */
+  public Return getReturn() {
+    return _return;
+  }
 
-    /**
-     * Sets the value of the return property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Return }
-     *     
-     */
-    public void setReturn(Return value) {
-        this._return = value;
-    }
+  /**
+   * Sets the value of the return property.
+   * 
+   * @param value allowed object is {@link Return }
+   * 
+   */
+  public void setReturn(Return value) {
+    this._return = value;
+  }
 
-    public boolean isSetReturn() {
-        return (this._return!= null);
-    }
+  public boolean isSetReturn() {
+    return (this._return != null);
+  }
 
 }

@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Drop complex type.
+ * <p>
+ * Java class for Drop complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Drop"&gt;
@@ -34,95 +36,83 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Drop {
 
-    @XmlElement(name = "Object", required = true)
-    protected Object object;
-    @XmlElement(name = "DeleteWithDescendants")
-    protected Boolean deleteWithDescendants;
-    @XmlElement(name = "Where", required = true)
-    protected Where where;
+  @XmlElement(name = "Object", required = true)
+  protected Object object;
+  @XmlElement(name = "DeleteWithDescendants")
+  protected Boolean deleteWithDescendants;
+  @XmlElement(name = "Where", required = true)
+  protected Where where;
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Object }
-     *     
-     */
-    public Object getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link Object }
+   * 
+   */
+  public Object getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Object }
-     *     
-     */
-    public void setObject(Object value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link Object }
+   * 
+   */
+  public void setObject(Object value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the deleteWithDescendants property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isDeleteWithDescendants() {
-        return deleteWithDescendants;
-    }
+  /**
+   * Gets the value of the deleteWithDescendants property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isDeleteWithDescendants() {
+    return deleteWithDescendants;
+  }
 
-    /**
-     * Sets the value of the deleteWithDescendants property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setDeleteWithDescendants(Boolean value) {
-        this.deleteWithDescendants = value;
-    }
+  /**
+   * Sets the value of the deleteWithDescendants property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setDeleteWithDescendants(Boolean value) {
+    this.deleteWithDescendants = value;
+  }
 
-    public boolean isSetDeleteWithDescendants() {
-        return (this.deleteWithDescendants!= null);
-    }
+  public boolean isSetDeleteWithDescendants() {
+    return (this.deleteWithDescendants != null);
+  }
 
-    /**
-     * Gets the value of the where property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Where }
-     *     
-     */
-    public Where getWhere() {
-        return where;
-    }
+  /**
+   * Gets the value of the where property.
+   * 
+   * @return possible object is {@link Where }
+   * 
+   */
+  public Where getWhere() {
+    return where;
+  }
 
-    /**
-     * Sets the value of the where property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Where }
-     *     
-     */
-    public void setWhere(Where value) {
-        this.where = value;
-    }
+  /**
+   * Sets the value of the where property.
+   * 
+   * @param value allowed object is {@link Where }
+   * 
+   */
+  public void setWhere(Where value) {
+    this.where = value;
+  }
 
-    public boolean isSetWhere() {
-        return (this.where!= null);
-    }
+  public boolean isSetWhere() {
+    return (this.where != null);
+  }
 
 }

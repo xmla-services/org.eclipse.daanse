@@ -95,406 +95,416 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.namespace.XMLNamespacePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class Engine2PackageImpl extends EPackageImpl implements Engine2Package {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass documentRootEClass = null;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private EClass documentRootEClass = null;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum memberKeysUniqueTypeEEnum = null;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private EEnum memberKeysUniqueTypeEEnum = null;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType memberKeysUniqueTypeObjectEDataType = null;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private EDataType memberKeysUniqueTypeObjectEDataType = null;
 
-	/**
-	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see org.eclipse.daanse.xmla.model.ecore.engine2.Engine2Package#eNS_URI
-	 * @see #init()
-	 * @generated
-	 */
-	private Engine2PackageImpl() {
-		super(eNS_URI, Engine2Factory.eINSTANCE);
-	}
+  /**
+   * Creates an instance of the model <b>Package</b>, registered with
+   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+   * package package URI value.
+   * <p>
+   * Note: the correct way to create the package is via the static factory method
+   * {@link #init init()}, which also performs initialization of the package, or
+   * returns the registered package, if one already exists. <!-- begin-user-doc
+   * --> <!-- end-user-doc -->
+   * 
+   * @see org.eclipse.emf.ecore.EPackage.Registry
+   * @see org.eclipse.daanse.xmla.model.ecore.engine2.Engine2Package#eNS_URI
+   * @see #init()
+   * @generated
+   */
+  private Engine2PackageImpl() {
+    super(eNS_URI, Engine2Factory.eINSTANCE);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private static boolean isInited = false;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private static boolean isInited = false;
 
-	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 *
-	 * <p>This method is used to initialize {@link Engine2Package#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #eNS_URI
-	 * @see #createPackageContents()
-	 * @see #initializePackageContents()
-	 * @generated
-	 */
-	public static Engine2Package init() {
-		if (isInited) return (Engine2Package)EPackage.Registry.INSTANCE.getEPackage(Engine2Package.eNS_URI);
+  /**
+   * Creates, registers, and initializes the <b>Package</b> for this model, and
+   * for any others upon which it depends.
+   *
+   * <p>
+   * This method is used to initialize {@link Engine2Package#eINSTANCE} when that
+   * field is accessed. Clients should not invoke it directly. Instead, they
+   * should simply access that field to obtain the package. <!-- begin-user-doc
+   * --> <!-- end-user-doc -->
+   * 
+   * @see #eNS_URI
+   * @see #createPackageContents()
+   * @see #initializePackageContents()
+   * @generated
+   */
+  public static Engine2Package init() {
+    if (isInited)
+      return (Engine2Package) EPackage.Registry.INSTANCE.getEPackage(Engine2Package.eNS_URI);
 
-		// Obtain or create and register package
-		Object registeredEngine2Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-		Engine2PackageImpl theEngine2Package = registeredEngine2Package instanceof Engine2PackageImpl ? (Engine2PackageImpl)registeredEngine2Package : new Engine2PackageImpl();
+    // Obtain or create and register package
+    Object registeredEngine2Package = EPackage.Registry.INSTANCE.get(eNS_URI);
+    Engine2PackageImpl theEngine2Package = registeredEngine2Package instanceof Engine2PackageImpl
+        ? (Engine2PackageImpl) registeredEngine2Package
+        : new Engine2PackageImpl();
 
-		isInited = true;
+    isInited = true;
 
-		// Initialize simple dependencies
-		XMLNamespacePackage.eINSTANCE.eClass();
+    // Initialize simple dependencies
+    XMLNamespacePackage.eINSTANCE.eClass();
 
-		// Obtain or create and register interdependencies
-		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(EnginePackage.eNS_URI);
-		EnginePackageImpl theEnginePackage = (EnginePackageImpl)(registeredPackage instanceof EnginePackageImpl ? registeredPackage : EnginePackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine100_100Package.eNS_URI);
-		Engine100_100PackageImpl theEngine100_100Package = (Engine100_100PackageImpl)(registeredPackage instanceof Engine100_100PackageImpl ? registeredPackage : Engine100_100Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine100Package.eNS_URI);
-		Engine100PackageImpl theEngine100Package = (Engine100PackageImpl)(registeredPackage instanceof Engine100PackageImpl ? registeredPackage : Engine100Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine200_200Package.eNS_URI);
-		Engine200_200PackageImpl theEngine200_200Package = (Engine200_200PackageImpl)(registeredPackage instanceof Engine200_200PackageImpl ? registeredPackage : Engine200_200Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine200Package.eNS_URI);
-		Engine200PackageImpl theEngine200Package = (Engine200PackageImpl)(registeredPackage instanceof Engine200PackageImpl ? registeredPackage : Engine200Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine300_300Package.eNS_URI);
-		Engine300_300PackageImpl theEngine300_300Package = (Engine300_300PackageImpl)(registeredPackage instanceof Engine300_300PackageImpl ? registeredPackage : Engine300_300Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine300Package.eNS_URI);
-		Engine300PackageImpl theEngine300Package = (Engine300PackageImpl)(registeredPackage instanceof Engine300PackageImpl ? registeredPackage : Engine300Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine400Package.eNS_URI);
-		Engine400PackageImpl theEngine400Package = (Engine400PackageImpl)(registeredPackage instanceof Engine400PackageImpl ? registeredPackage : Engine400Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine600Package.eNS_URI);
-		Engine600PackageImpl theEngine600Package = (Engine600PackageImpl)(registeredPackage instanceof Engine600PackageImpl ? registeredPackage : Engine600Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine800Package.eNS_URI);
-		Engine800PackageImpl theEngine800Package = (Engine800PackageImpl)(registeredPackage instanceof Engine800PackageImpl ? registeredPackage : Engine800Package.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ExtPackage.eNS_URI);
-		ExtPackageImpl theExtPackage = (ExtPackageImpl)(registeredPackage instanceof ExtPackageImpl ? registeredPackage : ExtPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(MsxmlaPackage.eNS_URI);
-		MsxmlaPackageImpl theMsxmlaPackage = (MsxmlaPackageImpl)(registeredPackage instanceof MsxmlaPackageImpl ? registeredPackage : MsxmlaPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(SchemaPackage.eNS_URI);
-		SchemaPackageImpl theSchemaPackage = (SchemaPackageImpl)(registeredPackage instanceof SchemaPackageImpl ? registeredPackage : SchemaPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_emptyPackage.eNS_URI);
-		Xmla_emptyPackageImpl theXmla_emptyPackage = (Xmla_emptyPackageImpl)(registeredPackage instanceof Xmla_emptyPackageImpl ? registeredPackage : Xmla_emptyPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_exceptionPackage.eNS_URI);
-		Xmla_exceptionPackageImpl theXmla_exceptionPackage = (Xmla_exceptionPackageImpl)(registeredPackage instanceof Xmla_exceptionPackageImpl ? registeredPackage : Xmla_exceptionPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_mddatasetPackage.eNS_URI);
-		Xmla_mddatasetPackageImpl theXmla_mddatasetPackage = (Xmla_mddatasetPackageImpl)(registeredPackage instanceof Xmla_mddatasetPackageImpl ? registeredPackage : Xmla_mddatasetPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_multipleresultsPackage.eNS_URI);
-		Xmla_multipleresultsPackageImpl theXmla_multipleresultsPackage = (Xmla_multipleresultsPackageImpl)(registeredPackage instanceof Xmla_multipleresultsPackageImpl ? registeredPackage : Xmla_multipleresultsPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_rowsetPackage.eNS_URI);
-		Xmla_rowsetPackageImpl theXmla_rowsetPackage = (Xmla_rowsetPackageImpl)(registeredPackage instanceof Xmla_rowsetPackageImpl ? registeredPackage : Xmla_rowsetPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(XmlaPackage.eNS_URI);
-		XmlaPackageImpl theXmlaPackage = (XmlaPackageImpl)(registeredPackage instanceof XmlaPackageImpl ? registeredPackage : XmlaPackage.eINSTANCE);
+    // Obtain or create and register interdependencies
+    Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(EnginePackage.eNS_URI);
+    EnginePackageImpl theEnginePackage = (EnginePackageImpl) (registeredPackage instanceof EnginePackageImpl
+        ? registeredPackage
+        : EnginePackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine100_100Package.eNS_URI);
+    Engine100_100PackageImpl theEngine100_100Package = (Engine100_100PackageImpl) (registeredPackage instanceof Engine100_100PackageImpl
+        ? registeredPackage
+        : Engine100_100Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine100Package.eNS_URI);
+    Engine100PackageImpl theEngine100Package = (Engine100PackageImpl) (registeredPackage instanceof Engine100PackageImpl
+        ? registeredPackage
+        : Engine100Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine200_200Package.eNS_URI);
+    Engine200_200PackageImpl theEngine200_200Package = (Engine200_200PackageImpl) (registeredPackage instanceof Engine200_200PackageImpl
+        ? registeredPackage
+        : Engine200_200Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine200Package.eNS_URI);
+    Engine200PackageImpl theEngine200Package = (Engine200PackageImpl) (registeredPackage instanceof Engine200PackageImpl
+        ? registeredPackage
+        : Engine200Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine300_300Package.eNS_URI);
+    Engine300_300PackageImpl theEngine300_300Package = (Engine300_300PackageImpl) (registeredPackage instanceof Engine300_300PackageImpl
+        ? registeredPackage
+        : Engine300_300Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine300Package.eNS_URI);
+    Engine300PackageImpl theEngine300Package = (Engine300PackageImpl) (registeredPackage instanceof Engine300PackageImpl
+        ? registeredPackage
+        : Engine300Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine400Package.eNS_URI);
+    Engine400PackageImpl theEngine400Package = (Engine400PackageImpl) (registeredPackage instanceof Engine400PackageImpl
+        ? registeredPackage
+        : Engine400Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine600Package.eNS_URI);
+    Engine600PackageImpl theEngine600Package = (Engine600PackageImpl) (registeredPackage instanceof Engine600PackageImpl
+        ? registeredPackage
+        : Engine600Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Engine800Package.eNS_URI);
+    Engine800PackageImpl theEngine800Package = (Engine800PackageImpl) (registeredPackage instanceof Engine800PackageImpl
+        ? registeredPackage
+        : Engine800Package.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ExtPackage.eNS_URI);
+    ExtPackageImpl theExtPackage = (ExtPackageImpl) (registeredPackage instanceof ExtPackageImpl ? registeredPackage
+        : ExtPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(MsxmlaPackage.eNS_URI);
+    MsxmlaPackageImpl theMsxmlaPackage = (MsxmlaPackageImpl) (registeredPackage instanceof MsxmlaPackageImpl
+        ? registeredPackage
+        : MsxmlaPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(SchemaPackage.eNS_URI);
+    SchemaPackageImpl theSchemaPackage = (SchemaPackageImpl) (registeredPackage instanceof SchemaPackageImpl
+        ? registeredPackage
+        : SchemaPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_emptyPackage.eNS_URI);
+    Xmla_emptyPackageImpl theXmla_emptyPackage = (Xmla_emptyPackageImpl) (registeredPackage instanceof Xmla_emptyPackageImpl
+        ? registeredPackage
+        : Xmla_emptyPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_exceptionPackage.eNS_URI);
+    Xmla_exceptionPackageImpl theXmla_exceptionPackage = (Xmla_exceptionPackageImpl) (registeredPackage instanceof Xmla_exceptionPackageImpl
+        ? registeredPackage
+        : Xmla_exceptionPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_mddatasetPackage.eNS_URI);
+    Xmla_mddatasetPackageImpl theXmla_mddatasetPackage = (Xmla_mddatasetPackageImpl) (registeredPackage instanceof Xmla_mddatasetPackageImpl
+        ? registeredPackage
+        : Xmla_mddatasetPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_multipleresultsPackage.eNS_URI);
+    Xmla_multipleresultsPackageImpl theXmla_multipleresultsPackage = (Xmla_multipleresultsPackageImpl) (registeredPackage instanceof Xmla_multipleresultsPackageImpl
+        ? registeredPackage
+        : Xmla_multipleresultsPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(Xmla_rowsetPackage.eNS_URI);
+    Xmla_rowsetPackageImpl theXmla_rowsetPackage = (Xmla_rowsetPackageImpl) (registeredPackage instanceof Xmla_rowsetPackageImpl
+        ? registeredPackage
+        : Xmla_rowsetPackage.eINSTANCE);
+    registeredPackage = EPackage.Registry.INSTANCE.getEPackage(XmlaPackage.eNS_URI);
+    XmlaPackageImpl theXmlaPackage = (XmlaPackageImpl) (registeredPackage instanceof XmlaPackageImpl ? registeredPackage
+        : XmlaPackage.eINSTANCE);
 
-		// Create package meta-data objects
-		theEngine2Package.createPackageContents();
-		theEnginePackage.createPackageContents();
-		theEngine100_100Package.createPackageContents();
-		theEngine100Package.createPackageContents();
-		theEngine200_200Package.createPackageContents();
-		theEngine200Package.createPackageContents();
-		theEngine300_300Package.createPackageContents();
-		theEngine300Package.createPackageContents();
-		theEngine400Package.createPackageContents();
-		theEngine600Package.createPackageContents();
-		theEngine800Package.createPackageContents();
-		theExtPackage.createPackageContents();
-		theMsxmlaPackage.createPackageContents();
-		theSchemaPackage.createPackageContents();
-		theXmla_emptyPackage.createPackageContents();
-		theXmla_exceptionPackage.createPackageContents();
-		theXmla_mddatasetPackage.createPackageContents();
-		theXmla_multipleresultsPackage.createPackageContents();
-		theXmla_rowsetPackage.createPackageContents();
-		theXmlaPackage.createPackageContents();
+    // Create package meta-data objects
+    theEngine2Package.createPackageContents();
+    theEnginePackage.createPackageContents();
+    theEngine100_100Package.createPackageContents();
+    theEngine100Package.createPackageContents();
+    theEngine200_200Package.createPackageContents();
+    theEngine200Package.createPackageContents();
+    theEngine300_300Package.createPackageContents();
+    theEngine300Package.createPackageContents();
+    theEngine400Package.createPackageContents();
+    theEngine600Package.createPackageContents();
+    theEngine800Package.createPackageContents();
+    theExtPackage.createPackageContents();
+    theMsxmlaPackage.createPackageContents();
+    theSchemaPackage.createPackageContents();
+    theXmla_emptyPackage.createPackageContents();
+    theXmla_exceptionPackage.createPackageContents();
+    theXmla_mddatasetPackage.createPackageContents();
+    theXmla_multipleresultsPackage.createPackageContents();
+    theXmla_rowsetPackage.createPackageContents();
+    theXmlaPackage.createPackageContents();
 
-		// Initialize created meta-data
-		theEngine2Package.initializePackageContents();
-		theEnginePackage.initializePackageContents();
-		theEngine100_100Package.initializePackageContents();
-		theEngine100Package.initializePackageContents();
-		theEngine200_200Package.initializePackageContents();
-		theEngine200Package.initializePackageContents();
-		theEngine300_300Package.initializePackageContents();
-		theEngine300Package.initializePackageContents();
-		theEngine400Package.initializePackageContents();
-		theEngine600Package.initializePackageContents();
-		theEngine800Package.initializePackageContents();
-		theExtPackage.initializePackageContents();
-		theMsxmlaPackage.initializePackageContents();
-		theSchemaPackage.initializePackageContents();
-		theXmla_emptyPackage.initializePackageContents();
-		theXmla_exceptionPackage.initializePackageContents();
-		theXmla_mddatasetPackage.initializePackageContents();
-		theXmla_multipleresultsPackage.initializePackageContents();
-		theXmla_rowsetPackage.initializePackageContents();
-		theXmlaPackage.initializePackageContents();
+    // Initialize created meta-data
+    theEngine2Package.initializePackageContents();
+    theEnginePackage.initializePackageContents();
+    theEngine100_100Package.initializePackageContents();
+    theEngine100Package.initializePackageContents();
+    theEngine200_200Package.initializePackageContents();
+    theEngine200Package.initializePackageContents();
+    theEngine300_300Package.initializePackageContents();
+    theEngine300Package.initializePackageContents();
+    theEngine400Package.initializePackageContents();
+    theEngine600Package.initializePackageContents();
+    theEngine800Package.initializePackageContents();
+    theExtPackage.initializePackageContents();
+    theMsxmlaPackage.initializePackageContents();
+    theSchemaPackage.initializePackageContents();
+    theXmla_emptyPackage.initializePackageContents();
+    theXmla_exceptionPackage.initializePackageContents();
+    theXmla_mddatasetPackage.initializePackageContents();
+    theXmla_multipleresultsPackage.initializePackageContents();
+    theXmla_rowsetPackage.initializePackageContents();
+    theXmlaPackage.initializePackageContents();
 
-		// Mark meta-data to indicate it can't be changed
-		theEngine2Package.freeze();
+    // Mark meta-data to indicate it can't be changed
+    theEngine2Package.freeze();
 
-		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(Engine2Package.eNS_URI, theEngine2Package);
-		return theEngine2Package;
-	}
+    // Update the registry and return the package
+    EPackage.Registry.INSTANCE.put(Engine2Package.eNS_URI, theEngine2Package);
+    return theEngine2Package;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getDocumentRoot() {
-		return documentRootEClass;
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EClass getDocumentRoot() {
+    return documentRootEClass;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDocumentRoot_Mixed() {
-		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EAttribute getDocumentRoot_Mixed() {
+    return (EAttribute) documentRootEClass.getEStructuralFeatures().get(0);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getDocumentRoot_XMLNSPrefixMap() {
-		return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EReference getDocumentRoot_XMLNSPrefixMap() {
+    return (EReference) documentRootEClass.getEStructuralFeatures().get(1);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getDocumentRoot_XSISchemaLocation() {
-		return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EReference getDocumentRoot_XSISchemaLocation() {
+    return (EReference) documentRootEClass.getEStructuralFeatures().get(2);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDocumentRoot_MemberKeysUnique() {
-		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(3);
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EAttribute getDocumentRoot_MemberKeysUnique() {
+    return (EAttribute) documentRootEClass.getEStructuralFeatures().get(3);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EEnum getMemberKeysUniqueType() {
-		return memberKeysUniqueTypeEEnum;
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EEnum getMemberKeysUniqueType() {
+    return memberKeysUniqueTypeEEnum;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getMemberKeysUniqueTypeObject() {
-		return memberKeysUniqueTypeObjectEDataType;
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public EDataType getMemberKeysUniqueTypeObject() {
+    return memberKeysUniqueTypeObjectEDataType;
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Engine2Factory getEngine2Factory() {
-		return (Engine2Factory)getEFactoryInstance();
-	}
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public Engine2Factory getEngine2Factory() {
+    return (Engine2Factory) getEFactoryInstance();
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private boolean isCreated = false;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private boolean isCreated = false;
 
-	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPackageContents() {
-		if (isCreated) return;
-		isCreated = true;
+  /**
+   * Creates the meta-model objects for the package. This method is guarded to
+   * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
+   * 
+   * @generated
+   */
+  public void createPackageContents() {
+    if (isCreated)
+      return;
+    isCreated = true;
 
-		// Create classes and their features
-		documentRootEClass = createEClass(DOCUMENT_ROOT);
-		createEAttribute(documentRootEClass, DOCUMENT_ROOT__MIXED);
-		createEReference(documentRootEClass, DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
-		createEReference(documentRootEClass, DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
-		createEAttribute(documentRootEClass, DOCUMENT_ROOT__MEMBER_KEYS_UNIQUE);
+    // Create classes and their features
+    documentRootEClass = createEClass(DOCUMENT_ROOT);
+    createEAttribute(documentRootEClass, DOCUMENT_ROOT__MIXED);
+    createEReference(documentRootEClass, DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
+    createEReference(documentRootEClass, DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
+    createEAttribute(documentRootEClass, DOCUMENT_ROOT__MEMBER_KEYS_UNIQUE);
 
-		// Create enums
-		memberKeysUniqueTypeEEnum = createEEnum(MEMBER_KEYS_UNIQUE_TYPE);
+    // Create enums
+    memberKeysUniqueTypeEEnum = createEEnum(MEMBER_KEYS_UNIQUE_TYPE);
 
-		// Create data types
-		memberKeysUniqueTypeObjectEDataType = createEDataType(MEMBER_KEYS_UNIQUE_TYPE_OBJECT);
-	}
+    // Create data types
+    memberKeysUniqueTypeObjectEDataType = createEDataType(MEMBER_KEYS_UNIQUE_TYPE_OBJECT);
+  }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private boolean isInitialized = false;
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  private boolean isInitialized = false;
 
-	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void initializePackageContents() {
-		if (isInitialized) return;
-		isInitialized = true;
+  /**
+   * Complete the initialization of the package and its meta-model. This method is
+   * guarded to have no affect on any invocation but its first. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  public void initializePackageContents() {
+    if (isInitialized)
+      return;
+    isInitialized = true;
 
-		// Initialize package
-		setName(eNAME);
-		setNsPrefix(eNS_PREFIX);
-		setNsURI(eNS_URI);
+    // Initialize package
+    setName(eNAME);
+    setNsPrefix(eNS_PREFIX);
+    setNsURI(eNS_URI);
 
-		// Create type parameters
+    // Create type parameters
 
-		// Set bounds for type parameters
+    // Set bounds for type parameters
 
-		// Add supertypes to classes
+    // Add supertypes to classes
 
-		// Initialize classes, features, and operations; add parameters
-		initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDocumentRoot_Mixed(), ecorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDocumentRoot_XMLNSPrefixMap(), ecorePackage.getEStringToStringMapEntry(), null, "xMLNSPrefixMap", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDocumentRoot_XSISchemaLocation(), ecorePackage.getEStringToStringMapEntry(), null, "xSISchemaLocation", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocumentRoot_MemberKeysUnique(), this.getMemberKeysUniqueType(), "memberKeysUnique", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    // Initialize classes, features, and operations; add parameters
+    initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE,
+        IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDocumentRoot_Mixed(), ecorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, null,
+        !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getDocumentRoot_XMLNSPrefixMap(), ecorePackage.getEStringToStringMapEntry(), null, "xMLNSPrefixMap",
+        null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+        IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getDocumentRoot_XSISchemaLocation(), ecorePackage.getEStringToStringMapEntry(), null,
+        "xSISchemaLocation", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+        !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getDocumentRoot_MemberKeysUnique(), this.getMemberKeysUniqueType(), "memberKeysUnique", null, 0, -2,
+        null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
-		// Initialize enums and add enum literals
-		initEEnum(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.class, "MemberKeysUniqueType");
-		addEEnumLiteral(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.NOT_UNIQUE);
-		addEEnumLiteral(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.UNIQUE);
+    // Initialize enums and add enum literals
+    initEEnum(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.class, "MemberKeysUniqueType");
+    addEEnumLiteral(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.NOT_UNIQUE);
+    addEEnumLiteral(memberKeysUniqueTypeEEnum, MemberKeysUniqueType.UNIQUE);
 
-		// Initialize data types
-		initEDataType(memberKeysUniqueTypeObjectEDataType, MemberKeysUniqueType.class, "MemberKeysUniqueTypeObject", IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
+    // Initialize data types
+    initEDataType(memberKeysUniqueTypeObjectEDataType, MemberKeysUniqueType.class, "MemberKeysUniqueTypeObject",
+        IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
 
-		// Create resource
-		createResource(eNS_URI);
+    // Create resource
+    createResource(eNS_URI);
 
-		// Create annotations
-		// https://jakarta.ee/xml/ns/jaxb
-		createJaxbAnnotations();
-		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
-		createExtendedMetaDataAnnotations();
-	}
+    // Create annotations
+    // https://jakarta.ee/xml/ns/jaxb
+    createJaxbAnnotations();
+    // http:///org/eclipse/emf/ecore/util/ExtendedMetaData
+    createExtendedMetaDataAnnotations();
+  }
 
-	/**
-	 * Initializes the annotations for <b>https://jakarta.ee/xml/ns/jaxb</b>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void createJaxbAnnotations() {
-		String source = "https://jakarta.ee/xml/ns/jaxb";
-		addAnnotation
-		  (this,
-		   source,
-		   new String[] {
-			   "version", "3.0"
-		   });
-	}
+  /**
+   * Initializes the annotations for <b>https://jakarta.ee/xml/ns/jaxb</b>. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  protected void createJaxbAnnotations() {
+    String source = "https://jakarta.ee/xml/ns/jaxb";
+    addAnnotation(this, source, new String[] { "version", "3.0" });
+  }
 
-	/**
-	 * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void createExtendedMetaDataAnnotations() {
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";
-		addAnnotation
-		  (documentRootEClass,
-		   source,
-		   new String[] {
-			   "name", "",
-			   "kind", "mixed"
-		   });
-		addAnnotation
-		  (getDocumentRoot_Mixed(),
-		   source,
-		   new String[] {
-			   "kind", "elementWildcard",
-			   "name", ":mixed"
-		   });
-		addAnnotation
-		  (getDocumentRoot_XMLNSPrefixMap(),
-		   source,
-		   new String[] {
-			   "kind", "attribute",
-			   "name", "xmlns:prefix"
-		   });
-		addAnnotation
-		  (getDocumentRoot_XSISchemaLocation(),
-		   source,
-		   new String[] {
-			   "kind", "attribute",
-			   "name", "xsi:schemaLocation"
-		   });
-		addAnnotation
-		  (getDocumentRoot_MemberKeysUnique(),
-		   source,
-		   new String[] {
-			   "kind", "element",
-			   "name", "MemberKeysUnique",
-			   "namespace", "##targetNamespace"
-		   });
-		addAnnotation
-		  (memberKeysUniqueTypeEEnum,
-		   source,
-		   new String[] {
-			   "name", "MemberKeysUnique_._type"
-		   });
-		addAnnotation
-		  (memberKeysUniqueTypeObjectEDataType,
-		   source,
-		   new String[] {
-			   "name", "MemberKeysUnique_._type:Object",
-			   "baseType", "MemberKeysUnique_._type"
-		   });
-	}
+  /**
+   * Initializes the annotations for
+   * <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  protected void createExtendedMetaDataAnnotations() {
+    String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";
+    addAnnotation(documentRootEClass, source, new String[] { "name", "", "kind", "mixed" });
+    addAnnotation(getDocumentRoot_Mixed(), source, new String[] { "kind", "elementWildcard", "name", ":mixed" });
+    addAnnotation(getDocumentRoot_XMLNSPrefixMap(), source,
+        new String[] { "kind", "attribute", "name", "xmlns:prefix" });
+    addAnnotation(getDocumentRoot_XSISchemaLocation(), source,
+        new String[] { "kind", "attribute", "name", "xsi:schemaLocation" });
+    addAnnotation(getDocumentRoot_MemberKeysUnique(), source,
+        new String[] { "kind", "element", "name", "MemberKeysUnique", "namespace", "##targetNamespace" });
+    addAnnotation(memberKeysUniqueTypeEEnum, source, new String[] { "name", "MemberKeysUnique_._type" });
+    addAnnotation(memberKeysUniqueTypeObjectEDataType, source,
+        new String[] { "name", "MemberKeysUnique_._type:Object", "baseType", "MemberKeysUnique_._type" });
+  }
 
-} //Engine2PackageImpl
+} // Engine2PackageImpl

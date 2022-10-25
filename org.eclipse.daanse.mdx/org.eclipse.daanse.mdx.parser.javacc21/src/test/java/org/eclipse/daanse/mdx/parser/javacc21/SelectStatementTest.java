@@ -8,21 +8,19 @@ import org.junit.jupiter.api.Test;
 
 public class SelectStatementTest {
 
-	@Test
-	public void testdefault() throws MdxParserException {
-		String mdx = """
-				SELECT [Customer].[Gender].[Gender].Membmers ON COLUMNS,
-				         {[Customer].[Customer].[Aaron A. Allen],
-				          [Customer].[Customer].[Abigail Clark]} ON ROWS
-				   FROM [Adventure Works]
-				   WHERE [Measures].[Internet Sales Amount]
-				""";
+  @Test
+  public void testdefault() throws MdxParserException {
+    String mdx = """
+        SELECT [Customer].[Gender].[Gender].Membmers ON COLUMNS,
+                 {[Customer].[Customer].[Aaron A. Allen],
+                  [Customer].[Customer].[Abigail Clark]} ON ROWS
+           FROM [Adventure Works]
+           WHERE [Measures].[Internet Sales Amount]
+        """;
 
-		SelectStatement selectStatement = Util.parseSelectStatement(mdx);
-		assertThat(selectStatement).isNotNull();
+    SelectStatement selectStatement = Util.parseSelectStatement(mdx);
+    assertThat(selectStatement).isNotNull();
 
-	}
-
-
+  }
 
 }

@@ -13,12 +13,12 @@ import jakarta.xml.ws.Holder;
 
 public interface XmlaService {
 
-	public ReturnValue authenticate(byte[] sspiHandshake);
+  public ReturnValue authenticate(byte[] sspiHandshake);
 
-	public DiscoverResponse discover(Discover parameters, Holder<Session> session, BeginSession beginSession,
-			EndSession endSession);
+  public DiscoverResponse discover(Discover parameters, Holder<Session> session, BeginSession beginSession,
+      EndSession endSession);
 
-	public ExecuteResponse execute(Execute parameters, Holder<Session> session, BeginSession beginSession,
-			EndSession endSession);
+  public ExecuteResponse execute(Execute parameters, Holder<Session> session, BeginSession beginSession,
+      EndSession endSession);
 
 }

@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MiningModelPermission complex type.
+ * <p>
+ * Java class for MiningModelPermission complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MiningModelPermission"&gt;
@@ -36,104 +38,86 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MiningModelPermission", propOrder = {
-    "allowDrillThrough",
-    "allowBrowsing",
-    "write"
-})
-public class MiningModelPermission
-    extends Permission
-{
+@XmlType(name = "MiningModelPermission", propOrder = { "allowDrillThrough", "allowBrowsing", "write" })
+public class MiningModelPermission extends Permission {
 
-    @XmlElement(name = "AllowDrillThrough")
-    protected Boolean allowDrillThrough;
-    @XmlElement(name = "AllowBrowsing")
-    protected Boolean allowBrowsing;
-    @XmlElement(name = "Write")
-    protected String write;
+  @XmlElement(name = "AllowDrillThrough")
+  protected Boolean allowDrillThrough;
+  @XmlElement(name = "AllowBrowsing")
+  protected Boolean allowBrowsing;
+  @XmlElement(name = "Write")
+  protected String write;
 
-    /**
-     * Gets the value of the allowDrillThrough property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isAllowDrillThrough() {
-        return allowDrillThrough;
-    }
+  /**
+   * Gets the value of the allowDrillThrough property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isAllowDrillThrough() {
+    return allowDrillThrough;
+  }
 
-    /**
-     * Sets the value of the allowDrillThrough property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setAllowDrillThrough(Boolean value) {
-        this.allowDrillThrough = value;
-    }
+  /**
+   * Sets the value of the allowDrillThrough property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setAllowDrillThrough(Boolean value) {
+    this.allowDrillThrough = value;
+  }
 
-    public boolean isSetAllowDrillThrough() {
-        return (this.allowDrillThrough!= null);
-    }
+  public boolean isSetAllowDrillThrough() {
+    return (this.allowDrillThrough != null);
+  }
 
-    /**
-     * Gets the value of the allowBrowsing property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isAllowBrowsing() {
-        return allowBrowsing;
-    }
+  /**
+   * Gets the value of the allowBrowsing property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isAllowBrowsing() {
+    return allowBrowsing;
+  }
 
-    /**
-     * Sets the value of the allowBrowsing property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setAllowBrowsing(Boolean value) {
-        this.allowBrowsing = value;
-    }
+  /**
+   * Sets the value of the allowBrowsing property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setAllowBrowsing(Boolean value) {
+    this.allowBrowsing = value;
+  }
 
-    public boolean isSetAllowBrowsing() {
-        return (this.allowBrowsing!= null);
-    }
+  public boolean isSetAllowBrowsing() {
+    return (this.allowBrowsing != null);
+  }
 
-    /**
-     * Gets the value of the write property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getWrite() {
-        return write;
-    }
+  /**
+   * Gets the value of the write property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getWrite() {
+    return write;
+  }
 
-    /**
-     * Sets the value of the write property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setWrite(String value) {
-        this.write = value;
-    }
+  /**
+   * Sets the value of the write property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setWrite(String value) {
+    this.write = value;
+  }
 
-    public boolean isSetWrite() {
-        return (this.write!= null);
-    }
+  public boolean isSetWrite() {
+    return (this.write != null);
+  }
 
 }

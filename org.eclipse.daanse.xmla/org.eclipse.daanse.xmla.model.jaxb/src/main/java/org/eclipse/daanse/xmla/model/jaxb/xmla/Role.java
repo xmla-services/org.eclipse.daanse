@@ -12,11 +12,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Role complex type.
+ * <p>
+ * Java class for Role complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Role"&gt;
@@ -64,353 +66,325 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Role {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "ID")
-    protected String id;
-    @XmlElement(name = "CreatedTimestamp")
-    @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar createdTimestamp;
-    @XmlElement(name = "LastSchemaUpdate")
-    @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar lastSchemaUpdate;
-    @XmlElement(name = "Description")
-    protected String description;
-    @XmlElement(name = "Annotations")
-    protected Role.Annotations annotations;
-    @XmlElement(name = "Members")
-    protected Role.Members members;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "ID")
+  protected String id;
+  @XmlElement(name = "CreatedTimestamp")
+  @XmlSchemaType(name = "dateTime")
+  protected XMLGregorianCalendar createdTimestamp;
+  @XmlElement(name = "LastSchemaUpdate")
+  @XmlSchemaType(name = "dateTime")
+  protected XMLGregorianCalendar lastSchemaUpdate;
+  @XmlElement(name = "Description")
+  protected String description;
+  @XmlElement(name = "Annotations")
+  protected Role.Annotations annotations;
+  @XmlElement(name = "Members")
+  protected Role.Members members;
+
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
+
+  public boolean isSetName() {
+    return (this.name != null);
+  }
+
+  /**
+   * Gets the value of the id property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getID() {
+    return id;
+  }
+
+  /**
+   * Sets the value of the id property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setID(String value) {
+    this.id = value;
+  }
+
+  public boolean isSetID() {
+    return (this.id != null);
+  }
+
+  /**
+   * Gets the value of the createdTimestamp property.
+   * 
+   * @return possible object is {@link XMLGregorianCalendar }
+   * 
+   */
+  public XMLGregorianCalendar getCreatedTimestamp() {
+    return createdTimestamp;
+  }
+
+  /**
+   * Sets the value of the createdTimestamp property.
+   * 
+   * @param value allowed object is {@link XMLGregorianCalendar }
+   * 
+   */
+  public void setCreatedTimestamp(XMLGregorianCalendar value) {
+    this.createdTimestamp = value;
+  }
+
+  public boolean isSetCreatedTimestamp() {
+    return (this.createdTimestamp != null);
+  }
+
+  /**
+   * Gets the value of the lastSchemaUpdate property.
+   * 
+   * @return possible object is {@link XMLGregorianCalendar }
+   * 
+   */
+  public XMLGregorianCalendar getLastSchemaUpdate() {
+    return lastSchemaUpdate;
+  }
+
+  /**
+   * Sets the value of the lastSchemaUpdate property.
+   * 
+   * @param value allowed object is {@link XMLGregorianCalendar }
+   * 
+   */
+  public void setLastSchemaUpdate(XMLGregorianCalendar value) {
+    this.lastSchemaUpdate = value;
+  }
+
+  public boolean isSetLastSchemaUpdate() {
+    return (this.lastSchemaUpdate != null);
+  }
+
+  /**
+   * Gets the value of the description property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * Sets the value of the description property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDescription(String value) {
+    this.description = value;
+  }
+
+  public boolean isSetDescription() {
+    return (this.description != null);
+  }
+
+  /**
+   * Gets the value of the annotations property.
+   * 
+   * @return possible object is {@link Role.Annotations }
+   * 
+   */
+  public Role.Annotations getAnnotations() {
+    return annotations;
+  }
+
+  /**
+   * Sets the value of the annotations property.
+   * 
+   * @param value allowed object is {@link Role.Annotations }
+   * 
+   */
+  public void setAnnotations(Role.Annotations value) {
+    this.annotations = value;
+  }
+
+  public boolean isSetAnnotations() {
+    return (this.annotations != null);
+  }
+
+  /**
+   * Gets the value of the members property.
+   * 
+   * @return possible object is {@link Role.Members }
+   * 
+   */
+  public Role.Members getMembers() {
+    return members;
+  }
+
+  /**
+   * Sets the value of the members property.
+   * 
+   * @param value allowed object is {@link Role.Members }
+   * 
+   */
+  public void setMembers(Role.Members value) {
+    this.members = value;
+  }
+
+  public boolean isSetMembers() {
+    return (this.members != null);
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "annotation" })
+  public static class Annotations {
+
+    @XmlElement(name = "Annotation")
+    protected List<Annotation> annotation;
 
     /**
-     * Gets the value of the name property.
+     * Gets the value of the annotation property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the value of the name property.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the annotation property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
-
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
-
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getID() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setID(String value) {
-        this.id = value;
-    }
-
-    public boolean isSetID() {
-        return (this.id!= null);
-    }
-
-    /**
-     * Gets the value of the createdTimestamp property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getCreatedTimestamp() {
-        return createdTimestamp;
-    }
-
-    /**
-     * Sets the value of the createdTimestamp property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setCreatedTimestamp(XMLGregorianCalendar value) {
-        this.createdTimestamp = value;
-    }
-
-    public boolean isSetCreatedTimestamp() {
-        return (this.createdTimestamp!= null);
-    }
-
-    /**
-     * Gets the value of the lastSchemaUpdate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getLastSchemaUpdate() {
-        return lastSchemaUpdate;
-    }
-
-    /**
-     * Sets the value of the lastSchemaUpdate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setLastSchemaUpdate(XMLGregorianCalendar value) {
-        this.lastSchemaUpdate = value;
-    }
-
-    public boolean isSetLastSchemaUpdate() {
-        return (this.lastSchemaUpdate!= null);
-    }
-
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
-    }
-
-    public boolean isSetDescription() {
-        return (this.description!= null);
-    }
-
-    /**
-     * Gets the value of the annotations property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Role.Annotations }
-     *     
-     */
-    public Role.Annotations getAnnotations() {
-        return annotations;
-    }
-
-    /**
-     * Sets the value of the annotations property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Role.Annotations }
-     *     
-     */
-    public void setAnnotations(Role.Annotations value) {
-        this.annotations = value;
-    }
-
-    public boolean isSetAnnotations() {
-        return (this.annotations!= null);
-    }
-
-    /**
-     * Gets the value of the members property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Role.Members }
-     *     
-     */
-    public Role.Members getMembers() {
-        return members;
-    }
-
-    /**
-     * Sets the value of the members property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Role.Members }
-     *     
-     */
-    public void setMembers(Role.Members value) {
-        this.members = value;
-    }
-
-    public boolean isSetMembers() {
-        return (this.members!= null);
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="Annotation" type="{urn:schemas-microsoft-com:xml-analysis}Annotation" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getAnnotation().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Annotation }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "annotation"
-    })
-    public static class Annotations {
-
-        @XmlElement(name = "Annotation")
-        protected List<Annotation> annotation;
-
-        /**
-         * Gets the value of the annotation property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the annotation property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getAnnotation().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Annotation }
-         * 
-         * 
-         */
-        public List<Annotation> getAnnotation() {
-            if (annotation == null) {
-                annotation = new ArrayList<Annotation>();
-            }
-            return this.annotation;
-        }
-
-        public boolean isSetAnnotation() {
-            return ((this.annotation!= null)&&(!this.annotation.isEmpty()));
-        }
-
-        public void unsetAnnotation() {
-            this.annotation = null;
-        }
-
+    public List<Annotation> getAnnotation() {
+      if (annotation == null) {
+        annotation = new ArrayList<Annotation>();
+      }
+      return this.annotation;
     }
 
+    public boolean isSetAnnotation() {
+      return ((this.annotation != null) && (!this.annotation.isEmpty()));
+    }
+
+    public void unsetAnnotation() {
+      this.annotation = null;
+    }
+
+  }
+
+  /**
+   * <p>
+   * Java class for anonymous complex type.
+   * 
+   * <p>
+   * The following schema fragment specifies the expected content contained within
+   * this class.
+   * 
+   * <pre>
+   * &lt;complexType&gt;
+   *   &lt;complexContent&gt;
+   *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+   *       &lt;sequence&gt;
+   *         &lt;element name="Member" type="{urn:schemas-microsoft-com:xml-analysis}Member" maxOccurs="unbounded" minOccurs="0"/&gt;
+   *       &lt;/sequence&gt;
+   *     &lt;/restriction&gt;
+   *   &lt;/complexContent&gt;
+   * &lt;/complexType&gt;
+   * </pre>
+   * 
+   * 
+   */
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlType(name = "", propOrder = { "member" })
+  public static class Members {
+
+    @XmlElement(name = "Member")
+    protected List<Member> member;
 
     /**
-     * <p>Java class for anonymous complex type.
+     * Gets the value of the member property.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot.
+     * Therefore any modification you make to the returned list will be present
+     * inside the Jakarta XML Binding object. This is why there is not a
+     * <CODE>set</CODE> method for the member property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * 
      * <pre>
-     * &lt;complexType&gt;
-     *   &lt;complexContent&gt;
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
-     *       &lt;sequence&gt;
-     *         &lt;element name="Member" type="{urn:schemas-microsoft-com:xml-analysis}Member" maxOccurs="unbounded" minOccurs="0"/&gt;
-     *       &lt;/sequence&gt;
-     *     &lt;/restriction&gt;
-     *   &lt;/complexContent&gt;
-     * &lt;/complexType&gt;
+     * getMember().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list {@link Member }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "member"
-    })
-    public static class Members {
-
-        @XmlElement(name = "Member")
-        protected List<Member> member;
-
-        /**
-         * Gets the value of the member property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the Jakarta XML Binding object.
-         * This is why there is not a <CODE>set</CODE> method for the member property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getMember().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Member }
-         * 
-         * 
-         */
-        public List<Member> getMember() {
-            if (member == null) {
-                member = new ArrayList<Member>();
-            }
-            return this.member;
-        }
-
-        public boolean isSetMember() {
-            return ((this.member!= null)&&(!this.member.isEmpty()));
-        }
-
-        public void unsetMember() {
-            this.member = null;
-        }
-
+    public List<Member> getMember() {
+      if (member == null) {
+        member = new ArrayList<Member>();
+      }
+      return this.member;
     }
+
+    public boolean isSetMember() {
+      return ((this.member != null) && (!this.member.isEmpty()));
+    }
+
+    public void unsetMember() {
+      this.member = null;
+    }
+
+  }
 
 }

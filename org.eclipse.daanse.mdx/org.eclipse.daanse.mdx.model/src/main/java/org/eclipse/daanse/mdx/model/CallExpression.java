@@ -3,114 +3,103 @@ package org.eclipse.daanse.mdx.model;
 import java.util.List;
 
 public record CallExpression(String name, CallExpression.Type type, List<Expression> expressions)
-		implements Expression {
+    implements Expression {
 
-	public enum Type {
+  public enum Type {
 
-		/**
-		 * FunctionName()
-		 * FunctionName(arg)
-		 * FunctionName(args[])
-		 */
-		Function, 
-		/**
-		 * object.PROPERTY
-		 */
-		Property,
-		/**
-		 * object.&PROPERTY
-		 */
-		PropertyQuoted,
-		/**
-		 * object.[&PROPERTY]
-		 */
-		PropertyAmpersAndQuoted, 
-		/**
-		 * object.FunctionName()
-		 * object.FunctionName(arg)
-		 * object.FunctionName(args[])
-		 */
-		Method, 
-		/**
-		 * { expression }
-		 * { expression,expression }
-		 * { [a][a] : [a][c] }
-  	 * { [a][a] , [a][b] , [a][c] }
-		 */
-		Braces, 
-		/**
+    /**
+     * FunctionName() FunctionName(arg) FunctionName(args[])
+     */
+    Function,
+    /**
+     * object.PROPERTY
+     */
+    Property,
+    /**
+     * object.&PROPERTY
+     */
+    PropertyQuoted,
+    /**
+     * object.[&PROPERTY]
+     */
+    PropertyAmpersAndQuoted,
+    /**
+     * object.FunctionName() object.FunctionName(arg) object.FunctionName(args[])
+     */
+    Method,
+    /**
+     * { expression } { expression,expression } { [a][a] : [a][c] } { [a][a] ,
+     * [a][b] , [a][c] }
+     */
+    Braces,
+    /**
      * ( arg, arg )
-		 */
-		Parentheses, Internal,
-		
-		/**
-		 * the 2. argument in this expression FunctionOrMethod(1, ,3)
-		 */
-		Empty, 
-		
-		Term_Prefix, 
-		
-		
-		/**
-		 * 
-		 * arg OPERATOR
-		 * 
-		 * arg IS EMPTY //maybe it is an infix
-		 */
-		Term_Postfix, 
-		
-		/**
-		 * 
-		 * arg OPERATOR arg
-		 * 
-		 * 1 < 2
-		 * 1 AND 2
-		 * 1 + 2
-		 */
-		
-		Term_Infix, 
-		
-		/**
-		 * CASE
-		 * 
-		 * WHEN
-		 * 
-		 * THEN
-		 * 
-		 * END
-		 * 
-		 */
-		Term_Case, 
-		
-		//max be replaced
-		Cast
-	
-		
-		
-	}
+     */
+    Parentheses, Internal,
 
-	public CallExpression {
+    /**
+     * the 2. argument in this expression FunctionOrMethod(1, ,3)
+     */
+    Empty,
 
-		assert name != null;
-		assert type != null;
-		assert expressions != null;
+    Term_Prefix,
 
-		switch (type) {
-		case Braces:
-			assert name.equals("{}");
-			break;
-		case Parentheses:
-			assert name.equals("()");
-			break;
-		case Internal:
-			assert name.startsWith("$");
-			break;
-		case Empty:
-			assert name.equals("");
-			break;
-		default:
-			assert !name.startsWith("$") && !name.equals("{}") && !name.equals("()");
-			break;
-		}
-	}
+    /**
+     * 
+     * arg OPERATOR
+     * 
+     * arg IS EMPTY //maybe it is an infix
+     */
+    Term_Postfix,
+
+    /**
+     * 
+     * arg OPERATOR arg
+     * 
+     * 1 < 2 1 AND 2 1 + 2
+     */
+
+    Term_Infix,
+
+    /**
+     * CASE
+     * 
+     * WHEN
+     * 
+     * THEN
+     * 
+     * END
+     * 
+     */
+    Term_Case,
+
+    // max be replaced
+    Cast
+
+  }
+
+  public CallExpression {
+
+    assert name != null;
+    assert type != null;
+    assert expressions != null;
+
+    switch (type) {
+    case Braces:
+      assert name.equals("{}");
+      break;
+    case Parentheses:
+      assert name.equals("()");
+      break;
+    case Internal:
+      assert name.startsWith("$");
+      break;
+    case Empty:
+      assert name.equals("");
+      break;
+    default:
+      assert !name.startsWith("$") && !name.equals("{}") && !name.equals("()");
+      break;
+    }
+  }
 }

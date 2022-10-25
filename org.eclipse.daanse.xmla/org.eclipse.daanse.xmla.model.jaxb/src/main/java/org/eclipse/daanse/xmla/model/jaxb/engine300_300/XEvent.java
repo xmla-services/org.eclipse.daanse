@@ -11,11 +11,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -32,44 +34,36 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "eventSession"
-})
+@XmlType(name = "", propOrder = { "eventSession" })
 @XmlRootElement(name = "XEvent")
-public class XEvent
-    implements Serializable
-{
+public class XEvent implements Serializable {
 
-    private final static long serialVersionUID = 1L;
-    @XmlElement(name = "event_session", namespace = "urn:schemas-microsoft-com:xml-analysis", required = true)
-    protected EventSession eventSession;
+  private final static long serialVersionUID = 1L;
+  @XmlElement(name = "event_session", namespace = "urn:schemas-microsoft-com:xml-analysis", required = true)
+  protected EventSession eventSession;
 
-    /**
-     * Gets the value of the eventSession property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link EventSession }
-     *     
-     */
-    public EventSession getEventSession() {
-        return eventSession;
-    }
+  /**
+   * Gets the value of the eventSession property.
+   * 
+   * @return possible object is {@link EventSession }
+   * 
+   */
+  public EventSession getEventSession() {
+    return eventSession;
+  }
 
-    /**
-     * Sets the value of the eventSession property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link EventSession }
-     *     
-     */
-    public void setEventSession(EventSession value) {
-        this.eventSession = value;
-    }
+  /**
+   * Sets the value of the eventSession property.
+   * 
+   * @param value allowed object is {@link EventSession }
+   * 
+   */
+  public void setEventSession(EventSession value) {
+    this.eventSession = value;
+  }
 
-    public boolean isSetEventSession() {
-        return (this.eventSession!= null);
-    }
+  public boolean isSetEventSession() {
+    return (this.eventSession != null);
+  }
 
 }

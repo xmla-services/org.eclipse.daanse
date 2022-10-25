@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ProactiveCachingBinding complex type.
+ * <p>
+ * Java class for ProactiveCachingBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ProactiveCachingBinding"&gt;
@@ -25,11 +27,7 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ProactiveCachingBinding")
-@XmlSeeAlso({
-    ProactiveCachingQueryBinding.class,
-    ProactiveCachingIncrementalProcessingBinding.class
-})
+@XmlSeeAlso({ ProactiveCachingQueryBinding.class, ProactiveCachingIncrementalProcessingBinding.class })
 public abstract class ProactiveCachingBinding {
-
 
 }

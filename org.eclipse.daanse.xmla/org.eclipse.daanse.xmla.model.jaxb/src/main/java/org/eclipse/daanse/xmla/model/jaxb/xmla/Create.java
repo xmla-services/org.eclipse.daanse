@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Create complex type.
+ * <p>
+ * Java class for Create complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Create"&gt;
@@ -36,129 +38,113 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Create {
 
-    @XmlElement(name = "ParentObject")
-    protected ObjectReference parentObject;
-    @XmlElement(name = "ObjectDefinition", required = true)
-    protected MajorObject objectDefinition;
-    @XmlAttribute(name = "Scope")
-    protected Scope scope;
-    @XmlAttribute(name = "AllowOverwrite")
-    protected Boolean allowOverwrite;
+  @XmlElement(name = "ParentObject")
+  protected ObjectReference parentObject;
+  @XmlElement(name = "ObjectDefinition", required = true)
+  protected MajorObject objectDefinition;
+  @XmlAttribute(name = "Scope")
+  protected Scope scope;
+  @XmlAttribute(name = "AllowOverwrite")
+  protected Boolean allowOverwrite;
 
-    /**
-     * Gets the value of the parentObject property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getParentObject() {
-        return parentObject;
-    }
+  /**
+   * Gets the value of the parentObject property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getParentObject() {
+    return parentObject;
+  }
 
-    /**
-     * Sets the value of the parentObject property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setParentObject(ObjectReference value) {
-        this.parentObject = value;
-    }
+  /**
+   * Sets the value of the parentObject property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setParentObject(ObjectReference value) {
+    this.parentObject = value;
+  }
 
-    public boolean isSetParentObject() {
-        return (this.parentObject!= null);
-    }
+  public boolean isSetParentObject() {
+    return (this.parentObject != null);
+  }
 
-    /**
-     * Gets the value of the objectDefinition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MajorObject }
-     *     
-     */
-    public MajorObject getObjectDefinition() {
-        return objectDefinition;
-    }
+  /**
+   * Gets the value of the objectDefinition property.
+   * 
+   * @return possible object is {@link MajorObject }
+   * 
+   */
+  public MajorObject getObjectDefinition() {
+    return objectDefinition;
+  }
 
-    /**
-     * Sets the value of the objectDefinition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MajorObject }
-     *     
-     */
-    public void setObjectDefinition(MajorObject value) {
-        this.objectDefinition = value;
-    }
+  /**
+   * Sets the value of the objectDefinition property.
+   * 
+   * @param value allowed object is {@link MajorObject }
+   * 
+   */
+  public void setObjectDefinition(MajorObject value) {
+    this.objectDefinition = value;
+  }
 
-    public boolean isSetObjectDefinition() {
-        return (this.objectDefinition!= null);
-    }
+  public boolean isSetObjectDefinition() {
+    return (this.objectDefinition != null);
+  }
 
-    /**
-     * Gets the value of the scope property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Scope }
-     *     
-     */
-    public Scope getScope() {
-        return scope;
-    }
+  /**
+   * Gets the value of the scope property.
+   * 
+   * @return possible object is {@link Scope }
+   * 
+   */
+  public Scope getScope() {
+    return scope;
+  }
 
-    /**
-     * Sets the value of the scope property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Scope }
-     *     
-     */
-    public void setScope(Scope value) {
-        this.scope = value;
-    }
+  /**
+   * Sets the value of the scope property.
+   * 
+   * @param value allowed object is {@link Scope }
+   * 
+   */
+  public void setScope(Scope value) {
+    this.scope = value;
+  }
 
-    public boolean isSetScope() {
-        return (this.scope!= null);
-    }
+  public boolean isSetScope() {
+    return (this.scope != null);
+  }
 
-    /**
-     * Gets the value of the allowOverwrite property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public boolean isAllowOverwrite() {
-        return allowOverwrite;
-    }
+  /**
+   * Gets the value of the allowOverwrite property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public boolean isAllowOverwrite() {
+    return allowOverwrite;
+  }
 
-    /**
-     * Sets the value of the allowOverwrite property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setAllowOverwrite(boolean value) {
-        this.allowOverwrite = value;
-    }
+  /**
+   * Sets the value of the allowOverwrite property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setAllowOverwrite(boolean value) {
+    this.allowOverwrite = value;
+  }
 
-    public boolean isSetAllowOverwrite() {
-        return (this.allowOverwrite!= null);
-    }
+  public boolean isSetAllowOverwrite() {
+    return (this.allowOverwrite != null);
+  }
 
-    public void unsetAllowOverwrite() {
-        this.allowOverwrite = null;
-    }
+  public void unsetAllowOverwrite() {
+    this.allowOverwrite = null;
+  }
 
 }

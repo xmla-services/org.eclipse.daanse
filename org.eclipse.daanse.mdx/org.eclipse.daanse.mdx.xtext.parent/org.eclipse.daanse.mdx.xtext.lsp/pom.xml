@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.daanse</groupId>
+		<artifactId>org.eclipse.daanse.mdx.xtext.parent</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>org.eclipse.daanse.mdx.xtext.lsp</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.lsp4j</groupId>
+			<artifactId>org.eclipse.lsp4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.lsp4j</groupId>
+			<artifactId>org.eclipse.lsp4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.lsp4j</groupId>
+			<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.http.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.component.annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.ide</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.websocket</groupId>
+			<artifactId>jakarta.websocket-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.websocket</groupId>
+			<artifactId>jakarta.websocket-client-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.http.jetty</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.service.http.whiteboard</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi.core</artifactId>
+		</dependency>
+	</dependencies>
+</project>

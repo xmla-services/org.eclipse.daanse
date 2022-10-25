@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MiningModelingFlag complex type.
+ * <p>
+ * Java class for MiningModelingFlag complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MiningModelingFlag"&gt;
@@ -32,35 +34,31 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class MiningModelingFlag {
 
-    @XmlElement(name = "ModelingFlag", required = true)
-    protected String modelingFlag;
+  @XmlElement(name = "ModelingFlag", required = true)
+  protected String modelingFlag;
 
-    /**
-     * Gets the value of the modelingFlag property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getModelingFlag() {
-        return modelingFlag;
-    }
+  /**
+   * Gets the value of the modelingFlag property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getModelingFlag() {
+    return modelingFlag;
+  }
 
-    /**
-     * Sets the value of the modelingFlag property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setModelingFlag(String value) {
-        this.modelingFlag = value;
-    }
+  /**
+   * Sets the value of the modelingFlag property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setModelingFlag(String value) {
+    this.modelingFlag = value;
+  }
 
-    public boolean isSetModelingFlag() {
-        return (this.modelingFlag!= null);
-    }
+  public boolean isSetModelingFlag() {
+    return (this.modelingFlag != null);
+  }
 
 }

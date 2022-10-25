@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CubeInfo complex type.
+ * <p>
+ * Java class for CubeInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CubeInfo"&gt;
@@ -29,49 +31,48 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CubeInfo", propOrder = {
-    "cube"
-})
+@XmlType(name = "CubeInfo", propOrder = { "cube" })
 public class CubeInfo {
 
-    @XmlElement(name = "Cube", required = true)
-    protected List<OlapInfoCube> cube;
+  @XmlElement(name = "Cube", required = true)
+  protected List<OlapInfoCube> cube;
 
-    /**
-     * Gets the value of the cube property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the cube property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getCube().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link OlapInfoCube }
-     * 
-     * 
-     */
-    public List<OlapInfoCube> getCube() {
-        if (cube == null) {
-            cube = new ArrayList<OlapInfoCube>();
-        }
-        return this.cube;
+  /**
+   * Gets the value of the cube property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the cube property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getCube().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link OlapInfoCube
+   * }
+   * 
+   * 
+   */
+  public List<OlapInfoCube> getCube() {
+    if (cube == null) {
+      cube = new ArrayList<OlapInfoCube>();
     }
+    return this.cube;
+  }
 
-    public boolean isSetCube() {
-        return ((this.cube!= null)&&(!this.cube.isEmpty()));
-    }
+  public boolean isSetCube() {
+    return ((this.cube != null) && (!this.cube.isEmpty()));
+  }
 
-    public void unsetCube() {
-        this.cube = null;
-    }
+  public void unsetCube() {
+    this.cube = null;
+  }
 
 }

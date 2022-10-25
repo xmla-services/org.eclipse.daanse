@@ -9,11 +9,13 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MembersType complex type.
+ * <p>
+ * Java class for MembersType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MembersType"&gt;
@@ -31,79 +33,73 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MembersType", propOrder = {
-    "member"
-})
+@XmlType(name = "MembersType", propOrder = { "member" })
 public class MembersType {
 
-    @XmlElement(name = "Member")
-    protected List<MemberType> member;
-    @XmlAttribute(name = "Hierarchy", required = true)
-    protected String hierarchy;
+  @XmlElement(name = "Member")
+  protected List<MemberType> member;
+  @XmlAttribute(name = "Hierarchy", required = true)
+  protected String hierarchy;
 
-    /**
-     * Gets the value of the member property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the member property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getMember().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link MemberType }
-     * 
-     * 
-     */
-    public List<MemberType> getMember() {
-        if (member == null) {
-            member = new ArrayList<MemberType>();
-        }
-        return this.member;
+  /**
+   * Gets the value of the member property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the member property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getMember().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link MemberType }
+   * 
+   * 
+   */
+  public List<MemberType> getMember() {
+    if (member == null) {
+      member = new ArrayList<MemberType>();
     }
+    return this.member;
+  }
 
-    public boolean isSetMember() {
-        return ((this.member!= null)&&(!this.member.isEmpty()));
-    }
+  public boolean isSetMember() {
+    return ((this.member != null) && (!this.member.isEmpty()));
+  }
 
-    public void unsetMember() {
-        this.member = null;
-    }
+  public void unsetMember() {
+    this.member = null;
+  }
 
-    /**
-     * Gets the value of the hierarchy property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getHierarchy() {
-        return hierarchy;
-    }
+  /**
+   * Gets the value of the hierarchy property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getHierarchy() {
+    return hierarchy;
+  }
 
-    /**
-     * Sets the value of the hierarchy property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setHierarchy(String value) {
-        this.hierarchy = value;
-    }
+  /**
+   * Sets the value of the hierarchy property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setHierarchy(String value) {
+    this.hierarchy = value;
+  }
 
-    public boolean isSetHierarchy() {
-        return (this.hierarchy!= null);
-    }
+  public boolean isSetHierarchy() {
+    return (this.hierarchy != null);
+  }
 
 }

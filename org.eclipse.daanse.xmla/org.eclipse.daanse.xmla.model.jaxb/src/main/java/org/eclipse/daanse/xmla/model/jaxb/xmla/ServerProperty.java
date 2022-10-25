@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ServerProperty complex type.
+ * <p>
+ * Java class for ServerProperty complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ServerProperty"&gt;
@@ -38,215 +40,187 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ServerProperty {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "Value", required = true)
-    protected String value;
-    @XmlElement(name = "RequiresRestart")
-    protected Boolean requiresRestart;
-    @XmlElement(name = "PendingValue")
-    protected java.lang.Object pendingValue;
-    @XmlElement(name = "DefaultValue")
-    protected java.lang.Object defaultValue;
-    @XmlElement(name = "DisplayFlag")
-    protected Boolean displayFlag;
-    @XmlElement(name = "Type")
-    protected String type;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "Value", required = true)
+  protected String value;
+  @XmlElement(name = "RequiresRestart")
+  protected Boolean requiresRestart;
+  @XmlElement(name = "PendingValue")
+  protected java.lang.Object pendingValue;
+  @XmlElement(name = "DefaultValue")
+  protected java.lang.Object defaultValue;
+  @XmlElement(name = "DisplayFlag")
+  protected Boolean displayFlag;
+  @XmlElement(name = "Type")
+  protected String type;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public boolean isSetName() {
+    return (this.name != null);
+  }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the value property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the value property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public boolean isSetValue() {
-        return (this.value!= null);
-    }
+  public boolean isSetValue() {
+    return (this.value != null);
+  }
 
-    /**
-     * Gets the value of the requiresRestart property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isRequiresRestart() {
-        return requiresRestart;
-    }
+  /**
+   * Gets the value of the requiresRestart property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isRequiresRestart() {
+    return requiresRestart;
+  }
 
-    /**
-     * Sets the value of the requiresRestart property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setRequiresRestart(Boolean value) {
-        this.requiresRestart = value;
-    }
+  /**
+   * Sets the value of the requiresRestart property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setRequiresRestart(Boolean value) {
+    this.requiresRestart = value;
+  }
 
-    public boolean isSetRequiresRestart() {
-        return (this.requiresRestart!= null);
-    }
+  public boolean isSetRequiresRestart() {
+    return (this.requiresRestart != null);
+  }
 
-    /**
-     * Gets the value of the pendingValue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public java.lang.Object getPendingValue() {
-        return pendingValue;
-    }
+  /**
+   * Gets the value of the pendingValue property.
+   * 
+   * @return possible object is {@link java.lang.Object }
+   * 
+   */
+  public java.lang.Object getPendingValue() {
+    return pendingValue;
+  }
 
-    /**
-     * Sets the value of the pendingValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public void setPendingValue(java.lang.Object value) {
-        this.pendingValue = value;
-    }
+  /**
+   * Sets the value of the pendingValue property.
+   * 
+   * @param value allowed object is {@link java.lang.Object }
+   * 
+   */
+  public void setPendingValue(java.lang.Object value) {
+    this.pendingValue = value;
+  }
 
-    public boolean isSetPendingValue() {
-        return (this.pendingValue!= null);
-    }
+  public boolean isSetPendingValue() {
+    return (this.pendingValue != null);
+  }
 
-    /**
-     * Gets the value of the defaultValue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public java.lang.Object getDefaultValue() {
-        return defaultValue;
-    }
+  /**
+   * Gets the value of the defaultValue property.
+   * 
+   * @return possible object is {@link java.lang.Object }
+   * 
+   */
+  public java.lang.Object getDefaultValue() {
+    return defaultValue;
+  }
 
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.Object }
-     *     
-     */
-    public void setDefaultValue(java.lang.Object value) {
-        this.defaultValue = value;
-    }
+  /**
+   * Sets the value of the defaultValue property.
+   * 
+   * @param value allowed object is {@link java.lang.Object }
+   * 
+   */
+  public void setDefaultValue(java.lang.Object value) {
+    this.defaultValue = value;
+  }
 
-    public boolean isSetDefaultValue() {
-        return (this.defaultValue!= null);
-    }
+  public boolean isSetDefaultValue() {
+    return (this.defaultValue != null);
+  }
 
-    /**
-     * Gets the value of the displayFlag property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isDisplayFlag() {
-        return displayFlag;
-    }
+  /**
+   * Gets the value of the displayFlag property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public Boolean isDisplayFlag() {
+    return displayFlag;
+  }
 
-    /**
-     * Sets the value of the displayFlag property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setDisplayFlag(Boolean value) {
-        this.displayFlag = value;
-    }
+  /**
+   * Sets the value of the displayFlag property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setDisplayFlag(Boolean value) {
+    this.displayFlag = value;
+  }
 
-    public boolean isSetDisplayFlag() {
-        return (this.displayFlag!= null);
-    }
+  public boolean isSetDisplayFlag() {
+    return (this.displayFlag != null);
+  }
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
 }

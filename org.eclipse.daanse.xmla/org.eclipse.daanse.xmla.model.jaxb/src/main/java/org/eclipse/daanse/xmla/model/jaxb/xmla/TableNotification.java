@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TableNotification complex type.
+ * <p>
+ * Java class for TableNotification complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="TableNotification"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class TableNotification {
 
-    @XmlElement(name = "DbTableName", required = true)
-    protected String dbTableName;
-    @XmlElement(name = "DbSchemaName")
-    protected String dbSchemaName;
+  @XmlElement(name = "DbTableName", required = true)
+  protected String dbTableName;
+  @XmlElement(name = "DbSchemaName")
+  protected String dbSchemaName;
 
-    /**
-     * Gets the value of the dbTableName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDbTableName() {
-        return dbTableName;
-    }
+  /**
+   * Gets the value of the dbTableName property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDbTableName() {
+    return dbTableName;
+  }
 
-    /**
-     * Sets the value of the dbTableName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDbTableName(String value) {
-        this.dbTableName = value;
-    }
+  /**
+   * Sets the value of the dbTableName property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDbTableName(String value) {
+    this.dbTableName = value;
+  }
 
-    public boolean isSetDbTableName() {
-        return (this.dbTableName!= null);
-    }
+  public boolean isSetDbTableName() {
+    return (this.dbTableName != null);
+  }
 
-    /**
-     * Gets the value of the dbSchemaName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDbSchemaName() {
-        return dbSchemaName;
-    }
+  /**
+   * Gets the value of the dbSchemaName property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDbSchemaName() {
+    return dbSchemaName;
+  }
 
-    /**
-     * Sets the value of the dbSchemaName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDbSchemaName(String value) {
-        this.dbSchemaName = value;
-    }
+  /**
+   * Sets the value of the dbSchemaName property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setDbSchemaName(String value) {
+    this.dbSchemaName = value;
+  }
 
-    public boolean isSetDbSchemaName() {
-        return (this.dbSchemaName!= null);
-    }
+  public boolean isSetDbSchemaName() {
+    return (this.dbSchemaName != null);
+  }
 
 }

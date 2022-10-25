@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Alter complex type.
+ * <p>
+ * Java class for Alter complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Alter"&gt;
@@ -37,159 +39,139 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Alter {
 
-    @XmlElement(name = "Object")
-    protected ObjectReference object;
-    @XmlElement(name = "ObjectDefinition", required = true)
-    protected MajorObject objectDefinition;
-    @XmlAttribute(name = "Scope")
-    protected Scope scope;
-    @XmlAttribute(name = "AllowCreate")
-    protected Boolean allowCreate;
-    @XmlAttribute(name = "ObjectExpansion")
-    protected ObjectExpansion objectExpansion;
+  @XmlElement(name = "Object")
+  protected ObjectReference object;
+  @XmlElement(name = "ObjectDefinition", required = true)
+  protected MajorObject objectDefinition;
+  @XmlAttribute(name = "Scope")
+  protected Scope scope;
+  @XmlAttribute(name = "AllowCreate")
+  protected Boolean allowCreate;
+  @XmlAttribute(name = "ObjectExpansion")
+  protected ObjectExpansion objectExpansion;
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the objectDefinition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MajorObject }
-     *     
-     */
-    public MajorObject getObjectDefinition() {
-        return objectDefinition;
-    }
+  /**
+   * Gets the value of the objectDefinition property.
+   * 
+   * @return possible object is {@link MajorObject }
+   * 
+   */
+  public MajorObject getObjectDefinition() {
+    return objectDefinition;
+  }
 
-    /**
-     * Sets the value of the objectDefinition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MajorObject }
-     *     
-     */
-    public void setObjectDefinition(MajorObject value) {
-        this.objectDefinition = value;
-    }
+  /**
+   * Sets the value of the objectDefinition property.
+   * 
+   * @param value allowed object is {@link MajorObject }
+   * 
+   */
+  public void setObjectDefinition(MajorObject value) {
+    this.objectDefinition = value;
+  }
 
-    public boolean isSetObjectDefinition() {
-        return (this.objectDefinition!= null);
-    }
+  public boolean isSetObjectDefinition() {
+    return (this.objectDefinition != null);
+  }
 
-    /**
-     * Gets the value of the scope property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Scope }
-     *     
-     */
-    public Scope getScope() {
-        return scope;
-    }
+  /**
+   * Gets the value of the scope property.
+   * 
+   * @return possible object is {@link Scope }
+   * 
+   */
+  public Scope getScope() {
+    return scope;
+  }
 
-    /**
-     * Sets the value of the scope property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Scope }
-     *     
-     */
-    public void setScope(Scope value) {
-        this.scope = value;
-    }
+  /**
+   * Sets the value of the scope property.
+   * 
+   * @param value allowed object is {@link Scope }
+   * 
+   */
+  public void setScope(Scope value) {
+    this.scope = value;
+  }
 
-    public boolean isSetScope() {
-        return (this.scope!= null);
-    }
+  public boolean isSetScope() {
+    return (this.scope != null);
+  }
 
-    /**
-     * Gets the value of the allowCreate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public boolean isAllowCreate() {
-        return allowCreate;
-    }
+  /**
+   * Gets the value of the allowCreate property.
+   * 
+   * @return possible object is {@link Boolean }
+   * 
+   */
+  public boolean isAllowCreate() {
+    return allowCreate;
+  }
 
-    /**
-     * Sets the value of the allowCreate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setAllowCreate(boolean value) {
-        this.allowCreate = value;
-    }
+  /**
+   * Sets the value of the allowCreate property.
+   * 
+   * @param value allowed object is {@link Boolean }
+   * 
+   */
+  public void setAllowCreate(boolean value) {
+    this.allowCreate = value;
+  }
 
-    public boolean isSetAllowCreate() {
-        return (this.allowCreate!= null);
-    }
+  public boolean isSetAllowCreate() {
+    return (this.allowCreate != null);
+  }
 
-    public void unsetAllowCreate() {
-        this.allowCreate = null;
-    }
+  public void unsetAllowCreate() {
+    this.allowCreate = null;
+  }
 
-    /**
-     * Gets the value of the objectExpansion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectExpansion }
-     *     
-     */
-    public ObjectExpansion getObjectExpansion() {
-        return objectExpansion;
-    }
+  /**
+   * Gets the value of the objectExpansion property.
+   * 
+   * @return possible object is {@link ObjectExpansion }
+   * 
+   */
+  public ObjectExpansion getObjectExpansion() {
+    return objectExpansion;
+  }
 
-    /**
-     * Sets the value of the objectExpansion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectExpansion }
-     *     
-     */
-    public void setObjectExpansion(ObjectExpansion value) {
-        this.objectExpansion = value;
-    }
+  /**
+   * Sets the value of the objectExpansion property.
+   * 
+   * @param value allowed object is {@link ObjectExpansion }
+   * 
+   */
+  public void setObjectExpansion(ObjectExpansion value) {
+    this.objectExpansion = value;
+  }
 
-    public boolean isSetObjectExpansion() {
-        return (this.objectExpansion!= null);
-    }
+  public boolean isSetObjectExpansion() {
+    return (this.objectExpansion != null);
+  }
 
 }

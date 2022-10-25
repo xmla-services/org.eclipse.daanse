@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -28,41 +30,35 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "resultId"
-})
+@XmlType(name = "", propOrder = { "resultId" })
 @XmlRootElement(name = "ClearResult")
 public class ClearResult {
 
-    @XmlElement(name = "ResultId", required = true)
-    protected String resultId;
+  @XmlElement(name = "ResultId", required = true)
+  protected String resultId;
 
-    /**
-     * Gets the value of the resultId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getResultId() {
-        return resultId;
-    }
+  /**
+   * Gets the value of the resultId property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getResultId() {
+    return resultId;
+  }
 
-    /**
-     * Sets the value of the resultId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setResultId(String value) {
-        this.resultId = value;
-    }
+  /**
+   * Sets the value of the resultId property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setResultId(String value) {
+    this.resultId = value;
+  }
 
-    public boolean isSetResultId() {
-        return (this.resultId!= null);
-    }
+  public boolean isSetResultId() {
+    return (this.resultId != null);
+  }
 
 }

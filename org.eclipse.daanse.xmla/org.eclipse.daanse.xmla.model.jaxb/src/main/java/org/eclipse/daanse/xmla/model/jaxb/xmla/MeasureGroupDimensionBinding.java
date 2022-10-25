@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MeasureGroupDimensionBinding complex type.
+ * <p>
+ * Java class for MeasureGroupDimensionBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MeasureGroupDimensionBinding"&gt;
@@ -27,42 +29,34 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MeasureGroupDimensionBinding", propOrder = {
-    "cubeDimensionID"
-})
-public class MeasureGroupDimensionBinding
-    extends Binding
-{
+@XmlType(name = "MeasureGroupDimensionBinding", propOrder = { "cubeDimensionID" })
+public class MeasureGroupDimensionBinding extends Binding {
 
-    @XmlElement(name = "CubeDimensionID", required = true)
-    protected String cubeDimensionID;
+  @XmlElement(name = "CubeDimensionID", required = true)
+  protected String cubeDimensionID;
 
-    /**
-     * Gets the value of the cubeDimensionID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCubeDimensionID() {
-        return cubeDimensionID;
-    }
+  /**
+   * Gets the value of the cubeDimensionID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getCubeDimensionID() {
+    return cubeDimensionID;
+  }
 
-    /**
-     * Sets the value of the cubeDimensionID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCubeDimensionID(String value) {
-        this.cubeDimensionID = value;
-    }
+  /**
+   * Sets the value of the cubeDimensionID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setCubeDimensionID(String value) {
+    this.cubeDimensionID = value;
+  }
 
-    public boolean isSetCubeDimensionID() {
-        return (this.cubeDimensionID!= null);
-    }
+  public boolean isSetCubeDimensionID() {
+    return (this.cubeDimensionID != null);
+  }
 
 }

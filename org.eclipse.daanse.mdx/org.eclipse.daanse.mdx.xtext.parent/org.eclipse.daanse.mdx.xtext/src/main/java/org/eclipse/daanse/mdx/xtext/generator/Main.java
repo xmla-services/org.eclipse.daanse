@@ -21,48 +21,48 @@ import org.eclipse.xtext.validation.Issue;
 
 public class Main {
 
-	public static void main(String[] args) {
-		if (args.length == 0) {
-			System.err.println("Aborting: no path to EMF resource provided!");
-			return;
-		}
-		Injector injector = new MdxStandaloneSetup().createInjectorAndDoEMFRegistration();
-		Main main = injector.getInstance(Main.class);
-		main.runGenerator(args[0]);
-	}
+  public static void main(String[] args) {
+    if (args.length == 0) {
+      System.err.println("Aborting: no path to EMF resource provided!");
+      return;
+    }
+    Injector injector = new MdxStandaloneSetup().createInjectorAndDoEMFRegistration();
+    Main main = injector.getInstance(Main.class);
+    main.runGenerator(args[0]);
+  }
 
-	@Inject
-	private Provider<ResourceSet> resourceSetProvider;
+  @Inject
+  private Provider<ResourceSet> resourceSetProvider;
 
-	@Inject
-	private IResourceValidator validator;
+  @Inject
+  private IResourceValidator validator;
 
-	@Inject
-	private GeneratorDelegate generator;
+  @Inject
+  private GeneratorDelegate generator;
 
-	@Inject 
-	private JavaIoFileSystemAccess fileAccess;
+  @Inject
+  private JavaIoFileSystemAccess fileAccess;
 
-	protected void runGenerator(String string) {
-		// Load the resource
-		ResourceSet set = resourceSetProvider.get();
-		Resource resource = set.getResource(URI.createFileURI(string), true);
+  protected void runGenerator(String string) {
+    // Load the resource
+    ResourceSet set = resourceSetProvider.get();
+    Resource resource = set.getResource(URI.createFileURI(string), true);
 
-		// Validate the resource
-		List<Issue> list = validator.validate(resource, CheckMode.ALL, CancelIndicator.NullImpl);
-		if (!list.isEmpty()) {
-			for (Issue issue : list) {
-				System.err.println(issue);
-			}
-			return;
-		}
+    // Validate the resource
+    List<Issue> list = validator.validate(resource, CheckMode.ALL, CancelIndicator.NullImpl);
+    if (!list.isEmpty()) {
+      for (Issue issue : list) {
+        System.err.println(issue);
+      }
+      return;
+    }
 
-		// Configure and start the generator
-		fileAccess.setOutputPath("src-gen/");
-		GeneratorContext context = new GeneratorContext();
-		context.setCancelIndicator(CancelIndicator.NullImpl);
-		generator.generate(resource, fileAccess, context);
+    // Configure and start the generator
+    fileAccess.setOutputPath("src-gen/");
+    GeneratorContext context = new GeneratorContext();
+    context.setCancelIndicator(CancelIndicator.NullImpl);
+    generator.generate(resource, fileAccess, context);
 
-		System.out.println("Code generation finished.");
-	}
+    System.out.println("Code generation finished.");
+  }
 }

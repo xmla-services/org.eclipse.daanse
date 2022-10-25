@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Detach complex type.
+ * <p>
+ * Java class for Detach complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="Detach"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Detach {
 
-    @XmlElement(name = "Object", required = true)
-    protected ObjectReference object;
-    @XmlElement(name = "Password")
-    protected String password;
+  @XmlElement(name = "Object", required = true)
+  protected ObjectReference object;
+  @XmlElement(name = "Password")
+  protected String password;
 
-    /**
-     * Gets the value of the object property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public ObjectReference getObject() {
-        return object;
-    }
+  /**
+   * Gets the value of the object property.
+   * 
+   * @return possible object is {@link ObjectReference }
+   * 
+   */
+  public ObjectReference getObject() {
+    return object;
+  }
 
-    /**
-     * Sets the value of the object property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ObjectReference }
-     *     
-     */
-    public void setObject(ObjectReference value) {
-        this.object = value;
-    }
+  /**
+   * Sets the value of the object property.
+   * 
+   * @param value allowed object is {@link ObjectReference }
+   * 
+   */
+  public void setObject(ObjectReference value) {
+    this.object = value;
+  }
 
-    public boolean isSetObject() {
-        return (this.object!= null);
-    }
+  public boolean isSetObject() {
+    return (this.object != null);
+  }
 
-    /**
-     * Gets the value of the password property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPassword() {
-        return password;
-    }
+  /**
+   * Gets the value of the password property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getPassword() {
+    return password;
+  }
 
-    /**
-     * Sets the value of the password property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPassword(String value) {
-        this.password = value;
-    }
+  /**
+   * Sets the value of the password property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setPassword(String value) {
+    this.password = value;
+  }
 
-    public boolean isSetPassword() {
-        return (this.password!= null);
-    }
+  public boolean isSetPassword() {
+    return (this.password != null);
+  }
 
 }

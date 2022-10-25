@@ -19,44 +19,43 @@ import org.osgi.service.component.annotations.ServiceScope;
 
 /**
  * This class contains helper methods to serialize and deserialize XML documents
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-@Component( name = Engine300Package.eNAME + "XMLProcessor", service = Engine300XMLProcessor.class, scope = ServiceScope.SINGLETON)
+@Component(name = Engine300Package.eNAME
+    + "XMLProcessor", service = Engine300XMLProcessor.class, scope = ServiceScope.SINGLETON)
 public class Engine300XMLProcessor extends XMLProcessor {
 
-	@Reference
-	private Engine300ResourceFactoryImpl resourceFactory; 
+  @Reference
+  private Engine300ResourceFactoryImpl resourceFactory;
 
+  /**
+   * Public constructor to instantiate the helper. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
+   * 
+   * @generated
+   */
+  @Activate
+  public Engine300XMLProcessor(
+      @Reference(name = "EPackageRegistry", target = "(component.name=DefaultEPackageRegistry)") EPackage.Registry registry) {
+    super(registry);
+  }
 
-	/**
-	 * Public constructor to instantiate the helper.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Activate
-	public Engine300XMLProcessor(
-		@Reference(name = "EPackageRegistry", target = "(component.name=DefaultEPackageRegistry)") EPackage.Registry registry
-		) {
-		super(registry);
-	}
-	
-	/**
-	 * Register for "*" and "xml" file extensions the Engine300ResourceFactoryImpl factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected Map<String, Resource.Factory> getRegistrations() {
-		if (registrations == null) {
-			super.getRegistrations();
-			registrations.put(XML_EXTENSION, resourceFactory);
-			registrations.put(STAR_EXTENSION, resourceFactory);
-		}
-		return registrations;
-	}
+  /**
+   * Register for "*" and "xml" file extensions the Engine300ResourceFactoryImpl
+   * factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
+   * @generated
+   */
+  @Override
+  protected Map<String, Resource.Factory> getRegistrations() {
+    if (registrations == null) {
+      super.getRegistrations();
+      registrations.put(XML_EXTENSION, resourceFactory);
+      registrations.put(STAR_EXTENSION, resourceFactory);
+    }
+    return registrations;
+  }
 
-} //Engine300XMLProcessor
+} // Engine300XMLProcessor

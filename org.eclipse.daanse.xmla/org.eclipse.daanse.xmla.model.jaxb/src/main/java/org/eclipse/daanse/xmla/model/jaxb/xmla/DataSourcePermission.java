@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DataSourcePermission complex type.
+ * <p>
+ * Java class for DataSourcePermission complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DataSourcePermission"&gt;
@@ -33,42 +35,34 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DataSourcePermission", propOrder = {
-    "write"
-})
-public class DataSourcePermission
-    extends Permission
-{
+@XmlType(name = "DataSourcePermission", propOrder = { "write" })
+public class DataSourcePermission extends Permission {
 
-    @XmlElement(name = "Write")
-    protected String write;
+  @XmlElement(name = "Write")
+  protected String write;
 
-    /**
-     * Gets the value of the write property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getWrite() {
-        return write;
-    }
+  /**
+   * Gets the value of the write property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getWrite() {
+    return write;
+  }
 
-    /**
-     * Sets the value of the write property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setWrite(String value) {
-        this.write = value;
-    }
+  /**
+   * Sets the value of the write property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setWrite(String value) {
+    this.write = value;
+  }
 
-    public boolean isSetWrite() {
-        return (this.write!= null);
-    }
+  public boolean isSetWrite() {
+    return (this.write != null);
+  }
 
 }

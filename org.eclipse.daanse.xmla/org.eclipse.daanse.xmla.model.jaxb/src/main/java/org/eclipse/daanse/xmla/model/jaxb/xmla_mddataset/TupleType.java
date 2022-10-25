@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for TupleType complex type.
+ * <p>
+ * Java class for TupleType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="TupleType"&gt;
@@ -29,49 +31,47 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TupleType", propOrder = {
-    "member"
-})
+@XmlType(name = "TupleType", propOrder = { "member" })
 public class TupleType {
 
-    @XmlElement(name = "Member", required = true)
-    protected List<MemberType> member;
+  @XmlElement(name = "Member", required = true)
+  protected List<MemberType> member;
 
-    /**
-     * Gets the value of the member property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the member property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getMember().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link MemberType }
-     * 
-     * 
-     */
-    public List<MemberType> getMember() {
-        if (member == null) {
-            member = new ArrayList<MemberType>();
-        }
-        return this.member;
+  /**
+   * Gets the value of the member property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the member property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getMember().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link MemberType }
+   * 
+   * 
+   */
+  public List<MemberType> getMember() {
+    if (member == null) {
+      member = new ArrayList<MemberType>();
     }
+    return this.member;
+  }
 
-    public boolean isSetMember() {
-        return ((this.member!= null)&&(!this.member.isEmpty()));
-    }
+  public boolean isSetMember() {
+    return ((this.member != null) && (!this.member.isEmpty()));
+  }
 
-    public void unsetMember() {
-        this.member = null;
-    }
+  public void unsetMember() {
+    this.member = null;
+  }
 
 }

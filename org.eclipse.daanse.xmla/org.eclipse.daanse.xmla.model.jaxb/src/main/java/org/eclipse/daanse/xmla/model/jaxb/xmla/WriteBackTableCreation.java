@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WriteBackTableCreation.
+ * <p>
+ * Java class for WriteBackTableCreation.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="WriteBackTableCreation"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -25,29 +28,28 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum WriteBackTableCreation {
 
-    @XmlEnumValue("Create")
-    CREATE("Create"),
-    @XmlEnumValue("CreateAlways")
-    CREATE_ALWAYS("CreateAlways"),
-    @XmlEnumValue("UseExisting")
-    USE_EXISTING("UseExisting");
-    private final String value;
+  @XmlEnumValue("Create")
+  CREATE("Create"), @XmlEnumValue("CreateAlways")
+  CREATE_ALWAYS("CreateAlways"), @XmlEnumValue("UseExisting")
+  USE_EXISTING("UseExisting");
 
-    WriteBackTableCreation(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  WriteBackTableCreation(String v) {
+    value = v;
+  }
 
-    public static WriteBackTableCreation fromValue(String v) {
-        for (WriteBackTableCreation c: WriteBackTableCreation.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static WriteBackTableCreation fromValue(String v) {
+    for (WriteBackTableCreation c : WriteBackTableCreation.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

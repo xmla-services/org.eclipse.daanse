@@ -5,11 +5,14 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlEnumValue;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DimensionCurrentStorageModeEnumType.
+ * <p>
+ * Java class for DimensionCurrentStorageModeEnumType.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
  * <pre>
  * &lt;simpleType name="DimensionCurrentStorageModeEnumType"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
@@ -25,29 +28,28 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum DimensionCurrentStorageModeEnumType {
 
-    @XmlEnumValue("Molap")
-    MOLAP("Molap"),
-    @XmlEnumValue("InMemory")
-    IN_MEMORY("InMemory"),
-    @XmlEnumValue("Rolap")
-    ROLAP("Rolap");
-    private final String value;
+  @XmlEnumValue("Molap")
+  MOLAP("Molap"), @XmlEnumValue("InMemory")
+  IN_MEMORY("InMemory"), @XmlEnumValue("Rolap")
+  ROLAP("Rolap");
 
-    DimensionCurrentStorageModeEnumType(String v) {
-        value = v;
-    }
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  DimensionCurrentStorageModeEnumType(String v) {
+    value = v;
+  }
 
-    public static DimensionCurrentStorageModeEnumType fromValue(String v) {
-        for (DimensionCurrentStorageModeEnumType c: DimensionCurrentStorageModeEnumType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
+  public String value() {
+    return value;
+  }
+
+  public static DimensionCurrentStorageModeEnumType fromValue(String v) {
+    for (DimensionCurrentStorageModeEnumType c : DimensionCurrentStorageModeEnumType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
+    throw new IllegalArgumentException(v);
+  }
 
 }

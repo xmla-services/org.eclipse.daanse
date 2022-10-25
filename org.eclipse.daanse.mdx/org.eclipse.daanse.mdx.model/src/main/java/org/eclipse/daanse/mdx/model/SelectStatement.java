@@ -7,7 +7,7 @@ import org.eclipse.daanse.mdx.model.select.SelectSubcubeClause;
 import org.eclipse.daanse.mdx.model.select.SelectWithClause;
 
 public record SelectStatement(SelectWithClause selectWithClause, SelectQueryClause selectQueryClause,
-		SelectSubcubeClause selectSubcubeClause, SelectSlicerAxisClause selectSlicerAxisClause,
-		SelectCellPropertyListClause selectCellPropertyListClause) implements MdxStatement {
+    SelectSubcubeClause selectSubcubeClause, SelectSlicerAxisClause selectSlicerAxisClause,
+    SelectCellPropertyListClause selectCellPropertyListClause) implements MdxStatement {
 
 }

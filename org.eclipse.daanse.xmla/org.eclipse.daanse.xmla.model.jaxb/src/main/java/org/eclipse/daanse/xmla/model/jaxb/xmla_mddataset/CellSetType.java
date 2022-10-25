@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CellSetType complex type.
+ * <p>
+ * Java class for CellSetType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CellSetType"&gt;
@@ -29,48 +31,46 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CellSetType", propOrder = {
-    "data"
-})
+@XmlType(name = "CellSetType", propOrder = { "data" })
 public class CellSetType {
 
-    @XmlElement(name = "Data", required = true)
-    protected List<byte[]> data;
+  @XmlElement(name = "Data", required = true)
+  protected List<byte[]> data;
 
-    /**
-     * Gets the value of the data property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the Jakarta XML Binding object.
-     * This is why there is not a <CODE>set</CODE> method for the data property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getData().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * byte[]
-     * 
-     */
-    public List<byte[]> getData() {
-        if (data == null) {
-            data = new ArrayList<byte[]>();
-        }
-        return this.data;
+  /**
+   * Gets the value of the data property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the Jakarta XML Binding object. This is why there is not a
+   * <CODE>set</CODE> method for the data property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getData().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list byte[]
+   * 
+   */
+  public List<byte[]> getData() {
+    if (data == null) {
+      data = new ArrayList<byte[]>();
     }
+    return this.data;
+  }
 
-    public boolean isSetData() {
-        return ((this.data!= null)&&(!this.data.isEmpty()));
-    }
+  public boolean isSetData() {
+    return ((this.data != null) && (!this.data.isEmpty()));
+  }
 
-    public void unsetData() {
-        this.data = null;
-    }
+  public void unsetData() {
+    this.data = null;
+  }
 
 }

@@ -14,109 +14,98 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
-public class MdxFactoryImpl extends EFactoryImpl implements MdxFactory
-{
+public class MdxFactoryImpl extends EFactoryImpl implements MdxFactory {
   /**
-   * Creates the default factory implementation.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
+   * 
    * @generated
    */
-  public static MdxFactory init()
-  {
-    try
-    {
-      MdxFactory theMdxFactory = (MdxFactory)EPackage.Registry.INSTANCE.getEFactory(MdxPackage.eNS_URI);
-      if (theMdxFactory != null)
-      {
+  public static MdxFactory init() {
+    try {
+      MdxFactory theMdxFactory = (MdxFactory) EPackage.Registry.INSTANCE.getEFactory(MdxPackage.eNS_URI);
+      if (theMdxFactory != null) {
         return theMdxFactory;
       }
-    }
-    catch (Exception exception)
-    {
+    } catch (Exception exception) {
       EcorePlugin.INSTANCE.log(exception);
     }
     return new MdxFactoryImpl();
   }
 
   /**
-   * Creates an instance of the factory.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
+   * 
    * @generated
    */
-  public MdxFactoryImpl()
-  {
+  public MdxFactoryImpl() {
     super();
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public EObject create(EClass eClass)
-  {
-    switch (eClass.getClassifierID())
-    {
-      case MdxPackage.MDX_STATEMENT: return createMdxStatement();
-      case MdxPackage.SELECT_STATEMENT: return createSelectStatement();
-      default:
-        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+  public EObject create(EClass eClass) {
+    switch (eClass.getClassifierID()) {
+    case MdxPackage.MDX_STATEMENT:
+      return createMdxStatement();
+    case MdxPackage.SELECT_STATEMENT:
+      return createSelectStatement();
+    default:
+      throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public MdxStatement createMdxStatement()
-  {
+  public MdxStatement createMdxStatement() {
     MdxStatementImpl mdxStatement = new MdxStatementImpl();
     return mdxStatement;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public SelectStatement createSelectStatement()
-  {
+  public SelectStatement createSelectStatement() {
     SelectStatementImpl selectStatement = new SelectStatementImpl();
     return selectStatement;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @generated
    */
   @Override
-  public MdxPackage getMdxPackage()
-  {
-    return (MdxPackage)getEPackage();
+  public MdxPackage getMdxPackage() {
+    return (MdxPackage) getEPackage();
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * 
    * @deprecated
    * @generated
    */
   @Deprecated
-  public static MdxPackage getPackage()
-  {
+  public static MdxPackage getPackage() {
     return MdxPackage.eINSTANCE;
   }
 
-} //MdxFactoryImpl
+} // MdxFactoryImpl

@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for MeasureBinding complex type.
+ * <p>
+ * Java class for MeasureBinding complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="MeasureBinding"&gt;
@@ -27,42 +29,34 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MeasureBinding", propOrder = {
-    "measureID"
-})
-public class MeasureBinding
-    extends Binding
-{
+@XmlType(name = "MeasureBinding", propOrder = { "measureID" })
+public class MeasureBinding extends Binding {
 
-    @XmlElement(name = "MeasureID", required = true)
-    protected String measureID;
+  @XmlElement(name = "MeasureID", required = true)
+  protected String measureID;
 
-    /**
-     * Gets the value of the measureID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMeasureID() {
-        return measureID;
-    }
+  /**
+   * Gets the value of the measureID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getMeasureID() {
+    return measureID;
+  }
 
-    /**
-     * Sets the value of the measureID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMeasureID(String value) {
-        this.measureID = value;
-    }
+  /**
+   * Sets the value of the measureID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setMeasureID(String value) {
+    this.measureID = value;
+  }
 
-    public boolean isSetMeasureID() {
-        return (this.measureID!= null);
-    }
+  public boolean isSetMeasureID() {
+    return (this.measureID != null);
+  }
 
 }

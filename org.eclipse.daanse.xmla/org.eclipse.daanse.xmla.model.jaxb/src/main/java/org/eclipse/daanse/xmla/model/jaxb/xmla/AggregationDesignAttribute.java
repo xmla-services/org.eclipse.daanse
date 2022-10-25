@@ -6,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for AggregationDesignAttribute complex type.
+ * <p>
+ * Java class for AggregationDesignAttribute complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AggregationDesignAttribute"&gt;
@@ -33,65 +35,57 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class AggregationDesignAttribute {
 
-    @XmlElement(name = "AttributeID", required = true)
-    protected String attributeID;
-    @XmlElement(name = "EstimatedCount")
-    protected Long estimatedCount;
+  @XmlElement(name = "AttributeID", required = true)
+  protected String attributeID;
+  @XmlElement(name = "EstimatedCount")
+  protected Long estimatedCount;
 
-    /**
-     * Gets the value of the attributeID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getAttributeID() {
-        return attributeID;
-    }
+  /**
+   * Gets the value of the attributeID property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getAttributeID() {
+    return attributeID;
+  }
 
-    /**
-     * Sets the value of the attributeID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAttributeID(String value) {
-        this.attributeID = value;
-    }
+  /**
+   * Sets the value of the attributeID property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setAttributeID(String value) {
+    this.attributeID = value;
+  }
 
-    public boolean isSetAttributeID() {
-        return (this.attributeID!= null);
-    }
+  public boolean isSetAttributeID() {
+    return (this.attributeID != null);
+  }
 
-    /**
-     * Gets the value of the estimatedCount property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public Long getEstimatedCount() {
-        return estimatedCount;
-    }
+  /**
+   * Gets the value of the estimatedCount property.
+   * 
+   * @return possible object is {@link Long }
+   * 
+   */
+  public Long getEstimatedCount() {
+    return estimatedCount;
+  }
 
-    /**
-     * Sets the value of the estimatedCount property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
-     */
-    public void setEstimatedCount(Long value) {
-        this.estimatedCount = value;
-    }
+  /**
+   * Sets the value of the estimatedCount property.
+   * 
+   * @param value allowed object is {@link Long }
+   * 
+   */
+  public void setEstimatedCount(Long value) {
+    this.estimatedCount = value;
+  }
 
-    public boolean isSetEstimatedCount() {
-        return (this.estimatedCount!= null);
-    }
+  public boolean isSetEstimatedCount() {
+    return (this.estimatedCount != null);
+  }
 
 }

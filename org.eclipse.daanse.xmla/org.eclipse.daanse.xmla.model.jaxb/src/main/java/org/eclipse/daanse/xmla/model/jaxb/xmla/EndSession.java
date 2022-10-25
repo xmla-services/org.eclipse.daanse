@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -31,69 +33,61 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "EndSession")
 public class EndSession {
 
-    @XmlAttribute(name = "SessionId")
-    protected String sessionId;
-    @XmlAttribute(name = "mustUnderstand")
-    protected Integer mustUnderstand;
+  @XmlAttribute(name = "SessionId")
+  protected String sessionId;
+  @XmlAttribute(name = "mustUnderstand")
+  protected Integer mustUnderstand;
 
-    /**
-     * Gets the value of the sessionId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
+  /**
+   * Gets the value of the sessionId property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getSessionId() {
+    return sessionId;
+  }
 
-    /**
-     * Sets the value of the sessionId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSessionId(String value) {
-        this.sessionId = value;
-    }
+  /**
+   * Sets the value of the sessionId property.
+   * 
+   * @param value allowed object is {@link String }
+   * 
+   */
+  public void setSessionId(String value) {
+    this.sessionId = value;
+  }
 
-    public boolean isSetSessionId() {
-        return (this.sessionId!= null);
-    }
+  public boolean isSetSessionId() {
+    return (this.sessionId != null);
+  }
 
-    /**
-     * Gets the value of the mustUnderstand property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
-     */
-    public int getMustUnderstand() {
-        return mustUnderstand;
-    }
+  /**
+   * Gets the value of the mustUnderstand property.
+   * 
+   * @return possible object is {@link Integer }
+   * 
+   */
+  public int getMustUnderstand() {
+    return mustUnderstand;
+  }
 
-    /**
-     * Sets the value of the mustUnderstand property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setMustUnderstand(int value) {
-        this.mustUnderstand = value;
-    }
+  /**
+   * Sets the value of the mustUnderstand property.
+   * 
+   * @param value allowed object is {@link Integer }
+   * 
+   */
+  public void setMustUnderstand(int value) {
+    this.mustUnderstand = value;
+  }
 
-    public boolean isSetMustUnderstand() {
-        return (this.mustUnderstand!= null);
-    }
+  public boolean isSetMustUnderstand() {
+    return (this.mustUnderstand != null);
+  }
 
-    public void unsetMustUnderstand() {
-        this.mustUnderstand = null;
-    }
+  public void unsetMustUnderstand() {
+    this.mustUnderstand = null;
+  }
 
 }
