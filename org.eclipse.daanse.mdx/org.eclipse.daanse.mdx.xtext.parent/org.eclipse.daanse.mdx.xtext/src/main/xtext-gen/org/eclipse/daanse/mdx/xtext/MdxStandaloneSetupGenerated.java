@@ -16,27 +16,27 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 @SuppressWarnings("all")
 public class MdxStandaloneSetupGenerated implements ISetup {
 
-  @Override
-  public Injector createInjectorAndDoEMFRegistration() {
-    TerminalsStandaloneSetup.doSetup();
+	@Override
+	public Injector createInjectorAndDoEMFRegistration() {
+		TerminalsStandaloneSetup.doSetup();
 
-    Injector injector = createInjector();
-    register(injector);
-    return injector;
-  }
-
-  public Injector createInjector() {
-    return Guice.createInjector(new MdxRuntimeModule());
-  }
-
-  public void register(Injector injector) {
-    if (!EPackage.Registry.INSTANCE.containsKey("http://www.eclipse.org/daanse/mdx/xtext/Mdx")) {
-      EPackage.Registry.INSTANCE.put("http://www.eclipse.org/daanse/mdx/xtext/Mdx", MdxPackage.eINSTANCE);
-    }
-    IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
-    IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
-
-    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("mdx", resourceFactory);
-    IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("mdx", serviceProvider);
-  }
+		Injector injector = createInjector();
+		register(injector);
+		return injector;
+	}
+	
+	public Injector createInjector() {
+		return Guice.createInjector(new MdxRuntimeModule());
+	}
+	
+	public void register(Injector injector) {
+		if (!EPackage.Registry.INSTANCE.containsKey("http://www.eclipse.org/daanse/mdx/xtext/Mdx")) {
+			EPackage.Registry.INSTANCE.put("http://www.eclipse.org/daanse/mdx/xtext/Mdx", MdxPackage.eINSTANCE);
+		}
+		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
+		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
+		
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("mdx", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("mdx", serviceProvider);
+	}
 }

@@ -22,61 +22,60 @@ import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransi
 @SuppressWarnings("all")
 public class MdxSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 
-  @Inject
-  private MdxGrammarAccess grammarAccess;
-
-  @Override
-  public void sequence(ISerializationContext context, EObject semanticObject) {
-    EPackage epackage = semanticObject.eClass().getEPackage();
-    ParserRule rule = context.getParserRule();
-    Action action = context.getAssignedAction();
-    Set<Parameter> parameters = context.getEnabledBooleanParameters();
-    if (epackage == MdxPackage.eINSTANCE)
-      switch (semanticObject.eClass().getClassifierID()) {
-      case MdxPackage.MDX_STATEMENT:
-        sequence_MdxStatement(context, (MdxStatement) semanticObject);
-        return;
-      case MdxPackage.SELECT_STATEMENT:
-        sequence_SelectStatement(context, (SelectStatement) semanticObject);
-        return;
-      }
-    if (errorAcceptor != null)
-      errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
-  }
-
-  /**
-   * <pre>
-   * Contexts:
-   *     MdxStatement returns MdxStatement
-   *
-   * Constraint:
-   *     statement=SelectStatement
-   * </pre>
-   */
-  protected void sequence_MdxStatement(ISerializationContext context, MdxStatement semanticObject) {
-    if (errorAcceptor != null) {
-      if (transientValues.isValueTransient(semanticObject,
-          MdxPackage.Literals.MDX_STATEMENT__STATEMENT) == ValueTransient.YES)
-        errorAcceptor.accept(
-            diagnosticProvider.createFeatureValueMissing(semanticObject, MdxPackage.Literals.MDX_STATEMENT__STATEMENT));
-    }
-    SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-    feeder.accept(grammarAccess.getMdxStatementAccess().getStatementSelectStatementParserRuleCall_0(),
-        semanticObject.getStatement());
-    feeder.finish();
-  }
-
-  /**
-   * <pre>
-   * Contexts:
-   *     SelectStatement returns SelectStatement
-   *
-   * Constraint:
-   *     {SelectStatement}
-   * </pre>
-   */
-  protected void sequence_SelectStatement(ISerializationContext context, SelectStatement semanticObject) {
-    genericSequencer.createSequence(context, semanticObject);
-  }
-
+	@Inject
+	private MdxGrammarAccess grammarAccess;
+	
+	@Override
+	public void sequence(ISerializationContext context, EObject semanticObject) {
+		EPackage epackage = semanticObject.eClass().getEPackage();
+		ParserRule rule = context.getParserRule();
+		Action action = context.getAssignedAction();
+		Set<Parameter> parameters = context.getEnabledBooleanParameters();
+		if (epackage == MdxPackage.eINSTANCE)
+			switch (semanticObject.eClass().getClassifierID()) {
+			case MdxPackage.MDX_STATEMENT:
+				sequence_MdxStatement(context, (MdxStatement) semanticObject); 
+				return; 
+			case MdxPackage.SELECT_STATEMENT:
+				sequence_SelectStatement(context, (SelectStatement) semanticObject); 
+				return; 
+			}
+		if (errorAcceptor != null)
+			errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
+	}
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     MdxStatement returns MdxStatement
+	 *
+	 * Constraint:
+	 *     statement=SelectStatement
+	 * </pre>
+	 */
+	protected void sequence_MdxStatement(ISerializationContext context, MdxStatement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MdxPackage.Literals.MDX_STATEMENT__STATEMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MdxPackage.Literals.MDX_STATEMENT__STATEMENT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getMdxStatementAccess().getStatementSelectStatementParserRuleCall_0(), semanticObject.getStatement());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     SelectStatement returns SelectStatement
+	 *
+	 * Constraint:
+	 *     {SelectStatement}
+	 * </pre>
+	 */
+	protected void sequence_SelectStatement(ISerializationContext context, SelectStatement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
 }

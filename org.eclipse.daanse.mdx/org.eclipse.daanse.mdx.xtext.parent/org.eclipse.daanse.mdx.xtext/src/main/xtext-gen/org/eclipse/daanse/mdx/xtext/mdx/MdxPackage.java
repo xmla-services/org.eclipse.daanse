@@ -8,55 +8,58 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 /**
- * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains
- * accessors for the meta objects to represent
+ * <!-- begin-user-doc -->
+ * The <b>Package</b> for the model.
+ * It contains accessors for the meta objects to represent
  * <ul>
- * <li>each class,</li>
- * <li>each feature of each class,</li>
- * <li>each enum,</li>
- * <li>and each data type</li>
+ *   <li>each class,</li>
+ *   <li>each feature of each class,</li>
+ *   <li>each enum,</li>
+ *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.daanse.mdx.xtext.mdx.MdxFactory
  * @model kind="package"
  * @generated
  */
-public interface MdxPackage extends EPackage {
+public interface MdxPackage extends EPackage
+{
   /**
-   * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The package name.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   String eNAME = "mdx";
 
   /**
-   * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The package namespace URI.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   String eNS_URI = "http://www.eclipse.org/daanse/mdx/xtext/Mdx";
 
   /**
-   * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The package namespace name.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   String eNS_PREFIX = "mdx";
 
   /**
-   * The singleton instance of the package. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
-   * 
+   * The singleton instance of the package.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   MdxPackage eINSTANCE = org.eclipse.daanse.mdx.xtext.mdx.impl.MdxPackageImpl.init();
 
   /**
-   * The meta object id for the
-   * '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl
-   * <em>Statement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The meta object id for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl <em>Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl
    * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxPackageImpl#getMdxStatement()
    * @generated
@@ -65,27 +68,26 @@ public interface MdxPackage extends EPackage {
 
   /**
    * The feature id for the '<em><b>Statement</b></em>' containment reference.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
   int MDX_STATEMENT__STATEMENT = 0;
 
   /**
-   * The number of structural features of the '<em>Statement</em>' class. <!--
-   * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The number of structural features of the '<em>Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
   int MDX_STATEMENT_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the
-   * '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select
-   * Statement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * The meta object id for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @see org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl
    * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxPackageImpl#getSelectStatement()
    * @generated
@@ -94,18 +96,18 @@ public interface MdxPackage extends EPackage {
 
   /**
    * The number of structural features of the '<em>Select Statement</em>' class.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
   int SELECT_STATEMENT_FEATURE_COUNT = 0;
 
+
   /**
-   * Returns the meta object for class
-   * '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement <em>Statement</em>}'.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * Returns the meta object for class '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement <em>Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @return the meta object for class '<em>Statement</em>'.
    * @see org.eclipse.daanse.mdx.xtext.mdx.MdxStatement
    * @generated
@@ -113,10 +115,9 @@ public interface MdxPackage extends EPackage {
   EClass getMdxStatement();
 
   /**
-   * Returns the meta object for the containment reference
-   * '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement
-   * <em>Statement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * Returns the meta object for the containment reference '{@link org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement <em>Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Statement</em>'.
    * @see org.eclipse.daanse.mdx.xtext.mdx.MdxStatement#getStatement()
    * @see #getMdxStatement()
@@ -125,10 +126,9 @@ public interface MdxPackage extends EPackage {
   EReference getMdxStatement_Statement();
 
   /**
-   * Returns the meta object for class
-   * '{@link org.eclipse.daanse.mdx.xtext.mdx.SelectStatement <em>Select
-   * Statement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * Returns the meta object for class '{@link org.eclipse.daanse.mdx.xtext.mdx.SelectStatement <em>Select Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @return the meta object for class '<em>Select Statement</em>'.
    * @see org.eclipse.daanse.mdx.xtext.mdx.SelectStatement
    * @generated
@@ -136,32 +136,32 @@ public interface MdxPackage extends EPackage {
   EClass getSelectStatement();
 
   /**
-   * Returns the factory that creates the instances of the model. <!--
-   * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   * Returns the factory that creates the instances of the model.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @return the factory that creates the instances of the model.
    * @generated
    */
   MdxFactory getMdxFactory();
 
   /**
-   * <!-- begin-user-doc --> Defines literals for the meta objects that represent
+   * <!-- begin-user-doc -->
+   * Defines literals for the meta objects that represent
    * <ul>
-   * <li>each class,</li>
-   * <li>each feature of each class,</li>
-   * <li>each enum,</li>
-   * <li>and each data type</li>
+   *   <li>each class,</li>
+   *   <li>each feature of each class,</li>
+   *   <li>each enum,</li>
+   *   <li>and each data type</li>
    * </ul>
    * <!-- end-user-doc -->
-   * 
    * @generated
    */
-  interface Literals {
+  interface Literals
+  {
     /**
-     * The meta object literal for the
-     * '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl
-     * <em>Statement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The meta object literal for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl <em>Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxStatementImpl
      * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxPackageImpl#getMdxStatement()
      * @generated
@@ -169,18 +169,17 @@ public interface MdxPackage extends EPackage {
     EClass MDX_STATEMENT = eINSTANCE.getMdxStatement();
 
     /**
-     * The meta object literal for the '<em><b>Statement</b></em>' containment
-     * reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The meta object literal for the '<em><b>Statement</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
     EReference MDX_STATEMENT__STATEMENT = eINSTANCE.getMdxStatement_Statement();
 
     /**
-     * The meta object literal for the
-     * '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select
-     * Statement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The meta object literal for the '{@link org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl <em>Select Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @see org.eclipse.daanse.mdx.xtext.mdx.impl.SelectStatementImpl
      * @see org.eclipse.daanse.mdx.xtext.mdx.impl.MdxPackageImpl#getSelectStatement()
      * @generated
@@ -189,4 +188,4 @@ public interface MdxPackage extends EPackage {
 
   }
 
-} // MdxPackage
+} //MdxPackage

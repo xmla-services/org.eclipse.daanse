@@ -8,10 +8,9 @@ import org.eclipse.xtext.parser.antlr.IAntlrTokenFileProvider;
 
 public class MdxAntlrTokenFileProvider implements IAntlrTokenFileProvider {
 
-  @Override
-  public InputStream getAntlrTokenFile() {
-    ClassLoader classLoader = getClass().getClassLoader();
-    return classLoader
-        .getResourceAsStream("org/eclipse/daanse/mdx/xtext/parser/antlr/internal/InternalMdxParser.tokens");
-  }
+	@Override
+	public InputStream getAntlrTokenFile() {
+		ClassLoader classLoader = getClass().getClassLoader();
+		return classLoader.getResourceAsStream("org/eclipse/daanse/mdx/xtext/parser/antlr/internal/InternalMdxParser.tokens");
+	}
 }
