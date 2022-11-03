@@ -23,12 +23,12 @@
 		<dependency>
 			<groupId>org.geckoprojects.emf</groupId>
 			<artifactId>org.gecko.emf.osgi.component</artifactId>
-			<version>4.1.1-SNAPSHOT</version>
+			<version>4.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geckoprojects.emf</groupId>
 			<artifactId>org.gecko.emf.osgi.api</artifactId>
-			<version>4.1.1-SNAPSHOT</version>
+			<version>4.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geckoprojects.emf</groupId>

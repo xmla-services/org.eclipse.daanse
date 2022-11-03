@@ -13,7 +13,6 @@
 		<module>org.eclipse.daanse.mdx.xtext.parent</module>
 		<module>org.eclipse.daanse.mdx.parser.api</module>
 		<module>org.eclipse.daanse.mdx.parser.javacc21</module>
-		<module>org.eclipse.daanse.mdx.parser.itest</module>
 		<module>org.eclipse.daanse.mdx.model</module>
 		<module>org.eclipse.daanse.mdx.unparser.simple</module>
 		<module>org.eclipse.daanse.mdx.unparser.api</module>

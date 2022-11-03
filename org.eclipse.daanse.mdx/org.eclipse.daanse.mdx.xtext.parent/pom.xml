@@ -17,7 +17,6 @@
 		<module>org.eclipse.daanse.mdx.xtext</module>
 		<module>org.eclipse.daanse.mdx.xtext.ide</module>
 		<module>org.eclipse.daanse.mdx.xtext.lsp</module>
-		<module>org.eclipse.daanse.mdx.xtext.lsp.itest</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

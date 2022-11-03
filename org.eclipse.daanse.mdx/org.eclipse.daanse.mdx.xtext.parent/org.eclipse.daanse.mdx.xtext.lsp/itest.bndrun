@@ -1,0 +1,19 @@
+-runrequires: \
+	bnd.identity;id='org.eclipse.daanse.mdx.xtext.ide',\
+	bnd.identity;id='org.eclipse.daanse.mdx.xtext',\
+	bnd.identity;id='org.apache.felix.gogo.runtime',\
+	bnd.identity;id='org.apache.felix.gogo.shell',\
+	bnd.identity;id='org.apache.felix.gogo.command',\
+	bnd.identity;id='biz.aQute.gogo.commands.provider',\
+	bnd.identity;id='org.eclipse.lsp4j'
+	
+
+-runtrace: true
+
+-runee: JavaSE-17
+-runfw: org.eclipse.osgi
+
+-runproperties.eqnx:\
+	osgi.console.enable.builtin=false, \
+	osgi.console=, \
+	org.osgi.service.http.port=8080
