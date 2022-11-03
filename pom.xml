@@ -823,5 +823,6 @@
 		<module>org.eclipse.daanse.core</module>
 		<module>org.eclipse.daanse.xmla</module>
 		<module>org.eclipse.daanse.webres</module>
+		<module>org.eclipse.daanse.function</module>
 	</modules>
 </project>
