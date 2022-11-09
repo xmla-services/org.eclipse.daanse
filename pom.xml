@@ -824,5 +824,6 @@
 		<module>org.eclipse.daanse.xmla</module>
 		<module>org.eclipse.daanse.webres</module>
 		<module>org.eclipse.daanse.function</module>
+		<module>org.eclipse.daanse.sql</module>
 	</modules>
 </project>

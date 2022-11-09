@@ -5,11 +5,9 @@
     <artifactId>org.eclipse.daanse.parent</artifactId>
     <version>${revision}</version>
   </parent>
-  <artifactId>org.eclipse.daanse.function</artifactId>
+  <artifactId>org.eclipse.daanse.sql</artifactId>
   <packaging>pom</packaging>
-
   <modules>
-  	<module>org.eclipse.daanse.function.core</module>
-  	<module>org.eclipse.daanse.function.user</module>
+  	<module>org.eclipse.daanse.sql.dialect</module>
   </modules>
 </project>
