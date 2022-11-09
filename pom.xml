@@ -73,17 +73,18 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-        <plugin>
-          <groupId>biz.aQute.bnd</groupId>
-          <artifactId>bnd-maven-plugin</artifactId>
-          <version>${bnd.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>bnd-process</goal>
-              </goals>
-              <configuration>
-                <bnd><![CDATA[
+				<plugin>
+					<groupId>biz.aQute.bnd</groupId>
+					<artifactId>bnd-maven-plugin</artifactId>
+					<version>${bnd.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>bnd-process</goal>
+							</goals>
+							<configuration>
+								<bnd>
+									<![CDATA[
                 Bundle-Copyright: Copyright (c) (${now;YYYY}) Contributors to the Eclipse Foundation.
                 Bundle-Description: ${project.description}
                 Bundle-SymbolicName: ${project.artifactId}
@@ -91,55 +92,58 @@
                 Git-SHA: ${system-allow-fail;git rev-list -1 --no-abbrev-commit HEAD}
                 -noextraheaders: true
                 -reproducible: true
-                ]]></bnd>
-                <bndfile>bnd.bnd</bndfile>
-              </configuration>
-            </execution>
-            <execution>
-              <id>bnd-process-tests</id>
-              <phase>process-test-classes</phase>
-              <goals>
-                <goal>bnd-process-tests</goal>
-              </goals>
-              <configuration>
-                <bnd><![CDATA[
+                ]]>
+								</bnd>
+								<bndfile>bnd.bnd</bndfile>
+							</configuration>
+						</execution>
+						<execution>
+							<id>bnd-process-tests</id>
+							<phase>process-test-classes</phase>
+							<goals>
+								<goal>bnd-process-tests</goal>
+							</goals>
+							<configuration>
+								<bnd>
+									<![CDATA[
                 Bundle-SymbolicName: ${project.artifactId}-tests
                 Fragment-Host: ${project.artifactId}
                 Git-Descriptor: ${system-allow-fail;git describe --dirty --always --abbrev=9}
                 Git-SHA: ${system-allow-fail;git rev-list -1 --no-abbrev-commit HEAD}
                 Test-Cases: ${classes;HIERARCHY_INDIRECTLY_ANNOTATED;org.junit.platform.commons.annotation.Testable;CONCRETE;NAMED;*.integration.*}
-                ]]></bnd>
-                <bndfile>tests.bnd</bndfile>
-                <testCases>useTestCasesHeader</testCases>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.3.0</version>
-          <configuration>
-            <archive>
-              <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-            </archive>
-            <skipIfEmpty>true</skipIfEmpty>
-          </configuration>
-          <executions>
-            <execution>
-              <id>test-jar</id>
-              <phase>package</phase>
-              <goals>
-                <goal>test-jar</goal>
-              </goals>
-              <configuration>
-                <archive>
-                  <manifestFile>${project.build.testOutputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                </archive>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
+                ]]>
+								</bnd>
+								<bndfile>tests.bnd</bndfile>
+								<testCases>useTestCasesHeader</testCases>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.3.0</version>
+					<configuration>
+						<archive>
+							<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						</archive>
+						<skipIfEmpty>true</skipIfEmpty>
+					</configuration>
+					<executions>
+						<execution>
+							<id>test-jar</id>
+							<phase>package</phase>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+							<configuration>
+								<archive>
+									<manifestFile>${project.build.testOutputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+								</archive>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>biz.aQute.bnd</groupId>
 					<artifactId>bnd-baseline-maven-plugin</artifactId>
@@ -564,11 +568,16 @@
 
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>pentaho</groupId>
+			<artifactId>mondrian</artifactId>
+			<version>9.5.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 
@@ -818,6 +827,7 @@
 		</profile>
 	</profiles>
 	<modules>
+		<module>org.eclipse.daanse.ip</module>
 		<module>org.eclipse.daanse.repackage</module>
 		<module>org.eclipse.daanse.mdx</module>
 		<module>org.eclipse.daanse.core</module>
@@ -826,4 +836,19 @@
 		<module>org.eclipse.daanse.function</module>
 		<module>org.eclipse.daanse.sql</module>
 	</modules>
+	<repositories>
+		<repository>
+			<id>pentaho-public</id>
+			<name>Pentaho Public</name>
+			<url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>interval:15</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
